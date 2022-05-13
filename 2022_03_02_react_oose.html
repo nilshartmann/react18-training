@@ -11,8 +11,13 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
     />
-    <link rel="stylesheet" href="slides/styles.css" />
-    <script src="slides/export.js"></script>
+    <link rel="stylesheet" href="slides/revealjs/reveal.js/dist/reset.css" />
+    <link rel="stylesheet" href="slides/revealjs/reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="slides/revealjs/reveal.js/dist/theme/solarized.css" />
+
+    <!-- Theme used for syntax hislides/ghlighted code -->
+    <link rel="stylesheet" href="slides/revealjs/highlight-js-github-theme.css" />
+    <link rel="stylesheet" href="slides/revealjs/styles.css" />
   </head>
 
   <body>
@@ -20,14 +25,12 @@
       <!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
         <section data-state="title">
-          <h2 class="title" style="font-size: 7rem;">
+          <h2 class="title" style="font-size: 7rem">
             <b>OOSE React Seminar</b>
           </h2>
 
           <h3>
-            <span class="transparent-bg">
-              02.-04. März 2022
-            </span>
+            <span class="transparent-bg"> 02.-04. März 2022 </span>
           </h3>
 
           <h4>
@@ -37,7 +40,7 @@
             </span>
           </h4>
 
-          <p style="margin-top: 4rem;"></p>
+          <p style="margin-top: 4rem"></p>
           <div>
             <h3><span class="transparent-bg">Slides</span></h3>
             <p>
@@ -53,22 +56,22 @@
           </p>
           <p><em>Freiberuflicher Software-Entwickler, Berater und Trainer aus Hamburg</em></p>
 
-          <div style="display: flex; justify-content: center;">
+          <div style="display: flex; justify-content: center">
             <div>
               <p>Java</p>
               <p>JavaScript, TypeScript</p>
               <p>React</p>
               <p>Single-Page-Applications</p>
               <p>GraphQL</p>
-              <p style="margin-top: 20px;">
+              <p style="margin-top: 20px">
                 <a href="https://reacttraining.dev">Schulungen und Workshops</a>
               </p>
               <p>Alle Dienstleistungen <b>auch online!</b></p>
             </div>
-            <div style="margin-left: 15px;">
+            <div style="margin-left: 15px">
               <a href="https://reactbuch.de"
                 ><img
-                  style="max-height: 450px;"
+                  style="max-height: 450px"
                   src="slides/images/react-buch-v2.jpg"
                 /><br />https://reactbuch.de</a
               >
@@ -94,16 +97,14 @@
             <li class="fragment">
               Mittwoch/Donnerstag: Jeweils 9:00 bis 17:00 Uhr, Mittagspause: 12:30 bis 13:30 Uhr
             </li>
-            <li class="fragment">
-              Freitag: 9:00 bis 16:00 Uhr, Mittagspause: 12:00 bis 13:00 Uhr
-            </li>
+            <li class="fragment">Freitag: 9:00 bis 16:00 Uhr, Mittagspause: 12:00 bis 13:00 Uhr</li>
             <li class="fragment">Kürzere Pausen zwischendurch ☕️ 😴</li>
           </ul>
         </section>
 
         <section>
           <h2>Agenda</h2>
-          <ul style="font-size: 85%;">
+          <ul style="font-size: 85%">
             <li a href="#/es6-intro">Hintergrund: "Modernes" JavaScript</li>
             <li>
               <a href="#/t1">Teil I: React Einführung</a>
@@ -114,18 +115,18 @@
             <li>
               <a href="#/t3">Teil III: React-Komponenten: Hierarchien und Anwendungen</a>
             </li>
-            <li class="fragment" style="margin-top: 20px;">
+            <li class="fragment" style="margin-top: 20px">
               <a href="#/t-server">Teil IV: Daten lesen und schreiben vom Server (REST APIs)</a>
             </li>
 
-            <li class="fragment" style="margin-top: 20px;">
+            <li class="fragment" style="margin-top: 20px">
               <a href="#/t-typescript">Teil V: TypeScript</a>
             </li>
 
-            <li class="fragment" style="margin-top: 20px;">
+            <li class="fragment" style="margin-top: 20px">
               <a href="#/t-test">Teil VI: Testen von React Anwendungen (Überblick)</a>
             </li>
-            <li class="fragment" style="margin-top: 20px;">
+            <li class="fragment" style="margin-top: 20px">
               <a href="#/t-state">Teil VII: Globales und externes Statemanagement (Überblick)</a>
             </li>
           </ul>
@@ -135,9 +136,7 @@
           <h2>Grundsätzliches</h2>
           <p><b>Jederzeit:</b> Fragen und Diskussionen!</p>
           <p class="fragment">Motto: Es gibt keine dummen Fragen!</p>
-          <p class="fragment">
-            Bemerkbar machen per Audio, Chat oder Zoom Reaktion "Hand erheben"
-          </p>
+          <p class="fragment">Bemerkbar machen per Audio, Chat oder Zoom Reaktion "Hand erheben"</p>
           <span class="fragment"><img width="30%" src="slides/images/zoom-reaktionen.png" /></span>
 
           <p class="fragment">Bonuspunkte für eingeschaltetes Video 🥰</p>
@@ -1078,9 +1077,7 @@ const promise = getNameAsync()
           <h3>Module</h3>
           <p>Mit Modulen sind Dateiinhalte nicht mehr global sichtbar</p>
           <p>Module bestimmen explizit, was außerhalb verwendet werden darf</p>
-          <p>
-            Module geben explizit an, was sie aus anderen Modulen verwenden wollen
-          </p>
+          <p>Module geben explizit an, was sie aus anderen Modulen verwenden wollen</p>
         </section>
 
         <!-- ============================================================================= -->
@@ -1126,9 +1123,7 @@ const promise = getNameAsync()
         <section>
           <h3>Module</h3>
           <h4>Importieren</h4>
-          <p class="fragment">
-            Beim importieren geben wir Pfade(!) an
-          </p>
+          <p class="fragment">Beim importieren geben wir Pfade(!) an</p>
 
           <pre class="fragment"><code class="javascript">
               // src/domain/Person.js
@@ -1256,7 +1251,7 @@ const promise = getNameAsync()
 
         <section>
           <h2>Webpack und Babel</h2>
-          <img src="slides/images/webpack-und-babel.png" style="height: 600px;" />
+          <img src="slides/images/webpack-und-babel.png" style="height: 600px" />
           <p class="fragment">
             Das passiert auch im React Build-Tooling, ihr müsst euch nicht drum kümmern!
           </p>
@@ -1272,7 +1267,7 @@ const promise = getNameAsync()
         <section>
           <h3>Beispiel-Anwendung</h3>
           <a target="_blank" href="http://localhost:3000">
-            <img src="blog-example/blog-example.png" style="height: 650px;" />
+            <img src="blog-example/blog-example.png" style="height: 650px" />
           </a>
         </section>
 
@@ -1281,13 +1276,13 @@ const promise = getNameAsync()
           <p>
             <em>Zentrales Konzept in React: <b>Komponenten</b></em>
           </p>
-          <img style="height: 800px;" class="fragment" src="slides/images/soc.png" />
+          <img style="height: 800px" class="fragment" src="slides/images/soc.png" />
         </section>
 
         <section>
           <h3>Komponenten in React</h3>
-          <p style="font-size: smaller;">Unser Beispiel in Komponenten</p>
-          <img src="blog-example/blog-example.png" style="height: 650px;" />
+          <p style="font-size: smaller">Unser Beispiel in Komponenten</p>
+          <img src="blog-example/blog-example.png" style="height: 650px" />
         </section>
 
         <section>
@@ -1301,7 +1296,7 @@ const promise = getNameAsync()
             <li class="fragment">werden zu <b>ganzen Anwendungen</b> aggregiert</li>
             <li class="fragment">
               werden als <b>Funktionen (mit "Hooks" API)</b> implementiert
-              <ul class="fragment" style="font-size: smaller;">
+              <ul class="fragment" style="font-size: smaller">
                 <li>(Vor 2019 wurden Komponenten als <b>ES6 Klassen</b> implementiert)</li>
               </ul>
             </li>
@@ -1392,14 +1387,12 @@ const promise = getNameAsync()
         <section>
           <h3>Der Trainingsworkspace</h3>
           <ul class="x-list">
-            <li style="margin-bottom: 40px;">
-              <code>2022_03_02_react_oose.html</code>: Die Slides
-            </li>
-            <li class="fragment" style="margin-bottom: 40px;">
+            <li style="margin-bottom: 40px"><code>2022_03_02_react_oose.html</code>: Die Slides</li>
+            <li class="fragment" style="margin-bottom: 40px">
               Der Code ist im <code><b>blog-example</b></code> Verzeichnis
             </li>
 
-            <li class="fragment" style="margin-bottom: 40px;">
+            <li class="fragment" style="margin-bottom: 40px">
               <code>blog-example/<b>workspace</b></code
               >: Verzeichnis für Eure Übungen <br />👉&nbsp;<b>Empfehlung</b>: nur diesen Ordner in
               IDE/Editor öffnen
@@ -1419,7 +1412,7 @@ const promise = getNameAsync()
         <section>
           <h3>Schritt #1: Tool Chain starten</h3>
           <p>Gemeinsam, Schritt-für-Schritt:</p>
-          <ol class="fragment x-list" style="font-size: 85%;">
+          <ol class="fragment x-list" style="font-size: 85%">
             <li>
               <code>cd blog-example/workspace</code>
             </li>
@@ -1522,7 +1515,7 @@ const promise = getNameAsync()
           <div class="fragment">
             <p><a href="https://eslint.org/">ESLint</a></p>
 
-            <img style="height: 400px;" src="slides/images/eslint.png" />
+            <img style="height: 400px" src="slides/images/eslint.png" />
           </div>
         </section>
 
@@ -1534,26 +1527,26 @@ const promise = getNameAsync()
         <section>
           <h3>React: JSX</h3>
           <ul>
-            <li style="font-size: 80%;" class="fragment">
+            <li style="font-size: 80%" class="fragment">
               Wird wie HTML hingeschrieben, inkl Attribute:
               <pre><code class="xml" contenteditable data-trim>
 &lt;div>&lt;input type="text"/>&lt;/div>
                     </code></pre>
             </li>
-            <li style="font-size: 80%;" class="fragment">
+            <li style="font-size: 80%" class="fragment">
               Achtung! <code>class</code>-Attribut heißt <code>className</code>:
               <pre><code class="xml" contenteditable data-trim>
                         &lt;h1 className="title">...&lt;/h1>
                     </code></pre>
             </li>
-            <li style="font-size: 80%;" class="fragment">
+            <li style="font-size: 80%" class="fragment">
               Attribute, die keine Strings sind, müssen in {} eingeschlossen werden:
               <pre><code class="xml" contenteditable data-trim>
 &lt;Counter label="Count" count={7} showValues={true} />
                     </code></pre>
             </li>
 
-            <li style="font-size: 80%;" class="fragment">
+            <li style="font-size: 80%" class="fragment">
               CSS-Eigenschaften werden als Objekt übergeben in Camel-Case-Notation:
               <pre><code class="xml" contenteditable data-trim>
 const styles = { marginLeft: '10px', border: '1px solid red' };
@@ -1565,7 +1558,7 @@ const styles = { marginLeft: '10px', border: '1px solid red' };
         <section>
           <h3>React: JSX #2</h3>
           <ul>
-            <li style="font-size: 80%;" class="fragment">
+            <li style="font-size: 80%" class="fragment">
               Fragmente (rendern selber kein Element in den DOM, nur ihre Kind-Elemente):
               <pre><code class="xml" contenteditable data-trim>
 function Choice() { 
@@ -1576,7 +1569,7 @@ function Choice() {
 }  
                     </code></pre>
             </li>
-            <li style="font-size: 80%;" class="fragment">
+            <li style="font-size: 80%" class="fragment">
               null oder boolean (false oder true), um nichts zu rendern:
               <pre><code class="xml" contenteditable data-trim>
 function ErrorMessage() {
@@ -1590,7 +1583,7 @@ function ErrorMessage() {
                     </code></pre>
             </li>
 
-            <li style="font-size: 80%;" class="fragment">
+            <li style="font-size: 80%" class="fragment">
               Kommentare
               <pre><code class="xml" contenteditable data-trim>
   function MyComponent() {
@@ -1700,7 +1693,7 @@ function HelloWorld() {
         <section>
           <h3>React Hooks API</h3>
           <em>Es gibt einige Regeln zu beachten, bei der Verwendung von Hooks 👆</em>
-          <p style="font-size: 75%; margin-top: 0;">
+          <p style="font-size: 75%; margin-top: 0">
             <a href="https://reactjs.org/docs/hooks-rules.html"
               >(https://reactjs.org/docs/hooks-rules.html)</a
             >
@@ -1944,7 +1937,7 @@ function PostEditor({initialTitle, initialBody}) {
         <section>
           <h3>Virtual DOM</h3>
           <p>"Rendern" hat leider doppelte Bedeutung!</p>
-          <img src="slides/images/vdom.png" style="height: 650px;" />
+          <img src="slides/images/vdom.png" style="height: 650px" />
         </section>
         <section>
           <h3>Virtual DOM</h3>
@@ -2250,7 +2243,7 @@ function App() {
             <li class="fragment">
               kopiere das Material aus <code>blog-example/material/3-hierarchy/src</code> in deinen
               source Ordner
-              <span style="font-size: 85%;"
+              <span style="font-size: 85%"
                 >(Du kannst deinen eigenen <code>PostEditor</code> verwenden oder den aus
                 material/3-hierarchy)</span
               >
@@ -2416,7 +2409,7 @@ const response = await fetch(url, {
         <section>
           <h3>Laden (und speichern) von Daten</h3>
           <p>👉Schritt-für-Schritt</p>
-          <p style="font-size: small;"><code>steps/3-hierarchy</code></p>
+          <p style="font-size: small"><code>steps/3-hierarchy</code></p>
         </section>
 
         <section>
@@ -2619,9 +2612,7 @@ function App(props) {
             >
           </p>
           <div class="fragment">
-            <p>
-              Das backend ist bereits fertig. Ihr könnt es starten mit:
-            </p>
+            <p>Das backend ist bereits fertig. Ihr könnt es starten mit:</p>
             <pre><code>
                   cd react-training/blog-example/backend-rest
                   npm start
@@ -3222,17 +3213,17 @@ type PostListProps = {
 
           <div class="fragment">
             <p>Code Completion</p>
-            <img style="height: 200px;" src="slides/images/screenshot-ts-code_completion.png" />
+            <img style="height: 200px" src="slides/images/screenshot-ts-code_completion.png" />
           </div>
 
           <div class="fragment">
             <p>Unbekanntes Property</p>
-            <img style="height: 200px;" src="slides/images/screenshot-ts-error-01.png" />
+            <img style="height: 200px" src="slides/images/screenshot-ts-error-01.png" />
           </div>
 
           <div class="fragment">
             <p>Fehlerhafte Verwendung eines Properties</p>
-            <img style="height: 200px;" src="slides/images/screenshot-ts-error-02.png" />
+            <img style="height: 200px" src="slides/images/screenshot-ts-error-02.png" />
           </div>
         </section>
 
@@ -3319,7 +3310,7 @@ function PostEditor(props) {
           <h3>
             <em>Füge die fehlenden Typ-Informationen zu der App-Anwendung hinzu</em>
           </h3>
-          <div style="font-size: 80%;">
+          <div style="font-size: 80%">
             <div class="fragment">
               <p>
                 <b>WORKSPACE:</b>
@@ -3354,7 +3345,7 @@ function PostEditor(props) {
             Füge die fehlenden Typ-Informationen in <code>PostList.js</code> und
             <code>PostEditor.js</code> hinzu
           </p>
-          <ol style="font-size: 80%;" class="x-list">
+          <ol style="font-size: 80%" class="x-list">
             <li class="fragment">
               Benenne <code><b>PostList.js</b></code> in <code>PostList.tsx</code> um und starte
               <code>npm start</code> neu
@@ -3422,9 +3413,7 @@ function PostEditor(props) {
               <a href="https://jestjs.io/" target="_blank">https://jestjs.io/</a>)</em
             >
           </p>
-          <p class="fragment">
-            Vollständige Testlösung für React (und andere):
-          </p>
+          <p class="fragment">Vollständige Testlösung für React (und andere):</p>
           <ul class="fragment">
             <li>Test Runner</li>
             <li>Specs/Assertions, Mocks</li>
@@ -3673,9 +3662,7 @@ test('it should render correctly', () => {
             Die render-Function aus der react-testing-library wird im Test verwendet, um eine React
             Komponente (ohne Browser) zu rendern
           </p>
-          <p>
-            Genauso wie in der Anwendungen können Properties angegeben werden
-          </p>
+          <p>Genauso wie in der Anwendungen können Properties angegeben werden</p>
           <pre class="fragment"><code class="javascript" contenteditable data-trim>
             import { render } from "@testing-library/react";
 
@@ -4242,12 +4229,12 @@ function UserBadge() {
         <section>
           <h3>Wiederholung</h3>
           <h2>Render Cycle in Pure React</h2>
-          <img src="slides/images/redux-01-react-cycle-no-redux.png" style="height: 650px;" />
+          <img src="slides/images/redux-01-react-cycle-no-redux.png" style="height: 650px" />
         </section>
 
         <section>
           <h2>Redux extrahiert die Verantwortlichkeiten</h2>
-          <img src="slides/images/redux-02-extracting-responsibility.png" style="width: 900px;" />
+          <img src="slides/images/redux-02-extracting-responsibility.png" style="width: 900px" />
         </section>
 
         <section>
@@ -4814,7 +4801,7 @@ mountNode
           <h2>Zusammenfassung Redux-Architektur</h2>
           <img
             src="slides/images/redux-03-resulting-redux-architecture.png"
-            style="max-height: 650px;"
+            style="max-height: 650px"
           />
         </section>
         <section>
@@ -4828,7 +4815,7 @@ mountNode
           </ul>
           <p class="fragment">Zustand immer so nah an dort halten, wo er gebraucht wird</p>
           <div class="fragment">
-            <img src="slides/images/three-kinds-of-state.png" style="max-height: 650px;" />
+            <img src="slides/images/three-kinds-of-state.png" style="max-height: 650px" />
           </div>
         </section>
 
@@ -4970,9 +4957,7 @@ mountNode
         <section>
           <h3>Asynchrone Actions</h3>
           <ul>
-            <li class="fragment">
-              Die Redux Thunk Middleware ist in Redux Toolkit integriert
-            </li>
+            <li class="fragment">Die Redux Thunk Middleware ist in Redux Toolkit integriert</li>
             <li class="fragment">
               Asynchrone Action Creator können aber nicht als reducer definiert werden, du schreibst
               sie wie in Redux außerhalb von createSlice hin.
@@ -5019,9 +5004,7 @@ mountNode
           <h2>Geschafft! 😊</h2>
           <h3>Vielen Dank für Eure Teilnahme!</h3>
           <h3>Viel Spaß und Erfolg mit React!</h3>
-          <p>
-            Wenn ihr noch Fragen habt, könnt ihr mich erreichen:
-          </p>
+          <p>Wenn ihr noch Fragen habt, könnt ihr mich erreichen:</p>
           <p>Mail: <a href="mailto:nils@nilshartmann.net">nils@nilshartmann.net</a></p>
           <p>
             Web: <a href="https://nilshartmann.net" target="_blank">https://nilshartmann.net</a>
@@ -5033,9 +5016,10 @@ mountNode
       </div>
     </div>
 
-    <script src="slides/reveal.js/lib/js/head.min.js"></script>
-    <script src="slides/reveal.js/js/reveal.js"></script>
-    <script src="slides/reveal.js/lib/jquery-2.2.4.js"></script>
-    <script src="slides/reveal-config.js"></script>
+    <script src="slides/revealjs/reveal.js/dist/reveal.js"></script>
+    <script src="slides/revealjs/reveal.js/plugin/notes/notes.js"></script>
+    <script src="slides/revealjs/reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="slides/revealjs/reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="slides/revealjs/config.js"></script>
   </body>
 </html>
