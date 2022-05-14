@@ -33,7 +33,7 @@ Auf deinem Laptop/PC sollte installiert sein:
 1. Das Repository klonen:
 
 ```
-git clone https://github.com/nilshartmann/react-training
+git clone https://github.com/nilshartmann/react18-training
 ```
 
 2. Die benötigten npm-Pakete installieren:
