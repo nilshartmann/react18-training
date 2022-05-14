@@ -13,7 +13,7 @@ Auf deinem Laptop/PC sollte installiert sein:
   - [Visual Studio Code](https://code.visualstudio.com/)
   - [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) (Ultimate Edition, Evaluationsversion reicht aber)
   - [Webstorm](https://www.jetbrains.com/webstorm/download/) (Evaluationsversion reicht)
-- Für Schulungen, die wir über **Zoom** machen: bitte den Zoom **Client** installieren (und nicht die Web-Version von Zoom verwenden). Du benötigst aber _keinen_ Zoom-Account. 
+- Für Schulungen, die wir über **Zoom** machen: bitte den Zoom **Client** installieren (und nicht die Web-Version von Zoom verwenden). Du benötigst aber _keinen_ Zoom-Account.
 
 **Optional: Browser Erweiterungen für React**
 
@@ -81,8 +81,8 @@ Achtung! Das Frontend läuft auf **Port 3000**, d.h. dieser Port muss verfügbar
 
 2. Wenn das Frontend gestartet ist, zum testen einmal die Anwendung im Browser aufrufen: [http://localhost:3000](http://localhost:3000). Dort sollte "Hello, World" erscheinen, dann ist der Workspace einsatzbereit.
 
-![Running frontend](./running-workspace.png)
+![Running frontend](./slides/images/running-workspace.png)
 
-**Das ist alles!**
+**Das ist alles 😊**
 
 Bei Fragen oder Problemen melde dich gerne bei mir.
