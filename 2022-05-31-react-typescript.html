@@ -108,24 +108,24 @@
         <section>
           <h2>Agenda</h2>
           <ul style="font-size: 85%">
-            <li class="fragment">
+            <li>
               <a href="#/t1">Teil I: React Einführung</a>
             </li>
-            <li class="fragment">
+            <li>
               <a href="#/t2">Teil II: React-Komponenten (Details)</a>
             </li>
-            <li class="fragment">
+            <li>
               <a href="#/t3">Teil III: React-Komponenten: Hierarchien und Anwendungen</a>
             </li>
-            <li class="fragment" style="margin-top: 20px">
+            <li style="margin-top: 20px">
               <a href="#/t-server">Teil IV: Daten lesen und schreiben vom Server (REST APIs)</a>
             </li>
 
-            <li class="fragment" style="margin-top: 20px">
+            <li style="margin-top: 20px">
               <a href="#/t-typescript">Teil V: TypeScript</a>
             </li>
 
-            <li class="fragment" style="margin-top: 20px">
+            <li style="margin-top: 20px">
               <a href="#/t-test">Teil VI: Testen von React Anwendungen</a>
             </li>
           </ul>
@@ -177,13 +177,11 @@
         <section>
           <h3>React Komponenten</h3>
           <ul>
-            <li class="fragment">bestehen aus <b>Logik und UI</b> (keine separaten Templates)</li>
-            <li class="fragment">werden <b>deklarativ</b> beschrieben</li>
-            <li class="fragment">
-              werden immer <b>komplett gerendert</b> (kein 2-Wege-Data-Binding)
-            </li>
-            <li class="fragment">werden zu <b>ganzen Anwendungen</b> aggregiert</li>
-            <li class="fragment">
+            <li>bestehen aus <b>Logik und UI</b> (keine separaten Templates)</li>
+            <li>werden <b>deklarativ</b> beschrieben</li>
+            <li>werden immer <b>komplett gerendert</b> (kein 2-Wege-Data-Binding)</li>
+            <li>werden zu <b>ganzen Anwendungen</b> aggregiert</li>
+            <li>
               werden als <b>Funktionen (mit "Hooks" API)</b> implementiert
               <ul class="fragment" style="font-size: smaller">
                 <li>(Vor 2019 wurden Komponenten als <b>ES6 Klassen</b> implementiert)</li>
@@ -197,11 +195,11 @@
           <h3>Dokumentation</h3>
 
           <ul class="xx-list">
-            <li class="fragment">
+            <li>
               Aktuelle Doku (Klassen API-basiert):
               <a href="https://reactjs.org/">https://reactjs.org/</a>
             </li>
-            <li class="fragment">
+            <li>
               Neue Doku (noch Beta, aber Hooks API-basiert):
               <a href="https://beta.reactjs.org/">https://beta.reactjs.org/</a>
             </li>
@@ -209,6 +207,12 @@
           <p class="fragment">
             Wichtig: "nur" die neu Doku-Seite ist beta, die Hooks API ist stabil
           </p>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+            ms
+          </textarea>
         </section>
 
         <section>
@@ -275,17 +279,19 @@
         <section>
           <h3>Der Trainingsworkspace</h3>
           <ul class="x-list">
-            <li style="margin-bottom: 40px"><code>2022_03_02_react_oose.html</code>: Die Slides</li>
-            <li class="fragment" style="margin-bottom: 40px">
+            <li style="margin-bottom: 40px">
+              <code>2022_05_31_react-typescript.html</code>: Die Slides
+            </li>
+            <li style="margin-bottom: 40px">
               Der Code ist im <code><b>blog-example</b></code> Verzeichnis
             </li>
 
-            <li class="fragment" style="margin-bottom: 40px">
+            <li style="margin-bottom: 40px">
               <code>blog-example/<b>workspace</b></code
               >: Verzeichnis für Eure Übungen <br />👉&nbsp;<b>Empfehlung</b>: nur diesen Ordner in
               IDE/Editor öffnen
             </li>
-            <li class="fragment">
+            <li>
               <code>blog-example/<b>steps</b></code
               >: Fertiger Source-Code nach jeder Übung
             </li>
@@ -299,24 +305,24 @@
         </section>
         <section>
           <h3>Schritt #1: Tool Chain starten</h3>
-          <p>Gemeinsam, Schritt-für-Schritt:</p>
-          <ol class="fragment x-list" style="font-size: 85%">
+          <p class="fragment">Gemeinsam, Schritt-für-Schritt:</p>
+          <ol class="x-list" style="font-size: 85%">
             <li>
               <code>cd blog-example/workspace</code>
             </li>
 
-            <li class="fragment">
+            <li>
               <code>npm start</code>
             </li>
 
-            <li class="fragment">
+            <li>
               Der Browser sollte automatisch
               <a href="http://localhost:3000" target="_blank">http://localhost:3000</a>
               öffnen
             </li>
 
-            <li class="fragment">Wenn Du "Hello, World" im Browser siehst, ist alles gut!</li>
-            <li class="fragment">Dann bitte in Zoom "Hand heben" 🙋‍♀️</li>
+            <li>Wenn Du "Hello, World" im Browser siehst, ist alles gut!</li>
+            <li>Dann bitte in Zoom "Hand heben" 🙋‍♀️</li>
           </ol>
         </section>
         <section>
@@ -328,22 +334,22 @@
             >
           </p>
           <ul>
-            <li class="fragment">Ersetze den "statischen" Code in <code>PostEditor.js</code></li>
-            <li class="fragment">Die Komponente soll <b>PostEditor</b> heißen</li>
-            <li class="fragment">
+            <li>Ersetze den "statischen" Code in <code>PostEditor.js</code></li>
+            <li>Die Komponente soll <b>PostEditor</b> heißen</li>
+            <li>
               Sie sollte einen Zustand/State (<code>title</code>) und ein Eingabefeld dafür haben
             </li>
-            <li class="fragment">
+            <li>
               Als Hilfe kannst Du den Code aus den
               <a href="#interaktiv-hellomessage">vorherigen Slides</a> ansehen.
             </li>
-            <li class="fragment">
+            <li>
               Eine mögliche Lösung findest Du auch in <code>blog-example/steps/1-hello-world</code>
             </li>
 
-            <li class="fragment">
+            <li>
               <em>Optional: mache ein paar Experimente mit der Komponente, zum Beispiel:</em>
-              <ul>
+              <ul class="no-fragment">
                 <li>
                   Kannst Du unter dem Eingabefeld den gerade eingegebenen Text ausgeben lassen, so
                   dass dieser immer dem aktuellen Inhalt des Eingabefeldes entspricht?
@@ -354,7 +360,7 @@
                 </li>
               </ul>
             </li>
-            <li class="fragment">Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
           </ul>
         </section>
 
@@ -376,14 +382,12 @@
             integriert
           </p>
           <ul>
-            <li class="fragment">
+            <li>
               ...führt Webpack auf Basis der Projekt Webpack Konfiguration automatisch bei jedem
               Speichern aus
             </li>
-            <li class="fragment">...erzeugt Ausgabe in Memory (Performance)</li>
-            <li class="fragment">
-              ...Hot Reloading: Automatische Aktualisierung nach Code Änderung
-            </li>
+            <li>...erzeugt Ausgabe in Memory (Performance)</li>
+            <li>...Hot Reloading: Automatische Aktualisierung nach Code Änderung</li>
           </ul>
         </section>
 
@@ -391,18 +395,17 @@
           <h3>Tooling: Linter</h3>
           <p><em>Statische Codeanalyse</em></p>
           <ul>
-            <li class="fragment">Findet typische JavaScript Programmierfehler</li>
-            <li class="fragment">
-              Achtet auf Einhaltung von Konventionen (z.B. Semikolon ja/nein)
+            <li>Findet typische JavaScript Programmierfehler</li>
+            <li>Achtet auf Einhaltung von Konventionen (z.B. Semikolon ja/nein)</li>
+            <li>Kann in den CI-Build und IDE eingebunden werden</li>
+            <li>
+              <div class="fragment">
+                <p><a href="https://eslint.org/">ESLint</a></p>
+
+                <img style="height: 400px" src="slides/images/eslint.png" />
+              </div>
             </li>
-            <li class="fragment">Kann in den CI-Build und IDE eingebunden werden</li>
           </ul>
-
-          <div class="fragment">
-            <p><a href="https://eslint.org/">ESLint</a></p>
-
-            <img style="height: 400px" src="slides/images/eslint.png" />
-          </div>
         </section>
 
         <section id="t2">
@@ -486,9 +489,9 @@ function ErrorMessage() {
           <h3>Zustand einer Komponente und der useState-Hook (Zusammenfassung)</h3>
           <ul class="fragement">
             <li>Beispiel: Inhalt eines Eingabefelds, Daten vom Server, Menu offen oder zu</li>
-            <li class="fragment"><b>Werte</b> üblicherweise immutable</li>
-            <li class="fragment">Arbeiten mit Zustand über <b>useState</b>-Hook</li>
-            <li class="fragment">
+            <li><b>Werte</b> üblicherweise immutable</li>
+            <li>Arbeiten mit Zustand über <b>useState</b>-Hook</li>
+            <li>
               useState liefert Array mit zwei Werten zurück: aktuellen Zustand, und setter-Funktion
               um Zustand zu verändern
             </li>
@@ -501,15 +504,13 @@ function HelloWorld() {
 }
                   </code></pre>
           <ul>
-            <li class="fragment">
+            <li>
               Aufruf des Setters <b>löst erneutes rendern der <i>gesamten</i> Komponente aus</b>
             </li>
-            <li class="fragment">
+            <li>
               Es können mehrere States erzeugt werden, durch Verwendung mehrerer useState-Aufrufe
             </li>
-            <li class="fragment">
-              <b>Zustand</b> ist eines der <b>zentralen</b> Konzepte von React
-            </li>
+            <li><b>Zustand</b> ist eines der <b>zentralen</b> Konzepte von React</li>
           </ul>
         </section>
 
@@ -520,26 +521,26 @@ function HelloWorld() {
         <section>
           <h3>Schritte</h3>
           <ol class="x-list">
-            <li class="fragment">
+            <li>
               Das Root-Element deines Formulars soll die CSS Klasse <code>Container</code> bekommen.
               Dadurch sollte sich ihr Aussehen (leicht) verändern
             </li>
-            <li class="fragment">
+            <li>
               Wenn <b>kein Text</b> im Eingabe-Feld steht, soll eine Fehlermeldung ausgegeben werden
               ("Please fill in the title" o.ä.)
               <br />
               Der Fehlertext sollte in fettem Rot ausgegeben werden (CSS-Eigenschaften:
               <code>color: red</code> und <code>font-weight: bold</code>)
             </li>
-            <li class="fragment">
+            <li>
               Wenn <b>mindestens ein Zeichen</b> im Eingabe-Feld steht, soll eine "positive" Message
               erscheinen ("You have filled the title correctly").
               <br />
               Diese positive Nachricht sollte in grün erscheinen (CSS-Eigenschaft:
               <code>color: green</code>)
             </li>
-            <li class="fragment">Mögliche Lösung in <code>steps/1b-editor-css</code></li>
-            <li class="fragment">Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+            <li>Mögliche Lösung in <code>steps/1b-editor-css</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
           </ol>
         </section> -->
 
@@ -550,11 +551,11 @@ function HelloWorld() {
             "einhaken"</em
           >
           <ul>
-            <li class="fragment">
+            <li>
               Hooks sind "normale" Funktionen, müssen aber mit <code>use</code> beginnen (useState,
               useEffect, ...)
             </li>
-            <li class="fragment">
+            <li>
               Beispiel: Importieren und verwenden von Hooks
 
               <pre><code class="javascript" contenteditable data-trim>
@@ -585,23 +586,28 @@ function HelloWorld() {
             >
           </p>
           <div class="fragment">
-            <p>Einschränkungen:</p>
-            <ul>
-              <li class="fragment">
-                Hooks können nur in Funktionskomponenten (und anderen Hooks) aufgerufen werden
-              </li>
-              <li class="fragment">
-                Hooks müssen immer in derselben Reihenfolge und auf Top-Level-Ebene verwendet werden
-                <ul>
-                  <li>Verboten z.B. in Schleifen, if-Abfragen oder in anderen Funktionen</li>
-                </ul>
-              </li>
-              <li class="fragment">
-                Es gibt ein
-                <a href="https://www.npmjs.com/package/eslint-plugin-react-hooks">ESLint Plug-in</a>
-                zur korrekten Verwendung der Hooks
-              </li>
-            </ul>
+            <div class="no-fragment">
+              <p>Einschränkungen:</p>
+              <ul>
+                <li>
+                  Hooks können nur in Funktionskomponenten (und anderen Hooks) aufgerufen werden
+                </li>
+                <li>
+                  Hooks müssen immer in derselben Reihenfolge und auf Top-Level-Ebene verwendet
+                  werden
+                  <ul>
+                    <li>Verboten z.B. in Schleifen, if-Abfragen oder in anderen Funktionen</li>
+                  </ul>
+                </li>
+                <li>
+                  Es gibt ein
+                  <a href="https://www.npmjs.com/package/eslint-plugin-react-hooks"
+                    >ESLint Plug-in</a
+                  >
+                  zur korrekten Verwendung der Hooks
+                </li>
+              </ul>
+            </div>
           </div>
           <p class="fragment">
             <em
@@ -662,16 +668,16 @@ function HelloWorld() {
               <code>input</code>-Feld, du kannst also auch hier mit <code>onChange</code> und
               <code>value</code> arbeiten.
             </li>
-            <!-- <li class="fragment">
+            <!-- <li>
               Füge unter beiden Feldern eine Fehler-Meldung hinzu, wenn das jeweilige Feld leer ist
               (z.B. "Please fill in Xyz")
             </li> -->
-            <li class="fragment">
+            <li>
               Füge einen "Clear"-Button hinzu, der beide Eingabefeld leert. Das Property auf dem
               Button ist <code>onClick</code>.
             </li>
-            <li class="fragment">Mögliche Lösung: <code>steps/2-editor</code></li>
-            <li class="fragment">Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+            <li>Mögliche Lösung: <code>steps/2-editor</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
           </ol>
         </section>
 
@@ -685,7 +691,7 @@ function HelloWorld() {
           <h3>React: Properties</h3>
           <p>Live: Properties für initialen Werte des Post-Editors</p>
           <ul>
-            <li class="fragment">
+            <li>
               Mit <b>Properties</b> können einer Komponente von <b>außen</b> Werte und Eigenschaften
               übergeben werden
 
@@ -700,10 +706,8 @@ function HelloWorld() {
             }
             </code></pre>
             </li>
-            <li class="fragment">
-              <b>Properties</b> können innerhalb der Komponente nicht verändert werden
-            </li>
-            <li class="fragment">
+            <li><b>Properties</b> können innerhalb der Komponente nicht verändert werden</li>
+            <li>
               Zum Vergleich: <b>Zustand (State)</b> ist eine <b>innere</b> Eigenschaft der
               Komponente (die verändert werden kann)
             </li>
@@ -714,7 +718,7 @@ function HelloWorld() {
           <h3>Properties ("Props") einer Komponente</h3>
           <ul>
             <li>Komponenten können beliebig eigene Properties definieren</li>
-            <li class="fragment">
+            <li>
               Bei der Angabe der Properties bei der Verwendung einer Komponente werden die
               Properties wie von HTML gewohnt in der Notiation
               <code>name=value</code> hingeschrieben
@@ -725,7 +729,7 @@ function HelloWorld() {
  </code></pre>
 
           <ul>
-            <li class="fragment">
+            <li>
               ...alle angegebenen Properties werden "gesammelt" und in <b>einem</b> Objekt im 1.
               Methoden-Parameter an Komponente übergeben
             </li>
@@ -840,7 +844,7 @@ function PostEditor({initialTitle, initialBody}) {
               Schreibe eine neue Komponente (der einfachheithalber direkt in PostEditor.js), die
               eine Meldung darstellt: <b>Message</b>
             </li>
-            <li class="fragment">
+            <li>
               Die <b>Message</b>-Komponente soll zwei Properties aufnehmen:
               <ul>
                 <li><code>msg</code>: ein String mit einer Nachricht</li>
@@ -850,7 +854,7 @@ function PostEditor({initialTitle, initialBody}) {
                 </li>
               </ul>
             </li>
-            <li class="fragment">
+            <li>
               Beispielhafte Verwendung:
 
               <pre><code class="javascript">
@@ -858,21 +862,21 @@ function PostEditor({initialTitle, initialBody}) {
                 &lt;Message type="error" msg="Leider fehlerhaft" /> 
               </code></pre>
             </li>
-            <li class="fragment">
+            <li>
               Die Komponente soll die übergebene Nachricht aus <code>msg</code> anzeigen: Wenn type
               auf <code>error</code> gestellt ist (oder kein type gesetzt ist), soll die
               <code>msg</code> als Fehler in roter Schrift ausgegeben werden (CSS-Eigenschaft
               <code>style={{color: "red"}}</code>)
             </li>
-            <li class="fragment">
+            <li>
               Verwende die Komponente im PostEditor: um eine Fehler-Meldung unter dem Formular
               auszugeben (z.B. "Bitte füllen Sie das Formular aus") wenn <code>title</code> oder
               <code>body</code> leer sind bzw. eine Info-Meldung, wenn die beiden Felder gefüllt
               sind ("Sie haben alle erforderlichen Eingaben getätigt!")
             </li>
 
-            <li class="fragment">Mögliche Lösung: <code>steps/2a-editor-mit-props</code></li>
-            <li class="fragment">Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+            <li>Mögliche Lösung: <code>steps/2a-editor-mit-props</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
           </ol>
         </section>
 
@@ -960,11 +964,11 @@ function PostList(props) {
               In React Anwendungen werden Komponenten in Hierarchien zu Anwendungen aggregiert. Eine
               "Anwendung" ist nichts weiter als eine Sammlung von Komponenten
             </li>
-            <li class="fragment">
+            <li>
               Innerhalb der Hierarchie wird immer nur <b>in eine Richtung</b> kommuniziert:
               <b>Eltern</b>-Komponenten geben <b>properties</b> an ihre <b>Kinder</b>
             </li>
-            <li class="fragment">
+            <li>
               Mit den Properties können Daten (Blog Post, angemeldeter Benutzer, ...) von "oben"
               nach "unten" gereicht werden. Das kann über mehr als eine Hierarchie-Ebene passieren.
               <p>
@@ -972,10 +976,10 @@ function PostList(props) {
                 "unten" reichen)
               </p>
             </li>
-            <li class="fragment">
+            <li>
               Mit Properties können außerdem <b>callback-Funktionen</b> nach unten gereicht werden.
             </li>
-            <li class="fragment">
+            <li>
               Eine Kind-Komponente kann die übergebene Funktion aufrufen und ein "Event" (mit oder
               ohne Daten) an ihre Eltern-Komponente schicken. <br />Dieses Verfahren haben wir
               bereits beim onChange-Property am input-Feld gesehen!
@@ -1126,7 +1130,7 @@ function App() {
         <section>
           <h3>Schritte</h3>
           <ol class="xx-list">
-            <li class="fragment">
+            <li>
               kopiere das Material aus <code>blog-example/material/3-hierarchy/src</code> in deinen
               source Ordner
               <span style="font-size: 85%"
@@ -1135,23 +1139,23 @@ function App() {
               >
             </li>
 
-            <li class="fragment">
+            <li>
               Erweitere die <code>App</code> Komponente, so dass sie den
               <code>PostEditor</code> anzeigt, wenn der User auf den <code>Add</code> Button klickt.
               <p>- In <code>App.js</code> stehen TODOs mit weiteren Infos</p>
             </li>
-            <li class="fragment">
+            <li>
               Im<code>PostEditor</code> benötigst Du einen Save Button, der die übergebene
               Callback-Funktion aufruft, die von der <code>App</code> als Property
               (<code>onSave</code>) übergeben wird. <br />Siehe TODO in
               <code>blog-example/material/3-hierarchy/src/PostEditor.js</code>
             </li>
-            <!-- <li class="fragment" style="font-size: 75%;">
+            <!-- <li style="font-size: 75%;">
               <b>Optional:</b> Füge einen <b>neuen</b> Button "Cancel" im PostEditor hinzu, der die
               PostList öffnet, ohne das eingebene Post zu speichern.
             </li> -->
-            <li class="fragment">Mögliche Lösung: <code>steps/3-hierarchy</code></li>
-            <li class="fragment">Wenn Du fertig bist, bitte in Zoom "Hand heben" 🙋‍♀️</li>
+            <li>Mögliche Lösung: <code>steps/3-hierarchy</code></li>
+            <li>Wenn Du fertig bist, bitte in Zoom "Hand heben" 🙋‍♀️</li>
           </ol>
         </section>
 
@@ -1174,7 +1178,7 @@ function App() {
           <h3>Server-Calls</h3>
           <ul class="x-list">
             <li>React macht keine Angabe, wie Server-Calls (technisch) gemacht werden</li>
-            <li class="fragment">
+            <li>
               Häufig in React verwendet: <b>fetch</b> API
               <ul>
                 <li>Browser-API zum Ausführen von HTTP Requests</li>
@@ -1236,29 +1240,28 @@ fetch('http://localhost:7000/posts')
         <section>
           <h3>Die fetch API</h3>
           <p>Schreiben von Daten mit HTTP POST</p>
-          <div class="fragment">
-            <p><code>fetch</code> erwartet als 2. Parameter ein Konfigurationsobjekt:</p>
-
-            <ul>
-              <li>
-                <code>method</code>: HTTP Methode (<code>PUT</code>, <code>POST</code>,
-                <code>DELETE</code>, ...)
-              </li>
-              <li><code>headers</code>: HTTP Header für den Request (z.B. Authorization)</li>
-              <li><code>body</code>: Der Payload (als String!)</li>
-            </ul>
-            <p>Der Returnwert ist derselbe wie bei GET</p>
-          </div>
-          <pre class="fragment"><code class="javascript" contenteditable data-trim>
-const response = await fetch(url, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(payload)
-})
-// ... 
-    </code></pre>
+          <p><code>fetch</code> erwartet als 2. Parameter ein Konfigurationsobjekt:</p>
+          <ul>
+            <li>
+              <code>method</code>: HTTP Methode (<code>PUT</code>, <code>POST</code>,
+              <code>DELETE</code>, ...)
+            </li>
+            <li><code>headers</code>: HTTP Header für den Request (z.B. Authorization)</li>
+            <li><code>body</code>: Der Payload (als String!)</li>
+            <li>
+              <p>Der Returnwert ist derselbe wie bei GET</p>
+              <pre><code class="javascript" contenteditable data-trim>
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+  // ... 
+      </code></pre>
+            </li>
+          </ul>
         </section>
 
         <section>
@@ -1325,18 +1328,19 @@ const response = await fetch(url, {
             >
           </p>
 
-          <pre class="fragment"><code class="javascript" contenteditable data-trim>
+          <div class="fragment">
+            <pre><code class="javascript" contenteditable data-trim>
             function App(props) {
               React.useEffect( 
                 () => console.log("I will run after EACH render")
               );
             }
           </code></pre>
-
+          </div>
           <div class="fragment">
             2. Parameter (array) gibt an, wenn die Funktion ausgeführt werden soll ("dependencies")
 
-            <pre class="fragment"><code class="javascript" contenteditable data-trim>
+            <pre><code class="javascript" contenteditable data-trim>
               function App(props) {
                 React.useEffect( 
                   () => console.log("I will run only once after 1st rendering"),
@@ -1346,10 +1350,9 @@ const response = await fetch(url, {
             </code></pre>
           </div>
 
+          <div class="fragment">Nur nach dem 1. Rendern und immer wenn sich die postId ändert:</div>
           <div class="fragment">
-            Nur nach dem 1. Rendern und immer wenn sich die postId ändert:
-
-            <pre class="fragment"><code class="javascript" contenteditable data-trim>
+            <pre><code class="javascript" contenteditable data-trim>
                 function App(props) {
                   React.useEffect(
                     () => console.log("..."), 
@@ -1365,36 +1368,32 @@ const response = await fetch(url, {
 
           <p>Zwei Parameter:</p>
           <ul>
-            <li class="fragment">
+            <li>
               Callback-Funktion, die aufgerufen wenn entsprechendes Ereignis eintritt (z.B.
               initiales Rendern abgeschlossen)
             </li>
-            <li class="fragment">
+            <li>
               Ein Array mit Abhängigkeiten:
               <ul>
-                <li class="fragment">
+                <li>
                   Wenn kein Array angegeben wird, wird der Effekt nach jedem Rendern ausgeführt
                   (achtung! Endlosschleife möglich)
                 </li>
-                <li class="fragment">
+                <li>
                   Wenn ein leeres Array angegeben wird, wird der Effekt nur nach dem 1. Rendern
                   ausgeführt
                 </li>
-                <li class="fragment">
+                <li>
                   Wenn Werte angegeben werden, wird der Effekt ausgeführt, wenn sich mind 1 Wert
                   verändert hat
                 </li>
               </ul>
             </li>
-          </ul>
-
-          <p class="fragment">
-            Um auf das Entfernen der Komponente aus dem DOM zu reagieren (z.B Resourcen freigeben),
-            kann die Callback-Funktion eine weitere Funktion zurückliefern, die dann ausgeführt
-            wird:
-          </p>
-
-          <pre class="fragment"><code class="javascript" contenteditable data-trim>
+            <li>
+              Um auf das Entfernen der Komponente aus dem DOM zu reagieren (z.B Resourcen
+              freigeben), kann die Callback-Funktion eine weitere Funktion zurückliefern, die dann
+              ausgeführt wird:
+              <pre><code class="javascript" contenteditable data-trim>
                   function GreetingController(props) {
                     React.useEffect(
                       () => {
@@ -1405,6 +1404,8 @@ const response = await fetch(url, {
                     );
                   }
                 </code></pre>
+            </li>
+          </ul>
         </section>
 
         <section>
@@ -1516,16 +1517,16 @@ function App(props) {
         <section>
           <h3>Schritte</h3>
           <ol class="x-list">
-            <li class="fragment">
+            <li>
               Füge in <code>App.js</code> den Code zum <b>Laden</b> und <b>Speichern</b> eines
               Blog-Posts hinzu.
             </li>
-            <li class="fragment">
+            <li>
               Beim <b>Laden</b> der Daten mit fetch, bitte <b>Promise API</b> verwenden und
               <b>nicht <code>async/await</code></b> API!
             </li>
 
-            <li class="fragment">
+            <li>
               Füge einen Loading Indicator hinzu
               <ul>
                 <li>
@@ -1543,8 +1544,8 @@ function App(props) {
                 </li>
               </ul>
             </li>
-            <li class="fragment">Mögliche Lösung in <code>steps/4-remote</code></li>
-            <li class="fragment">Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+            <li>Mögliche Lösung in <code>steps/4-remote</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
           </ol>
         </section>
 
@@ -1595,24 +1596,24 @@ function App() {
         <section>
           <h3>Übung komplexer Zustand</h3>
           <ol class="x-list">
-            <li class="fragment">
+            <li>
               In deiner <code>App</code>-Komponente hast Du zwei Zustände: <code>posts</code> und
               <code>loading</code>.
             </li>
-            <li class="fragment">
+            <li>
               Füge die beiden Zustände zu <em>einem</em> "komplexen" Zustand zusammen. Verwende also
               ein Objekt im State.
             </li>
-            <li class="fragment">
+            <li>
               Achte darauf, dass der posts-Eintrag in dem Zustand niemals null oder undefined,
               sondern immer mindestens ein leeres Array ist. (Auch beim Initialisiern dran denken!)
             </li>
-            <li class="fragment">
+            <li>
               Bitte denk immer dran, dass Du das State-Objekt nicht verändern darfst, sondern es
               immer erneut erzeugen musst.
             </li>
-            <li class="fragment">Mögliche Lösung in <code>steps/4-remote-with-loading</code></li>
-            <li class="fragment">Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+            <li>Mögliche Lösung in <code>steps/4-remote-with-loading</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
           </ol>
         </section>
         <section>
@@ -1629,23 +1630,19 @@ function App() {
           <h3>Exkurs: Custom Hooks</h3>
 
           <ul class="x-list">
-            <li class="fragment">
+            <li>
               ...müssen mit <code>use</code> beginnen
               <ul>
                 <li>(ansonsten kann der Linter nicht auf mögliche Fehler prüfen!)</li>
               </ul>
             </li>
-            <li class="fragment">
-              ...dürfen nur aus anderen (Custom) Hooks und Komponenten aufgerufen werden
-            </li>
-            <li class="fragment">
+            <li>...dürfen nur aus anderen (Custom) Hooks und Komponenten aufgerufen werden</li>
+            <li>
               ...erwarten "normale" Funktionsparameter (nicht zwingend ein Objekt wie bei
               Komponenten)
             </li>
-            <li class="fragment">...dürfen andere (Custom) Hooks verwenden</li>
-            <li class="fragment">
-              ...beliebiger Rückgabewert möglich (alle Typen erlaubt, auch JSX!)
-            </li>
+            <li>...dürfen andere (Custom) Hooks verwenden</li>
+            <li>...beliebiger Rückgabewert möglich (alle Typen erlaubt, auch JSX!)</li>
           </ul>
         </section>
 
@@ -1705,13 +1702,9 @@ export default function useApi(url, initialValue) {
             >)
           </p>
           <ul>
-            <li class="fragment">Erweitert JavaScript um ein Typen System</li>
-            <li class="fragment">
-              Jeder gültige JavaScript Code ist auch gültiger TypeScript Code
-            </li>
-            <li class="fragment">
-              Mittels des TypeScript Compilers wird aus TS Code JavaScript Code
-            </li>
+            <li>Erweitert JavaScript um ein Typen System</li>
+            <li>Jeder gültige JavaScript Code ist auch gültiger TypeScript Code</li>
+            <li>Mittels des TypeScript Compilers wird aus TS Code JavaScript Code</li>
           </ul>
         </section>
 
@@ -2232,12 +2225,12 @@ function PostEditor(props) {
             <code>PostEditor.js</code> hinzu
           </p>
           <ol style="font-size: 80%" class="x-list">
-            <li class="fragment">
+            <li>
               Benenne <code><b>PostList.js</b></code> in <code>PostList.tsx</code> um und starte
               <code>npm start</code> neu
             </li>
-            <li class="fragment">Stelle <code>PostList.tsx</code> auf TypeScript um</li>
-            <li class="fragment">
+            <li>Stelle <code>PostList.tsx</code> auf TypeScript um</li>
+            <li>
               Der Type für die MessageProps ist:
 
               <pre class="fragment"><code class="javascript">
@@ -2247,20 +2240,20 @@ function PostEditor(props) {
                 }
               </code></pre>
             </li>
-            <li class="fragment">
+            <li>
               Und für <code>style</code> in <code>Message</code>:
               <pre class="fragment"><code class="javascript">
                 const style: React.CSSProperties = type === "error" ? { color: "red", fontWeight: "bold" } : { color: "green" };
               </code></pre>
             </li>
-            <li class="fragment">
+            <li>
               Benenne <code><b>PostEditor.js</b></code> in <code>PostEditor.tsx</code> um und starte
               <code>npm start</code> neu
             </li>
-            <li class="fragment">Stelle <code>PostEditor.tsx</code> auf TypeScript um</li>
-            <li class="fragment">Weitere Informationen kannst Du in den Dateien finden.</li>
-            <li class="fragment">Mögliche Lösung in <code>steps/5-typescript</code></li>
-            <li class="fragment">Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+            <li>Stelle <code>PostEditor.tsx</code> auf TypeScript um</li>
+            <li>Weitere Informationen kannst Du in den Dateien finden.</li>
+            <li>Mögliche Lösung in <code>steps/5-typescript</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
           </ol>
         </section>
 
@@ -2272,18 +2265,16 @@ function PostEditor(props) {
         <section data-transition="slide none">
           <h2>Was testen wir?</h2>
           <ul>
-            <li class="fragment">
-              <b>UI-unabhängige Logik</b> (zum Beispiel Backend Calls, Berechnungen etc.)
-            </li>
-            <li class="fragment">
+            <li><b>UI-unabhängige Logik</b> (zum Beispiel Backend Calls, Berechnungen etc.)</li>
+            <li>
               <b>Rendering</b> (Ist die Liste der Blog Posts korrekt? Sieht das Markup aus, wie wir
               uns das vorstellen?)
             </li>
-            <li class="fragment">
+            <li>
               <b>Interaktionen</b> (funktionieren die Event Handler, die Callback-Funktionen, der
               Programmfluß etc.?)
             </li>
-            <li class="fragment">
+            <li>
               <b>Verhalten im Browser</b> (z.B. korrekte, pixelgenaue Darstellung,
               Browser-spezifisches JavaScript, Arbeiten mit Browser-Technologie wie Titelzeile,
               Session Storage, Scrollbars etc)
@@ -2377,7 +2368,7 @@ expect(actual).toHaveLength(123);
           <h4>Jest</h4>
           <h2>Mock Funktionen</h2>
           <ul>
-            <li class="fragment">
+            <li>
               <code>jest.fn()</code> erzeugt eine Mock-Funktion
               <pre><code data-trim contenteditable>// Gibt undefined zurück, wenn die Mock-Funktion ausgeführt wird
 const aMockFn = jest.fn();
@@ -2390,7 +2381,7 @@ expect(aMockFn.toHaveBeenCalledWith("huhu"));
                       </code></pre>
             </li>
 
-            <li class="fragment">
+            <li>
               Implementierung der Mock-Funktion kann als Parameter übergeben:
               <pre><code data-trim contenteditable>
         const aMockFn = jest.fn( param => `Hello, ${param}` );
@@ -2443,18 +2434,18 @@ console.log(component.toJSON());
             einem gespeicherten JSON-Objekt aus einer Datei:
           </p>
           <ul>
-            <li class="fragment">
+            <li>
               Bei der <b>ersten</b> Ausführung: Snapshot-Datei wird angelegt (
               <a href="slides/images/jest-snapshot-file.png" target="_blank">Beispiel</a>)
               <ul>
-                <li class="fragment">Die Snapshot-Datei wird nun in Git eingecheckt</li>
+                <li>Die Snapshot-Datei wird nun in Git eingecheckt</li>
               </ul>
             </li>
-            <li class="fragment">
+            <li>
               In den <b>folgenden</b> Test Ausführungen: ein neuer Snapshot wird jeweils erzeugt und
               mit dem <b>gespeicherten</b> Snapshot verglichen
             </li>
-            <li class="fragment">
+            <li>
               Wenn die Snapshots nicht identisch sind:
               <ul>
                 <li>
@@ -2544,12 +2535,14 @@ test('it should render correctly', () => {
 
         <section>
           <h3>Die render-Funktion</h3>
-          <p>
-            Die render-Function aus der react-testing-library wird im Test verwendet, um eine React
-            Komponente (ohne Browser) zu rendern
-          </p>
-          <p>Genauso wie in der Anwendungen können Properties angegeben werden</p>
-          <pre class="fragment"><code class="javascript" contenteditable data-trim>
+          <div class="fragment">
+            <p>
+              Die render-Function aus der react-testing-library wird im Test verwendet, um eine
+              React Komponente (ohne Browser) zu rendern
+            </p>
+            <p>Genauso wie in der Anwendungen können Properties angegeben werden</p>
+          </div>
+          <pre><code class="fragment" class="javascript" contenteditable data-trim>
             import { render } from "@testing-library/react";
 
               // Render a single component
@@ -2865,17 +2858,15 @@ test('it should render correctly', () => {
           <h2>Übung: Ein Test für den PostEditor</h2>
           <p>Schritte:</p>
           <ol>
-            <li class="fragment">Arbeite in <code>blog-example/workspace-typescript</code></li>
-            <li class="fragment">
-              Starte in einem neuen Terminal <code>npm test</code> (der Prozess läuft "ewig")
-            </li>
-            <li class="fragment">
+            <li>Arbeite in <code>blog-example/workspace-typescript</code></li>
+            <li>Starte in einem neuen Terminal <code>npm test</code> (der Prozess läuft "ewig")</li>
+            <li>
               Es sollte einen fehlerhaften Test geben:
               <b><code>PostEditor.test.tsx</code></b
               >.
             </li>
-            <li class="fragment">Warum? Weil der noch leer ist 😬!</li>
-            <li class="fragment">
+            <li>Warum? Weil der noch leer ist 😬!</li>
+            <li>
               Implementiere den fehlenden Test. In der Datei<b><code>PostEditor.test.tsx</code></b>
               stehen TODOs dafür
             </li>
@@ -2894,15 +2885,15 @@ test('it should render correctly', () => {
           <h2>Browser Tests</h2>
           <p>Häufig eingesetzt:</p>
           <ul>
-            <li class="fragment">
+            <li>
               <a href="https://www.selenium.dev/">Selenium - The "classic"</a>
             </li>
-            <li class="fragment">
+            <li>
               <a href="https://devexpress.github.io/testcafe/" target="_blank">TestCafe</a> (mit
               Support für sehr viele Browser, u.a. auch Cloud-Service
               <a href="https://www.browserstack.com/" target="_blank">BrowserStack</a>
             </li>
-            <li class="fragment"><a href="https://www.cypress.io/" target="_blank">Cypress</a></li>
+            <li><a href="https://www.cypress.io/" target="_blank">Cypress</a></li>
           </ul>
           <p class="fragment">
             In TestCafe und Cypress werden die Tests in JavaScript/TypeScript geschrieben, Selenium
@@ -2919,19 +2910,19 @@ test('it should render correctly', () => {
         <section>
           <h3>Globaler Zustand</h3>
           <ul>
-            <li class="fragment">
+            <li>
               Man kann Zustand in <b>lokalen Zustand</b> und <b>globalen Zustand</b> einteilen
             </li>
-            <li class="fragment">
+            <li>
               <b>Lokaler Zustand</b> ist Zustand, der "mehr oder weniger" einer Komponente zur
               Verfügung steht
             </li>
-            <li class="fragment">
+            <li>
               <b>Globaler Zustand</b> hingegen ist für die ganze Anwendung oder große Teile davon
               zuständig
             </li>
-            <li class="fragment">Die Übgergänge sind fließend, es gibt keine fixe Definition</li>
-            <li class="fragment">Beispiele für globalen Zustand: angemeldeter Benutzer, Theme</li>
+            <li>Die Übgergänge sind fließend, es gibt keine fixe Definition</li>
+            <li>Beispiele für globalen Zustand: angemeldeter Benutzer, Theme</li>
           </ul>
         </section>
 
@@ -3002,10 +2993,10 @@ test('it should render correctly', () => {
           </p>
 
           <ul>
-            <li class="fragment">funktioniert nur innerhalb einer Hierarchie-Ebene</li>
-            <li class="fragment">es können beliebg viele (fachliche) Context definiert werden</li>
-            <li class="fragment">besteht aus <code>Provider</code> und <code>Consumer</code></li>
-            <li class="fragment">
+            <li>funktioniert nur innerhalb einer Hierarchie-Ebene</li>
+            <li>es können beliebg viele (fachliche) Context definiert werden</li>
+            <li>besteht aus <code>Provider</code> und <code>Consumer</code></li>
+            <li>
               <a href="https://reactjs.org/docs/context.html" target="_blank">Doku</a>
             </li>
           </ul>
@@ -3017,11 +3008,11 @@ test('it should render correctly', () => {
             <em>erzeugt ein Objekt, mit <b>zwei Komponenten</b></em>
           </p>
           <ul>
-            <li class="fragment">
+            <li>
               <code>Provider</code>, stellt Objekt mit Key-Value-Paaren zur Verfügung (der
               Context-"Value")
             </li>
-            <li class="fragment">
+            <li>
               <code>Consumer</code> wird in eigener Komponente verwendet, um auf einen Context
               zuzugreifen ("versteckt" durch useContext Hook)
             </li>
@@ -3041,10 +3032,8 @@ test('it should render correctly', () => {
           <h2>Context Provider</h2>
           <p><em>Eine React-Komponente, die einen Context zur Verfüng stellt</em></p>
           <ul>
-            <li class="fragment">
-              wird innerhalb einer eigenen Komponente in <code>render</code> eingebunden
-            </li>
-            <li class="fragment">Nimmt ein Objekt ("Context") mit beliebigen Werten entgegen</li>
+            <li>wird innerhalb einer eigenen Komponente in <code>render</code> eingebunden</li>
+            <li>Nimmt ein Objekt ("Context") mit beliebigen Werten entgegen</li>
           </ul>
           <pre class="fragment"><code data-trim contenteditable class="line-numbers" data-leftpad>
                       const AuthContext = React.createContext();
@@ -3146,12 +3135,10 @@ function UserBadge() {
         <section>
           <h3>Actions</h3>
           <ul>
-            <li class="fragment">
-              Pure JavaScript-Objekte, die eine Aktion in der Anwendung beschreiben
-            </li>
-            <li class="fragment">Haben üblicherweise <b>type</b> und <b>payload</b></li>
-            <li class="fragment">Über das <b>type</b>-Property können sie identifiziert werden</li>
-            <li class="fragment">Der <b>Payload</b> enthält Action-spezifische Daten</li>
+            <li>Pure JavaScript-Objekte, die eine Aktion in der Anwendung beschreiben</li>
+            <li>Haben üblicherweise <b>type</b> und <b>payload</b></li>
+            <li>Über das <b>type</b>-Property können sie identifiziert werden</li>
+            <li>Der <b>Payload</b> enthält Action-spezifische Daten</li>
           </ul>
 
           <pre class="fragment"><code class="javascript">
@@ -3168,12 +3155,12 @@ function UserBadge() {
         <section>
           <h3>Reducer-Funktion #1</h3>
           <ul>
-            <li class="fragment">
+            <li>
               ...erhält einen (vorherigen) Zustand und eine <em>Action</em> als Parameter übergeben
             </li>
-            <li class="fragment">...verarbeitet die Action</li>
-            <li class="fragment">...liefert dann den neuen, aktualisierten Zustand zurück</li>
-            <li class="fragment">...muss Seiteneffekt frei sein ("pure function")</li>
+            <li>...verarbeitet die Action</li>
+            <li>...liefert dann den neuen, aktualisierten Zustand zurück</li>
+            <li>...muss Seiteneffekt frei sein ("pure function")</li>
           </ul>
           <pre class="fragment"><code class="javascript" contenteditable data-trim>
           reducer(old_state, action) => new_state
@@ -3188,11 +3175,11 @@ function UserBadge() {
         <section>
           <h3>Die reducer-Funktion #2</h3>
           <ul>
-            <li class="fragment">
+            <li>
               Bekommt den vorherigen Zustand übergeben und liefert neuen Zustand zurück (oder den
               unveränderten alten)
             </li>
-            <li class="fragment">
+            <li>
               Zustand ist immutable! Kann mit der
               <a href="https://github.com/immerjs/immer">Bibliothek "immer"</a> kombiniert werden
             </li>
@@ -3217,24 +3204,22 @@ function UserBadge() {
         <section>
           <h3>Redux: Store, Reducer und Actions</h3>
           <ul>
-            <li class="fragment">
+            <li>
               Der Store, d.h. der globale Zustand, wird ausschließlich über reducer-Funktionen
               verwaltet
             </li>
-            <li class="fragment">
+            <li>
               Jede reducer-Funktion verwaltet einen "Teil-Zustand" des globalen Zustandes. Die
               reducer können sich untereinander nicht sehen und nicht auf die anderen Teile des
               gloablen Zustands zugreifen. Ein Teil-Zustand wird auch als "Slice" bezeichnet (also
               ein Anwendungsteil)
             </li>
-            <li class="fragment">
+            <li>
               Wenn Du den Store mit einer Datenbank vergleichst, wäre ein solcher Teilzustand so
               etwas wie eine Tabelle
             </li>
-            <li class="fragment">
-              Die reducer werden beim Starten der Anwendung in Redux registriert
-            </li>
-            <li class="fragment">
+            <li>Die reducer werden beim Starten der Anwendung in Redux registriert</li>
+            <li>
               Dadurch ist eine gute Entkopplung möglich: ein Teil der Anwendung informiert über eine
               Aktion ("User hat sich eingeloggt", "Theme wurde verändert") und alle interessierten
               Anwendungsteile können darauf reagieren
@@ -3246,8 +3231,8 @@ function UserBadge() {
         <section>
           <h3>Redux: Actions auslösen</h3>
           <ul>
-            <li class="fragment">Actions werden an <b>alle</b> Reducer-Funktionen verteilt</li>
-            <li class="fragment">
+            <li>Actions werden an <b>alle</b> Reducer-Funktionen verteilt</li>
+            <li>
               Zum Auslösen einer Action gibt auch von Redux eine <code>dispatch</code>-Funktion, an
               die Du mit dem <code>useDispatch</code> Hook von Redux gelangst.
             </li>
@@ -3272,8 +3257,8 @@ function UserBadge() {
         <section>
           <h3>Action Creator...</h3>
           <ul>
-            <li class="fragment">...sind "Factory-Funktionen", die Action-Objekte erzeugen</li>
-            <li class="fragment">...sind optional, werden aber nahezu immer verwendet</li>
+            <li>...sind "Factory-Funktionen", die Action-Objekte erzeugen</li>
+            <li>...sind optional, werden aber nahezu immer verwendet</li>
           </ul>
 
           <pre class="fragment"><code class="javascript">
@@ -3288,40 +3273,38 @@ function UserBadge() {
 
           <p class="fragment">🤔 Wofür könnten Action Creator sinnvoll sein?</p>
           <ul>
-            <li class="fragment">Stellen sicher, dass Objekte korrekt aussehen</li>
-            <li class="fragment">Verbergen interne Struktur der Actions vor der Anwendung</li>
-            <li class="fragment">Können plausibilitätsprüfungen machen</li>
-            <li class="fragment">
-              Können Daten konvertieren, bevor sie in die Action übernommen werden
-            </li>
+            <li>Stellen sicher, dass Objekte korrekt aussehen</li>
+            <li>Verbergen interne Struktur der Actions vor der Anwendung</li>
+            <li>Können plausibilitätsprüfungen machen</li>
+            <li>Können Daten konvertieren, bevor sie in die Action übernommen werden</li>
           </ul>
         </section>
 
         <section>
           <h3>Redux: Zugriff auf den globalen Zustand</h3>
           <ul>
-            <li class="fragment">
+            <li>
               Komponenten können aus dem globalen Zustand (Store) die Daten auswählen, die sie
               benötigen
             </li>
-            <li class="fragment">
+            <li>
               Die Hierarchie-Ebene spielt dabei keine Rolle, weil der Zustand außerhalb, "neben" den
               UI Komponenten liegt
             </li>
-            <li class="fragment">
+            <li>
               Nur wenn sich die ausgewählten Daten in einer Kompoente ändern, wird die Komponente
               neu gerendert
             </li>
-            <li class="fragment">
+            <li>
               Der <code>useSelector</code> Hook von Redux erwartet eine Callback-Funktion, die
               aufgerufen wird, sobald sich <em>irgendetwas</em> im Store verändert hat
             </li>
-            <li class="fragment">Dieser Callback-Funktion wird der komplette Store übergeben.</li>
-            <li class="fragment">
+            <li>Dieser Callback-Funktion wird der komplette Store übergeben.</li>
+            <li>
               Aus dem Store wählt die Komponente die für sie relevanten Daten aus und liefert sie
               zurück
             </li>
-            <li class="fragment">
+            <li>
               Nur wenn sich diese zurückgelieferten Daten verändert haben, wird die Komponente neu
               gerendert
             </li>
@@ -3340,11 +3323,11 @@ function UserBadge() {
         <section>
           <h3>useSelector - Details</h3>
           <ul>
-            <li class="fragment">
+            <li>
               Um festzustellen, ob sich die ausgewählten Daten verändert haben, prüft Redux auf
               <b>Identität</b>!
             </li>
-            <li class="fragment">
+            <li>
               Es wird deshalb empfohlen, nur einzelne Werte (keine Objekte) aus dem Store
               auszuwählen - stattdessen mehrere useSelector-Aufrufe machen. Bei Objekten musst Du
               eventuell die
@@ -3353,7 +3336,7 @@ function UserBadge() {
               >
               übergeben.
             </li>
-            <li class="fragment">
+            <li>
               Du kannst natürlich auch "abgeleitete" Daten zurückliefern, Redux vergleicht nur den
               von dir zurückgelieferten Wert, unabhängig davon, ob er "direkt" aus dem Store kommt
               oder basierend auf dem Store "berechnet" wurde
@@ -3429,13 +3412,13 @@ mountNode
           <h2>Übung: Der PostEditor mit Redux</h2>
           <p>Vorbereitung:</p>
           <ol>
-            <li class="fragment">Workspace <code>blog-example/workspace-redux</code></li>
-            <li class="fragment">Bitte <code>npm install</code> hier ausführen</li>
-            <li class="fragment">
+            <li>Workspace <code>blog-example/workspace-redux</code></li>
+            <li>Bitte <code>npm install</code> hier ausführen</li>
+            <li>
               danach <code>npm start</code> ausführen (den laufenden Prozess bitte beenden)
             </li>
-            <li class="fragment">Den Workspace in der IDE/Editor öffnen</li>
-            <li class="fragment">
+            <li>Den Workspace in der IDE/Editor öffnen</li>
+            <li>
               Wenn die Anwendung läuft, bitte "Hand heben" in Zoom, dann geht's weiter mit der
               eigentlichen Übung 🙋‍♀️
             </li>
@@ -3452,26 +3435,26 @@ mountNode
 
           <p>Schritte:</p>
           <ol>
-            <li class="fragment">
+            <li>
               Implementiere in <code>editor-slice.js</code> die Action Creator-Funktionen (siehe
               dort)
             </li>
-            <li class="fragment">Vervollständige die reducer-Funktion</li>
-            <li class="fragment">
+            <li>Vervollständige die reducer-Funktion</li>
+            <li>
               Migriere den (nicht funktionierenden) <code>PostEditor</code> so, dass der Draft Post
               aus dem Redux State gelesen und aktualisiert wird (<code>useSelector</code> und
               <code>useDispatch</code>)
             </li>
-            <li class="fragment">
+            <li>
               Vervollständige die <code>AppHeader</code>-Komponente, so dass diese den "Clear
               Draft"-Button anzeigen und auslösen kann
             </li>
 
-            <li class="fragment">
+            <li>
               In den drei Dateien sind todos eingetragen.
             </li>
-            <li class="fragment">Mögliche Lösung in <code>steps/5-redux</code></li>
-            <li class="fragment">Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+            <li>Mögliche Lösung in <code>steps/5-redux</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
           </ol>
         </section> -->
         <section>
@@ -3479,14 +3462,14 @@ mountNode
           <h2>Asynchrone Actions</h2>
           <p><em>Problem: Asynchronität, z.B. beim Laden von Daten</em></p>
           <ul>
-            <li class="fragment">
+            <li>
               Wo unterbringen?
               <ul>
                 <li>Reducer sind Seiteneffekt-frei!</li>
                 <li>Actions sind nur JavaScript-Objekte (keine Logik)!</li>
               </ul>
             </li>
-            <li class="fragment">
+            <li>
               Weiteres Problem: fachliche Abläufe meistens komplex(er) als nur eine Action.
               <ul>
                 <li>
@@ -3494,8 +3477,8 @@ mountNode
                 </li>
               </ul>
             </li>
-            <li class="fragment">Redux bringt dafür nix mit :-(</li>
-            <li class="fragment">Es gibt aber Antworten: Thunk (Promi?), Saga, Observable</li>
+            <li>Redux bringt dafür nix mit :-(</li>
+            <li>Es gibt aber Antworten: Thunk (Promi?), Saga, Observable</li>
           </ul>
         </section>
         <section>
@@ -3503,35 +3486,27 @@ mountNode
           <h2>Asynchrone Actions</h2>
           <em>Grundsätzliche Idee, bei allen Bibliotheken (Thunk, Saga, Observable) ähnlich</em>
           <ul>
-            <li class="fragment">
-              Im <b>Action Creator</b> kann asynchroner Code ausgeführt werden
-            </li>
-            <li class="fragment">
+            <li>Im <b>Action Creator</b> kann asynchroner Code ausgeführt werden</li>
+            <li>
               Es können <b>mehrere Actions</b> innerhalb des Action Creators dispatched werden
             </li>
-            <li class="fragment">
-              Alle genannten Bibliotheken werden über <b>Middlewares</b> eingebunden
-            </li>
+            <li>Alle genannten Bibliotheken werden über <b>Middlewares</b> eingebunden</li>
           </ul>
         </section>
 
         <section>
           <h3>Middleware</h3>
           <ul>
-            <li class="fragment">
+            <li>
               Eine Middleware-Funktion bekommt alle dispatchen Actions übergeben, bevor sie in den
               Store gelangen
             </li>
-            <li class="fragment">
+            <li>
               Die Middleware kann die Action annehmen, verändern, ablehnen und/oder weiterleiten
             </li>
-            <li class="fragment">Typische Anwendungsfälle: Logging, asynchrone Verarbeitung</li>
-            <li class="fragment">
-              Die Middleware-Funktionen werden bei der Konfiguration des Stores angegeben
-            </li>
-            <li class="fragment">
-              In der Regel schreibst Du keine Middlewares selbst, sondern verwendest fertige
-            </li>
+            <li>Typische Anwendungsfälle: Logging, asynchrone Verarbeitung</li>
+            <li>Die Middleware-Funktionen werden bei der Konfiguration des Stores angegeben</li>
+            <li>In der Regel schreibst Du keine Middlewares selbst, sondern verwendest fertige</li>
           </ul>
         </section>
 
@@ -3603,21 +3578,19 @@ mountNode
         <section>
           <h2>Redux Thunk</h2>
           <ul>
-            <li class="fragment">
+            <li>
               Ein Thunk Action Creator gibt kein Action-Objekt, sondern eine
               <b>Callback-Funktion</b> zurück. Diese Funktion wird von Redux an die Middlewares
               weitergegeben. (Redux gibt nahezu alles, was wir dispatch übergeben an die Middlewares
               bzw. den Store weiter...)
             </li>
-            <li class="fragment">
-              In der Callback-Funktion ist dann die (asynchrone) Logik untergebracht
-            </li>
-            <li class="fragment">
+            <li>In der Callback-Funktion ist dann die (asynchrone) Logik untergebracht</li>
+            <li>
               Wenn die Thunk-Middleware eine Funktion entdeckt (und kein Objekt), ruft die
               Middleware diese Funktion auf, und übergibt eine <code>dispatch</code>- und eine
               <code>getState</code>-Funktion
             </li>
-            <li class="fragment">
+            <li>
               Mit <code>dispatch</code> kann die Callback-Funktion diverse weitere "reguläre" und
               Thunk-Actions auslösen
             </li>
@@ -3649,14 +3622,14 @@ mountNode
           <h2>Redux Thunk</h2>
           <p>Thunk Actions können nicht nur für asynchone Anwendungsfälle verwendet werden</p>
           <ul>
-            <li class="fragment">
+            <li>
               Für Anwendungsfälle in den allgemein mehr als eine Action dispatched werden soll
             </li>
-            <li class="fragment">
+            <li>
               Es ist darin erlaubt, beliebige Seiteneffkte auszuführen, z.B. eine uuid generieren
               oder auf die Uhrzeit zuzugreifen
             </li>
-            <li class="fragment">
+            <li>
               Im Gegensatz zum Reducer hat ein Action-Creator Zugriff auf den gesamten State und
               kann z.B. eine Cache-Funktionaliät implementieren
             </li>
@@ -3694,10 +3667,10 @@ mountNode
           <h3>Lokaler Zustand ist weiterhin erlaubt und erwünscht!</h3>
           <p>Es gibt diverse Orte, wo Zustand vorkommt!</p>
           <ul>
-            <li class="fragment">Server und client</li>
-            <li class="fragment">Komponenten lokaler State</li>
-            <li class="fragment">Redux</li>
-            <li class="fragment">URL, Session or Local Storage</li>
+            <li>Server und client</li>
+            <li>Komponenten lokaler State</li>
+            <li>Redux</li>
+            <li>URL, Session or Local Storage</li>
           </ul>
           <p class="fragment">Zustand immer so nah an dort halten, wo er gebraucht wird</p>
           <div class="fragment">
@@ -3733,17 +3706,11 @@ mountNode
         <section>
           <h3>createSlice</h3>
           <ul>
-            <li class="fragment">
-              Ein "Slice" repräsentiert einen fachnlichen "Schnitt" in Eurer Anwendung
-            </li>
-            <li class="fragment">
-              Ein Slice wird mit der Funktion <code>createSlice</code> erzeugt
-            </li>
-            <li class="fragment">Diese Funktion erwartet ein Konfigurationsobjekt</li>
-            <li class="fragment">
-              Über dieses Objekt können reducer und der initiale Zustand festgelegt werden
-            </li>
-            <li class="fragment">
+            <li>Ein "Slice" repräsentiert einen fachnlichen "Schnitt" in Eurer Anwendung</li>
+            <li>Ein Slice wird mit der Funktion <code>createSlice</code> erzeugt</li>
+            <li>Diese Funktion erwartet ein Konfigurationsobjekt</li>
+            <li>Über dieses Objekt können reducer und der initiale Zustand festgelegt werden</li>
+            <li>
               Für jede reducer-Funktion wird per Default ein action-creator automatisch generiert
             </li>
           </ul>
@@ -3772,14 +3739,12 @@ mountNode
         <section>
           <h3>reducer</h3>
           <ul>
-            <li class="fragment">
-              Wie gesehen, bekommen reducer den slice-State und die Action übergeben
-            </li>
-            <li class="fragment">
+            <li>Wie gesehen, bekommen reducer den slice-State und die Action übergeben</li>
+            <li>
               Die reducer-Funktionen werden mit <b>immer</b> umschlossen, so dass der State dort
               <b>mutable</b> ist (bzw so aussieht, als ob er mutable ist)
             </li>
-            <li class="fragment">
+            <li>
               Der State kann deshalb direkt bearbeitet werden oder es kann ein komplett neues Objekt
               zurückgegeben werden
             </li>
@@ -3801,13 +3766,9 @@ mountNode
         <section>
           <h3>reducer und Action Creator</h3>
           <ul>
-            <li class="fragment">
-              Zu jeder reducer-Funktion wird eine Action-Creator-Funktion erzeugt
-            </li>
-            <li class="fragment">
-              Diese Funktion erwartet einen Parameter: den Action-Payload (oder gar nichts)
-            </li>
-            <li class="fragment">
+            <li>Zu jeder reducer-Funktion wird eine Action-Creator-Funktion erzeugt</li>
+            <li>Diese Funktion erwartet einen Parameter: den Action-Payload (oder gar nichts)</li>
+            <li>
               Die Funktionen liegen unterhalb von <code>sliceName.actions</code> und können von dort
               exportiert werden, so dass die Anwendung darauf Zugriff hat
             </li>
@@ -3843,12 +3804,12 @@ mountNode
         <section>
           <h3>Asynchrone Actions</h3>
           <ul>
-            <li class="fragment">Die Redux Thunk Middleware ist in Redux Toolkit integriert</li>
-            <li class="fragment">
+            <li>Die Redux Thunk Middleware ist in Redux Toolkit integriert</li>
+            <li>
               Asynchrone Action Creator können aber nicht als reducer definiert werden, du schreibst
               sie wie in Redux außerhalb von createSlice hin.
             </li>
-            <li class="fragment">
+            <li>
               Mit <a href="https://redux-toolkit.js.org/api/createAsyncThunk">createAsyncThunk</a>
               kannst Du vereinfachte Thunk-Actions schreiben, die automatisch Lifecycle Actions
               dispatchen (request started, request failed, ...)
@@ -3861,12 +3822,12 @@ mountNode
           <p><em>Portiere den editor-slice auf Redux Toolkit (createSlice)</em></p>
           <p class="fragment">Vorbereitung:</p>
           <ol>
-            <li class="fragment">
+            <li>
               Kopiere die Datei <code>store.js</code> aus
               <code>material/5-redux-toolkit/redux</code> in dein <code>src/redux</code>-Verzeichnis
               (bestehende Datei überschreiben)
             </li>
-            <li class="fragment">
+            <li>
               Kopiere die Datei <code>editor-slice.js</code> aus
               <code>material/5-redux-toolkit/redux</code> in dein <code>src/redux</code>-Verzeichnis
               (deine Datei ggf. sichern)
@@ -3874,10 +3835,8 @@ mountNode
           </ol>
           <p class="fragment">Schritte:</p>
           <ol>
-            <li class="fragment">
-              In editor-slice.js stehen TODOs, du musst die reducer-Funktionen implementieren
-            </li>
-            <li class="fragment">
+            <li>In editor-slice.js stehen TODOs, du musst die reducer-Funktionen implementieren</li>
+            <li>
               Der Rest der Anwendung sollte danach unverändert laufen. Deswegen achte auf die
               korrekten Namen der reducer-Funktionen!
             </li>
