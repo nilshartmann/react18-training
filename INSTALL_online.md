@@ -28,6 +28,10 @@ Auf deinem Laptop/PC sollte installiert sein:
 
 # Installation und Vorbereitung des Workspaces für die Schulung
 
+Damit wir sicher sind, dass während des Workshops alles funktioniert, möchte ich dich bitten, im Vorweg schon einmal die folgenden Schritte durchzuführen, auch wenn es während des Workshops möglicherweise noch ein Update gibt (deswegen bitte sicherstellen, dass git und npm auch _während_ des Workshops funktionieren).
+
+
+
 ## Schritt 1: Repository klonen und Pakete installieren
 
 1. Das Repository klonen:
