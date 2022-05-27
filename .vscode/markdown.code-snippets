@@ -30,6 +30,11 @@
       ""
     ]
   },
+  "ListItem": {
+    "scope": "html",
+    "prefix": "li",
+    "body": ["<li>$0</li>"]
+  },
   "Code Block": {
     "scope": "html",
     "prefix": "hc",

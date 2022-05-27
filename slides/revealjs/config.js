@@ -49,23 +49,23 @@ Reveal.initialize({
     //  ```java fragment
     //  the <code> elements gets the "fragment" class, but it needs
     //  to be on its parent <pre> element
-    document.querySelectorAll("code.fragment").forEach((n) => {
-      n.classList.remove("fragment");
-      n.parentNode.classList.add("fragment");
-    });
-    document.querySelectorAll("ul > li.fragment:first-of-type").forEach((n) => {
-      n.classList.remove("fragment");
-      n.parentNode.classList.add("fragment");
-    });
-    // surround all pre.fragment blocks with a 'div.fragment'
-    // (somehow this seems to work better with code fragments)
-    document.querySelectorAll("pre.fragment").forEach((n) => {
-      n.classList.remove("fragment");
-      const div = document.createElement("div");
-      div.classList.add("fragment");
-      n.parentNode.insertBefore(div, n);
-      div.appendChild(n);
-    });
+    // document.querySelectorAll("code.fragment").forEach((n) => {
+    //   n.classList.remove("fragment");
+    //   n.parentNode.classList.add("fragment");
+    // });
+    // document.querySelectorAll("ul > li.fragment:first-of-type").forEach((n) => {
+    //   n.classList.remove("fragment");
+    //   n.parentNode.classList.add("fragment");
+    // });
+    // // surround all pre.fragment blocks with a 'div.fragment'
+    // // (somehow this seems to work better with code fragments)
+    // document.querySelectorAll("pre.fragment").forEach((n) => {
+    //   n.classList.remove("fragment");
+    //   const div = document.createElement("div");
+    //   div.classList.add("fragment");
+    //   n.parentNode.insertBefore(div, n);
+    //   div.appendChild(n);
+    // });
 
     // li having a code inside, should not have a bullet point (see also styles.css)
     document.querySelectorAll("li > pre.code-wrapper").forEach((n) => {
@@ -90,6 +90,7 @@ Reveal.initialize({
   // make all code editable
   document.querySelectorAll("pre code").forEach((n) => {
     n.setAttribute("contenteditable", "true");
+    n.dataset.trim = "";
   });
 
   // small lists
