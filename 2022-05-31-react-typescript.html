@@ -30,7 +30,7 @@
           </h2>
 
           <h3>
-            <span class="transparent-bg">31. Mai / 1. Juni 2022</span>
+            <span class="transparent-bg">31. Mai / 1. Juni / 11. Juli 2022</span>
           </h3>
 
           <h4>
@@ -100,6 +100,7 @@
 ### Zeitplan
 
 * Di/Mi: Jeweils 9:00 bis 16:30 Uhr, Mittagspause: 12:30 bis 13:30 Uhr
+  * (Mo., 11. Juli: 9:00 bis 16:30 Uhr)
 * Kürzere Pausen zwischendurch ☕️ 😴
 * Einverstanden? 
           </textarea>
@@ -107,6 +108,7 @@
 
         <section>
           <h2>Agenda</h2>
+          <h3>React Einführung</h3>
           <ul style="font-size: 85%">
             <li>
               <a href="#/t1">Teil I: React Einführung</a>
@@ -128,6 +130,17 @@
             <li style="margin-top: 20px">
               <a href="#/t-test">Teil VI: Testen von React Anwendungen</a>
             </li>
+
+            <li style="margin-top: 20px">
+              <a href="#/t-router">Teil VII: Router</a>
+            </li>
+          </ul>
+          <h3 style="margin-top: 60px" class="fragment">Anwendungen mit React</h3>
+          <ul style="font-size: 85%">
+            <li>
+              <b>11. Juli</b>: Wir sehen uns an Hand Eurer konkreten Anforderungen, was ihr neben
+              den Grundlagen noch benötigt
+            </li>
           </ul>
         </section>
 
@@ -137,6 +150,7 @@
           <p>Motto: Es gibt keine dummen Fragen!</p>
           <p>Bemerkbar machen per Audio, Chat oder Zoom Reaktion "Hand erheben"</p>
           <span><img width="30%" src="slides/images/teams-hand-heben.png" /></span>
+          <p>Oder auf Miro-Board schreiben (Link im Chat)</p>
 
           <p>Bonuspunkte für eingeschaltetes Video 🥰</p>
 
@@ -3480,6 +3494,242 @@ mountNode
           <p>Mögliche Lösung in <code>steps/5-redux-toolkit</code></p>
           <p>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</p>
         </section> -->
+
+        <section data-markdown>
+          <textarea data-template>
+            <!-- .slide: id="t-router" -->            
+## Routing in React
+
+* Anforderungen:
+  * URLs auf Komponenten abbilden
+  * (Interne) Links, die die Anwendung neu rendern, ohne zum Server zu gehen
+* React bringt keinen Router mit
+* In der Regel wird der **React Router** verwendet
+
+---
+
+## Der React Router
+
+* Homepage: [https://reactrouter.com/](https://reactrouter.com/)
+* Aktuelle Version v6
+* Achtung: Verhalten und API haben sich in Version 4, 5 und 6 geändert.
+  * Bei Beispielen/Dokumentation/Tutorial etc. die Version beachten!
+
+---
+
+## Der React Router
+
+### Beispiel
+
+```jsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+export default function App() {
+  &lt;Routes>
+    &lt;Route path="/" element={<Page />}>
+      &lt;Route index element={<PostListPage />} />
+      &lt;Route path="/post/:postId" element={<PostPage />} />
+      &lt;Route path="/add" element={<PostEditor onSavePost={savePost} />} />
+      &lt;Route path="*" element={<NotFoundPage />} />
+    &lt;/Route>
+  &lt;/Routes>
+}  
+```
+
+---
+
+### Die Router-Komponente
+
+* Als oberste Komponente muss eine `Router`-Komponente gerendert werden
+  * Nur unterhalb (direkt oder indirekt) darf mit `Routes` und `Route` gearbeitet werden
+* Router fest, welche URLs generiert werden soll:
+* [`HashRouter`](https://reactrouter.com/docs/en/v6/routers/hash-router): Die Route wird durch Hash-Zeichen (`#`) getrennt hinter die URL geschrieben (Beispiel: `http://loalhost:8080#/post/1`)
+  * Änderungen in der URL hinter dem Hash-Zeichen führen im Browser nicht zum Neuladen der Seite vom Server!
+  * Der Server wird also beim Seitenwechsel nie kontaktiert
+* [`BrowserRouter`](https://reactrouter.com/docs/en/v6/routers/browser-router): Die Route wird direkt hinter die URL geschrieben. Sieht dann aus wie eine "normale" Route vom Server (Beispiel: `http://localhost:8080/post/1`)  
+  * Empfohlene Implementierung
+  * Bei der Navigation durch die Anwendung unterbindet der Router Server-Requests
+  * Aber beim initalen Laden muss der Server sicherstellen, dass die URL gefunden wird
+    * Dazu muss der Webserver entsprechend konfiguriert werden ("/..." -> index.html)
+* 👉 Demo im Browser, Netzwerkverkehr untersuchen
+
+---
+
+### Konfiguration der Routen: Welche Komponente soll für welche Route angezeigt werden?
+
+* Mit [Routes und Route](https://reactrouter.com/docs/en/v6/components/route)-Komponenten gibt es eine Art "intelligentes" switch- oder if/else-Statement
+* `Route`-Komponenten müssen mit `Routes` umschlossen werden. Nach jedem Ändern der URL prüft der Router alle `Routes`-Komponenten in allen `Route`-Komponenten der Anwendung
+* ```javascript
+  &lt;Routes>
+    &lt;Route path="/" element={&lt;App />} /> 
+    &lt;Route path="/blog" element={&lt;App />} />
+  &lt;/Routes>
+```
+* `Route` funktioniert wie ein `if`-Statement: `if (path === "/post") renderElement &lt;Post />`
+
+---
+
+### Verschachtelte Routen
+
+* `Route`-Komponenten können geschachtelt werden, um Hierchien abzubilden
+* In den Child-Komponenten werden dann relative Pfade angegeben
+* ```javascript
+  &lt;Routes>
+    &lt;Route path="/" element={&lt;App />}> &lt;!-- Rendert "/" -->
+      &lt;Route path="blog" element={...}> &lt;!-- Rendert "/blog" -->
+        &lt;Route path="new" element={...}/> &lt;!-- Rendert "/blog/new" -->
+        &lt;Route path="post/:id" element={...}/> &lt;!-- Rendert "/blog/post/1" -->
+      &lt;/Route>
+    &lt;/Route>    
+  &lt;/Routes>    
+```
+* Die Oberkomponente muss dann jeweils die Unterkomponenten rendern
+  * Das funktioniert mit der [`<Outlet />`](https://reactrouter.com/docs/en/v6/components/outlet)-Komponente
+  * ```javascript
+    function App() {
+      return &lt;div className="App">
+        &lt;h1>Blog App</h1>
+        &lt;Outlet />
+      &lt;/div>
+  }
+```    
+
+---
+
+### Index Routes
+
+* Bei verschachtelten Routen muss für die Ober-Route eine Index Route gerendert werden
+* Beispiel:
+* ```javascript
+  &lt;Routes>
+    &lt;Route path="/" element={&lt;App />}> 
+      &lt;Route path="blog" element={&lt;Blog />} />
+    &lt;/Route>    
+  &lt;/Routes>    
+```
+* Hier wird `Blog` als `Outlet` in `App` für `/blog` gesetzt. Aber kein Outlet für `/`
+* Dazu muss eine Index-Route definiert werden. Die wird unterhalb der Ober-Route eingesetzt und
+  wird dann gerendert, wenn genau der Pfad der Ober-Route aufgerufen wird
+* Statt `path` wird darin einfach `index` angegeben:  
+  * ```javascript
+    &lt;Routes>
+      &lt;Route path="/" element={&lt;App />}> 
+        &lt;Route index element={&lt;Home /> } /> &lt;!-- Rendert "App" mit Outlet "Home" für "/" -->
+        &lt;Route path="blog" element={&lt;Blog />} /> &lt;!-- Rendert "App" mit Outlet "Blog" für "/blog" -->
+      &lt;/Route>    
+    &lt;/Routes>    
+```
+
+
+---
+
+### Fallback Route
+
+* Mit `path="*"` kann eine Fallback-Route angegeben werden, die aktiv ist, wenn keine andere Route passt
+* Beispiel:
+* ```javascript
+    &lt;Routes>
+      &lt;Route path="/" element={&lt;App />}> 
+        &lt;Route path="blog" element={&lt;Blog />} />
+
+        &lt;Route path="*" element={&lt;NotFound />} /> &lt;!-- Für alle Route, außer / und /blog -->
+      &lt;/Route>    
+    &lt;/Routes>    
+  ```
+
+---
+
+### Dynamische Parameter
+
+* In einer Route können Platzhalter ("Parameter") angegeben werden
+* Auf die entsprechenden Werte kann in einer Komponente mit `useParams` zugegriffen werden
+* ```javascript
+  export default function App() {
+    &lt;Routes>
+      &lt;Route path="/" element={<Page />}>
+        &lt;Route path="/post/:postId" element={<PostPage />} />
+      &lt;/Route>
+    &lt;/Routes>
+  }
+
+  function PostPage() {
+    const { postId } = useParams(); 
+    //  /post/p1  postId: "p1"
+    //  /post/1  postId: "1"
+  }
+  ```  
+
+---
+
+### Links
+
+* Links müssen mit der [`Link`](https://reactrouter.com/docs/en/v6/components/link)-Komponente gerendert werden
+* ```javascript
+  function PostTeaser({post}) {
+    return &lt;div>
+      &lt;h1>{post.title}&lt;/h1>
+      &lt;Link to={`/post/${post.id}`}>Read more&lt;/Link>
+    &lt;/div>  
+  }
+```
+* Die `Link`-Komponente rendert ein `a`-Element, verhindert aber, dass der Browser Serveraufrufe durchführt,
+  wenn darauf geklickt wird
+* Das gilt nur für interne Links, externe Links wie gewohnt mit HTML `a`-Element
+* Alternative: [`NavLink`](https://reactrouter.com/docs/en/v6/components/nav-link) weiß, ob der `to`-Pfad
+  der gerade aktiven Route entspricht und kann sich dann anders darstellen ("Aktiver Link", "Aktiver Tab", ...)
+  * ```javascript
+    function NavBar() {
+      return &lt;div>
+        &lt;NavLink to={`/home}`} className={active => active ? "Tab--active":"Tab--default" }>Home&lt;/Link>
+        &lt;NavLink to={`/about}`} className={active => active ? "Tab--active":"Tab--default" }>About&lt;/Link>
+        &lt;NavLink to={`/profile}`} className={active => active ? "Tab--active":"Tab--default" }>Profile&lt;/Link>
+      &lt;/div>  
+    }
+```
+* Mit `className` und `style` können Callback-Funktionen übergeben werden, die das konkrete Styling/CSS Klasse je nach Zustand
+  (active bzw not-active) zurückliefern. 
+
+---
+
+### Navigation per API
+
+* Die [`Navigate`](https://reactrouter.com/docs/en/v6/components/navigate)-Komponente kann gerendert werden,
+  wenn eine Komponente beim Rendern einen Redirect machen möhcte
+* ```javascript
+  function BlogPost() {
+    const [error, setError] = useState(false);
+    const [post, setPost] = useState(null);
+
+    useEffect( () => fetch(...).catch(e => setError(true)), [] );
+
+    if (error) {
+      return &lt;Navigate to="/error" />
+    }
+
+    return &lt;BlogPost post={post} />
+  }
+  ```  
+* Mit [`useNavigate`](https://reactrouter.com/docs/en/v6/hooks/use-navigate) kann auch per API, z.B. in einem Event Handler, ein Redirect gemacht werden:
+* ```javascript
+  function LogoutButton() {
+    const useNaviate = useNavigate();
+
+    function handleClick() {
+      navigate("/");
+    }
+
+    return &lt;button onClick={handleClick}>Logout&lt;/button>
+  }
+  ```  
+
+---
+
+### Beispiel: Protected Routes
+
+* Zwei Möglichkeiten: 
+
+  </textarea
+          >
+        </section>
 
         <section>
           <h2>Geschafft! 😊</h2>
