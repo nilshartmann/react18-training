@@ -292,6 +292,129 @@
           </div>
         </section>
 
+        <!-- ============================================================================= -->
+        <section id="t-module">
+          <h3>Hintergrund: JavaScript Module</h3>
+          <p>
+            Mit <code>import</code> order <code>export</code> wird aus einer "normalen"
+            JavaScript-Datei ein JavaScript <b>Modul</b>
+          </p>
+          <p>Mit Modulen sind Dateiinhalte nicht mehr global sichtbar</p>
+          <p>Module bestimmen explizit, was außerhalb verwendet werden darf</p>
+          <p>Module geben explizit an, was sie aus anderen Modulen verwenden wollen</p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Module</h3>
+          <h4>Default Exporte</h4>
+          <p>
+            <em
+              >Objekte, Funktionen, Klassen etc müssen explizit <b>exportiert</b> und
+              <b>importiert</b> werden</em
+            >
+          </p>
+          <p class="fragment">Eine <code>export</code>-Anweisung macht aus einer Datei ein Modul</p>
+
+          <pre class="fragment"><code class="javascript">
+            // src/domain/Person.js
+            export default function createPerson { ... }
+
+            oder
+
+            function createPerson { ... }
+            export default createPerson
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+              // src/domain/Person.js
+              export default function createPerson() { ... }
+
+              oder
+
+              function createPerson() { ... }
+              export default createPerson;
+            </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+                Nur EIN Default Export erlaubt;
+                export default function createPerson() { ... }
+                export default function makePerson { ... } // KONFLIKT
+              </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Module</h3>
+          <h4>Importieren</h4>
+          <p class="fragment">Beim importieren geben wir Pfade(!) an</p>
+
+          <pre class="fragment"><code class="javascript">
+              // src/domain/Person.js
+              export default function createPerson() { ... }
+
+            </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+                // src/App.js
+                import createPerson from "./domain/Person.js";
+
+                const person = createPerson("Lemmy", "Kilmister");
+              </code></pre>
+
+          <p class="fragment">👉 In der React-Entwicklung könnt ihr die Dateiendung weglassen!</p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Module</h3>
+          <h4>Benannte Exporte</h4>
+          <p class="fragment">
+            Ein Modul kann neben einem Default auch beliebig viele
+            <b>benannte Exporte</b> haben
+          </p>
+
+          <pre class="fragment"><code class="javascript">
+                // src/domain/Person.js
+                export default function createPerson { ...}
+
+                export function updatePerson() { ... }
+                export function removePerson() { ... }
+              </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+                  // src/domain/Person.js
+                  function createPerson { ...}
+                  function updatePerson() { ... }
+                  function removePerson() { ... }
+
+                  export default createPerson;
+
+                  export { updatePerson, removePerson }
+                </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Module</h3>
+          <h4>Benannte Importe</h4>
+          <pre class="fragment"><code class="javascript">
+                    // src/App.js
+                    import { removePerson } from "./Person"
+              </code></pre>
+          <pre class="fragment"><code class="javascript">
+                // Default und benannten Export importieren
+                import createPerson, { removePerson } from "./Person.js"
+              </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+                // Benannten Export beim Import umbennenen
+                import createPerson, { removePerson as deletePerson } from "./Person.js"
+
+                deletePerson(/* ... */);
+              </code></pre>
+        </section>
+
         <section>
           <h3>Der Trainingsworkspace</h3>
           <ul class="x-list">
@@ -1250,6 +1373,211 @@ fetch('http://localhost:7000/posts')
 </code></pre>
         </section>
 
+        <section id="t-promises">
+          <h3>Hintergrund: Promises in JavaScript</h3>
+
+          <p class="fragment">
+            Ein Promise liefert einen "Versprechen" auf einen Wert zurück, der evtl. erst in der
+            Zukunft ermittelt werden kann
+          </p>
+          <p class="fragment">
+            Damit können wir asynchrones Verhalten in JavaScript Applikation abbilden
+          </p>
+        </section>
+        <section>
+          <pre><code class="javascript" contenteditable>
+// "getNameAsync" ist eine ausgedachte Funktion, 
+// die ein Promise zurückliefert, 
+// das "irgendwann" den String "Klaus" zurückgibt
+const promise = getNameAsync();
+  </code></pre>
+          <pre
+            class="fragment"
+          ><code class="javascript" contenteditable>promise.then(name => console.log(name));
+// Ausgabe "irgendwann": "Klaus"
+  </code></pre>
+        </section>
+
+        <section>
+          <h3>Promises</h3>
+          <p>Promises können verkettet werden</p>
+          <pre><code class="javascript" contenteditable>
+// Annahme: 'getNameAsync' liefert "irgendwann" den String "Klaus" zurück
+const promise = getNameAsync()
+
+  // Wird mit dem ersten Wert aufgerufen und gibt neuen Wert zurück
+  .then(name => getGreetingAsync(name)) 
+
+  // wird mit dem zweiten Wert (aus vorherigem then) aufgerufen
+  .then(greeting => console.log(greeting));
+
+  // Ausgabe "irgendwann": 
+  // "Hello, Klaus"
+
+  </code></pre>
+          <p class="fragment">
+            Die <code>then</code>-Funktion gibt <b>immer</b> ein Promise zurück
+          </p>
+        </section>
+
+        <section>
+          <h3>Fehler unterbrechen die Promise-Kette</h3>
+          <h4>Mit <code>catch()</code> kann man den Fehler fangen und darauf reagieren</h4>
+        </section>
+
+        <section>
+          <h3>Catch im Fehlerfall</h3>
+          <pre><code class="javascript" contenteditable>
+  const promise = getNameAsync()
+    .then(name => {throw new Error("Unexpected Error") })
+    .then(greeting => console.log(greeting));
+    .catch(error => console.error(`Greeting failed: ${error}`))
+  
+    // Output: Greeting failed: Unexpected error
+    </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Finally</h3>
+
+          <p class="fragment">
+            Eine <code>finally</code>-Callback-Funktion wird nach dem letzten <code>then</code> bzw.
+            <code>catch</code>-Block ausgeführt.
+          </p>
+
+          <p class="fragment">
+            Die finally-Funktion wird <b>immer</b> ausgeführt (unabhängig davon, ob vorher ein
+            Fehler aufgetreten ist oder nicht
+          </p>
+
+          <pre><code class="javascript" contenteditable>
+              const promise = getNameAsync();
+                .then(name => {throw new Error("Unexpected Error") })
+                .then(greeting => console.log(greeting));
+                .catch(error => console.error(`Greeting failed: ${error}`))
+                .finally( () => console.log("Goodbye!") );
+              
+                // Output (error): Greeting failed: Unexpected error
+                // Output (log): Goodbye!
+                </code></pre>
+        </section>
+
+        <section>
+          <h3>Promise.all</h3>
+
+          <p class="fragment">
+            Mit
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all"
+              >Promise.all</a
+            >
+            kannst Du auf eine Liste von Promises warten
+          </p>
+
+          <p class="fragment">
+            Die Funktion wird nur ausgeführt, wenn alle übergebenen Promises aufgelöst werden
+            konnten
+          </p>
+
+          <pre><code class="javascript" contenteditable>
+              const user = loadUserAsync(); // gibt Promise zurück
+              const newsFeed = loadNewsFeedAsync(); // gibt Promise zurück
+
+              Promise.all(user, newsFeed)
+                .then(result => {
+                  const loadedUser = result[0];
+                  const newsFeed = result[1];
+
+                  return { user: loadedUser, news: newsFeed };
+                });
+                </code></pre>
+
+          <p class="fragment">
+            Verwandt:
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any"
+              >Promise.any</a
+            >
+            und
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled"
+              >Promise.allSettled</a
+            >
+          </p>
+        </section>
+
+        <section>
+          <h2>async / await</h2>
+          <p>"Wrapper" um Promises</p>
+          <p>Erlaubt es, asynchronen Code "linear" hinzuschreiben</p>
+        </section>
+        <section>
+          <h3>async / await</h3>
+          <p><code>await</code> wartet bis ein Promise aufgelöst wird</p>
+          <pre class="fragment"><code class="javascript" contenteditable data-trim>
+    function greet(name) { return new Promise(...); }
+    
+    // await can only be used in 'async'-functions:
+    async function sayWhat(name) {
+      const greeting = await greet(name);
+    
+      // greeting is a string!
+      console.log(greeting); // => Hello, ...
+    }
+                      </code></pre>
+        </section>
+        <section>
+          <h3>async / await</h3>
+          <p><code>async</code> machen eine Funktion zu einer "async function"</p>
+          <p class="fragment">
+            Eine <code>async</code> Funktion gibt &nbsp; <b>immer</b> ein Promise zurück
+          </p>
+          <pre class="fragment"><code class="javascript" contenteditable data-trim>
+  async function greet(name) {
+    return `Hello, ${name}`;
+  }
+  
+  const greeting = greet('Klaus');
+  
+  // greeting is a Promise!
+  console.log(greeting instanceof Promise); // => true
+  console.log(greeting) // => Promise {&lt;resolved>: "Hello, Klaus"}
+                  </code></pre>
+          <p class="fragment"><code>async</code> Funktion als Fat Arrow Funktionen:</p>
+          <pre class="fragment"><code class="javascript" contenteditable data-trim>
+  const greet = async (name) => `Hello, ${name}`;                
+    
+  const greeting = greet('Klaus');
+    
+  // greeting is a promise!
+  console.log(greeting instanceof Promise); // => true
+  console.log(greeting) // => Promise {&lt;resolved>: "Hello, Klaus"}
+                    </code></pre>
+        </section>
+
+        <section>
+          <h3>async / await</h3>
+          <p>
+            Anstatt <code>then</code> oder <code>catch</code>-Ketten kannst Du einfach mehrere
+            <code>await</code> Statements verwenden und try/catch für die Fehlerbehandlung:
+          </p>
+          <pre class="fragment"><code class="javascript" contenteditable data-trim>
+  // Return promises
+  async function loadUser(username) { . . . };
+  async function loadProfileDate(userId) { . . .};
+  
+  async function loadData() {
+    try {
+      const user = await loadUser('klaus');
+      const profile = await loadProfileData(user.userId);
+    } catch (e) {
+      console.error("Something failed")
+    }
+  }
+                      </code></pre>
+        </section>
+
         <section>
           <h3>Die fetch API</h3>
           <p>Schreiben von Daten mit HTTP POST</p>
@@ -1495,11 +1823,11 @@ function App(props) {
         </section>
 
         <section>
-          <h2>Übung: Laden und Speichern von Daten auf einem Server</h2>
+          <h2>Übung: Laden von Daten auf einem Server</h2>
           <p>
             <em
               >Implementiere die nächste Version der <code>App</code>-Komponente, die in der Lage
-              ist, die Blog Posts mit <code>fetch</code> zu laden und zu speichern.</em
+              ist, die Blog Posts mit <code>fetch</code> zu laden.</em
             >
           </p>
           <div>
@@ -1521,10 +1849,7 @@ function App(props) {
         <section>
           <h3>Schritte</h3>
           <ol class="x-list">
-            <li>
-              Füge in <code>App.js</code> den Code zum <b>Laden</b> und <b>Speichern</b> eines
-              Blog-Posts hinzu.
-            </li>
+            <li>Füge in <code>App.js</code> den Code zum <b>Laden</b> der Blog-Posts hinzu.</li>
             <li>
               Beim <b>Laden</b> der Daten mit fetch, bitte <b>Promise API</b> verwenden und
               <b>nicht <code>async/await</code></b> API!
@@ -1547,6 +1872,30 @@ function App(props) {
                   wait")
                 </li>
               </ul>
+            </li>
+            <li>Mögliche Lösung in <code>steps/4-remote</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
+          </ol>
+        </section>
+
+        <section>
+          <h3>Übung: Speichern</h3>
+          <ol class="x-list">
+            <li>Füge in <code>App.js</code> den Code zum <b>Speichern</b> der Blog-Posts hinzu.</li>
+
+            <li>
+              Die URL ist identisch mit dem GET-Request, aber Du musst als HTTP Methode
+              <code>POST</code> verwenden
+            </li>
+            <li>Du musst als Header den Content-Type <code>application/json</code> setzen</li>
+            <li>Als <code>body</code> musst Du den neuen Blog-Post an den Server schicken</li>
+            <li>
+              In der Antwort bekommst Du den gespeicherten Post vom Server zurück. Diesen musst Du
+              in die Liste der BlogPosts einfügen
+            </li>
+            <li>
+              Erinnerung: Beim Speichern der Daten (in einem EventHandler) brauchst Du kein
+              <code>useEffect</code> verwenden.
             </li>
             <li>Mögliche Lösung in <code>steps/4-remote</code></li>
             <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
@@ -1597,6 +1946,7 @@ function App() {
         
   </code></pre>
         </section>
+
         <section>
           <h3>Übung komplexer Zustand</h3>
           <ol class="x-list">
