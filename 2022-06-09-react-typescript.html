@@ -343,7 +343,7 @@
             <li style="font-size: 80%">
               Achtung! <code>class</code>-Attribut heißt <code>className</code>:
               <pre><code class="xml"  >
-                        &lt;h1 className="title">...&lt;/h1>
+&lt;h1 className="title">...&lt;/h1>
                     </code></pre>
             </li>
             <li style="font-size: 80%">
@@ -413,15 +413,16 @@ function ErrorMessage() {
               useState liefert Array mit zwei Werten zurück: aktuellen Zustand, und setter-Funktion
               um Zustand zu verändern
             </li>
-          </ul>
-          <pre><code class="javascript"  >
+            <li>
+              <pre><code class="javascript"  >
 function HelloWorld() {
   const [title, setTitle] = React.useState("");
 
   return &lt;input onChange={e => setTitle(e.target.value) value={title} />;
 }
                   </code></pre>
-          <ul>
+            </li>
+
             <li>
               Aufruf des Setters <b>löst erneutes rendern der <i>gesamten</i> Komponente aus</b>
             </li>
@@ -473,26 +474,6 @@ function HelloWorld() {
               Hooks sind "normale" Funktionen, müssen aber mit <code>use</code> beginnen (useState,
               useEffect, ...)
             </li>
-            <li>
-              Beispiel: Importieren und verwenden von Hooks
-
-              <pre><code class="javascript"  >
-                import React from "react";
-
-                function HelloWorld() {
-                  const [title, setTitle] = React.useState("");
-                  // ...
-                }
-                                  </code></pre>
-              <pre><code class="javascript"  >
-                                      import React, { useState } from "react";
-                      
-                                      function HelloWorld() {
-                                        const [title, setTitle] = useState("");
-                                        // ...
-                                      }
-                                                        </code></pre>
-            </li>
           </ul>
         </section>
         <section>
@@ -535,36 +516,36 @@ function HelloWorld() {
           <em>Beispiele für korrekte und unerlaubte Verwendung</em>
 
           <pre><code class="javascript"  >
-              // ERLAUBT:
-              function HelloWorld() {
-                const [greeting, setGreeting] = React.useState("");
-                const [name, setName] = React.useState("");
-                // ...
-              }
+// ERLAUBT:
+function HelloWorld() {
+  const [greeting, setGreeting] = React.useState("");
+  const [name, setName] = React.useState("");
+  // ...
+}
                                 </code></pre>
 
           <pre><code class="javascript"  >
-                                    // ERLAUBT:
-                                    function HelloWorld() {
-                                      const [greeting, setGreeting] = React.useState("");
-                                      const uppercaseGreeting = greeting.toUpperCase(); 
-                                      const [name, setName] = React.useState("");
-                                      // ...
-                                    }
+// ERLAUBT:
+function HelloWorld() {
+  const [greeting, setGreeting] = React.useState("");
+  const uppercaseGreeting = greeting.toUpperCase(); 
+  const [name, setName] = React.useState("");
+  // ...
+}
                                                       </code></pre>
 
           <pre><code class="javascript"  >
-                                    // VERBOTEN:
-                                    function HelloWorld() {
-                                      const [title, setTitle] = React.useState("");
+// VERBOTEN:
+function HelloWorld() {
+  const [title, setTitle] = React.useState("");
 
-                                      function onSaveClick() {
-                                        const [loading, setIsLoading] = React.useState(true);
-                                        // ...
-                                      }
+  function onSaveClick() {
+    const [loading, setIsLoading] = React.useState(true);
+    // ...
+  }
 
-                                      // ...
-                                    }
+  // ...
+}
                                                       </code></pre>
         </section>
 
@@ -609,14 +590,14 @@ function HelloWorld() {
               übergeben werden
 
               <pre><code class="javascript"  >
-            function PostEditor() {
-                // type, onChange und value sind Properties!
+function PostEditor() {
+    // type, onChange und value sind Properties!
 
-                return (
-                  &lt;input type="text" onChange={() => setTitle("...")} value={title}&lt;/h1>
-                );
-              }
-            }
+    return (
+      &lt;input type="text" onChange={() => setTitle("...")} value={title}&lt;/h1>
+    );
+  }
+}
             </code></pre>
             </li>
             <li><b>Properties</b> können innerhalb der Komponente nicht verändert werden</li>
@@ -638,7 +619,7 @@ function HelloWorld() {
             </li>
             <li>
               <pre><code class="javascript"  >
-              &lt;PostEditor initialTitle="Hello" initialBody="World" />
+&lt;PostEditor initialTitle="Hello" initialBody="World" />
                </code></pre>
             </li>
             <li>
@@ -647,26 +628,26 @@ function HelloWorld() {
             </li>
             <li>
               <pre><code class="javascript"  >
-              function PostEditor(props) {
-                  // props: { initialTitle: "Hello", initialBody: "World" }
-                  const [title, setTitle] = React.useState(props.title);
-                  const [body, setBody] = React.useState(props.body);
-  
-                  return ...;
-                }
-              }
+function PostEditor(props) {
+    // props: { initialTitle: "Hello", initialBody: "World" }
+    const [title, setTitle] = React.useState(props.title);
+    const [body, setBody] = React.useState(props.body);
+
+    return ...;
+  }
+}
               </code></pre>
             </li>
             <li>
               <pre><code class="javascript"  >
-                // Mit Destructuring
-                function PostEditor({initialTitle, initialBody}) {
-                   const [title, setTitle] = React.useState(title);
-                   const [body, setBody] = React.useState(body);
-                
-                   return ...;
-                  }
-                }
+// Mit Destructuring
+function PostEditor({initialTitle, initialBody}) {
+    const [title, setTitle] = React.useState(title);
+    const [body, setBody] = React.useState(body);
+
+    return ...;
+  }
+}
                                 </code></pre>
             </li>
           </ul>
@@ -684,62 +665,15 @@ function HelloWorld() {
           </p>
 
           <pre><code class="javascript">
-            function PostEditor({initialTitle = "New Blog Post", initialBody}) { 
-              const [title, setTitle] = React.useState(initialTitle);
-            }
+function PostEditor({initialTitle = "New Blog Post", initialBody}) { 
+  const [title, setTitle] = React.useState(initialTitle);
+}
 
-            // title wird auf "New Blog Post" gesetzt
-            &lt;PostEditor initialBody="Lorem Ipsum" />
+// title wird auf "New Blog Post" gesetzt
+&lt;PostEditor initialBody="Lorem Ipsum" />
           </code></pre>
         </section>
 
-        <!-- ============================================================================= -->
-        <!-- <section>
-          <h3>Properties: propTypes</h3>
-          <p>
-            Mit
-            <a href="https://reactjs.org/docs/typechecking-with-proptypes.html">propTypes</a> können
-            Typen für die Properties beschrieben werden.
-          </p>
-
-          <pre><code class="javascript">
-            import PropTypes from 'prop-types';
-
-            PostEditor.propTypes = {
-              initialTitle: PropTypes.string,
-              initialBody: PropTypes.string.isRequired
-            }
-          </code></pre>
-
-          <p>
-            Die Überprüfung findet <b>erst zur Laufzeit</b> statt und erzeugt "nur" eine Warnung auf
-            der Konsole.
-          </p>
-
-          <div>
-            <p>
-              Empfehlung: lieber echten TypeChecker, z.B.
-              <a href="https://create-react-app.dev/docs/adding-typescript/">TypeScript</a>,
-              verwenden 🙏🙏🙏
-            </p>
-            <ul>
-              <li>überprüft bereits zur Entwicklungszeit in der IDE bzw. im CI-Build</li>
-              <li>findet noch weitere Probleme, nicht nur Properties-bezogene Fehler</li>
-              <li>hilft auch bei Code-Completion etc.</li>
-            </ul>
-          </div>
-        </section> -->
-
-        <!-- ============================================================================= -->
-        <!-- <section>
-          <h3>Formular-Bibliotheken</h3>
-
-          <p>Vollständige Lösungen für Formulare inklusive Validierung:</p>
-          <ul>
-            <li><a href="https://react-hook-form.com/">React Hook Form</a></li>
-            <li><a href="https://formik.org/">Formik</a></li>
-          </ul>
-        </section> -->
         <section>
           <h3>Virtual DOM</h3>
           <p>"Rendern" hat leider doppelte Bedeutung!</p>
