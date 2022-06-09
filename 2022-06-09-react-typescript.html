@@ -238,129 +238,6 @@
           </div>
         </section>
 
-        <!-- ============================================================================= -->
-        <section id="t-module">
-          <h3>Hintergrund: JavaScript Module</h3>
-          <p>
-            Mit <code>import</code> order <code>export</code> wird aus einer "normalen"
-            JavaScript-Datei ein JavaScript <b>Modul</b>
-          </p>
-          <p>Mit Modulen sind Dateiinhalte nicht mehr global sichtbar</p>
-          <p>Module bestimmen explizit, was außerhalb verwendet werden darf</p>
-          <p>Module geben explizit an, was sie aus anderen Modulen verwenden wollen</p>
-        </section>
-
-        <!-- ============================================================================= -->
-        <section>
-          <h3>Module</h3>
-          <h4>Default Exporte</h4>
-          <p>
-            <em
-              >Objekte, Funktionen, Klassen etc müssen explizit <b>exportiert</b> und
-              <b>importiert</b> werden</em
-            >
-          </p>
-          <p class="fragment">Eine <code>export</code>-Anweisung macht aus einer Datei ein Modul</p>
-
-          <pre class="fragment"><code class="javascript">
-            // src/domain/Person.js
-            export default function createPerson { ... }
-
-            oder
-
-            function createPerson { ... }
-            export default createPerson
-          </code></pre>
-
-          <pre class="fragment"><code class="javascript">
-              // src/domain/Person.js
-              export default function createPerson() { ... }
-
-              oder
-
-              function createPerson() { ... }
-              export default createPerson;
-            </code></pre>
-
-          <pre class="fragment"><code class="javascript">
-                Nur EIN Default Export erlaubt;
-                export default function createPerson() { ... }
-                export default function makePerson { ... } // KONFLIKT
-              </code></pre>
-        </section>
-
-        <!-- ============================================================================= -->
-        <section>
-          <h3>Module</h3>
-          <h4>Importieren</h4>
-          <p class="fragment">Beim importieren geben wir Pfade(!) an</p>
-
-          <pre class="fragment"><code class="javascript">
-              // src/domain/Person.js
-              export default function createPerson() { ... }
-
-            </code></pre>
-
-          <pre class="fragment"><code class="javascript">
-                // src/App.js
-                import createPerson from "./domain/Person.js";
-
-                const person = createPerson("Lemmy", "Kilmister");
-              </code></pre>
-
-          <p class="fragment">👉 In der React-Entwicklung könnt ihr die Dateiendung weglassen!</p>
-        </section>
-
-        <!-- ============================================================================= -->
-        <section>
-          <h3>Module</h3>
-          <h4>Benannte Exporte</h4>
-          <p class="fragment">
-            Ein Modul kann neben einem Default auch beliebig viele
-            <b>benannte Exporte</b> haben
-          </p>
-
-          <pre class="fragment"><code class="javascript">
-                // src/domain/Person.js
-                export default function createPerson { ...}
-
-                export function updatePerson() { ... }
-                export function removePerson() { ... }
-              </code></pre>
-
-          <pre class="fragment"><code class="javascript">
-                  // src/domain/Person.js
-                  function createPerson { ...}
-                  function updatePerson() { ... }
-                  function removePerson() { ... }
-
-                  export default createPerson;
-
-                  export { updatePerson, removePerson }
-                </code></pre>
-        </section>
-
-        <!-- ============================================================================= -->
-        <section>
-          <h3>Module</h3>
-          <h4>Benannte Importe</h4>
-          <pre class="fragment"><code class="javascript">
-                    // src/App.js
-                    import { removePerson } from "./Person"
-              </code></pre>
-          <pre class="fragment"><code class="javascript">
-                // Default und benannten Export importieren
-                import createPerson, { removePerson } from "./Person.js"
-              </code></pre>
-
-          <pre class="fragment"><code class="javascript">
-                // Benannten Export beim Import umbennenen
-                import createPerson, { removePerson as deletePerson } from "./Person.js"
-
-                deletePerson(/* ... */);
-              </code></pre>
-        </section>
-
         <section>
           <h3>Der Trainingsworkspace</h3>
           <ul class="x-list">
@@ -446,51 +323,6 @@
               </ul>
             </li>
             <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
-          </ul>
-        </section>
-
-        <section data-state="js-exkurs">
-          <h3>Tooling: create-react-app</h3>
-          <a href="https://create-react-app.dev/" target="_blank">User Guide</a>
-          <p>Bootstrap von neuen React Anwendung</p>
-          <p>
-            Fertige Konfiguration von React u.a. mit Webpack, Fast Refresh, Babel und Linter, Tests
-          </p>
-          <p>Beispiel: npx create-react-app PROJEKTNAME --template typescript</p>
-          <p>Mit yarn: yarn create react-app PROJEKTNAME --template typescript</p>
-        </section>
-        <section data-state="js-exkurs">
-          <h2>Webpack Development Server</h2>
-          <p>Zum Ausführen der Anwendung während der Entwicklung wird ein Webserver benötigt</p>
-          <p>
-            create-react-app hat den
-            <a href="https://webpack.js.org/configuration/dev-server/">Webpack DevServer</a>
-            integriert
-          </p>
-          <ul>
-            <li>
-              ...führt Webpack auf Basis der Projekt Webpack Konfiguration automatisch bei jedem
-              Speichern aus
-            </li>
-            <li>...erzeugt Ausgabe in Memory (Performance)</li>
-            <li>...Hot Reloading: Automatische Aktualisierung nach Code Änderung</li>
-          </ul>
-        </section>
-
-        <section data-state="js-exkurs">
-          <h3>Tooling: Linter</h3>
-          <p><em>Statische Codeanalyse</em></p>
-          <ul>
-            <li>Findet typische JavaScript Programmierfehler</li>
-            <li>Achtet auf Einhaltung von Konventionen (z.B. Semikolon ja/nein)</li>
-            <li>Kann in den CI-Build und IDE eingebunden werden</li>
-            <li>
-              <div>
-                <p><a href="https://eslint.org/">ESLint</a></p>
-
-                <img style="height: 400px" src="slides/images/eslint.png" />
-              </div>
-            </li>
           </ul>
         </section>
 
@@ -1028,13 +860,6 @@ function PostList(props) {
 
         <section>
           <h2>Komponenten-Hierarchien</h2>
-        </section>
-
-        <section>
-          <h3>Wie kommuniziert unsere Anwendung?</h3>
-          <p>Wir haben nun <b>zwei</b> Views: Blog-List und Post-Editor</p>
-          <p>Welche ist sichtbar?</p>
-          <p>Wie fließen die Daten zwischen den beiden Komponenten?</p>
         </section>
 
         <section>
