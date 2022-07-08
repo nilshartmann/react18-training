@@ -7,7 +7,7 @@
 Auf deinem Laptop/PC sollte installiert sein:
 
 - Git (zum installieren des Workspaces)
-- [NodeJS](https://nodejs.org/en/download/) LTS version, aktuell 16.x (14.x und 12.16.x sollten aber auch funktionieren) und die darin enthaltene npm Version
+- [NodeJS](https://nodejs.org/en/download/) LTS version, aktuell 16.x (vielleicht gehen auch vorherige Versionen, wenn die Installation unten klappt, dann ist alles gut) und die darin enthaltene npm Version
 - Browser (am besten Firefox oder Chrome)
 - Eine IDE oder ein Texteditor. Wenn Du bereits einen "Lieblingseditor" verwendest, benutze diesen während des Trainings, damit Du nicht auch noch ein neues Tool lernen musst. Ansonsten funktionieren folgende Tools zum Beispiel:
   - [Visual Studio Code](https://code.visualstudio.com/)
