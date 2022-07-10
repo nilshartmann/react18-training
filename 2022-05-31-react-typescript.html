@@ -3122,38 +3122,7 @@ export default function App() {
   }
   ```  
 
----
 
-### Pattern: Protected Routes
-* Idee: es gibt eine zentrale Instanz (z.B. React Context), in der abgelegt ist,
-  ob der User angemeldet ist oder nicht.
-* Je nachdem, wird eine Seite gerendert oder zur Login-Seite umgelenkt  
-* ```javascript
-  function ProtectedPage({children}: {children: React.ReactElement } ) {
-    // useAuth liefert authentication von "irgendwoher"
-    // zurück (z.b. React Context)
-    const auth = useAuth(); 
-
-    if (auth)  {
-      // User ist angemeldet
-      return children;
-    }
-
-    return &lt;Navigate to="/login" />;
-  }
-
-  function App() {
-    return (
-      &lt;Routes>
-        &lt;Route path="/about" element={&lt;AboutPage/> />
-        &lt;Route path="/admin" element={&lt;ProtectedPage>&lt;AdminPage/>&lt;/ProtectedPage} />
-      &lt;/Routes>
-    );
-  }
-
-  ```  
-
----
 
   </textarea
           >
@@ -4262,8 +4231,11 @@ JSON konvertiert)
 
 * Früher: React Query
 
-* Workspace `05a/data-libs`
-* TODO: Beispiel übernehmen !!!!
+* Workspace `01-tanstack-query-beispiel`
+*  - Implementieren: User
+*  - Implementieren: Post
+*  - Implementieren: Sidebar
+*  - Implementieren: Mutation
 
 ---
 
@@ -4510,9 +4482,210 @@ JSON konvertiert)
 * Mögliche Lösung findest Du in `steps/20-tanstack-query`
 * Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️
 
+## Ausblick: Suspense
 
+* "React Suspense for Data Fetching" neues Feature in React 18+ (Stand jetzt: **experimentell!**)
+  * React unterbricht das Rendern von Komponenten-Bäumen, wenn "etwas" noch fehlt
+* Beispiel: `material-02-tanstack-query-suspense`
+  * `PostPage`-Suspense verschieben
 
-              </textarea
+---
+
+# Router: Protected Routes
+
+---
+
+### Pattern: Protected Routes
+
+* React Router kennt keine Protected Routes, man kann sich aber was selbst basteln
+* Idee: es gibt eine zentrale Instanz (z.B. Auth Context), in der abgelegt ist,
+  ob der User angemeldet ist oder nicht.
+* Je nachdem, wird eine Seite gerendert oder zur Login-Seite umgelenkt  
+* ```typescript
+  function ProtectedPage({children}: {children: React.ReactElement } ) {
+    // useAuthContext liefert authentication von "irgendwoher"
+    // zurück (z.b. React Context)
+    const auth = useAuthContext(); 
+
+    if (auth.currentUser)  {
+      // User ist angemeldet
+      return children;
+    }
+
+    return &lt;Navigate to="/login" />;
+  }
+
+  function App() {
+    return (
+      &lt;Routes>
+        &lt;Route path="/about" element={&lt;AboutPage/> />
+        &lt;Route path="/login" element={&lt;LoginPage/> />
+        &lt;Route path="/admin" element={&lt;ProtectedPage>&lt;AdminPage/>&lt;/ProtectedPage} />
+      &lt;/Routes>
+    );
+  }
+
+  ```  
+
+---
+
+### Navigieren mit dem React Router
+
+* Zum Navigieren kann man entweder die `Navigate`-Komponente oder den `useNavigate`-Hook verwenden
+  * `Navigate`-Komponente kann als Return-Wert einer Komponente verwendet werden
+  * `useNavigate` wenn programmatisch die URL geändert werden soll
+* Beide APIs bieten dieselben Features
+
+---
+
+### Die `Navigate`-Komponente
+* Mit `to` wird der Ziel-Pfad angegeben: `<Navigate to="/login" />` 
+  * Der Pfad kann relativ zur Ober-Route angegeben werden
+* Mit `state` kann man ein beliebiges Objekt übergeben, dass auf der aufgerufenen Seite abgefragt werden kann
+  * Dieses Object wird in der Browser History (!) gespeichert, ist also auch nach Reload noch verfügbar
+  * `<Navigate to="..." state={{ redirectAfter: "/"}} />`
+* Mit `replace` kann ausgedrückt werden, dass die aufgerufene Route die aktuelle Route im Browser
+  ersetzen will 
+  * `<Navigate to="..." state={...} replace={true} />`
+  * Back-Button würde dann die aktuelle Route überspringen
+  * Beispiel: `/home ➡️ /login ➡️ <Navigate to="/admin" replace /> ➡️ /admin 🔙 /home`
+    * Die `/login`-Route taucht nicht in der Browser-History auf, nachdem `/admin` gerendert wurde
+
+---
+
+### Der `useNavigate`-Hook
+
+- Der `useNavigate`-Hook liefert die `navigate`-Funktion
+- API ähnlich wie `Navigate`-Komponente
+- Ziel-Pfad ist erster Parameter: `navigate("/login")`
+- `state` und `replace` sind Optionen, die als zweiter Parameter übergeben werden können (beide optional):
+- ```typescript
+  function ProtectedRoute() {
+    const navigate = useNavigate();
+
+    function handleRedirect() {
+      navigate("/login", {
+        state: { redirectAfter: "/about" },
+        replace: true
+      });
+    }
+
+    // ...
+  }
+  ```
+
+---
+
+### Location
+
+* Die `Location` gibt Auskunft über die aktuelle URL
+* Instanz kann mit `useLocation` abgefragt werden
+* Hierüber gibt es zum Beispiel:
+  * den aktuellen Pfad (`location.pathname`)
+  * die Such-Parameter hinter dem `?` in der URL (`location.search`)
+  * den State (`location.state`). Kann `undefined` sein.
+* ```typescript
+  function LoginPage() {
+    const location = useLocation();
+    const redirectAfter = location.state?.redirectAfter?.pathname || "/";
+    
+    // Login Formular rendern
+    // nach erfolgreichem Login navigate nach redirectAfter
+  }
+  ```
+
+---
+
+### Location und Location-State in TypeScript
+
+* **Achtung**: Der Typ von `location.state` in TypeScript ist `unknown``
+* Ihr müsst also vor der Verwendung überprüfen, ob der Typ Euren "Erwartungen" entspricht
+* Dazu könnt ihr zum Beispiel eine [Type Predicate Function](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates) bauen
+* ```typescript
+  // Beschreibt den LocationState, so wie ihn Eure Komponente erwartet
+  type LoginPageLocationState = {
+    redirectAfter: Location;
+  };
+
+  // Type Predicate Function: liefert 'true' zurück, wenn der (Location) State
+  //   dem LoginPageLocationState entspricht
+  //   TypeScript weiß dann auch, dass state von dem Typ ist
+  function isLoginPageLocationState(state: unknown): state is LoginPageLocationState {
+    return state !== null && typeof state === "object" && "redirectAfter" in state;
+  }
+
+  function LoginPage() {
+    const { state } = useLocation();
+    const redirectAfter = isLoginPageLocationState(state) ? state.redirectAfter : "/";
+
+    // ...
+  }
+  ```
+
+* Andere Lösung siehe `steps/50-router-mit-login/src/LoginPage.tsx`
+
+---
+
+### Beispiel: Navigieren zu ursprünglicher Location
+
+* Use-Case: 
+  1. Benutzer ruft "Protected URL" auf
+  2. Redirect auf Login
+  3. Nach erfolgreichem Login redirect auf ursprüngliche seite
+* ```typescript
+  function ProtectedPage({children}: {children: React.ReactElement } ) {
+    const auth = useAuthContext(); 
+    const location = useLocation();
+
+    if (auth.username)  { /* ... */ }
+
+    return &lt;Navigate to="/login" state={{redirectAfter: location}} replace />;
+  }
+
+  function App() {
+    return (
+      &lt;Routes>
+        &lt;Route path="/about" element={&lt;AboutPage/> />
+        &lt;Route path="/login" element={&lt;LoginPage/> />
+        &lt;Route path="/admin" element={&lt;ProtectedPage>&lt;AdminPage/>&lt;/ProtectedPage} />
+      &lt;/Routes>
+    );
+  }
+
+  function LoginPage() {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const redirectAfter = location.state?.redirectAfter?.pathname || "/";
+    function handleLogin() {
+      // login durchführen, dann:
+      navigate(redirectAfter, { replace: true} )
+    }
+
+    // Login Formular rendern
+  }
+
+  ```  
+
+---
+
+### Übung: Protected Routes
+
+* _Der PostEditor soll nur aufrufbar sein, wenn ein Benutzer angemeldet ist_
+* Schritte:
+  1. Implementiere die `ProtectedRoute` (siehe ProtectedRoute.tsx)
+  2. Füge die `LoginPage` mit dem `path` `/login` in der `App`-Komponente hinzu
+  2. Verwende die `ProtectedRoute` in der `App`-Komponente` für die `PostEditorPage`-Komponente
+    * `<Route path="/add" element={<ProtectedRoute><PostEditorPage /></ProtectedRoute>} />`
+    * Der PostEditor sollte nun nicht mehr dargestellt werden, wenn Du nicht eingeloggt bist
+      * Klicke auf den Login-Button, jetzt sollte sich der PostEditor öffnen lassen
+      * Wenn du auf Logout klickst, müsste er unsichtbar werden (bzw. LoginPage muss aufgehen)
+  3. Vervollständige die `LoginPage` (siehe `LoginPage.tsx`)
+   * Melde dort den Benutzer mit Namen an und führe ein Redirect durch
+  4. Wenn Du nun den PostEditor öffnest, soll das Login-Formular erscheinen, danach wieder der PostEditor 
+* Lösung in `steps/50-router-mit-login`
+* Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️
+
+             </textarea
           >
         </section>
 
