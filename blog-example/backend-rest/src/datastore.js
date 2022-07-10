@@ -25,7 +25,7 @@ const orderByDateNewestFirst = (p1, p2) => new Date(p2.date) - new Date(p1.date)
 const orderByDateOldestFirst = (p1, p2) => new Date(p1.date) - new Date(p2.date);
 
 function getAllPosts(orderByFn = orderByDateNewestFirst, userId) {
-  const allPosts = [...posts.values()].filter((post) => {
+  const allPosts = [...posts.values()].filter(post => {
     return post.published || post.userId === userId;
   });
 
@@ -43,11 +43,11 @@ function getAllUsers() {
 }
 
 function getUser(userId) {
-  return users.find((u) => u.id === userId);
+  return users.find(u => u.id === userId);
 }
 
 function getUserByLogin(login) {
-  return users.find((u) => u.login === login);
+  return users.find(u => u.login === login);
 }
 
 function likePost(postId, userId) {
@@ -57,7 +57,7 @@ function likePost(postId, userId) {
     throw new Error(`Cannot find BlogPost '${postId}'`);
   }
 
-  let newLikedBy = post.likedBy.filter((l) => l !== userId);
+  let newLikedBy = post.likedBy.filter(l => l !== userId);
   let newLikes = post.likes;
   if (userId) {
     if (newLikedBy.length === post.likedBy.length) {
@@ -74,7 +74,7 @@ function likePost(postId, userId) {
   const updatedPost = {
     ...post,
     likes: newLikes,
-    likedBy: newLikedBy,
+    likedBy: newLikedBy
   };
 
   posts.set(postId, updatedPost);
@@ -92,7 +92,7 @@ function updatePost(postData) {
   const updatedPost = {
     ...post,
     title: postData.title,
-    body: postData.body,
+    body: postData.body
   };
 
   posts.set(post.id, updatedPost);
@@ -107,11 +107,12 @@ function deletePost(postId) {
 function insertPost(userId, { title, body }) {
   const newPost = {
     userId,
+    published: true,
     title,
     body,
     likes: 0,
     date: new Date().toISOString(),
-    id: `P${posts.size + 1}`,
+    id: `P${posts.size + 1}`
   };
 
   posts.set(newPost.id, newPost);
@@ -131,5 +132,5 @@ module.exports = {
   getPost,
 
   orderByDateOldestFirst,
-  orderByDateNewestFirst,
+  orderByDateNewestFirst
 };

@@ -221,7 +221,7 @@ app.post("/posts", (req, res) => {
     return res.status(400).json({ error: "post.body must be defined and not empty" });
   }
 
-  const newPost = datastore.insertPost(req.userId, post);
+  const newPost = datastore.insertPost(req.userId || "U2", post);
 
   if (post.title.startsWith("slow")) {
     // slow down greetings with a
