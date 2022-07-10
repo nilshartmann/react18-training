@@ -17,5 +17,14 @@
   "editor.suggest.showWords": false,
   // die beiden muessen bei Workshops auf false gesetzt werden:
   "editor.suggest.showSnippets": false,
-  "editor.fontLigatures": false
+  "editor.fontLigatures": false,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/node_modules": true
+  }
 }
