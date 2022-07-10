@@ -8,15 +8,18 @@ export default function PostPage() {
   const { postId } = useParams<"postId">();
   const {
     data: post,
-    isLoading,
+    status,
     error
-  } = useQuery(["blogPost", postId], () => loadBlogPost(postId!));
+  } = useQuery(["blogPost", postId], () => loadBlogPost(postId!), {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false
+  });
 
-  if (isLoading) {
+  if (status === "loading") {
     return <h1>Please wait, Post is loading</h1>;
   }
 
-  if (error) {
+  if (status === "error") {
     console.error(error);
     return <h1>Could not load Blog Post</h1>;
   }
@@ -26,7 +29,7 @@ export default function PostPage() {
       <Link className="Button" to="/">
         Home
       </Link>
-      <Post post={post!} />
+      <Post post={post} />
     </>
   );
 }

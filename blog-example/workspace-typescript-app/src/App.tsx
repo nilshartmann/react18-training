@@ -7,7 +7,7 @@ import Page from "./Page";
 import PostEditorPage from "./PostEditorPage";
 
 function App() {
-  // TODO:
+  // TODO Übung "Context":
   // 1. Implementiere den AuthContextProvider (AuthContext.tsx)
   // 2. Wenn Du deinen AuthContextProvider implementiert hast,
   //    füge hier die AuthContextProvider als neue Top-Level-Komponente
