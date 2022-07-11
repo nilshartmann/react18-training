@@ -3156,6 +3156,7 @@ export default function App() {
           <h2>Context API</h2>
           <p>Hintergrund: Context API</p>
           <p>Kein Statemanagement, aber häufig zusammen erwähnt</p>
+          <p>"Dependency Injection"</p>
           <p>Überblick: 👉 Miro</p>
         </section>
 
@@ -3365,6 +3366,7 @@ function UserBadge() {
 
 * _Baue einen Kontext, der den aktuellen User hält und diesen anzeigt_
 * Schritte:
+  * In `blog-example/backend-rest` bitte `npm start`ausführen  
   * Arbeite bitte in `blog-example/workspace-typescript-app`
     * ggf. `npm install` hier ausführen und dann `npm start` (alten Workspace beenden)
   * Du findest im Workspace TODOs, am Besten bearbeitest Du die Dateien in folgender Reihenfolge:
@@ -4158,29 +4160,6 @@ mountNode
           <h2>Data Libraries für React</h2>
         </section>
 
-        <section>
-          <ul>
-            <li class="fragment">
-              Anforderungen: Daten laden, Caching samt korrektem Invalidieren..., Requests sollen
-              nicht bei jedem Rendern ausgeführt werden, globales(!) Caching: Daten sollen über
-              Komponetengrenzen und -wechsel erhalten bleiben, Fehlerbehandlung bzw. Abbildung
-              Request-Lebenszyklus...
-            </li>
-            <li class="fragment"></li>
-            <li class="fragment"></li>
-            <li class="fragment">SWT, React Query und RTK Query, alle React-spezifisch</li>
-            <li class="fragment">
-              Die Idee ist bei allen ähnlich und vermutlich von Apollo inspiriert: per Hooks API
-              wird der Lebenszyklus eines Requests abgebildet.
-            </li>
-            <li class="fragment">Je nach Request Status unterscheidet sich der Rückgabewert</li>
-            <li class="fragment">
-              Die gelesenen Daten werden global gecached, deswegen Provider-Kompponente (bzw. Redux
-              bei RTK) notwendig
-            </li>
-          </ul>
-        </section>
-
         <section data-markdown>
           <textarea data-template>
 ### Basis Libraries
@@ -4191,7 +4170,7 @@ mountNode
 JSON konvertiert)
   * axios benutzt "Ajax", Redaxios selbe API aber basiert auf fetch (sehr kleine lib)
   * alle React-unabhängig!
-* Verwendung mit dem [Effect-Hook(https://reactjs.org/docs/hooks-reference.html#useeffect), wo notwendig  
+* Verwendung mit dem [Effect-Hook](https://reactjs.org/docs/hooks-reference.html#useeffect), wo notwendig  
               </textarea
           >
         </section>
@@ -4487,11 +4466,14 @@ JSON konvertiert)
 * "React Suspense for Data Fetching" neues Feature in React 18+ (Stand jetzt: **experimentell!**)
   * React unterbricht das Rendern von Komponenten-Bäumen, wenn "etwas" noch fehlt
 * Beispiel: `material-02-tanstack-query-suspense`
-  * `PostPage`-Suspense verschieben
+  * In `PostPage`-Komponente die `React.Suspense`-Komponenten verschieben,
+    um zu sehen, was passiert
 
 ---
 
 # Router: Protected Routes
+
+* Fertiges Beispiel `steps/50-router-mit-login`
 
 ---
 
@@ -4685,6 +4667,15 @@ JSON konvertiert)
 * Lösung in `steps/50-router-mit-login`
 * Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️
 
+---
+
+## React Formulare
+
+* Bibliotheken:
+  * [React Hook Form](https://react-hook-form.com/)
+  * [Formik](https://formik.org/)
+  * [Redux Forms](https://redux-form.com/)
+* React Hook Form-Beispiel (PostEditor): `steps/60-react-hook-form`
              </textarea
           >
         </section>
