@@ -221,3 +221,7 @@ li.note {
 li.note:before {
   content: "👉 ";
 }
+
+body.exkurs {
+  background-color: #e3f3ff;
+}

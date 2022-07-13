@@ -19,6 +19,9 @@ Reveal.initialize({
   history: true,
   center: false,
 
+  // no slide transitions by default
+  transition: "none",
+
   // i need all space i can get
   width: 1900,
   height: 1200,
@@ -69,6 +72,9 @@ Reveal.initialize({
 
     // li having a code inside, should not have a bullet point (see also styles.css)
     document.querySelectorAll("li > pre.code-wrapper").forEach((n) => {
+      n.parentNode.classList.add("no-icon");
+    });
+    document.querySelectorAll("li > img").forEach((n) => {
       n.parentNode.classList.add("no-icon");
     });
   } else {

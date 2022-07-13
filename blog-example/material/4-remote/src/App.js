@@ -8,12 +8,13 @@ function App() {
   const [posts, setPosts] = React.useState([]);
   const [view, setView] = React.useState("LIST");
 
-  // TODO #1: Register an effect with 'React.useEffect':
-  //   - the effect should read data from our API (http://localhost:7000/posts)
-  //   - the data read from that endpoint matches the structure needed in our
-  //     client, so you can just set the result to posts!
-  //   - in case of an error, write the error to console.error
-  //   - make sure that the effect runs ONLY ONCE!
+  React.useEffect(() => {
+    // TODO #1: Register an effect with 'React.useEffect':
+    //   - the effect should read data from our API (http://localhost:7000/posts)
+    //   - the data read from that endpoint matches the structure needed in our
+    //     client, so you can just set the result to posts!
+    //   - in case of an error, write the error to console.error
+  }, []);
 
   function savePost(post) {
     // TODO #2:

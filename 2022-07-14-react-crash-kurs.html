@@ -1,0 +1,3403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>React Training</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
+    />
+    <link rel="stylesheet" href="slides/revealjs/reveal.js/dist/reset.css" />
+    <link rel="stylesheet" href="slides/revealjs/reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="slides/revealjs/reveal.js/dist/theme/solarized.css" />
+
+    <!-- Theme used for syntax hislides/ghlighted code -->
+    <link rel="stylesheet" href="slides/revealjs/highlight-js-github-theme.css" />
+    <link rel="stylesheet" href="slides/revealjs/styles.css" />
+  </head>
+
+  <body>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section data-state="title">
+          <h2 class="title" style="font-size: 7rem">
+            <b>"Crash Kurs React &amp; TypeScript"</b>
+          </h2>
+
+          <h3>
+            <span class="transparent-bg">14./15. Juli 2022</span>
+          </h3>
+
+          <h4>
+            <span class="transparent-bg">
+              <a href="https://nilshartmann.net" target="_blank">Nils Hartmann</a>
+              |
+              <a href="https://twitter.com/nilshartmann" target="_blank">@nilshartmann</a>
+            </span>
+          </h4>
+
+          <p style="margin-top: 4rem"></p>
+          <div>
+            <h3><span class="transparent-bg">Slides</span></h3>
+            <p>
+              <span class="transparent-bg">Lokal: 2022-07-14-react-crash-kurs.html</span>
+            </p>
+            <p>
+              <span class="transparent-bg"
+                >Remote:
+                <a
+                  href="https://nilshartman.github.io/react18-training/2022-07-14-react-crash-kurs.html"
+                  >https://react.schule/crash-kurs</a
+                ></span
+              >
+            </p>
+          </div>
+        </section>
+        <section>
+          <h2>Nils Hartmann</h2>
+          <p style="margin-top: 2rem">
+            <a href="https://nilshartmann.net" target="_blank">https://nilshartmann.net</a>
+            /
+            <a href="https://twitter.com/nilshartmann" target="_blank">@nilshartmann</a>
+          </p>
+          <p style="margin-top: 2rem">
+            <em>Freiberuflicher Software-Entwickler, Berater und Trainer aus Hamburg</em>
+          </p>
+          <p></p>
+          <p style="margin-top: 5rem">Java | JavaScript, TypeScript | React | GraphQL</p>
+          <div style="display: flex; justify-content: center; margin-top: 2rem">
+            <div style="margin-left: 15px">
+              <a href="https://graphql.schule/video-kurs"
+                ><img
+                  style="max-height: 450px"
+                  src="slides/images/screenshot-graphql-kurs.png"
+                /><br />https://graphql.schule/video-kurs</a
+              >
+              <br />
+            </div>
+            <!--  -->
+            <div style="margin-left: 100px">
+              <a href="https://reactbuch.de"
+                ><img
+                  style="max-height: 450px"
+                  src="slides/images/react-buch-v2.jpg"
+                /><br />https://reactbuch.de</a
+              >
+              <br />
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================================= -->
+
+        <section>
+          <h2>Und ihr?</h2>
+          <ul>
+            <li>Stellt euch doch bitte kurz vor...</li>
+            <li>Wünsche für diese Schulung? Besondere Themen oder Interessen?</li>
+          </ul>
+        </section>
+
+        <!-- ============================================================================= -->
+
+        <section data-markdown>
+          <textarea data-template>
+### Zeitplan
+
+* Do/Fr: Jeweils 9:00 bis 17:00 Uhr
+  * Mittagspause: 12:30 bis 13:30 Uhr
+  * Kürzere Pausen zwischendurch ☕️ 😴
+* Einverstanden? 
+          </textarea>
+        </section>
+
+        <section>
+          <h2>Agenda</h2>
+          <h3>React Einführung</h3>
+          <ul style="font-size: 85%">
+            <li>
+              <a href="#/t1">Teil I: React Einführung</a>
+            </li>
+            <li>
+              <a href="#/t2">Teil II: React-Komponenten (Details)</a>
+            </li>
+            <li>
+              <a href="#/t3">Teil III: Komponentenhierarchien</a>
+            </li>
+            <li style="margin-top: 20px">
+              <a href="#/t-server">Teil IV: Daten lesen und schreiben vom Server (REST APIs)</a>
+            </li>
+
+            <li style="margin-top: 20px">
+              <a href="#/t-typescript">Teil V: TypeScript</a>
+            </li>
+
+            <li style="margin-top: 20px">
+              <a href="#/t-test">Teil VI: Ausblick: Bibliotheken, Eure Fragen etc.</a>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Grundsätzliches</h2>
+          <p><b>Jederzeit:</b> Fragen und Diskussionen!</p>
+          <p>Motto: Es gibt keine dummen Fragen!</p>
+          <p>Bemerkbar machen per Audio, Chat oder Team Reaktion "Hand erheben"</p>
+          <span><img width="30%" src="slides/images/teams-hand-heben.png" /></span>
+          <p>Oder auf Miro-Board schreiben (Link im Chat)</p>
+
+          <p>Bonuspunkte für eingeschaltetes Video 🥰</p>
+          <p>Wir machen zwischendurch Übungen, in denen ihr selbst programmieren könnt</p>
+        </section>
+
+        <section id="t1">
+          <h1>Teil 1</h1>
+          <h2>React Einführung</h2>
+        </section>
+
+        <section>
+          <h3>Beispiel-Anwendung</h3>
+          <a target="_blank" href="http://localhost:3000">
+            <img src="slides/images/blog-example.png" style="height: 650px" />
+          </a>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Hintergrund: Single-Page-Anwendungen
+
+---
+
+### "Klassische" serverseitig-gerenderte Anwendungen
+
+<img style="height: 800px" src="slides/images/abb-02a-classic-webapp-architecture.png" />
+
+---
+
+### Single-Page-Anwendungen
+
+* <img style="height: 800px" src="slides/images/abb-02c-spa-webapp-architecture.png" />
+
+* "Single-Page" bezieht sich auf _eine_ `index.html`-Datei
+  * Seitenwechsel / Aktualisierung der UI findet nur im Client statt
+* Kommuniktation mit Server "nur" noch für Daten (z.B. REST API)
+
+---
+
+## React
+
+
+          </textarea>
+        </section>
+
+        <section>
+          <h3>Komponenten in React</h3>
+          <p>
+            <em>Zentrales Konzept in React: <b>Komponenten</b></em>
+          </p>
+          <img style="height: 800px" src="slides/images/soc.png" />
+        </section>
+
+        <section>
+          <h3>Komponenten in React</h3>
+          <p style="font-size: smaller">Unser Beispiel in Komponenten</p>
+          <img src="slides/images/blog-example.png" style="height: 650px" />
+        </section>
+
+        <section>
+          <h3>React Komponenten</h3>
+          <ul>
+            <li>bestehen aus <b>Logik und UI</b> (keine separaten Templates)</li>
+            <li>werden <b>deklarativ</b> beschrieben</li>
+            <li>werden immer <b>komplett gerendert</b> (kein 2-Wege-Data-Binding)</li>
+            <li>werden zu <b>ganzen Anwendungen</b> aggregiert</li>
+            <li>werden als <b>JavaScript Funktionen</b> implementiert ("Hooks API")</li>
+            <li>
+              Dokumentation
+              <ul class="xx-list">
+                <li>
+                  Aktuelle Doku (Klassen API-basiert):
+                  <a href="https://reactjs.org/">https://reactjs.org/</a>
+                </li>
+                <li>
+                  Neue Doku (noch Beta):
+                  <a href="https://beta.reactjs.org/">https://beta.reactjs.org/</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## React Toolstack
+
+* Für die Entwicklung von Single-Page-Anwendungen werden eine Reihe von Tools benötigt
+* Compiler
+  * jsx -> js, TypeScript -> JavaScript, "modernes JS" -> ES5
+* Bundler
+  * Machen aus Euren JS/TS-Dateien JS-Dateien für den Browser
+  * ohne Modulsystem
+* Linter: Statische Code-Analyse (optional)
+* Test-Framework (optional)  
+* CSS Präprozessoren (optional)
+
+---
+
+## create-react-app
+
+* Erzeugt ein fertiges Projekt mit allen typischerweise genutzten Tools
+* `npx create-react-app PROJEKTNAME --template typescript`
+* Doku: [https://create-react-app.dev/](https://create-react-app.dev/)
+
+          </textarea>
+        </section>
+
+        <section>
+          <h3>Tooling: Linter</h3>
+          <p><em>Statische Codeanalyse</em></p>
+          <ul>
+            <li>Findet typische JavaScript Programmierfehler</li>
+            <li>Achtet auf Einhaltung von Konventionen (z.B. Semikolon ja/nein)</li>
+            <li>Kann in den CI-Build und IDE eingebunden werden</li>
+            <li>
+              <div>
+                <p><a href="https://eslint.org/">ESLint</a></p>
+
+                <img style="height: 400px" src="slides/images/eslint.png" />
+              </div>
+            </li>
+          </ul>
+        </section>
+
+        <!-- ============================================================================= -->
+
+        <section>
+          <h2>Unsere erste React-Komponente</h2>
+          <h3>Sehen wir uns die wichtigsten Konzepte einer React-Komponente im Code an</h3>
+
+          <ul>
+            <li>Schritt-für-Schritt (<code>blog-example/workspace</code>)</li>
+          </ul>
+        </section>
+
+        <section id="interaktiv-hellomessage">
+          <h3>Hello World React</h3>
+          <code>PostEditor.js</code>
+          <pre><code>
+  import React from "react";
+  
+  export default function PostEditor() {
+    const [title, setTitle] = React.useState("");
+  
+    return (
+      &lt;div>
+        &lt;label>
+          Title
+          &lt;input onChange={event => setTitle(event.target.value)} value={title} />
+        &lt;/label>
+      &lt;/div>
+    );
+  }
+            </code></pre>
+        </section>
+
+        <section>
+          <h3>Einbinden der Anwendung in die HTML-Seite</h3>
+          <div>
+            <p>
+              <code>index.html</code>
+            </p>
+            <pre><code>
+  &lt;html>
+    &lt;-- ... -->
+    &lt;body>
+      <div id="root"></div>
+    &lt;/body>
+  &lt;/html>
+  </code></pre>
+          </div>
+          <div>
+            <p>
+              <code>index.js</code>
+            </p>
+            <p>Achtung! Leicht geänderte API ab React 18:</p>
+            <pre><code class="javascript">
+  // React 18
+  import React from 'react';
+
+  import { createRoot } from 'react-dom/client';
+  import PostEditor from './PostEditor';
+  
+  const root = createRoot(document.getElementById('root'));
+  root.render(&lt;PostEditor />);
+  </code></pre>
+            <p>Zum Vergleich vor React 18:</p>
+            <pre><code class="javascript">
+    // Zum Vergleich: React 17
+    import React from 'react';
+    import ReactDOM from 'react-dom';
+  
+    import PostEditor from './PostEditor';
+    
+    ReactDOM.render(&lt;PostEditor />, 
+      document.getElementById('root')
+    );
+    </code></pre>
+          </div>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section id="t-module" data-state="exkurs">
+          <h3>Hintergrund: JavaScript Module</h3>
+          <p>
+            Mit <code>import</code> order <code>export</code> wird aus einer "normalen"
+            JavaScript-Datei ein JavaScript <b>Modul</b>
+          </p>
+          <p>Mit Modulen sind Dateiinhalte nicht mehr global sichtbar</p>
+          <p>Module bestimmen explizit, was außerhalb verwendet werden darf</p>
+          <p>Module geben explizit an, was sie aus anderen Modulen verwenden wollen</p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section data-state="exkurs">
+          <h3>Module</h3>
+          <h4>Default Exporte</h4>
+          <p>
+            <em
+              >Objekte, Funktionen, Klassen etc müssen explizit <b>exportiert</b> und
+              <b>importiert</b> werden</em
+            >
+          </p>
+          <p class="fragment">Eine <code>export</code>-Anweisung macht aus einer Datei ein Modul</p>
+
+          <pre class="fragment"><code class="javascript">
+            // src/domain/Person.js
+            export default function createPerson { ... }
+
+            oder
+
+            function createPerson { ... }
+            export default createPerson
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+              // src/domain/Person.js
+              export default function createPerson() { ... }
+
+              oder
+
+              function createPerson() { ... }
+              export default createPerson;
+            </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+                Nur EIN Default Export erlaubt;
+                export default function createPerson() { ... }
+                export default function makePerson { ... } // KONFLIKT
+              </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section data-state="exkurs">
+          <h3>Module</h3>
+          <h4>Importieren</h4>
+          <p class="fragment">Beim importieren geben wir Pfade(!) an</p>
+
+          <pre class="fragment"><code class="javascript">
+              // src/domain/Person.js
+              export default function createPerson() { ... }
+
+            </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+                // src/App.js
+                import createPerson from "./domain/Person.js";
+
+                const person = createPerson("Lemmy", "Kilmister");
+              </code></pre>
+
+          <p class="fragment">👉 In der React-Entwicklung könnt ihr die Dateiendung weglassen!</p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section data-state="exkurs">
+          <h3>Module</h3>
+          <h4>Benannte Exporte</h4>
+          <p class="fragment">
+            Ein Modul kann neben einem Default auch beliebig viele
+            <b>benannte Exporte</b> haben
+          </p>
+
+          <pre class="fragment"><code class="javascript">
+                // src/domain/Person.js
+                export default function createPerson { ...}
+
+                export function updatePerson() { ... }
+                export function removePerson() { ... }
+              </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+                  // src/domain/Person.js
+                  function createPerson { ...}
+                  function updatePerson() { ... }
+                  function removePerson() { ... }
+
+                  export default createPerson;
+
+                  export { updatePerson, removePerson }
+                </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section data-state="exkurs">
+          <h3>Module</h3>
+          <h4>Benannte Importe</h4>
+          <pre class="fragment"><code class="javascript">
+                    // src/App.js
+                    import { removePerson } from "./Person"
+              </code></pre>
+          <pre class="fragment"><code class="javascript">
+                // Default und benannten Export importieren
+                import createPerson, { removePerson } from "./Person.js"
+              </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+                // Benannten Export beim Import umbennenen
+                import createPerson, { removePerson as deletePerson } from "./Person.js"
+
+                deletePerson(/* ... */);
+              </code></pre>
+        </section>
+
+        <section>
+          <h3>Der Trainingsworkspace</h3>
+          <ul class="x-list">
+            <li style="margin-bottom: 40px">
+              <code>2022-07-14-react-crash-kurs.html</code>: Die Slides (öffnen im Browser mit
+              Doppelklick)
+            </li>
+            <li style="margin-bottom: 40px">
+              Der Code ist im <code><b>blog-example</b></code> Verzeichnis
+            </li>
+
+            <li style="margin-bottom: 40px">
+              <code>blog-example/<b>workspace</b></code
+              >: Verzeichnis für Eure Übungen <br />👉&nbsp;<b>Empfehlung</b>: nur diesen Ordner in
+              IDE/Editor öffnen
+            </li>
+            <li>
+              <code>blog-example/<b>steps</b></code
+              >: Fertiger Source-Code nach jeder Übung
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Übung #1: Hello-World</h2>
+          <h3>
+            <em>Eine erste React-Komponente</em>
+          </h3>
+        </section>
+        <section>
+          <h3>Schritt #1: Tool Chain starten</h3>
+          <p>Gemeinsam, Schritt-für-Schritt:</p>
+          <ol class="x-list" style="font-size: 85%">
+            <li>
+              <code>cd blog-example/workspace</code>
+            </li>
+
+            <li>
+              <code>npm start</code>
+            </li>
+
+            <li>
+              Der Browser sollte automatisch
+              <a href="http://localhost:3000" target="_blank">http://localhost:3000</a>
+              öffnen
+            </li>
+
+            <li>Wenn Du "Hello, World" im Browser siehst, ist alles gut!</li>
+            <li>Dann bitte in Teams "Hand heben" 🙋‍♀️</li>
+          </ol>
+        </section>
+        <section>
+          <h3>Schritt #2: Deine erste React-Komponente</h3>
+          <p>
+            <em
+              >Ein kleiner Schritt für die PostEditor-Komponente, ein großer Schritt für dich auf
+              deinem Weg, React zu lernen!</em
+            >
+          </p>
+          <ul>
+            <li>Ersetze den "statischen" Code in <code>PostEditor.js</code></li>
+            <li>Die Komponente soll <b>PostEditor</b> heißen</li>
+            <li>
+              Sie sollte einen Zustand/State (<code>title</code>) und ein Eingabefeld dafür haben
+            </li>
+            <li>
+              Als Hilfe kannst Du den Code aus den
+              <a href="#interaktiv-hellomessage">vorherigen Slides</a> ansehen.
+            </li>
+            <li>
+              Eine mögliche Lösung findest Du auch in <code>blog-example/steps/1-hello-world</code>
+            </li>
+
+            <li>
+              <em>Optional: mache ein paar Experimente mit der Komponente, zum Beispiel:</em>
+              <ul class="no-fragment">
+                <li>
+                  Kannst Du unter dem Eingabefeld den gerade eingegebenen Text ausgeben lassen, so
+                  dass dieser immer dem aktuellen Inhalt des Eingabefeldes entspricht?
+                </li>
+              </ul>
+            </li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
+          </ul>
+        </section>
+
+        <section id="t2">
+          <h1>Teil II</h1>
+          <h2>React Komponenten</h2>
+        </section>
+
+        <section>
+          <h3>React: JSX</h3>
+          <ul>
+            <li style="font-size: 80%">
+              Wird wie HTML hingeschrieben, inkl Attribute:
+              <pre><code class="xml"  >
+&lt;div>&lt;input type="text"/>&lt;/div>
+                    </code></pre>
+            </li>
+            <li style="font-size: 80%">
+              Achtung! <code>class</code>-Attribut heißt <code>className</code>:
+              <pre><code class="xml"  >
+                        &lt;h1 className="title">...&lt;/h1>
+                    </code></pre>
+            </li>
+            <li style="font-size: 80%">
+              Attribute, die keine Strings sind, müssen in {} eingeschlossen werden:
+              <pre><code class="xml"  >
+&lt;Counter label="Count" count={7} showValues={true} />
+                    </code></pre>
+            </li>
+
+            <li style="font-size: 80%">
+              CSS-Eigenschaften werden als Objekt übergeben in Camel-Case-Notation:
+              <pre><code class="xml"  >
+const styles = { marginLeft: '10px', border: '1px solid red' };
+&lt;h1 style={styles}>...&lt;/h1>
+                    </code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Zustand einer Komponente und der useState-Hook (Zusammenfassung)</h3>
+          <ul class="fragement">
+            <li>Beispiel: Inhalt eines Eingabefelds, Daten vom Server, Menu offen oder zu</li>
+            <li><b>Werte</b> üblicherweise immutable</li>
+            <li>Arbeiten mit Zustand über <b>useState</b>-Hook</li>
+            <li>
+              useState liefert Array mit zwei Werten zurück: aktuellen Zustand, und setter-Funktion
+              um Zustand zu verändern
+            </li>
+          </ul>
+          <pre><code class="javascript"  >
+function HelloWorld() {
+  const [title, setTitle] = React.useState("");
+
+  return &lt;input onChange={e => setTitle(e.target.value) value={title} />;
+}
+                  </code></pre>
+          <ul>
+            <li>
+              Aufruf des Setters <b>löst erneutes rendern der <i>gesamten</i> Komponente aus</b>
+            </li>
+            <li>
+              Es können mehrere States erzeugt werden, durch Verwendung mehrerer useState-Aufrufe
+            </li>
+            <li><b>Zustand</b> ist eines der <b>zentralen</b> Konzepte von React</li>
+          </ul>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## React Hooks API
+
+* Es gibt einige "spezielle" Funktionen in der React API, die "Hooks" genannt werden
+* Diese Funktionen werden in einer Komponente verwendet, um mit deren State und Lebenszyklus zu interagieren
+* Namen von Hook-Funktionen fangen mit `use` an.
+  * _Alle_ Funktionen, die mit `use` anfangen, werden von React als Hook Funktionen interpretiert
+    * (auch eigene Funktionen)
+* Beispiele: `useState`, `useContext`, `useEffect`
+
+---
+
+## React Hooks API
+
+* Hook Funktionen sind "normale" JavaScript-Funktionen
+* Es gibt aber ein paar Regeln bei der Verwendung zu beachten
+ * [Rules of Hooks](https://reactjs.org/docs/hooks-rules.html)
+  * Insbesondere dürfen sie nur in Komponenten- und Hook-Funktionen verwendet werden
+  * Sie dürfen nicht in Bedigungen (`if`/`switch`, ...) und Schleifen (`for`/`while`) verwendet werden
+         </textarea
+          >>
+        </section>
+
+        <section>
+          <h2>Übung: Post-Editor für unsere Anwendung</h2>
+          <em><b>Erweitere deine Komponente um neue Features</b></em>
+        </section>
+        <section>
+          <h3>Schritte</h3>
+          <ol class="x-list">
+            <li>
+              Zusätzlich zum "title", sollte es einen weiteren Zustand und eine Textarea geben:
+              <code>body</code>. Ein <code>textarea</code>-Element hat dieselbe API wie ein
+              <code>input</code>-Feld, du kannst also auch hier mit <code>onChange</code> und
+              <code>value</code> arbeiten.
+            </li>
+            <!-- <li>
+              Füge unter beiden Feldern eine Fehler-Meldung hinzu, wenn das jeweilige Feld leer ist
+              (z.B. "Please fill in Xyz")
+            </li> -->
+            <li>
+              Füge einen "Clear"-Button hinzu, der beide Eingabefeld leert. Das Property auf dem
+              Button ist <code>onClick</code>.
+            </li>
+            <li>Mögliche Lösung: <code>steps/2-editor</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+          </ol>
+        </section>
+
+        <section id="t3">
+          <h1>Teil III</h1>
+          <h2>React: Komponentenhierarchien</h2>
+
+          <h3>Kommunikation zwischen Komponenten mit Properties</h3>
+        </section>
+
+        <!-- - - - - - - - - - - - - - - - PROPS HIER ERST - - - - - - - - - - - - - - -  -->
+        <section>
+          <h3>React: Properties</h3>
+          <p>Live: Properties für initialen Werte des Post-Editors</p>
+          <ul>
+            <li>
+              Mit <b>Properties</b> können einer Komponente von <b>außen</b> Werte und Eigenschaften
+              übergeben werden
+
+              <pre><code class="javascript"  >
+            function PostEditor() {
+                // type, onChange und value sind Properties!
+
+                return (
+                  &lt;input type="text" onChange={() => setTitle("...")} value={title}&lt;/h1>
+                );
+              }
+            }
+            </code></pre>
+            </li>
+            <li><b>Properties</b> können innerhalb der Komponente nicht verändert werden</li>
+            <li>
+              Zum Vergleich: <b>Zustand (State)</b> ist eine <b>innere</b> Eigenschaft der
+              Komponente (die verändert werden kann)
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Properties ("Props") einer Komponente</h3>
+          <ul>
+            <li>Komponenten können beliebig eigene Properties definieren</li>
+            <li>
+              Bei der Angabe der Properties bei der Verwendung einer Komponente werden die
+              Properties wie von HTML gewohnt in der Notiation
+              <code>name=value</code> hingeschrieben
+            </li>
+            <li>
+              <pre><code class="javascript"  >
+              &lt;PostEditor initialTitle="Hello" initialBody="World" />
+               </code></pre>
+            </li>
+            <li>
+              ...alle angegebenen Properties werden "gesammelt" und in <b>einem</b> Objekt im 1.
+              Methoden-Parameter an Komponente übergeben
+            </li>
+            <li>
+              <pre><code class="javascript"  >
+              function PostEditor(props) {
+                  // props: { initialTitle: "Hello", initialBody: "World" }
+                  const [title, setTitle] = React.useState(props.title);
+                  const [body, setBody] = React.useState(props.body);
+  
+                  return ...;
+                }
+              }
+              </code></pre>
+            </li>
+            <li>
+              <pre><code class="javascript"  >
+                // Mit Destructuring
+                function PostEditor({initialTitle, initialBody}) {
+                   const [title, setTitle] = React.useState(title);
+                   const [body, setBody] = React.useState(body);
+                
+                   return ...;
+                  }
+                }
+                                </code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Properties: Default-Werte</h3>
+          <p>Properties sind grundsätzlich <b>optional</b>.</p>
+
+          <p>
+            Mit dem Object Destructuring-Operator können <b>Default-Werte</b> angegeben werden, für
+            Eigenschaften, die aus einem Objekt gelesen werden, aber dort nicht angegeben (bzw.
+            undefined) sind:
+          </p>
+
+          <pre><code class="javascript">
+            function PostEditor({initialTitle = "New Blog Post", initialBody}) { 
+              const [title, setTitle] = React.useState(initialTitle);
+            }
+
+            // title wird auf "New Blog Post" gesetzt
+            &lt;PostEditor initialBody="Lorem Ipsum" />
+          </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+
+        <section>
+          <h3>Virtual DOM</h3>
+          <p>"Rendern" hat leider doppelte Bedeutung!</p>
+          <img src="slides/images/vdom.png" style="height: 650px" />
+        </section>
+        <section>
+          <h3>Virtual DOM</h3>
+          <p>Beispiel: <code>blog-example/steps/2b-rendering</code></p>
+        </section>
+        <section>
+          <h2>Übung: Properties für Komponenten</h2>
+          <em>Eine Komponente für Meldungen</em>
+        </section>
+        <section>
+          <h3>Schritte</h3>
+          <ol class="xx-list">
+            <li>
+              Schreibe eine neue Komponente (der einfachheithalber direkt in PostEditor.js), die
+              eine Meldung darstellt: <b>Message</b>
+            </li>
+            <li>
+              Die <b>Message</b>-Komponente soll zwei Properties aufnehmen:
+              <ul>
+                <li><code>msg</code>: ein String mit einer Nachricht</li>
+                <li>
+                  <code>type</code>: kann entweder der String <code>"error"</code> oder der String
+                  <code>"info"</code> sein
+                </li>
+              </ul>
+            </li>
+            <li>
+              Beispielhafte Verwendung:
+
+              <pre><code class="javascript">
+                &lt;Message type="info" msg="Alles prima!" />
+                &lt;Message type="error" msg="Leider fehlerhaft" /> 
+              </code></pre>
+            </li>
+            <li>
+              Die Komponente soll die übergebene Nachricht aus <code>msg</code> anzeigen: Wenn type
+              auf <code>error</code> gestellt ist (oder kein type gesetzt ist), soll die
+              <code>msg</code> als Fehler ausgegeben werden (z.B. kann die Komponente das Wort
+              "Fehler" vor die Msg schreiben)
+            </li>
+            <li>
+              Verwende die Komponente im PostEditor: um eine Fehler-Meldung unter dem Formular
+              auszugeben (z.B. "Bitte füllen Sie das Formular aus") wenn <code>title</code> oder
+              <code>body</code> leer sind bzw. eine Info-Meldung, wenn die beiden Felder gefüllt
+              sind ("Sie haben alle erforderlichen Eingaben getätigt!")
+            </li>
+
+            <li>Mögliche Lösung: <code>steps/2a-editor-mit-props</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>Komponenten-Hierarchien</h2>
+        </section>
+
+        <section>
+          <h3>Zwei Ansichten: eine Liste für Blog-Posts und ein Editor...</h3>
+          <p>Exemplarisch zum Beispiel für Master-Detail-Ansicht</p>
+          <code>blog-example/steps/3-hierarchy</code>
+        </section>
+
+        <section>
+          <h3>Wie kommuniziert unsere Anwendung?</h3>
+          <p>Wir haben nun <b>zwei</b> Views: Blog-List und Post-Editor</p>
+          <p>Welche ist sichtbar?</p>
+          <p>Wie fließen die Daten zwischen den beiden Komponenten?</p>
+        </section>
+
+        <section>
+          <h3>👉 Wir bauen eine <b>Anwendung</b>: mit Blog-List und Post-Editor</h3>
+        </section>
+
+        <section>
+          <h3>Datenfluss in React-Anwendungen</h3>
+          <ol>
+            <li>
+              In React Anwendungen werden Komponenten in Hierarchien zu Anwendungen aggregiert. Eine
+              "Anwendung" ist nichts weiter als eine Sammlung von Komponenten
+            </li>
+            <li>
+              Innerhalb der Hierarchie wird immer nur <b>in eine Richtung</b> kommuniziert:
+              <b>Eltern</b>-Komponenten geben <b>properties</b> an ihre <b>Kinder</b>
+            </li>
+            <li>
+              Mit den Properties können Daten (Blog Post, angemeldeter Benutzer, ...) von "oben"
+              nach "unten" gereicht werden. Das kann über mehr als eine Hierarchie-Ebene passieren.
+              <p>
+                (Eine Komponente kann die Properties oder einen Teil davon ihrerseits weiter nach
+                "unten" reichen)
+              </p>
+            </li>
+            <li>
+              Mit Properties können außerdem <b>callback-Funktionen</b> nach unten gereicht werden.
+            </li>
+            <li>
+              Eine Kind-Komponente kann die übergebene Funktion aufrufen und ein "Event" (mit oder
+              ohne Daten) an ihre Eltern-Komponente schicken. <br />Dieses Verfahren haben wir
+              bereits beim onChange-Property am input-Feld gesehen!
+            </li>
+          </ol>
+        </section>
+
+        <section>
+          <h3>Smart und Dumb-Komponenten #1</h3>
+
+          <p>
+            Zur Erinnerung: in React bauen wir Komponenten. Komponenten bestehen aus Logik, Zustand
+            und UI (HTML-Elemente und Styling)
+          </p>
+          <p>
+            Ein bekanntes Muster ist, die Komponenten in zwei Arten aufzuteilen:
+            <b>Smart (oder Controller)</b>- und <b>Dumb oder (Presentation-)</b>-Komponenten
+          </p>
+          <p>Technisch sind die Komponenten identisch, also "normale" React-Komponenten</p>
+          <p>Nur ihre <b>Aufgabe</b> ist anders definiert...</p>
+        </section>
+
+        <section>
+          <h3>Smart und Dumb-Komponenten #2</h3>
+          <p>Smart-Komponenten enthalten Logik und Zustand</p>
+          <p>Dumb-Komponenten sind nur zur Darstellung der Daten</p>
+          <p>
+            Smart-Komponenten reichen Zustand in die Dumb-Komponenten. Diese zeigen den Zustand an
+          </p>
+          <p>
+            Smart-Komponenten reichen Callback-Funktion als Event-Handler an die Dumb-Komponenten
+          </p>
+          <p>
+            Wenn in Dumb-Komponenten ein Ereignis eintritt (z.B. Button-Click oder Texteingabe),
+            wird eine Callback-Funktion aufgerufen
+          </p>
+          <p>
+            Die Callback-Funktion wird dann in der Smart-Komponente aufgerufen und die Verarbeitung
+            ausgeführt
+          </p>
+          <p>
+            Die Smart-Komponente setzt ihren Zustand neu, und rendert sich und ihre Kinder (die
+            Dumb-Komponenten) neu <br /><b
+              >Der "Gesamt-Zustand" der Anwendung bleibt somit immer konsistent!</b
+            >
+          </p>
+        </section>
+        <section>
+          <img src="slides/images/blogpost-app-hierarchy.png" />
+        </section>
+
+        <section>
+          <h3>Beispiel</h3>
+
+          <p>
+            Unsere Smart-Komponente hält eine Liste von Blog-Posts und steuert, welche Ansicht aktiv
+            ist
+          </p>
+          <p>Die Smart-Komponente gibt die Liste der Blog-Posts an die BlogList zum Anzeigen</p>
+          <p>
+            Die Smart-Komponente gibt jeweils eine Callback-Funktion an die BlogList und die
+            PostEditor
+          </p>
+
+          <pre><code>
+function App() {
+  const [posts, setPosts] = React.useState([]);
+  const [view, setView] = React.useState("list");
+
+  function addPost(newPost) {
+    // Neuen Post hinzufügen
+    setPosts([...posts, newPost]);
+
+    // Wieder Liste anzeigen
+    setView("list");
+  }
+
+  if (view === "list") {
+    return &lt;BlogList posts={posts} onAdd={() => setView("PostEditor")} />
+  }
+
+  return &lt;PostEditor onAdd={addPost} />
+
+}            
+</code></pre>
+        </section>
+
+        <section>
+          <h3>Beispiel #2</h3>
+
+          <p>
+            Die BlogList zeigt die übergebene Liste nur an und informiert die App, wenn auf den
+            "Add"-Button gedrückt wurde
+          </p>
+          <p>Die App kann dann die andere Komponente (PostEditor) anzeigen</p>
+
+          <pre><code>
+  function BlogList(props) {
+
+    return &lt;div>
+      // ... Liste anzeigen ...
+      &lt;button onClick={props.onAdd}>Add Blog Post&lt;/button>
+    &lt;/div>;
+  }            
+  </code></pre>
+        </section>
+
+        <section>
+          <h3>Beispiel #3</h3>
+
+          <p>
+            Die PostEditor erfasst einen neuen BlogPost und übergibt diesen der Callback-Funktion,
+            so dass die App-Komponente ihn in die Liste der BlogPosts (State) einfügen kann
+          </p>
+          <pre><code>
+  function PostEditor(props) {
+    const [title, setTitle] = React.useState("");
+    const [body, setBody] = React.useState("");
+
+    function addPost() {
+      const newPost = {
+        title, body
+      }
+
+      // App-Komponente informieren
+      props.onAdd(newPost);
+    }
+
+    return &lt;div>
+      // ... Formular rendern ...
+      &lt;button onClick={addPost}>Save Post&lt;/button>
+    &lt;/div>;
+  }            
+  </code></pre>
+        </section>
+
+        <section>
+          <h2>Übung: Baue eine komplette "Anwendung"</h2>
+          <p>
+            <em>
+              Integriere deine bestehende <code>PostEditor</code>-Komponente und die neue
+              <code>PostList</code> Komponente über die <code>App</code>-Komponente</em
+            >
+          </p>
+        </section>
+        <section>
+          <h3>Schritte</h3>
+          <ol class="xx-list">
+            <li>
+              kopiere das Material aus <code>blog-example/material/3-hierarchy/src</code> in deinen
+              source Ordner
+              <span style="font-size: 85%"
+                >(Du kannst deinen eigenen <code>PostEditor</code> verwenden oder den aus
+                material/3-hierarchy)</span
+              >
+            </li>
+
+            <li>
+              Erweitere die <code>App</code> Komponente, so dass sie den
+              <code>PostEditor</code> anzeigt, wenn der User auf den <code>Add</code> Button klickt.
+              <p>- In <code>App.js</code> stehen TODOs mit weiteren Infos</p>
+            </li>
+            <li>
+              Im<code>PostEditor</code> benötigst Du einen Save Button, der die übergebene
+              Callback-Funktion aufruft, die von der <code>App</code> als Property
+              (<code>onSave</code>) übergeben wird. <br />Siehe TODO in
+              <code>blog-example/material/3-hierarchy/src/PostEditor.js</code>
+            </li>
+            <li>Mögliche Lösung: <code>steps/3-hierarchy</code></li>
+            <li>Wenn Du fertig bist, bitte in Teams "Hand heben" 🙋‍♀️</li>
+          </ol>
+        </section>
+
+        <section id="t-server">
+          <h1>Teil IV</h1>
+          <h2>Server Zugriffe</h2>
+          <em>Lesen und Schreiben von Daten von einem Backend (REST/HTTP)</em>
+          <p><code>blog-example/steps/4-remote</code></p>
+        </section>
+
+        <section>
+          <h3>Themen</h3>
+          <ol>
+            <li>Wie machen wir das Laden und Speichern technisch?</li>
+            <li>Wie funktioniert asynchrone Verarbeitung in React?</li>
+          </ol>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Zugriff auf Daten vom Server
+
+* Kommunikation erfolgt in der Regel per REST API
+  * Server stellt REST API zur Verfügung, das Frontend fragt die benötigten Daten darüber ab
+  * Das Frontend hat keine direkte Verbindung zur Datenbank
+  * In einer "echten" Anwendung würde der Client ggf. Cookies/HTTP Header mit Credentials mitschicken
+    * _**Der Server** muss sicherstellen, dass er keine unerlaubten Daten herausgibt / entgegennimmt_
+
+
+          </textarea>
+        </section>
+
+        <section>
+          <h3>Server-Calls</h3>
+          <ul class="x-list">
+            <li>React macht keine Angabe, wie Server-Calls (technisch) gemacht werden</li>
+            <li>
+              Häufig in React verwendet: <b>fetch</b> API
+              <ul>
+                <li>Browser-API zum Ausführen von HTTP Requests</li>
+                <li>
+                  <a href="http://caniuse.com/#search=fetch" target="_blank">hohe Verbreitung</a>
+                </li>
+                <li>
+                  Spezifikation:
+                  <a href="https://fetch.spec.whatwg.org/" target="_blank"
+                    >https://fetch.spec.whatwg.org/</a
+                  >
+                </li>
+                <li>
+                  Polyfill:
+                  <a href="https://github.com/github/fetch" target="_blank"
+                    >https://github.com/github/fetch</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Die fetch API</h3>
+          <p>Lesen von Daten (mit HTTP GET)</p>
+          <pre><code class="javascript"  >
+// Beispiel mit JavaScript Promises:
+
+fetch('http://localhost:7000/posts')
+  .then(response => response.json())
+  .then(json => /* ... */)
+  .catch(ex => console.error('request failed', ex));
+</code></pre>
+        </section>
+
+        <section id="t-promises">
+          <h3>Hintergrund: Promises in JavaScript</h3>
+
+          <p class="fragment">
+            Ein Promise liefert einen "Versprechen" auf einen Wert zurück, der evtl. erst in der
+            Zukunft ermittelt werden kann
+          </p>
+          <p class="fragment">
+            Damit können wir asynchrones Verhalten in JavaScript Applikation abbilden
+          </p>
+        </section>
+        <section>
+          <pre><code class="javascript" contenteditable>
+// "getNameAsync" ist eine ausgedachte Funktion, 
+// die ein Promise zurückliefert, 
+// das "irgendwann" den String "Klaus" zurückgibt
+const promise = getNameAsync();
+  </code></pre>
+          <pre
+            class="fragment"
+          ><code class="javascript" contenteditable>promise.then(name => console.log(name));
+// Ausgabe "irgendwann": "Klaus"
+  </code></pre>
+        </section>
+
+        <section>
+          <h3>Promises</h3>
+          <p>Promises können verkettet werden</p>
+          <pre><code class="javascript" contenteditable>
+// Annahme: 'getNameAsync' liefert "irgendwann" den String "Klaus" zurück
+const promise = getNameAsync()
+
+  // Wird mit dem ersten Wert aufgerufen und gibt neuen Wert zurück
+  .then(name => getGreetingAsync(name)) 
+
+  // wird mit dem zweiten Wert (aus vorherigem then) aufgerufen
+  .then(greeting => console.log(greeting));
+
+  // Ausgabe "irgendwann": 
+  // "Hello, Klaus"
+
+  </code></pre>
+          <p class="fragment">
+            Die <code>then</code>-Funktion gibt <b>immer</b> ein Promise zurück
+          </p>
+        </section>
+
+        <section>
+          <h3>Fehler unterbrechen die Promise-Kette</h3>
+          <h4>Mit <code>catch()</code> kann man den Fehler fangen und darauf reagieren</h4>
+        </section>
+
+        <section>
+          <h3>Catch im Fehlerfall</h3>
+          <pre><code class="javascript" contenteditable>
+  const promise = getNameAsync()
+    .then(name => {throw new Error("Unexpected Error") })
+    .then(greeting => console.log(greeting));
+    .catch(error => console.error(`Greeting failed: ${error}`))
+  
+    // Output: Greeting failed: Unexpected error
+    </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Finally</h3>
+
+          <p class="fragment">
+            Eine <code>finally</code>-Callback-Funktion wird nach dem letzten <code>then</code> bzw.
+            <code>catch</code>-Block ausgeführt.
+          </p>
+
+          <p class="fragment">
+            Die finally-Funktion wird <b>immer</b> ausgeführt (unabhängig davon, ob vorher ein
+            Fehler aufgetreten ist oder nicht
+          </p>
+
+          <pre><code class="javascript" contenteditable>
+              const promise = getNameAsync();
+                .then(name => {throw new Error("Unexpected Error") })
+                .then(greeting => console.log(greeting));
+                .catch(error => console.error(`Greeting failed: ${error}`))
+                .finally( () => console.log("Goodbye!") );
+              
+                // Output (error): Greeting failed: Unexpected error
+                // Output (log): Goodbye!
+                </code></pre>
+        </section>
+
+        <section>
+          <h3>Alternative API zu Promises</h3>
+          <h2>async / await</h2>
+        </section>
+
+        <section>
+          <h3>async / await</h3>
+          <p>"Nur" andere Schreibweise für Promises</p>
+          <p>Promises und async/await Syntax sind untereinander kompatibel</p>
+          <p>Erlaubt es, asynchronen Code "linear" hinzuschreiben</p>
+        </section>
+        <section>
+          <h3>async / await</h3>
+          <p><code>await</code> wartet bis ein Promise aufgelöst wird</p>
+          <pre class="fragment"><code class="javascript" contenteditable data-trim>
+    function greet(name) { return new Promise(...); }
+    
+    // await can only be used in 'async'-functions:
+    async function sayWhat(name) {
+      const greeting = await greet(name);
+    
+      // greeting is a string!
+      console.log(greeting); // => Hello, ...
+    }
+                      </code></pre>
+        </section>
+        <section>
+          <h3>async / await</h3>
+          <p><code>async</code> machen eine Funktion zu einer "async function"</p>
+          <p class="fragment">
+            Eine <code>async</code> Funktion gibt &nbsp; <b>immer</b> ein Promise zurück
+          </p>
+          <pre class="fragment"><code class="javascript" contenteditable data-trim>
+  async function greet(name) {
+    return `Hello, ${name}`;
+  }
+  
+  const greeting = greet('Klaus');
+  
+  // greeting is a Promise!
+  console.log(greeting instanceof Promise); // => true
+  console.log(greeting) // => Promise {&lt;resolved>: "Hello, Klaus"}
+                  </code></pre>
+          <p class="fragment"><code>async</code> Funktion als Fat Arrow Funktionen:</p>
+          <pre class="fragment"><code class="javascript" contenteditable data-trim>
+  const greet = async (name) => `Hello, ${name}`;                
+    
+  const greeting = greet('Klaus');
+    
+  // greeting is a promise!
+  console.log(greeting instanceof Promise); // => true
+  console.log(greeting) // => Promise {&lt;resolved>: "Hello, Klaus"}
+                    </code></pre>
+        </section>
+
+        <section>
+          <h3>async / await</h3>
+          <p>
+            Anstatt <code>then</code> oder <code>catch</code>-Ketten kannst Du einfach mehrere
+            <code>await</code> Statements verwenden und try/catch für die Fehlerbehandlung:
+          </p>
+          <pre class="fragment"><code class="javascript" contenteditable data-trim>
+  // Return promises
+  async function loadUser(username) { . . . };
+  async function loadProfileDate(userId) { . . .};
+  
+  async function loadData() {
+    try {
+      const user = await loadUser('klaus');
+      const profile = await loadProfileData(user.userId);
+    } catch (e) {
+      console.error("Something failed")
+    }
+  }
+                      </code></pre>
+        </section>
+
+        <section>
+          <h3>Die fetch API</h3>
+          <p>Schreiben von Daten mit HTTP POST</p>
+          <p><code>fetch</code> erwartet als 2. Parameter ein Konfigurationsobjekt:</p>
+          <ul>
+            <li>
+              <code>method</code>: HTTP Methode (<code>PUT</code>, <code>POST</code>,
+              <code>DELETE</code>, ...)
+            </li>
+            <li><code>headers</code>: HTTP Header für den Request (z.B. Authorization)</li>
+            <li><code>body</code>: Der Payload (als String!)</li>
+            <li>
+              <p>Der Returnwert ist derselbe wie bei GET</p>
+              <pre><code class="javascript"  >
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+  // ... 
+      </code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>fetch: Zusammenfassung</h3>
+
+          <pre><code class="javascript"  >
+  try {
+    // 1. fetch returns a Promise, that will be resolved with a
+    // Response object when the answer from the server comes in
+    const response = await fetch('http://localhost:7000/posts');
+  
+    // 2. the Response object contains "meta data" about the Response
+    // (for ex. http status code) and functions the read the payload,
+    // for example from JSON:
+    const posts = await response.json();
+  
+    // btw: What do we do with the answer here in our React application?
+    // ???
+  } catch (err) {
+    // 4. In case something goes wrong, log error
+    console.error('request failed', err);
+  }
+  
+  </code></pre>
+          <p>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">Fetch API Doku</a>
+          </p>
+        </section>
+
+        <section>
+          <h3>Wann laden wir die initialen Daten für unsere Anwendung (Blog Posts)?</h3>
+        </section>
+
+        <section>
+          <h3>Laden (und speichern) von Daten</h3>
+          <p>👉Schritt-für-Schritt</p>
+          <p style="font-size: small"><code>steps/3-hierarchy</code></p>
+        </section>
+
+        <section>
+          <h3>Fetch-on-Render</h3>
+          <p>Wir können den Server-Aufruf beim Rendern der Komponente triggern</p>
+          <p>
+            Bis die Daten verfügbar sind (während des laufenden Server Requests) zeigen wir einen
+            Loading Indicator
+          </p>
+        </section>
+
+        <section>
+          <h3>Seiteneffekte</h3>
+          <p>
+            Server-Aufrufe sind <b>Seiteneffekte</b> (andere Beispiele: DOM manipulieren, WebSocket
+            öffnen)
+          </p>
+          <p>Seiteneffekte sind in der <b>Renderphase</b> einer Komponente verboten!</p>
+        </section>
+
+        <section>
+          <h3>useEffekt-Hook</h3>
+          <p>
+            <em
+              >Mit useEffekt kann eine Funktion registriert werden, die nach dem Rendern der
+              Komponente ausgeführt wird</em
+            >
+          </p>
+
+          <div>
+            <pre><code class="javascript"  >
+            function App(props) {
+              React.useEffect( 
+                () => console.log("I will run after EACH render")
+              );
+            }
+          </code></pre>
+          </div>
+          <div>
+            2. Parameter (leeres Array) gibt an, dass die Funktion nur einmal ausgeführt werden soll
+            <pre><code class="javascript"  >
+              function App(props) {
+                React.useEffect( 
+                  () => console.log("I will run only once after 1st rendering"),
+                  []
+                );
+              }
+            </code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h3>useEffect Hook</h3>
+
+          <p>Zwei Parameter:</p>
+          <ol>
+            <li>
+              Callback-Funktion, die aufgerufen wenn entsprechendes Ereignis eintritt (z.B.
+              initiales Rendern abgeschlossen)
+            </li>
+            <li>
+              Ein Array mit Abhängigkeiten:
+              <ul>
+                <li>
+                  Wenn kein Array angegeben wird, wird der Effekt nach jedem Rendern ausgeführt
+                  (achtung! Endlosschleife möglich)
+                </li>
+                <li>
+                  Wenn ein leeres Array angegeben wird, wird der Effekt nur nach dem 1. Rendern
+                  ausgeführt
+                </li>
+                <li>
+                  Wenn Werte angegeben werden, wird der Effekt ausgeführt, wenn sich mind 1 Wert
+                  verändert hat
+                </li>
+                <li>
+                  <b>Wichtig!</b> <em>Alle</em> Werte im Dependency-Array angeben, die darin
+                  verwendet werden (Werte aus Props, State, ...)
+                </li>
+              </ul>
+            </li>
+            <li>
+              Um auf das Entfernen der Komponente aus dem DOM zu reagieren (z.B Resourcen
+              freigeben), kann die Callback-Funktion eine weitere Funktion zurückliefern, die dann
+              ausgeführt wird:
+              <pre><code class="javascript"  >
+                  function GreetingController(props) {
+                    React.useEffect(
+                      () => {
+                        console.log("greetingId hat sich geändert"); 
+                        return () => console.log("Ich bin entfernt worden") 
+                      },
+                      [props.greetingId])
+                    );
+                  }
+                </code></pre>
+            </li>
+          </ol>
+        </section>
+
+        <section>
+          <h3>Beispiel: initiales Laden von Daten</h3>
+
+          <div>
+            <p>
+              <code>useEffect</code> und (<code>useState</code>) werden verwendet um die initialen
+              Daten zu laden
+            </p>
+            <pre><code class="javascript"  >
+                function App() {
+                  const [posts, setPosts] = React.useState([]);
+                
+                  React.useEffect(() => {
+                    fetch("http://localhost:7000/posts")
+                      .then(response => response.json())
+                      .then(json => setPosts(json));
+                  }, []);
+
+                  return {posts.map(p => (
+                    &lt;Post key={p.id} post={p} />
+                  ))}
+                }
+                
+                </code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h3>Speichern von Daten</h3>
+          <p>Als Folge einer Benutzerinteraktion:</p>
+          <p>In einem Event-Handler können Seiteneffekte verwendet werden!</p>
+          <pre><code class="javascript"  >
+function App(props) {
+  // load, as seen
+  React.useEffect( ... );
+
+  function addPost(post) {
+    fetch("http://localhost:7000/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(post)
+    })
+      .then(response => response.json())
+      .then(newPost => setPosts([newPost, ...posts]));
+  }
+
+
+  return
+    ...
+      &lt;AddPost onAdd={newPost => addPost(newPost)} />
+    ...
+}
+                </code></pre>
+        </section>
+
+        <section>
+          <h2>Übung: Laden von Daten auf einem Server</h2>
+          <p>
+            <em
+              >Implementiere die nächste Version der <code>App</code>-Komponente, die in der Lage
+              ist, die Blog Posts mit <code>fetch</code> zu laden.</em
+            >
+          </p>
+          <div>
+            <p>Das backend ist bereits fertig. Ihr könnt es starten mit:</p>
+            <pre><code>
+                  cd react-training/blog-example/backend-rest
+                  npm start
+                </code></pre>
+            <p>Der Server läuft auf Port 7000</p>
+            <p>
+              Ihr könnt das Backend mit folgender URL testen (Browser, wget, curl, ...):
+              <a href="http://localhost:7000/posts">http://localhost:7000/posts</a>
+            </p>
+          </div>
+        </section>
+
+        <!-- ============================================================================= -->
+
+        <section>
+          <h3>Schritte</h3>
+          <ol class="x-list">
+            <li>
+              Füge in <code>App.js</code> den Code zum <b>Laden und Speichern</b> der Blog-Posts
+              hinzu.
+            </li>
+            <li>
+              In <code>material/4-remote</code> ist eine <code>App.js</code>-Datei mit TODOs
+              vorhanden. Du kannst diese in deinen Workspace kopieren und deine
+              <code>App.js</code>-Datei überschreiben (oder dir nur die TODOs rauskopieren)
+            </li>
+
+            <li>
+              Beim <b>Laden</b> der Daten mit fetch, bitte <b>Promise API</b> verwenden und
+              <b>nicht <code>async/await</code></b> API!
+            </li>
+            <li>Mögliche Lösung in <code>steps/4-remote</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
+          </ol>
+        </section>
+
+        <section>
+          <h3>Alternativen zu fetch</h3>
+          <ul class="fragment x-list">
+            <li>
+              <a href="https://github.com/axios/axios">Axios</a>
+            </li>
+            <li>
+              Axios API, auf fetch-basierend:
+              <a href="https://github.com/developit/redaxios">Redaxios</a>
+            </li>
+            <li>
+              Ausgereifte Bibliotheken zum Arbeiten mit Server Requests:
+              <a href="https://tanstack.com/query" target="_blank">
+                TanStack Query (ehem "React Query")</a
+              >
+              oder <a href="https://swr.vercel.app/">SWR</a>
+            </li>
+            <li>
+              Data Fetching für Redux Toolkit:
+              <a href="https://redux-toolkit.js.org/rtk-query/overview" target="_blank"
+                >RTK Query</a
+              >
+            </li>
+          </ul>
+        </section>
+
+        <section id="t-typescript">
+          <h2>TypeScript</h2>
+          <ol>
+            <li><a href="#/t-typescript-grundlagen">Einführung in TypeScript</a></li>
+            <li><a href="#/t-typescript-react">React mit TypeScript</a></li>
+          </ol>
+        </section>
+
+        <section id="t-typescript-grundlagen">
+          <h2>Einführung: Die Sprache TypeScript</h2>
+          <p class="fragment">
+            <em>TypeScript is a superset of JavaScript that compiles to plain JavaScript </em>(
+            <a href="http://www.typescriptlang.org/" target="_blank"
+              >http://www.typescriptlang.org/</a
+            >)
+          </p>
+          <ul>
+            <li class="fragment">Erweitert JavaScript um ein Typen System</li>
+            <li class="fragment">
+              Jeder gültige JavaScript Code ist auch gültiger TypeScript Code
+            </li>
+            <li class="fragment">
+              Mittels des TypeScript Compilers wird aus TS Code JavaScript Code
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>TypeScript Grundlagen</h3>
+          <p>Typ-Angaben werden hinter einen Bezeichner geschrieben</p>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // Variablen können Typ-Informationen bekommen
+  let foo: string;
+  foo = 'yo';
+  // Error: number: This type is incompatible with string
+  foo = 10;
+                 </code></pre>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // Funktionen
+  function sayIt(what: string): string {
+    return `Saying: ${what}`;
+  }
+  
+  sayIt('Klaus'); // ok
+  sayIt(10); // error
+  </code></pre>
+
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // Arrow Funktionen
+  const sayIt = (what: string): string => `Saying: ${what}`;
+  
+  sayIt('Moin');
+  sayIt(123); // Error: Argument of type '123' is not assignable
+              // to parameter of type 'string'.
+  </code></pre>
+        </section>
+
+        <section>
+          <h2>Eingebaute Typen</h2>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // string
+  let city: string = 'Hamburg';
+  
+  // boolean
+  let isDone: boolean = false;
+  
+  // number
+  let theAnswer: number = 42;
+  
+  // array (note the [])
+  let cities: string[] = ['Hamburg', 'Barcelona'];
+  // alternative:
+  let languages: Array&lt;string> = ['JavaScript', 'TypeScript'];
+  
+  // void
+  function log(s: string): void { /* ... */ }
+              </code></pre>
+        </section>
+        <section>
+          <h2>Eingebaute Typen: any und unknown</h2>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // any: kann alle Typen aufnehmen, Typ-Prüfung ist ausgeschaltet
+  let theUnknown: any = 'Who cares';
+  theUnknown = 666; // ok
+  theUnknown = true; // ok
+  let a: number = theUnknown; // ok
+  function loadData(): any { return "" // ok }
+  let b:number = loadData(); // ok
+  
+              </code></pre>
+        </section>
+        <section>
+          <h2>Eingebaute Typen: any und unknown</h2>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // unknown: kann ebefalls alle Typen aufnehmen, erzwingt aber vor der Verwendung Typ-Prüfung
+  function loadData(): unknown { return "" // ok }
+  let b = loadData(); 
+  b.toUpperCase(); // ERROR
+  if (typeof b === "string") {
+    // b ist jetzt string (typeof ist Laufzeitprüfung!)
+    b.toUpperCase(); // OK
+  }
+              </code></pre>
+        </section>
+        <section>
+          <h2>Typen können abgeleitet (inferred) werden</h2>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  let city = 'Hamburg'; // city ist ein String
+  
+  city = 42;
+  // Fehler: [ts] Type '42' is not assignable to type 'string'.
+  </code></pre>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // Explizite Angabe eines Types (parameter)
+  // und abgeleiteter Typ (Return Type der Funktion)
+  
+  function sayIt(what: string) {
+    return `Saying: ${what}`;
+  }
+  
+  const said: string = sayIt('Hello TypeScript'); // ok
+  const saidItWrong: number = sayIt('Hello TypeScript'); // error!
+  
+  
+  </code></pre>
+        </section>
+
+        <section>
+          <h2>Type Check ausschalten</h2>
+          <p>
+            Mit <code>@ts-ignore</code> (als Kommentar) kann wird die Überprüfung der nächsten Zeile
+            ausgeschaltet:
+          </p>
+          <pre><code class="typescript line-numbers" contenteditable data-trim>
+  let city:string = "Hamburg";
+  
+  city = 20259; // error: [ts] Type '20259' is not assignable to type 'string'.
+  
+  // @ts-ignore
+  city = 20259; // ok                
+  </code></pre>
+          <p class="fragment">
+            Nützlich in corner cases, die nur schwer mit TypeScript abbildbar sind oder bei
+            Migration
+          </p>
+        </section>
+        <section>
+          <h2>null und undefined</h2>
+          <div class="fragment">
+            <p><code>null</code> muss explizit zugelassen werden <em>(strictNullChecks</em>):</p>
+            <pre><code class="typescript line-numbers" contenteditable data-trim>
+  let city:string = null; //Type 'null' is not assignable to type 'string'.
+  
+  let optionalCity:string|null = null; // OK
+              </code></pre>
+          </div>
+          <div class="fragment">
+            <p><code>undefined</code> muss ebenfalls explizit zugelassen werden:</p>
+            <pre><code class="typescript line-numbers" contenteditable data-trim>
+    let city:string = undefined; //Type 'undefined' is not assignable to type 'string'.
+    
+    let optionalCity:string|undefined = undefined; // OK
+    let optionalCity:string|undefined|null = null; // OK
+                </code></pre>
+          </div>
+          <div class="fragment">
+            <p>
+              Optionale Parameter können mit ? gekennzeichnet werden (erlauben dann auch
+              <code>undefined</code>)
+            </p>
+            <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  function greet(name: string, greeting?: string) {
+    console.log(`${greeting || 'Hello'}, {name}`);
+  }
+  
+  greet('Susi', 'Moin')// Moin, Susi
+  
+  // 2. Parameter ist optional:
+  greet('Klaus'); // Hello, Klaus
+  
+  greet('Peter', null); // Argument of type 'null' is not assignable
+                        // to parameter of type 'string | undefined'.
+              </code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h2>Eigene Typen</h2>
+          <p>
+            Mit <code>interface</code> und <code>type</code>können eigene Typen (Objekt-Strukturen)
+            definiert werden:
+          </p>
+
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+  // Komplexer Typ
+  interface Person {
+    name: string; // Pflicht
+    livesIn?: string; // Optional
+  }
+
+  // Alternativ (interface und type fast synonym)
+  type Person = { name: string; livesIn?: string; }
+  
+  const susi: Person = { // OK
+    name: 'Klaus',
+    livesIn: 'Hamburg'
+  };
+  const klaus: Person = { // OK (livesIn ist optional)
+    name: 'Klaus'
+  }
+  
+  const helmut: Person = {} // Error: Property 'name' is missing
+  
+  const lukas: Person = {
+    name: 'Lukas',
+    profession: 'Lokführer'
+  } // Error: 'profession' does not exist in type 'Person'.
+                 </code></pre>
+        </section>
+
+        <section>
+          <h2>Eigene Typen II</h2>
+          <p>Eigene Objekt-Typen können sowohl "Attribute" als auch Funktionen enthalten:</p>
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+            // Komplexer Typ
+            type Person {
+              name: string; // Pflicht
+              greet(greeting: string): string;
+            }
+
+            const p:Person = {
+              name: "Klaus",
+              greet(greeting: string) { 
+                return `${greeting}, ${this.name}`
+              }
+            }
+            p.greet("Hello"); // OK
+            p.greet(123); // ERR: Argument of type '123' is not 
+                          // assignable to parameter of type 'string'.
+
+            const wrong:Person = {
+              name: "Susi", // OK
+              greet(greeting: number) { return "hello" } 
+                // ERR: Type '(greeting: number) => string' is not assignable to 
+                //      type '(greeting: string) => string'.
+                //      Types of parameters 'greeting' and 'greeting' are incompatible.
+                //      Type 'string' is not assignable to type 'number'.
+            }
+                           </code></pre>
+        </section>
+        <section>
+          <h2>Union Types</h2>
+          <p>Variablen, Parameter etc. können mehr als einen Typ annehmen:</p>
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+type Person = { name: string };
+type Movie = { title: string };
+
+function printNameOrTitle(obj: Person | Movie) { 
+
+  console.log(obj.title); // ERR: Property 'title' does not 
+                          // exist on type 'Person | Movie'
+ 
+  if ("title" in obj) { // Abfrage ist ein "Type Guard"
+    // obj ist Movie hier, title ist definiert
+    console.log(obj.title);
+  } else {
+    // obj ist Person hier: name ist definiert
+    console.log(obj.name);
+  }
+}
+
+printNameOrTitle({name: "Klaus"}); //OK
+printNameOrTitle({title: "Pulp Fiction"}); //OK
+printNameOrTitle({label: "Save"}); // ERR
+    
+          </code></pre>
+        </section>
+        <section>
+          <h2>Type Guards</h2>
+          <p>Durch einen Type Guard können Typen "eingeengt" werden</p>
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+type Person = { name: string };
+type Movie = { title: string };
+
+// Wenn diese Funktion true zurueckgibt, nimmt Typescript an,
+// dass das übergebene Argument vom Typ Movie ist
+function isMovie(candidate: any): candidate is Movie {
+  return ("title" in candidate);
+}
+
+function printNameOrTitle(obj: Person | Movie) { 
+  if (isMovie(obj)) {
+    // movie
+  }
+}
+    
+          </code></pre>
+        </section>
+        <section>
+          <h2>Type Assertions</h2>
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+type Person = { name: string };
+type Movie = { title: string };
+
+// Wenn diese Funktion zurueckkehrt (kein Error geworfen wird) nimmt Typescript an,
+// dass das übergebene Argument vom Typ Movie  ist
+function assertIsMovie(candidate: any): asserts candidate is  Movie {
+  if ("title" in candidate) {
+    return;
+  }
+  throw new Error("Candidate is not a movie!")
+}
+
+function printTitle(hopefullyAMovie: any) { 
+  assertPersonIsMovie(hopefullyAMovie)
+  // hopefullyAMovie ist jetzt Movie
+  hopefullyAMovie.title; // OK
+}
+    
+          </code></pre>
+        </section>
+        <section>
+          <h2>String Literal Types</h2>
+          <p>Beispiel: String Aufzählungstyp</p>
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+// Beispiel:             
+type View = "POST_LIST" | "POST_EDITOR";
+
+const s:View = "POST_LIST"; // OK
+const t:View = "POST_LISTE" // FEHLER
+
+function setView(v: VIEW) {
+    if (v === "POST_LIST") { ... } // ok
+    if (v === "POST_LISTE") { ... } // error: immer false
+}
+
+setView("POST_LIST"); //OK
+setView("POST_LISTE"); // ERROR
+          </code></pre>
+        </section>
+        <section id="t-typescript-react">
+          <h2>React Anwendungen mit TypeScript</h2>
+          <em
+            >State und Properties einer Komponente können mit TypeScript Typen beschrieben weden</em
+          >
+          <p>
+            Achtung! TypeScript-Dateien, die JSX-Code enthalten, <b>müssen</b> mit
+            <code>.tsx</code> enden!
+          </p>
+
+          <p>
+            👉 Lasst uns ausprobieren, wie das funktioniert! (<code>workspace-typescript</code>)
+          </p>
+        </section>
+        <section>
+          <h2>Typsicherheit in Funktionskomponenten</h2>
+          <pre><code class="line-numbers typescript" data-leftpad>
+type PostListProps = {
+  posts: BlogPost[];
+  onAddPost(): void;
+};
+            </code></pre>
+          <pre><code class="line-numbers typescript">
+function BlogList(props: PostListProps) {
+  props.posts.length // OK
+  
+  props.post // compile ERROR: Property 'post' does not exist on type 'PostListProps'.
+  props.onAddPost("huhu"); // compile ERROR: Expected 0 arguments, but got 1.
+}
+    
+            </code></pre>
+          <pre><code class="line-numbers typescript" data-leftpad>
+// Mit Destructuring
+function BlogList({posts, onAddPost}: GreetingMasterProps) => {
+  // ...
+}
+            </code></pre>
+        </section>
+
+        <section>
+          <h3>Typ-sichere Verwendung von Komponenten</h3>
+
+          <div>
+            <p>Code Completion</p>
+            <img style="height: 200px" src="slides/images/screenshot-ts-code_completion.png" />
+          </div>
+
+          <div>
+            <p>Unbekanntes Property</p>
+            <img style="height: 200px" src="slides/images/screenshot-ts-error-01.png" />
+          </div>
+
+          <div>
+            <p>Fehlerhafte Verwendung eines Properties</p>
+            <img style="height: 200px" src="slides/images/screenshot-ts-error-02.png" />
+          </div>
+        </section>
+
+        <section>
+          <h3>Typ-sicherheit in useState</h3>
+          <p>Der Typ von useState kann grundsätzlich von TypeScript hergeleitet werden</p>
+          <pre><code class="line-numbers typescript" data-leftpad>
+type PostEditorProps = {  onSavePost(post: NewBlogPost): void; };
+function PostEdior(props: PostEditorProps) {
+  const [title, setTitle] = React.useState("");
+
+  // greeting is string, because initial value is a string
+  setGreeting("huhu"); // OK
+  setGreeting(666); // ERROR (wrong Type)
+  setGreeting(null); // ERROR (wrong Type)
+}
+            </code></pre>
+          <div>
+            <p>Du kannst alternativ den Typen auch explizit setzen</p>
+            <p>Zum Beispiel notwendig, wenn der State mehr als einen Typen aufnehmen kann</p>
+            <pre><code class="line-numbers typescript" data-leftpad>
+type VIEW = "LIST" | "ADD";
+
+function App() {
+  const [view, setView] = React.useState&lt;VIEW>("LIST");
+
+  // Mode ist either string "MODE_MASTER" or "MODE_DETAIL"
+  // setMode only accepts the string "MODE_MASTER" and "MODE_DETAIL" 
+
+  setMode("NOT_FOUND"); // compile error
+  setMode(null); // compile error
+}
+                            </code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h2>React Events in TypeScript</h2>
+          <p>
+            Events in React sind Instanzen von <code>React.SyntheticEvent</code>, die die nativen
+            DOM Events wrappen (und so "ähnlich" aussehen)
+          </p>
+          <p>
+            In TypeScript gibt es für die konkreten Events eigene Typen (z.B. ChangeEvent,
+            MouseEvent)
+          </p>
+          <p>
+            Die Event-Typen erwarten einen Typ-Parameter, der auf den Typ des HTML Elements gesetzt
+            werden muss, das das Event auslöst
+          </p>
+          <p>TypeScript kennt dann die Eigenschaften des Events bei der Verarbeitung</p>
+          <span>
+            <pre><code class="line-numbers typescript" data-leftpad>
+function PostEditor(props) {
+  const [title, setTitle] = React.useState("");
+
+  function handleChange(e: React.ChangeEvent&lt;HTMLInputElement>) {
+    setTitle(e.currentTaget.value);
+  }
+
+  return &lt;input onChange={handleChange} value={title} />
+}              
+          </code></pre>
+            <a
+              href="https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11508#issuecomment-256045682"
+              target="_blank"
+            >
+              <code>target</code> vs
+              <code>currentTarget</code>
+            </a>
+          </span>
+        </section>
+
+        <section>
+          <h2>Übung: Typ-sichere React Komponenten</h2>
+          <h3>
+            <em>Füge die fehlenden Typ-Informationen zu der App-Anwendung hinzu</em>
+          </h3>
+          <div style="font-size: 80%">
+            <div>
+              <p>
+                <b>WORKSPACE:</b>
+              </p>
+              <p>
+                Bitte benutze den Workspace <code><b>blog-example/workspace-typescript</b></code
+                >. <br />Dieser enthält die letzte Version unserer Anwendung, ist aber mit
+                TypeScript konfiguriert.
+              </p>
+            </div>
+            <div>
+              <p>
+                <b>VORBEREITUNG:</b>
+              </p>
+              <ol class="x-list">
+                <li>Stop deinen laufenden "npm run"-Frontend-Prozess (ctrl+c)</li>
+                <li>
+                  Führe <code><b>npm install</b></code> in
+                  <code>blog-example/workspace-typescript</code> aus
+                </li>
+                <li>
+                  Führe <code><b>npm start</b></code> in
+                  <code>blog-example/workspace-typescript</code> aus
+                </li>
+              </ol>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3>Übung: Typ Informationen hinzufügen</h3>
+          <p>
+            Füge die fehlenden Typ-Informationen in <code>PostList.js</code> und
+            <code>PostEditor.js</code> hinzu
+          </p>
+          <ol style="font-size: 80%" class="x-list">
+            <li>
+              Benenne <code><b>PostList.js</b></code> in <code>PostList.tsx</code> um und starte
+              <code>npm start</code> neu
+            </li>
+            <li>Stelle <code>PostList.tsx</code> auf TypeScript um</li>
+            <li>
+              Der Type für die MessageProps ist:
+
+              <pre><code class="javascript">
+type MessageProps = {
+  msg: string;
+  type: "error" | "info"
+}
+              </code></pre>
+            </li>
+            <li>
+              Und für <code>style</code> in <code>Message</code>:
+              <pre><code class="javascript">
+const style: React.CSSProperties = type === "error" ? 
+  { color: "red", fontWeight: "bold" } : { color: "green" };
+              </code></pre>
+            </li>
+            <li>
+              Benenne <code><b>PostEditor.js</b></code> in <code>PostEditor.tsx</code> um und starte
+              <code>npm start</code> neu
+            </li>
+            <li>Stelle <code>PostEditor.tsx</code> auf TypeScript um</li>
+            <li>Weitere Informationen kannst Du in den Dateien finden.</li>
+            <li>Mögliche Lösung in <code>steps/5-typescript</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
+          </ol>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section id="data-libs">
+          <h2>Data Libraries für React</h2>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+### Basis Libraries
+
+* [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch): Browser Standard API, Low-Level, keinerlei Abstraktionen, quasi HTTP "pur"
+* [axios](https://github.com/axios/axios) bzw. [redaxios](https://github.com/developit/redaxios): Quasi-standard (aber kein Browser API). 
+  * Etwas höhere Abstraktion als fetch: HTTP Fehlercodes werden auf Exceptions gemappt, Payload automatisch von/nach
+JSON konvertiert)
+  * axios benutzt "Ajax", Redaxios selbe API aber basiert auf fetch (sehr kleine lib)
+  * alle React-unabhängig!
+* Verwendung mit dem [Effect-Hook](https://reactjs.org/docs/hooks-reference.html#useeffect), wo notwendig  
+              </textarea
+          >
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+
+## React Bibliotheken
+
+* Meine Liste: [https://gist.github.com/nilshartmann/decb10d37a76ae3ab58f0c7755beb038](https://gist.github.com/nilshartmann/decb10d37a76ae3ab58f0c7755beb038)
+
+---
+
+## Typischer Bibliothek-Stack
+
+* **Bibliotheken zum Arbeiten mit Server-Calls**
+  * [TanStack Query](https://tanstack.com/query/) (ehem. "React Query")
+  * [SWR](https://swr.vercel.app/)
+
+* **Testen von React Anwendungen**
+  * [Jest](https://jestjs.io/)
+  * [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+  * Beide Bibliotheken sind in `create-react-app`-basierten Anwendungen bereits enthalten!
+  * Siehe auch [Slides zum Testen](#/t-test)
+
+* **Router**
+  * [React Router](https://reactrouter.com/) (s. auch [Slides zum Router](#/t-router)) 
+
+---
+
+## Styling (CSS)
+
+* **CSS und CSS Modules**
+  * `create-react-app` unterstützt CSS und CSS Modules
+    * In "CSS Modules" wird CSS in einzelne "Module" aufgeteilt
+    * Die CSS Klassennamen werden automatisch erzeugt, so dass sie eindeutig sind
+  * Zusätzlich kann ein "CSS Präprozessor" (SASS benutzer werden.)
+    * Würde ich versuchen drauf zu verzichten
+* **CSS-in-JavaScript**
+  * Hier schreibt ihr CSS-Code in Euren JavaScript-Code
+    * Bibliotheken:
+      * [Styled Components ](https://styled-components.com)
+      * [Emotion](https://emotion.sh/docs/@emotion/react)
+* **Meine Empfehlung**
+  * CSS und CSS Modules
+    * je nach Browser-Support ist modernes CSS sehr mächtig
+    * CSS Variablen können z.B. für Themeing genutzt werden
+    * [PostCSS](https://postcss.org/) ist ein leichtgewichtiges Framework, das einige Erweiterungen für CSS mitbringt
+
+---
+
+## Texte und Formulare
+
+* **Internationalisierung**
+  * [react-i18next](https://react.i18next.com/)
+  * [react-intl](https://formatjs.io/docs/react-intl/)
+
+* Formulare:
+  * [React Hook Form](https://react-hook-form.com/)
+  * [Formik](https://formik.org/)
+  * [Redux Forms](https://redux-form.com/)
+  * Beispiel für React Hook Form (PostEditor): `steps/60-react-hook-form`
+
+---
+
+## Grids und Tabellen
+
+* "Klassiker" für Tabellen: [TanStack Table](https://tanstack.com/table) (ehemals "React Table")
+* [AG Grid](https://www.ag-grid.com/), kommerziell
+* [React Admin](https://marmelab.com/react-admin/): Erzeugt CRUD-Anwendungen für (REST) Endpunkte
+
+             </textarea
+          >
+        </section>
+
+        <section>
+          <h2>Anhang</h2>
+        </section>
+
+        <section id="t-test">
+          <h1>Teil VI</h1>
+          <h2>Testen von React Anwendungen</h2>
+        </section>
+
+        <section data-transition="slide none">
+          <h2>Was testen wir?</h2>
+          <ul>
+            <li><b>UI-unabhängige Logik</b> (zum Beispiel Backend Calls, Berechnungen etc.)</li>
+            <li>
+              <b>Rendering</b> (Ist die Liste der Blog Posts korrekt? Sieht das Markup aus, wie wir
+              uns das vorstellen?) und <b>Interaktionen</b> (funktionieren die Event Handler, die
+              Callback-Funktionen, der Programmfluß etc.?)
+            </li>
+            <li>
+              <b>Verhalten im Browser</b> (z.B. korrekte, pixelgenaue Darstellung,
+              Browser-spezifisches JavaScript, Arbeiten mit Browser-Technologie wie Titelzeile,
+              Session Storage, Scrollbars etc)
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Jest</h1>
+          <p>
+            <em
+              >"Delightful JavaScript Testing" (
+              <a href="https://jestjs.io/" target="_blank">https://jestjs.io/</a>)</em
+            >
+          </p>
+          <p>Vollständige Testlösung für React (und andere):</p>
+          <ul>
+            <li>API vergleichbar mit <a href="https://jasmine.github.io/">Jasmine</a></li>
+            <li>Test Runner</li>
+            <li>Specs/Assertions, Mocks</li>
+            <li>Code Coverage</li>
+            <li>"Snapshot testing"</li>
+          </ul>
+        </section>
+        <section>
+          <h4>Jest</h4>
+          <h3>Beispiel: Ein einfacher Testfall</h3>
+          <pre><code class="javascript"  >// sum.js (or sum.ts)
+export const sum = (a,b) => a+b;
+        </code></pre>
+          <pre><code class="javascript"  >// sum.test.js
+import {sum} from '../sum.js';
+
+test('sum of 2 and 2 is 4', () => {
+  expect(sum(2, 2)).toBe(4);
+});
+
+test('sum of 2 and 2 is not 3', () => {
+  expect(sum(2, 2)).not.toBe(3);
+});
+            </code></pre>
+        </section>
+        <section>
+          <h4>Jest</h4>
+          <h2>Testcases</h2>
+          <p>
+            <code>test</code> oder
+            <code>it</code>
+          </p>
+          <pre><code>test('it should work', () => {
+  expect(...).toBe(...);
+});</code></pre>
+          <pre><code>it('it should also work', () => {
+  expect(...).toBe(...);
+});</code></pre>
+        </section>
+
+        <section>
+          <h4>Jest</h4>
+          <h2>"Expectations" und "Matchers"</h2>
+          <div>
+            <p>
+              <code>expect()</code> liefert ein <em>Expectation</em> Objekt zurück, das verschiede
+              <em>Matcher</em> Funktionen bereitstellt:
+            </p>
+            <pre><code>expect(actual).toXyz(expected);
+// for example:
+expect("Hello Jest").toBe("Hello Jest"); // => ok
+        </code></pre>
+          </div>
+          <div>
+            <p>Beispiele für Matchers</p>
+
+            <pre><code>// Compare identity
+expect(actual).toBe(expected);
+// Compare value:
+expect(actual).toEqual(expected);
+// true / false / null:
+expect(actual).toBeTruthy();
+expect(actual).toBeFalsy();
+expect(actual).toBeNull();
+// Length (Array oder String)
+expect(actual).toHaveLength(123);
+        </code></pre>
+          </div>
+          <p>
+            <a href="https://jestjs.io/docs/en/expect">https://jestjs.io/docs/en/expect</a>
+          </p>
+        </section>
+
+        <section>
+          <h4>Jest</h4>
+          <h2>Mock Funktionen</h2>
+          <ul>
+            <li>
+              <code>jest.fn()</code> erzeugt eine Mock-Funktion
+              <pre><code>// Gibt undefined zurück, wenn die Mock-Funktion ausgeführt wird
+const aMockFn = jest.fn();
+
+const x = aMockFn("huhu"); // => undefined
+expect(x).toBeUndefined();
+
+expect(aMockFn).toHaveBeenCalled());
+expect(aMockFn.toHaveBeenCalledWith("huhu"));
+                      </code></pre>
+            </li>
+
+            <li>
+              Implementierung der Mock-Funktion kann als Parameter übergeben:
+              <pre><code>
+        const aMockFn = jest.fn( param => `Hello, ${param}` );
+        
+        console.log(aMockFn('World'));
+        // => Hello, World
+                  </code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Testen von React Komponenten</h3>
+          <h2>Nur rendern</h2>
+        </section>
+
+        <section>
+          <h3>React Test Renderer</h3>
+          <p>
+            <a href="https://www.npmjs.com/package/react-test-renderer"
+              >https://www.npmjs.com/package/react-test-renderer</a
+            >
+          </p>
+          <p>Rendert React Komponenten in JSON Objekte (ohne DOM):</p>
+          <pre><code class="javascript"  >import renderer from 'react-test-renderer';
+
+const component = renderer.create(
+  &lt;PostList posts={somePosts} />
+);
+
+console.log(component.toJSON());
+            </code></pre>
+          <pre><code class="javascript"  >
+        { type: 'div',
+          props: {},
+          children:  [
+            { type: 'button', props: {}, children: [Object] },
+            { type: 'article', props: [Object], children: [Object] },
+            { type: 'article', props: [Object], children: [Object] }
+          ]
+        }
+            </code></pre>
+        </section>
+        <section>
+          <h3>"Snapshot Testing" mit Jest</h3>
+          <p>
+            <code>expect(obj).toMatchSnapshot()</code> vergleicht ein erzeugtes JSON-Objekt mit
+            einem gespeicherten JSON-Objekt aus einer Datei:
+          </p>
+          <ul>
+            <li>
+              Bei der <b>ersten</b> Ausführung: Snapshot-Datei wird angelegt (
+              <a href="slides/images/jest-snapshot-file.png" target="_blank">Beispiel</a>)
+              <ul>
+                <li>Die Snapshot-Datei wird nun in Git eingecheckt</li>
+              </ul>
+            </li>
+            <li>
+              In den <b>folgenden</b> Test Ausführungen: ein neuer Snapshot wird jeweils erzeugt und
+              mit dem <b>gespeicherten</b> Snapshot verglichen
+            </li>
+            <li>
+              Wenn die Snapshots nicht identisch sind:
+              <ul>
+                <li>
+                  Fehler mit Unterschieden (<a
+                    href="slides/images/jest-snapshot-diff.png"
+                    target="_blank"
+                    >Beispiel</a
+                  >)
+                </li>
+                <li>
+                  Im "watch mode" von Jest kann der Snapshot aktualisiert werden
+                  <img src="slides/images/jest-snapshot-update.png" />
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Snapshot Tests mit Jest und React</h3>
+          <pre><code class="javascript"  >import renderer from 'react-test-renderer';
+        
+test('it should render correctly', () => {
+
+  const somePosts = [ . . . ];
+
+  const component = renderer.create(
+    &lt;PostList posts={somePosts} />
+  );
+
+  expect(component.toJSON()).toMatchSnapshot();
+});
+            </code></pre>
+        </section>
+
+        <section>
+          <h3>Testing React Components #2</h3>
+          <h2>Interaktionen</h2>
+        </section>
+
+        <section>
+          <h3>react-testing-library</h3>
+          <p>
+            <em
+              >"Simple and complete React DOM testing utilities that encourage good testing
+              practices."
+            </em>
+          </p>
+
+          <p>
+            <a href="https://github.com/testing-library/react-testing-library" target="_blank"
+              >https://github.com/testing-library/react-testing-library</a
+            >)
+          </p>
+          <p>
+            Philosophie: Tests werden aus User-Perspektive geschrieben. Das bedeutet, um die zu
+            testenden Elemente zu finden, suchst Du nach Eigenschaften, nach denen auch ein User
+            suchen würde (z.B. Labels, Placeholder etc.)
+          </p>
+          <p>👉 <code>workspace-typescript</code></p>
+        </section>
+        <section>
+          <h3>react-testing-library</h3>
+          <p>Example</p>
+          <pre><code class="javascript"  >
+            import { render, screen } from "@testing-library/react";
+            import userEvent from "@testing-library/user-event";
+
+            it("invokes callback on button click", () => {
+              const onAddPostFn = jest.fn();
+            
+              // Render
+              render(&lt;PostList onAddPost={onAddPostFn} posts={mockPosts} />);
+            
+              // search the button
+              const buttonElement = screen.getByRole("button", { name: "Add Post" });
+
+              // "click" the button
+              userEvent.click(buttonElement);
+            
+              // make sure it has been invoked
+              expect(onAddPostFn).toHaveBeenCalled();
+            });
+
+
+            </code></pre>
+        </section>
+
+        <section>
+          <h3>Die render-Funktion</h3>
+          <ul>
+            <li>
+              Die render-Function aus der react-testing-library wird im Test verwendet, um eine
+              React Komponente (ohne Browser) zu rendern
+            </li>
+            <li>Genauso wie in der Anwendungen können Properties angegeben werden</li>
+            <li>
+              <pre><code class="javascript"  >
+import { render } from "@testing-library/react";
+  
+// Render a single component
+render(&lt;PostList onAddPost={onAddPostFn} posts={mockPosts} />);
+            </code></pre>
+            </li>
+            <li>
+              Dran denken, ggf. Contexte ebenfalls zu erzeugen, falls diese benötigt werden (React
+              Router, Redux etc)!
+            </li>
+            <li>
+              <pre><code class="javascript"  >
+
+// Render with surrounding Redux Provider (or Router, your own Context etc.)
+render(
+  &lt;Provider>
+    &lt;PostList onAddPost={onAddPostFn} posts={mockPosts} />
+  &lt;/Provider>
+);
+            </code></pre>
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h3>query Funktionen</h3>
+          <p>
+            Um die gerenderten HTML-Elemente aus deiner Komponente zu überprüfen und mit ihnen zu
+            interagieren, musst Du sie ersteinmal finden 🤓
+          </p>
+          <p>
+            Auf dem globalen <b>screen</b> Objekt der Testing-Lib sind verschiedene Funktionen
+            definiert, mit denen Du nach Elementen suchen kannst
+          </p>
+          <p>
+            Die query-Funktionen haben unterschiedliche <b>Suffixe</b>, die beschreiben,
+            <b>nach welchem Kriterium</b> Du suchst (nach Label, nach aria-role, ...)
+          </p>
+          <p>
+            Die Funktionen haben außerdem jeweils einen <b>Präfix</b> (getBy, queryBy etc) der
+            beschreibt, die Art des Rückgabewerts der jeweilgen Funktion (z.B. ob sie einen Error
+            wirft oder null zurückgibt, wenn das angefragte Element nicht gefunden wurde)
+          </p>
+          <p>
+            Mehr zu den query-Funktionen:
+            <a
+              target="_blank"
+              href="https://testing-library.com/docs/react-testing-library/cheatsheet#queries"
+              >React Testing Library Cheatsheet</a
+            >
+          </p>
+
+          <pre><code class="javascript">
+  // BEISPIELE: 
+
+  // suche nach einem Button (Annahme: es gibt GENAU EINEN, ansonsten schlägt der Test fehl)
+  const buttonElement = screen.getByRole("button", { name: "Add Post" });
+
+  // suche nach einem Button (gibt null oder EINEN Button, wirft ansonst einen Fehler)
+  const buttonElement = screen.queryByRole("button", { name: "Add Post" });
+
+  // suche nach einem Button (gibt alle gefunden zurück oder ein leeres Array)  
+  const buttonElement = screen.queryAllByRole("button", { name: "Add Post" });
+</code></pre>
+        </section>
+
+        <section>
+          <h3>Überprüfen von Elementen</h3>
+          <p>
+            Wenn Du dein gesuchtes Elemente gefunden hast, kannst Du es überprüfen, ob es deinen
+            Erwartungen entspricht (korrekte Attribute gesetzt etc.)
+          </p>
+          <p>
+            Die Bibliothek
+            <a href="https://github.com/testing-library/jest-dom" target="_blank">jest-dom</a> fügt
+            dazu DOM-spezifiche Matcher für Jest hinzu.
+          </p>
+
+          <pre><code class="javascript">
+  import { screen } from "@testing-library/react";
+
+  const buttonElement = screen.queryByRole("button", { name: "Add Post" });
+
+  // stellt sicher, dass das Element im DOM vorhanden ist (getBy-Query würde hier vielleicht mehr Sinn machen)
+  expect(buttonElement).toBeInTheDocument();
+
+  // sicherstellen, dass ein Eingabefeld einen erwarteten Wert hat
+  expect(titleInput).toHaveValue("Moin moin");
+
+  // sicherstellen, dass ein Button disabled ist
+  expect(okButton).toBeDisabled();
+</code></pre>
+          <p>Alle Matcher sind auf der oben verlinkten GitHub Seite dokumentiert</p>
+        </section>
+        <section>
+          <h3>Interaktionen</h3>
+          <p>
+            Du kannst mit den Elementen interagieren, in dem Du ihnen Events sendest, genau wie es
+            ein Browser tun würde
+          </p>
+          <p>
+            Es gibt eine weitere Bibliothek,
+            <a href="https://github.com/testing-library/user-event" target="_blank"> user-event</a>,
+            die dir dabei hilft, die Events zu erzeugen.
+          </p>
+
+          <pre><code class="javascript">
+            import userEvent from "@testing-library/user-event";
+            // Simuliert die Eingabe in ein Textfeld
+            userEvent.type(titleInput, "New Title");
+
+            // Simuliert den Klick auf einen Button
+            userEvent.click(clearButton);
+          </code></pre>
+          <p>Alle Events sind auf der GitHub Seite beschrieben (Link oben)</p>
+
+          <p>
+            Vor dem Versenden eines Events musst Du <b>nicht</b> überprüfen, ob das Element, dem Du
+            das Event senden willst, vorhanden ist. Die Bibliothek gibt eine sehr sprechende Fehler
+            aus, wenn das Element nicht vorhanden ist
+          </p>
+        </section>
+        <section>
+          <h3>Testen von fetch-Aufrufen</h3>
+          <p>Herausforderungen:</p>
+          <ul>
+            <li>Asynchroner Code (nicht beschränkt auf fetch)</li>
+            <li>Server Zugriffe/Server Mocks</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Behandlung von asynchronem code</h3>
+        </section>
+
+        <section>
+          <h3>Testen von asynchronem Code</h3>
+          <p>
+            Beispiel: Die <b>App</b> Komponente lädt Daten, <em>erst dann</em> stellt sie die
+            PostList dar. Das Laden der Posts ist asynchron.
+          </p>
+
+          <pre><code class="javascript">
+            it("should render posts read from backend", () => {
+              render(&lt;App />);
+            
+              // Annahme: es gibt einen Artikel mit dem Title "Learning React"
+              const articleOne = screen.findByRole("heading", { name: "Learning React" });
+
+              expect(articleOne).toBeInTheDocument(); // THIS WON'T WORK!
+            });
+          </code></pre>
+          <p>
+            Wir können einen Test als async-funktion schreiben und darin mit <b>await</b> auf ein
+            Element warten
+          </p>
+          <pre><code class="javascript">
+            // Test-Funktion als async-Funktion (beachte 'async'):
+            it("should render posts read from backend", async () => {
+              render(&lt;App />);
+            
+              // Beachte await hier:
+              const articleOne = await screen.findByRole("heading", { name: "Learning React" });
+
+              expect(articleOne).toBeInTheDocument(); // YIPPIE, WORKS
+            });
+          </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Testen von fetch</h3>
+          <p>Wie gesehen, können wir asynchronen Code testen</p>
+          <p>Wollen wir fetch-Aufrufe in unserem Code haben, den wir testen?</p>
+          <p>
+            Möglicherweise nicht, weil wir bei echten fetch-Aufrufen auch einen echten, laufenden
+            und funktionierenden Server im Test bräuchten
+          </p>
+          <p>Stattdessen wollen wir das "echte" fetch mocken</p>
+        </section>
+
+        <section>
+          <h3>Fetch mocken, Ansatz #1</h3>
+          <p>Wir können <b>komplette Module</b> in Jest mocken</p>
+          <p>Wir könnten unseren fetch-Code in ein eigenes Modul schieben und das dann mocken</p>
+
+          <pre><code class="javascript">
+            // api.ts (fetch vereinfacht!)
+            export function readPosts() {
+              return fetch("http://localhost:7000/posts").then(response => response.json());
+            }
+          </code></pre>
+
+          <pre><code class="javascript">
+            // App.tsx:
+
+            import { readPosts } from "./api";
+            function App() {
+              // ...
+              React.useEffect(() => {
+                // Verwenden von readPosts hier:
+                readPosts()
+                  .then(json => {
+                    setLoading(false);
+                    setPosts(json);
+                  })
+                  .catch(err => console.error("Loading data failed: " + err));
+              }, []);
+            }
+          </code></pre>
+        </section>
+        <section>
+          <h3>Mocken von Modulen in Jest</h3>
+          <p>Es gibt mehrere Varianten. Das hier die einfachste(?)</p>
+
+          <pre><code class="javascript">
+            // App.test.tsx
+
+            const mockPosts = [
+              { id: "1", title: "One Fetch Mock", body: "Lorem ipsum" },
+              { id: "2", title: "Second Post Fetch Mock", body: "Some more content" }
+            ];
+
+            jest.mock("../api", () => ({
+              readPosts: () => Promise.resolve(mockPosts)
+            }));
+
+            it("should render posts read from backend", async () => {
+              render(&lt;App />);
+            
+              // Hier immer noch asnychroner Code (deswegen await), aber:
+              // kein laufender Server mehr benötigt
+              const articleOne = await screen.findByRole("heading", { name: "One" });
+              expect(articleOne).toBeInTheDocument();
+
+              expect(screen.getByText("Second Post")).toBeInTheDocument();
+            });
+          </code></pre>
+          <p>
+            Beispiel:
+            <code
+              >blog-example/steps/6a-testing-with-api-module/src/__tests__/App_module_mock.test.tsx</code
+            >
+          </p>
+        </section>
+        <section>
+          <h3>Ansatz #2: fetch API mocken</h3>
+          <p>Es gibt mehrere Bibliothken mit fetch-Mocks</p>
+          <p>
+            Für mich funktioniert
+            <a href="https://www.npmjs.com/package/jest-fetch-mock" target="_blank"
+              >jest-fetch-mock</a
+            >
+            am Besten
+          </p>
+
+          <pre><code class="javascript">
+            // App.test.tsx
+            it("should render posts read from backend", async () => {
+              // setzen des Ergebnisses, das der nächste fetch-Aufruf zurückliefern soll
+              fetchMock.mockResponse(JSON.stringify(mockPosts));
+
+              render(&lt;App />);
+            
+              // Immer noch asynchroner Code, aber kein "echter" fetch-Aufruf mehr,
+              // zurückgegeben wird das oben angegebene Ergebnis
+              const articleOne = await screen.findByRole("heading", { name: "One Fetch Mock" });
+
+              expect(articleOne).toBeInTheDocument();
+            });
+
+          </code></pre>
+          <p>
+            Beispiel:
+            <code
+              >blog-example/steps/6a-testing-with-api-module/src/__tests__/App_jest_mock.test.tsx</code
+            >
+          </p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Ansatz #3: Mock Service Worker (MSW)</h3>
+
+          <p><a href="https://github.com/mswjs/msw" target="_blank">MSW</a></p>
+          <p>
+            MSW mockt echte Server-Aufrufe mit einem
+            <a href="https://developer.mozilla.org/de/docs/Web/API/Service_Worker_API"
+              >Service Worker</a
+            >
+          </p>
+          <p>
+            fetch-Aufrufe werden "richtig" ausgeführt, aber beantwortet von dem Service Worker Mock
+          </p>
+
+          <pre><code class="javascript">
+            // PostList.test.js
+            import { rest } from 'msw'
+            import { setupServer } from 'msw/node'
+            
+            const server = setupServer(
+              rest.get('/posts', (req, res, ctx) => {
+                return res(ctx.json( mockPosts ))
+              }),
+            )
+
+            test("it should render blog list", async () => {
+              render(&lt;PostList />);
+              // ...
+            })
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Übung: Ein Test für den PostEditor</h2>
+          <p>Schritte:</p>
+          <ol>
+            <li>Arbeite in <code>blog-example/workspace-typescript</code></li>
+            <li>Starte in einem neuen Terminal <code>npm test</code> (der Prozess läuft "ewig")</li>
+            <li>
+              Es sollte einen fehlerhaften Test geben:
+              <b><code>PostEditor.test.tsx</code></b
+              >.
+            </li>
+            <li>Warum? Weil der noch leer ist 😬!</li>
+            <li>
+              Implementiere den fehlenden Test. In der Datei<b><code>PostEditor.test.tsx</code></b>
+              stehen TODOs dafür
+            </li>
+            <li>
+              Hinweis: wenn Du die Datei speicherst, werden die Tests automatisch neu ausgeführt
+              (solange Du
+              <code>npm test</code> noch laufen hast), ansonsten kannst Du "a" auf der Kommandozeile
+              drücken, zum erneuten Ausführen der Tests.
+            </li>
+            <li>Mögliche Lösung in <code>steps/6-test</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>Browser Tests</h2>
+          <p>Häufig eingesetzt:</p>
+          <ul>
+            <li>
+              <a href="https://www.selenium.dev/">Selenium - The "classic"</a>
+            </li>
+            <li>
+              <a href="https://devexpress.github.io/testcafe/" target="_blank">TestCafe</a> (mit
+              Support für sehr viele Browser, u.a. auch Cloud-Service
+              <a href="https://www.browserstack.com/" target="_blank">BrowserStack</a>
+            </li>
+            <li><a href="https://www.cypress.io/" target="_blank">Cypress</a></li>
+            <li>
+              In TestCafe und Cypress werden die Tests in JavaScript/TypeScript geschrieben,
+              Selenium gibt's für mehrere Sprachen
+            </li>
+          </ul>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+            <!-- .slide: id="t-router" -->            
+## Routing in React
+
+* Anforderungen:
+  * URLs auf Komponenten abbilden
+  * (Interne) Links, die die Anwendung neu rendern, ohne zum Server zu gehen
+* React bringt keinen Router mit
+* In der Regel wird der [https://reactrouter.com/](https://reactrouter.com/) verwendet
+
+---
+
+## Der React Router
+
+* Homepage: [https://reactrouter.com/](https://reactrouter.com/)
+* Aktuelle Version v6
+* Achtung: Verhalten und API haben sich in Version 4, 5 und 6 geändert.
+  * Bei Beispielen/Dokumentation/Tutorial etc. die Version beachten!
+
+---
+
+## Der React Router
+
+### Beispiel
+
+```jsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+export default function App() {
+  &lt;Routes>
+    &lt;Route path="/" element={<Page />}>
+      &lt;Route index element={<PostListPage />} />
+      &lt;Route path="/post/:postId" element={<PostPage />} />
+      &lt;Route path="/add" element={<PostEditor onSavePost={savePost} />} />
+      &lt;Route path="*" element={<NotFoundPage />} />
+    &lt;/Route>
+  &lt;/Routes>
+}  
+```
+
+---
+
+### Die Router-Komponente
+
+* Als oberste Komponente muss eine `Router`-Komponente gerendert werden
+  * Nur unterhalb (direkt oder indirekt) darf mit `Routes` und `Route` gearbeitet werden
+* Router fest, welche URLs generiert werden soll:
+* [`HashRouter`](https://reactrouter.com/docs/en/v6/routers/hash-router): Die Route wird durch Hash-Zeichen (`#`) getrennt hinter die URL geschrieben (Beispiel: `http://loalhost:8080#/post/1`)
+  * Änderungen in der URL hinter dem Hash-Zeichen führen im Browser nicht zum Neuladen der Seite vom Server!
+  * Der Server wird also beim Seitenwechsel nie kontaktiert
+* [`BrowserRouter`](https://reactrouter.com/docs/en/v6/routers/browser-router): Die Route wird direkt hinter die URL geschrieben. Sieht dann aus wie eine "normale" Route vom Server (Beispiel: `http://localhost:8080/post/1`)  
+  * Empfohlene Implementierung
+  * Bei der Navigation durch die Anwendung unterbindet der Router Server-Requests
+  * Aber beim initalen Laden muss der Server sicherstellen, dass die URL gefunden wird
+    * Dazu muss der Webserver entsprechend konfiguriert werden ("/..." -> index.html)
+
+---
+
+### Konfiguration der Routen: Welche Komponente soll für welche Route angezeigt werden?
+
+* Mit [Routes und Route](https://reactrouter.com/docs/en/v6/components/route)-Komponenten gibt es eine Art "intelligentes" switch- oder if/else-Statement
+* `Route`-Komponenten müssen mit `Routes` umschlossen werden. Nach jedem Ändern der URL prüft der Router alle `Routes`-Komponenten in allen `Route`-Komponenten der Anwendung
+* ```javascript
+  &lt;Routes>
+    &lt;Route path="/" element={&lt;App />} /> 
+    &lt;Route path="/blog" element={&lt;App />} />
+  &lt;/Routes>
+```
+* `Route` funktioniert wie ein `if`-Statement: `if (path === "/post") renderElement &lt;Post />`
+
+---
+
+### Verschachtelte Routen
+
+* `Route`-Komponenten können geschachtelt werden, um Hierchien abzubilden
+* In den Child-Komponenten werden dann relative Pfade angegeben
+* ```javascript
+  &lt;Routes>
+    &lt;Route path="/" element={&lt;App />}> &lt;!-- Rendert "/" -->
+      &lt;Route path="blog" element={...}> &lt;!-- Rendert "/blog" -->
+        &lt;Route path="new" element={...}/> &lt;!-- Rendert "/blog/new" -->
+        &lt;Route path="post/:id" element={...}/> &lt;!-- Rendert "/blog/post/1" -->
+      &lt;/Route>
+    &lt;/Route>    
+  &lt;/Routes>    
+```
+* Die Oberkomponente muss dann jeweils die Unterkomponenten rendern
+  * Das funktioniert mit der [`<Outlet />`](https://reactrouter.com/docs/en/v6/components/outlet)-Komponente
+  * ```javascript
+    function App() {
+      return &lt;div className="App">
+        &lt;h1>Blog App</h1>
+        &lt;Outlet />
+      &lt;/div>
+  }
+```    
+
+---
+
+### Index Routes
+
+* Bei verschachtelten Routen muss für die Ober-Route eine Index Route gerendert werden
+* Beispiel:
+* ```javascript
+  &lt;Routes>
+    &lt;Route path="/" element={&lt;App />}> 
+      &lt;Route path="blog" element={&lt;Blog />} />
+    &lt;/Route>    
+  &lt;/Routes>    
+```
+* Hier wird `Blog` als `Outlet` in `App` für `/blog` gesetzt. Aber kein Outlet für `/`
+* Dazu muss eine Index-Route definiert werden. Die wird unterhalb der Ober-Route eingesetzt und
+  wird dann gerendert, wenn genau der Pfad der Ober-Route aufgerufen wird
+* Statt `path` wird darin einfach `index` angegeben:  
+  * ```javascript
+    &lt;Routes>
+      &lt;Route path="/" element={&lt;App />}> 
+        &lt;Route index element={&lt;Home /> } /> &lt;!-- Rendert "App" mit Outlet "Home" für "/" -->
+        &lt;Route path="blog" element={&lt;Blog />} /> &lt;!-- Rendert "App" mit Outlet "Blog" für "/blog" -->
+      &lt;/Route>    
+    &lt;/Routes>    
+```
+
+
+---
+
+### Fallback Route
+
+* Mit `path="*"` kann eine Fallback-Route angegeben werden, die aktiv ist, wenn keine andere Route passt
+* Beispiel:
+* ```javascript
+    &lt;Routes>
+      &lt;Route path="/" element={&lt;App />}> 
+        &lt;Route path="blog" element={&lt;Blog />} />
+
+        &lt;Route path="*" element={&lt;NotFound />} /> &lt;!-- Für alle Route, außer / und /blog -->
+      &lt;/Route>    
+    &lt;/Routes>    
+  ```
+
+---
+
+### Dynamische Parameter
+
+* In einer Route können Platzhalter ("Parameter") angegeben werden
+* Auf die entsprechenden Werte kann in einer Komponente mit `useParams` zugegriffen werden
+* ```javascript
+  export default function App() {
+    &lt;Routes>
+      &lt;Route path="/" element={<Page />}>
+        &lt;Route path="/post/:postId" element={<PostPage />} />
+      &lt;/Route>
+    &lt;/Routes>
+  }
+
+  function PostPage() {
+    const { postId } = useParams(); 
+    //  /post/p1  postId: "p1"
+    //  /post/1  postId: "1"
+  }
+  ```  
+
+---
+
+### Links
+
+* Links müssen mit der [`Link`](https://reactrouter.com/docs/en/v6/components/link)-Komponente gerendert werden
+* ```javascript
+  function PostTeaser({post}) {
+    return &lt;div>
+      &lt;h1>{post.title}&lt;/h1>
+      &lt;Link to={`/post/${post.id}`}>Read more&lt;/Link>
+    &lt;/div>  
+  }
+```
+* Die `Link`-Komponente rendert ein `a`-Element, verhindert aber, dass der Browser Serveraufrufe durchführt,
+  wenn darauf geklickt wird
+* Das gilt nur für interne Links, externe Links wie gewohnt mit HTML `a`-Element
+* Alternative: [`NavLink`](https://reactrouter.com/docs/en/v6/components/nav-link) weiß, ob der `to`-Pfad
+  der gerade aktiven Route entspricht und kann sich dann anders darstellen ("Aktiver Link", "Aktiver Tab", ...)
+  * ```javascript
+    function NavBar() {
+      return &lt;div>
+        &lt;NavLink to={`/home}`} className={active => active ? "Tab--active":"Tab--default" }>Home&lt;/Link>
+        &lt;NavLink to={`/about}`} className={active => active ? "Tab--active":"Tab--default" }>About&lt;/Link>
+        &lt;NavLink to={`/profile}`} className={active => active ? "Tab--active":"Tab--default" }>Profile&lt;/Link>
+      &lt;/div>  
+    }
+```
+* Mit `className` und `style` können Callback-Funktionen übergeben werden, die das konkrete Styling/CSS Klasse je nach Zustand
+  (active bzw not-active) zurückliefern. 
+
+---
+
+### Navigation per API
+
+* Die [`Navigate`](https://reactrouter.com/docs/en/v6/components/navigate)-Komponente kann gerendert werden,
+  wenn eine Komponente beim Rendern einen Redirect machen möchte
+* ```javascript
+  function BlogPost() {
+    const [error, setError] = useState(false);
+    const [post, setPost] = useState(null);
+
+    useEffect( () => fetch(...).catch(e => setError(true)), [] );
+
+    if (error) {
+      return &lt;Navigate to="/error" />
+    }
+
+    return &lt;BlogPost post={post} />
+  }
+  ```  
+* Mit [`useNavigate`](https://reactrouter.com/docs/en/v6/hooks/use-navigate) kann auch per API, z.B. in einem Event Handler, ein Redirect gemacht werden:
+* ```javascript
+  function LogoutButton() {
+    const useNaviate = useNavigate();
+
+    function handleClick() {
+      navigate("/");
+    }
+
+    return &lt;button onClick={handleClick}>Logout&lt;/button>
+  }
+  ```  
+
+
+
+  </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+### Data Libraries für React: Anforderungen
+
+* Daten laden/schreiben, HTTP GET, POST, PUT, DELETE, ...
+* Caching samt korrektem Invalidieren...
+* Requests sollen nicht bei jedem Rendern ausgeführt werden
+* globales(!) Caching: Daten sollen über Komponentengrenzen und -wechsel erhalten bleiben
+* Re-fetching?
+* Fehlerbehandlung
+* Request-Lebenszyklus: Läuft mein Request noch? (Wie) wurde er beendet? 
+              </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+                ### Data Libraries für React: Typische Vertreter
+    
+                * [SWR](https://swr.vercel.app/)
+                * [TanStack Query](https://tanstack.com/query/) (ehemals "React Query")
+                * Redux: [Redux Toolkit Query](https://rtk-query-docs.netlify.app/)
+                * Erste(?) Lib dieser Art: [Apollo](https://www.apollographql.com/docs/react/) (für GraphQL)
+                * Idee bei allen ähnlich: es gibt einen Custom-Hook, der Daten lädt/schreibt, man bekommt Request Status/Daten zurück, Ergebnisse werden gecached
+                * [React Router ab v6.4](https://beta.reactrouter.com/en/dev/routers/data-browser-router) - zurzeit noch Beta!
+              </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Beispiel: TanStack Query
+
+* Früher: React Query
+
+* Workspace `01-tanstack-query-beispiel`
+*  - Implementieren: User
+*  - Implementieren: Post
+*  - Implementieren: Sidebar
+*  - Implementieren: Mutation
+
+---
+
+### Der QueryClient
+
+* Zentrales Konfigurationsobject: `QueryClient`
+  * React-unabhängig
+* Wird beim Starten der Anwendung initialisiert
+  * Oft reichen Default-Einstellung
+  * Es können aber z.B. globale Refetch-Policies eingestellt werden
+* Das Objekt wird per QueryClientProvider in die Anwendung gereicht
+* ```typescript
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false
+      }
+    }
+  });
+
+  function App() {
+    return <QueryClientProvider client={queryClient}>
+      <Routes>
+        ...
+      </Routes>
+    </QueryClientProvider>
+  }
+
+  ```
+
+---
+
+### Laden von Daten: useQuery
+
+* Queries werden mit dem [useQuery-Hook](https://tanstack.com/query/v4/docs/guides/queries) ausgeführt
+* Der Hook erwartet bis zu drei Parameter:
+  * Array mit Query Keys (zur Interaktion mit dem Cache)
+  * Funktion zum Laden der Daten
+  * Weitere Konfigurationen (optional)
+  * Es kann ein Typ-Parameter angegeben werden, der den Rückgabe-Typen
+    (also den Typ der geladenen Daten) beschreibt
+* ```typescript
+  import { useQuery } from "react-query";
+  import { loadBlogPosts } from "./blog-api";
+  function BlogListPage() {
+
+    const result = useQuery<BlogPost[]>(['posts'], loadBlogPosts);
+
+    // ...
+  }
+  ```
+
+---
+
+### Query Keys
+
+* Mit den [Query Keys](https://tanstack.com/query/v4/docs/guides/query-keys) wird ein Ergebnis im Cache gespeichert
+* Ein Query Key besteht aus einem Array von Werten
+* Üblicherweise ist es ein Name (z.B. "posts") und dann ggf. die Query-Parameter (z.B. "P1")
+* ```typescript
+  import { useQuery } from "react-query";
+  import { loadBlogPosts } from "./blog-api";
+
+  function BlogPage({blogPostId}) {
+
+    // Für jeden Aufruf mit einer neuen blogPostId
+    //  wird das Ergebnis separat in den Cache gelegt
+    const result = useQuery(['blogPost', blogPostId], () => loadPost(blogPostId) );
+
+    // ...
+  }
+  ```
+* Wenn ein Query mit denselben Query Keys in mehr als einer Komponente ausgeführt wird
+  * stellt TanStack Query sicher, dass der Query nur einmal ausgeführt wird
+  * wenn sich das Ergebnis ändert, werden alle Komponenten, die den Query verwenden,
+    automatisch aus dem Cache aktualisiert
+---
+
+### Query Function
+
+* `useQuery` erwartet eine [Query-Function](https://tanstack.com/query/v4/docs/guides/query-functions), die den eigentlichen Request ausführt
+* Die Signatur ist fast beliebig, die Funktion muss aber ein Promise zurückliefern:
+  * Wenn die Daten erfolgreich geladen wurden, muss das Promise mit den Daten "aufgelöst" werden
+  * Wenn es einen Fehler gab, muss die Funktion einen Fehler werfen
+* ```typescript
+  export async function loadBlogPost(postId: string): Promise<BlogPost> {
+    const response = await fetch("http://localhost:7000/posts" + postId);
+
+    if (!response.ok) {
+      throw new Error("Could not load blog post: " + response.status);
+    }
+
+    return response.json();
+  }
+  ```
+
+---
+
+### Rückagebwert von `useQuery` (Query Ergebnis)
+
+* `useQuery` liefert ein Objekt zurück:
+  * `status`, gibt Informationen über den aktuellen Status des Queries:
+    * `error`: Es ist ein Fehler aufgetreten
+    * `loading`: Der Query lädt noch (und es sind keine Daten im Cache)
+    * `success`: Daten sind geladen
+  * `data` enthält die geladenen Daten (wenn `status === 'success'`)
+  * `error`: Fehlerobjekt aus der Query-Funktion ( wenn `status === 'error'`)    
+  * `fetchStatus`: Gibt an, ob der Query gerade läuft
+    * `idle`: Query läuft nicht
+    * `fetching`: Query wird ausgeführt (wenn `status === 'loading' und `fetchStatus === 'fetching'` befinden
+     sich Daten im Cache, aber der Query läuft und Cache wird ggf. aktualisiert)
+* Weitere [siehe Doku](https://tanstack.com/query/v4/docs/reference/useQuery)
+
+---
+
+### TanStack Query: Mutations
+
+* Mutations werden verwendet, um Daten zu schreiben
+* Mutations haben keinen Cache-Key und werden auch nicht automatisch ausgeführt
+* Die Mutation-Funktion entspricht der Query-Function (nur dass sie Daten scrheibt und nicht liest)
+* Auch der `useMutation`-Hook liefert Informationen über den Zustand der Mutation zurück
+* Außerdem wird eine Funktion (`mutate`) zurückgeliefert, die die Mutation ausführt
+  * Übergeben wird der der Funktion die zu schreibenden Daten
+* ```typescript
+  import { useMutation } from "react-query";
+  import { savePost } from "./blog-api";
+
+  function PostEditorPage() {
+    const { mutate, error, isLoading } = useMutation(savePost, {
+      onSuccess() {
+        // optional: wird aufgerufen, wenn die Mutation erfolgreich war
+        // ...
+      }
+    });
+
+    if (error) {
+      return <h1>Error!</h1>;
+    }
+
+    if (isLoading) {
+      return <h1>Saving, please wait!</h1>;
+    }
+
+    return <PostEditor onSavePost={mutate} />;
+  }
+  ```
+
+---
+
+### Aktualisieren von Daten
+
+* Alle Query-Ergebnisse von `useQuery` werden automatisch gecached
+* Alle Komponenten werden aktualisiert, wenn sich der Cache aktualisiert
+* Alle Daten im Cache werden als "stale" (veraltet) angesehen
+* [Per Default](https://tanstack.com/query/v4/docs/guides/important-defaults) werden Queries deswegen automatisch neu ausgeführt:
+  * Komponente wird (neu) gemounted
+  * Browser-Fenster bekommt den Focus
+  * Nachdem das Netzwerk offline war
+  
+---
+
+### Manuelles Aktualisieren von Queries
+
+* Queries können per API manuell erneut ausgeführt werden
+* Das kann zum Beispiel nach einer Mutation sinnvoll sein, um die geänderten/gespeicherten Daten 
+  im Cache zu aktualisieren
+* Dazu wird die Funktion [`invalidateQueries`](https://tanstack.com/query/v4/docs/reference/QueryClient#queryclientinvalidatequeries) vom `QueryClient` verwendet
+  * Übergeben werden die Query Keys, deren Queries erneut ausgeführt werden sollen
+* ```typescript
+  import { useMutation, useQueryClient } from "react-query";
+  import { savePost } from "./blog-api";
+
+  function PostEditorPage() {
+    const queryClient = useQueryClient();
+    const { mutate, error, isLoading } = useMutation(savePost, {
+      onSuccess() {
+        // PostPage-Query erneut ausführen, wenn Mutation erfolgreich war
+        queryClient.invalidateQueries(['posts']);
+      }
+    });
+
+    // ...
+  }
+  ```
+
+---
+
+### Beispiel: Blog-Post nicht neuladen
+
+* Ein einzelnes BlogPost kann im Cache verbleiben, da es sich in unserer App nicht ändert/nicht ändern kann
+* Mit den `refetch`-Funktionen kann die automatische Aktualisierung ausgeschaltet werden
+* ```typescript
+  function PostPage() {
+    // ...
+    const {
+      data: post,
+      isLoading,
+      error
+    } = useQuery(["blogPost", postId], () => loadBlogPost(postId!), {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false
+    });  
+
+    // ...
+  }
+  ```
+
+---
+
+### Refetch
+
+* Das von `useQuery` zurückgeliefert Objekt enthält auch eine `refetch`-Funktion um einen Query
+  manuell neu auszuführen
+* ```typescript
+  function PostListPage() {
+    const { data, status, refetch } = useQuery(['posts', readPosts], {
+      // nicht automatisch aktualisieren
+      refetchOnMount: false, refetchOnWindowFocus: false
+    })
+
+    // ... status === loading, status === error ... 
+
+    return <div>
+      <button onClick={refetch}>Reload Posts</button>
+      <PostList posts={data} />
+    </div>
+  }
+  ```
+
+
+---
+
+## Übung: Die Blog-Anwendung mit TanStack Query
+
+* _Ersetze die bestehenden fetch-Aufrufe mit TanStack Query_
+* Schritte:
+  * Arbeite bitte in `blog-example/workspace-typescript-app`
+  * Du findest im Workspace TODOs, am Besten bearbeitest Du die Dateien in folgender Reihenfolge:
+    1. `index.tsx` (QueryClient und Provider-Komponente)
+    2. `BlogListPage.tsx` (Laden der Blog-Vorschauen)
+    3. `BlogPage.tsx`  (Laden eines einzelnen Blog-Posts)
+    4. `PostEditorPage.tsx`   (Neuen Post mit Mutation speichern)
+* Mögliche Lösung findest Du in `steps/20-tanstack-query`
+* Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️
+
+---
+</textarea
+          >
+        </section>
+        <section>
+          <h2>Geschafft! 😊</h2>
+          <h3>Vielen Dank für Eure Teilnahme!</h3>
+          <h3>Viel Spaß und Erfolg mit React!</h3>
+          <p>Wenn ihr noch Fragen habt, könnt ihr mich erreichen:</p>
+          <p>Mail: <a href="mailto:nils@nilshartmann.net">nils@nilshartmann.net</a></p>
+          <p>
+            Web: <a href="https://nilshartmann.net" target="_blank">https://nilshartmann.net</a>
+          </p>
+          <p>
+            Twitter: <a href="https://twitter.com/nilshartmann" target="_blank">@nilshartmann</a>
+          </p>
+        </section>
+      </div>
+    </div>
+
+    <script src="slides/revealjs/reveal.js/dist/reveal.js"></script>
+    <script src="slides/revealjs/reveal.js/plugin/notes/notes.js"></script>
+    <script src="slides/revealjs/reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="slides/revealjs/reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="slides/revealjs/config.js"></script>
+  </body>
+</html>
