@@ -1109,19 +1109,6 @@ function App() {
           </ul>
         </section>
 
-        <section>
-          <h3>Die fetch API</h3>
-          <p>Lesen von Daten (mit HTTP GET)</p>
-          <pre><code class="javascript"  >
-// Beispiel mit JavaScript Promises:
-
-fetch('http://localhost:7000/posts')
-  .then(response => response.json())
-  .then(json => /* ... */)
-  .catch(ex => console.error('request failed', ex));
-</code></pre>
-        </section>
-
         <section id="t-promises">
           <h3>Hintergrund: Promises in JavaScript</h3>
 
@@ -1145,71 +1132,6 @@ const promise = getNameAsync();
           ><code class="javascript" contenteditable>promise.then(name => console.log(name));
 // Ausgabe "irgendwann": "Klaus"
   </code></pre>
-        </section>
-
-        <section>
-          <h3>Promises</h3>
-          <p>Promises können verkettet werden</p>
-          <pre><code class="javascript" contenteditable>
-// Annahme: 'getNameAsync' liefert "irgendwann" den String "Klaus" zurück
-const promise = getNameAsync()
-
-  // Wird mit dem ersten Wert aufgerufen und gibt neuen Wert zurück
-  .then(name => getGreetingAsync(name)) 
-
-  // wird mit dem zweiten Wert (aus vorherigem then) aufgerufen
-  .then(greeting => console.log(greeting));
-
-  // Ausgabe "irgendwann": 
-  // "Hello, Klaus"
-
-  </code></pre>
-          <p class="fragment">
-            Die <code>then</code>-Funktion gibt <b>immer</b> ein Promise zurück
-          </p>
-        </section>
-
-        <section>
-          <h3>Fehler unterbrechen die Promise-Kette</h3>
-          <h4>Mit <code>catch()</code> kann man den Fehler fangen und darauf reagieren</h4>
-        </section>
-
-        <section>
-          <h3>Catch im Fehlerfall</h3>
-          <pre><code class="javascript" contenteditable>
-  const promise = getNameAsync()
-    .then(name => {throw new Error("Unexpected Error") })
-    .then(greeting => console.log(greeting));
-    .catch(error => console.error(`Greeting failed: ${error}`))
-  
-    // Output: Greeting failed: Unexpected error
-    </code></pre>
-        </section>
-
-        <!-- ============================================================================= -->
-        <section>
-          <h3>Finally</h3>
-
-          <p class="fragment">
-            Eine <code>finally</code>-Callback-Funktion wird nach dem letzten <code>then</code> bzw.
-            <code>catch</code>-Block ausgeführt.
-          </p>
-
-          <p class="fragment">
-            Die finally-Funktion wird <b>immer</b> ausgeführt (unabhängig davon, ob vorher ein
-            Fehler aufgetreten ist oder nicht
-          </p>
-
-          <pre><code class="javascript" contenteditable>
-              const promise = getNameAsync();
-                .then(name => {throw new Error("Unexpected Error") })
-                .then(greeting => console.log(greeting));
-                .catch(error => console.error(`Greeting failed: ${error}`))
-                .finally( () => console.log("Goodbye!") );
-              
-                // Output (error): Greeting failed: Unexpected error
-                // Output (log): Goodbye!
-                </code></pre>
         </section>
 
         <section>
@@ -1255,24 +1177,11 @@ const promise = getNameAsync()
   console.log(greeting instanceof Promise); // => true
   console.log(greeting) // => Promise {&lt;resolved>: "Hello, Klaus"}
                   </code></pre>
-          <p class="fragment"><code>async</code> Funktion als Fat Arrow Funktionen:</p>
-          <pre class="fragment"><code class="javascript" contenteditable data-trim>
-  const greet = async (name) => `Hello, ${name}`;                
-    
-  const greeting = greet('Klaus');
-    
-  // greeting is a promise!
-  console.log(greeting instanceof Promise); // => true
-  console.log(greeting) // => Promise {&lt;resolved>: "Hello, Klaus"}
-                    </code></pre>
         </section>
 
         <section>
           <h3>async / await</h3>
-          <p>
-            Anstatt <code>then</code> oder <code>catch</code>-Ketten kannst Du einfach mehrere
-            <code>await</code> Statements verwenden und try/catch für die Fehlerbehandlung:
-          </p>
+          <p>Fehlerbehandlung mit try...catch</p>
           <pre class="fragment"><code class="javascript" contenteditable data-trim>
   // Return promises
   async function loadUser(username) { . . . };
@@ -1287,6 +1196,26 @@ const promise = getNameAsync()
     }
   }
                       </code></pre>
+        </section>
+
+        <section>
+          <h3>Die fetch API</h3>
+          <p>Lesen von Daten (mit HTTP GET)</p>
+          <p>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">Fetch API Doku</a>
+          </p>
+          <pre><code class="javascript"  >
+// Beispiel mit async/await:
+
+const response = await fetch('http://localhost:7000/posts');
+if (!reponse.ok) {
+  // http status code nicht 2xx
+  console.error("Request failed")
+  return;
+}
+
+const posts = await response.json();
+</code></pre>
         </section>
 
         <section>
@@ -1310,47 +1239,284 @@ const promise = getNameAsync()
     },
     body: JSON.stringify(payload)
   })
-  // ... 
+  // Behandlung von response analog zum GET-Beispiel 
       </code></pre>
             </li>
           </ul>
         </section>
 
-        <section>
-          <h3>fetch: Zusammenfassung</h3>
+        <section data-markdown>
+          <textarea data-template>
+### TanStack Query            
+* Mit fetch können wir Daten vom Server laden (und schreiben)
+* Wir müssen fetch mit React verbinden
+* Typische Bibliotheken dafür: [TanStack Query](https://tanstack.com/query) (ehem. React Query) und [SWR](https://swr.vercel.app/) 
 
-          <pre><code class="javascript"  >
-  try {
-    // 1. fetch returns a Promise, that will be resolved with a
-    // Response object when the answer from the server comes in
-    const response = await fetch('http://localhost:7000/posts');
-  
-    // 2. the Response object contains "meta data" about the Response
-    // (for ex. http status code) and functions the read the payload,
-    // for example from JSON:
-    const posts = await response.json();
-  
-    // btw: What do we do with the answer here in our React application?
-    // ???
-  } catch (err) {
-    // 4. In case something goes wrong, log error
-    console.error('request failed', err);
+---
+
+### Schritt-für-Schritt: Laden und speichern von Daten mit "TanStack Query"
+
+* 👉 `steps/3-hierarchy`
+
+---
+
+### Der QueryClient
+
+* Zentrales Konfigurationsobject: `QueryClient`
+  * React-unabhängig
+* Wird beim Starten der Anwendung initialisiert
+  * Oft reichen Default-Einstellung
+  * Es können aber z.B. globale Refetch-Policies eingestellt werden
+* Das Objekt wird per QueryClientProvider in die Anwendung gereicht
+* ```typescript
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false
+      }
+    }
+  });
+
+  root.render(
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
+  );
+
+  ```
+
+---
+
+### Laden von Daten: useQuery
+
+* Queries werden mit dem [useQuery-Hook](https://tanstack.com/query/v4/docs/guides/queries) ausgeführt
+* Der Hook erwartet bis zu drei Parameter:
+  * Array mit Query Keys (zur Interaktion mit dem Cache)
+  * Funktion zum Laden der Daten
+  * Weitere Konfigurationen (optional)
+* ```typescript
+  import { useQuery } from "react-query";
+  import { loadBlogPosts } from "./blog-api";
+  function BlogListPage() {
+
+    const result = useQuery(['posts'], loadBlogPosts);
+
+    // ...
   }
+  ```
+
+---
+
+### Query Keys
+
+* Mit den [Query Keys](https://tanstack.com/query/v4/docs/guides/query-keys) wird ein Ergebnis im Cache gespeichert
+* Ein Query Key besteht aus einem Array von Werten
+* Üblicherweise ist es ein Name (z.B. "posts") und dann ggf. die Query-Parameter (z.B. "P1")
+* ```typescript
+  import { useQuery } from "react-query";
+  import { loadBlogPosts } from "./blog-api";
+
+  function BlogPage({blogPostId}) {
+
+    // Für jeden Aufruf mit einer neuen blogPostId
+    //  wird das Ergebnis separat in den Cache gelegt
+    const result = useQuery(['blogPost', blogPostId], () => loadPost(blogPostId) );
+
+    // ...
+  }
+  ```
+* Wenn ein Query mit denselben Query Keys in mehr als einer Komponente ausgeführt wird
+  * stellt TanStack Query sicher, dass der Query nur einmal ausgeführt wird
+  * wenn sich das Ergebnis ändert, werden alle Komponenten, die den Query verwenden,
+    automatisch aus dem Cache aktualisiert
+---
+
+### Query Function
+
+* `useQuery` erwartet eine [Query-Function](https://tanstack.com/query/v4/docs/guides/query-functions), die den eigentlichen Request ausführt
+* Die Signatur ist fast beliebig, die Funktion muss aber ein Promise zurückliefern:
+  * Wenn die Daten erfolgreich geladen wurden, muss das Promise mit den Daten "aufgelöst" werden
+  * Wenn es einen Fehler gab, muss die Funktion einen Fehler werfen
+* ```typescript
+  // async function gibt IMMER ein Promise zurück
+  export async function loadBlogPost(postId) {
+    const response = await fetch("http://localhost:7000/posts" + postId);
+
+    if (!response.ok) {
+      throw new Error("Could not load blog post: " + response.status);
+    }
+
+    return response.json();
+  }
+  ```
+
+---
+
+### Rückagebwert von `useQuery` (Query Ergebnis)
+
+* `useQuery` liefert ein Objekt zurück:
+  * `status`, gibt Informationen über den aktuellen Status des Queries:
+    * `error`: Es ist ein Fehler aufgetreten
+    * `loading`: Der Query lädt noch (und es sind keine Daten im Cache)
+    * `success`: Daten sind geladen
+  * `data` enthält die geladenen Daten (wenn `status === 'success'`)
+  * `error`: Fehlerobjekt aus der Query-Funktion ( wenn `status === 'error'`)    
+  * `fetchStatus`: Gibt an, ob der Query gerade läuft
+    * `idle`: Query läuft nicht
+    * `fetching`: Query wird ausgeführt (wenn `status === 'loading' und `fetchStatus === 'fetching'` befinden
+      sich Daten im Cache, aber der Query läuft und Cache wird ggf. aktualisiert)
+* Weitere [siehe Doku](https://tanstack.com/query/v4/docs/reference/useQuery)
+
+---
+
+### TanStack Query: Mutations
+
+* Mutations werden verwendet, um Daten zu schreiben
+* Mutations haben keinen Cache-Key und werden auch nicht automatisch ausgeführt
+* Die Mutation-Funktion entspricht der Query-Function (nur dass sie Daten scrheibt und nicht liest)
+* Auch der `useMutation`-Hook liefert Informationen über den Zustand der Mutation zurück
+* Außerdem wird eine Funktion (`mutate`) zurückgeliefert, die die Mutation ausführt
+  * Übergeben wird der der Funktion die zu schreibenden Daten
+* ```typescript
+  import { useMutation } from "react-query";
+  import { savePost } from "./blog-api";
+
+  function PostEditorPage() {
+    const mutation = useMutation(savePost, {
+      onSuccess() {
+        // optional: wird aufgerufen, wenn die Mutation erfolgreich war
+        // ...
+      }
+    });
+
+    if (mutation.status === "error") {
+      return <h1>Error!</h1>;
+    }
+
+    if (mutation.status === "loading") {
+      return <h1>Saving, please wait!</h1>;
+    }
+
+    return <PostEditor onSavePost={mutation.mutate} />;
+  }
+  ```
+
+---
+
+### Aktualisieren von Daten
+
+* Alle Query-Ergebnisse von `useQuery` werden automatisch gecached
+* Alle Komponenten werden aktualisiert, wenn sich der Cache aktualisiert
+* Alle Daten im Cache werden als "stale" (veraltet) angesehen
+* [Per Default](https://tanstack.com/query/v4/docs/guides/important-defaults) werden Queries deswegen automatisch neu ausgeführt:
+  * Komponente wird (neu) gemounted
+  * Browser-Fenster bekommt den Focus
+  * Nachdem das Netzwerk offline war
   
-  </code></pre>
-          <p>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">Fetch API Doku</a>
-          </p>
+---
+
+### Manuelles Aktualisieren von Queries
+
+* Queries können per API manuell erneut ausgeführt werden
+* Das kann zum Beispiel nach einer Mutation sinnvoll sein, um die geänderten/gespeicherten Daten 
+  im Cache zu aktualisieren
+* Dazu wird die Funktion [`invalidateQueries`](https://tanstack.com/query/v4/docs/reference/QueryClient#queryclientinvalidatequeries) vom `QueryClient` verwendet
+  * Übergeben werden die Query Keys, deren Queries erneut ausgeführt werden sollen
+* ```typescript
+  import { useMutation, useQueryClient } from "react-query";
+  import { savePost } from "./blog-api";
+
+  function PostEditorPage() {
+    const queryClient = useQueryClient();
+    const mutation = useMutation(savePost, {
+      onSuccess() {
+        // PostPage-Query erneut ausführen, wenn Mutation erfolgreich war
+        queryClient.invalidateQueries(['posts']);
+      }
+    });
+
+    // ...
+  }
+  ```
+
+---
+
+### Beispiel: Blog-Post nicht neuladen
+
+* Ein einzelnes BlogPost kann im Cache verbleiben, da es sich in unserer App nicht ändert/nicht ändern kann
+* Mit den `refetch`-Funktionen kann die automatische Aktualisierung ausgeschaltet werden
+* ```typescript
+  function PostPage() {
+    // ...
+    const result = useQuery(["blogPost", postId], () => loadBlogPost(postId!), {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false
+    });  
+
+    // ...
+  }
+  ```
+
+---
+
+### Refetch
+
+* Das von `useQuery` zurückgeliefert Objekt enthält auch eine `refetch`-Funktion um einen Query
+  manuell neu auszuführen
+* ```typescript
+  function PostListPage() {
+    const result = useQuery(['posts', readPosts], {
+      // nicht automatisch aktualisieren
+      refetchOnMount: false, refetchOnWindowFocus: false
+    })
+
+    // ... result.status === loading, status === error ... 
+
+    return <div>
+      <button onClick={refetch}>Reload Posts</button>
+      <PostList posts={data} />
+    </div>
+  }
+  ```
+
+
+---
+
+
+## Übung: Die Blog-Anwendung mit TanStack Query
+
+* _Vervollständige den Query zum Laden und Speichern mit TanStack Query_
+* Backend starten
+  * Das Backend ist bereits fertig. Du kannst es starten mit:
+  * ```
+  cd react-training/blog-example/backend-rest
+  npm start
+  ```
+* Schritte:
+  * Kopiere `index.js` und `App.js` aus `material/4-remote-query` in dein `src`-Verzeichnis
+  * In `App.js` findest Du TODOs mit weiteren Hinweisen
+* Mögliche Lösung findest Du in `steps/4-remote-query`
+* Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️
+
+---
+    </textarea
+          >
         </section>
 
+        <!-- ============================================================================= -->
         <section>
-          <h3>Wann laden wir die initialen Daten für unsere Anwendung (Blog Posts)?</h3>
-        </section>
+          <h3>Alternative: useEffect und fetch</h3>
 
-        <section>
-          <h3>Laden (und speichern) von Daten</h3>
-          <p>👉Schritt-für-Schritt</p>
-          <p style="font-size: small"><code>steps/3-hierarchy</code></p>
+          <ul>
+            <li>
+              Dieser Ansatz ist sehr weitverbreitet, wird aber mittlerweile
+              <a href="https://beta.reactjs.org/learn/synchronizing-with-effects"
+                >nicht mehr empfohlen ("What are good alternatives to data fetching in Effects?")</a
+              >
+            </li>
+            <li></li>
+          </ul>
         </section>
 
         <section>
@@ -1506,78 +1672,6 @@ function App(props) {
     ...
 }
                 </code></pre>
-        </section>
-
-        <section>
-          <h2>Übung: Laden von Daten auf einem Server</h2>
-          <p>
-            <em
-              >Implementiere die nächste Version der <code>App</code>-Komponente, die in der Lage
-              ist, die Blog Posts mit <code>fetch</code> zu laden.</em
-            >
-          </p>
-          <div>
-            <p>Das backend ist bereits fertig. Ihr könnt es starten mit:</p>
-            <pre><code>
-                  cd react-training/blog-example/backend-rest
-                  npm start
-                </code></pre>
-            <p>Der Server läuft auf Port 7000</p>
-            <p>
-              Ihr könnt das Backend mit folgender URL testen (Browser, wget, curl, ...):
-              <a href="http://localhost:7000/posts">http://localhost:7000/posts</a>
-            </p>
-          </div>
-        </section>
-
-        <!-- ============================================================================= -->
-
-        <section>
-          <h3>Schritte</h3>
-          <ol class="x-list">
-            <li>
-              Füge in <code>App.js</code> den Code zum <b>Laden und Speichern</b> der Blog-Posts
-              hinzu.
-            </li>
-            <li>
-              In <code>material/4-remote</code> ist eine <code>App.js</code>-Datei mit TODOs
-              vorhanden. Du kannst diese in deinen Workspace kopieren und deine
-              <code>App.js</code>-Datei überschreiben (oder dir nur die TODOs rauskopieren)
-            </li>
-
-            <li>
-              Beim <b>Laden</b> der Daten mit fetch, bitte <b>Promise API</b> verwenden und
-              <b>nicht <code>async/await</code></b> API!
-            </li>
-            <li>Mögliche Lösung in <code>steps/4-remote</code></li>
-            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
-          </ol>
-        </section>
-
-        <section>
-          <h3>Alternativen zu fetch</h3>
-          <ul class="fragment x-list">
-            <li>
-              <a href="https://github.com/axios/axios">Axios</a>
-            </li>
-            <li>
-              Axios API, auf fetch-basierend:
-              <a href="https://github.com/developit/redaxios">Redaxios</a>
-            </li>
-            <li>
-              Ausgereifte Bibliotheken zum Arbeiten mit Server Requests:
-              <a href="https://tanstack.com/query" target="_blank">
-                TanStack Query (ehem "React Query")</a
-              >
-              oder <a href="https://swr.vercel.app/">SWR</a>
-            </li>
-            <li>
-              Data Fetching für Redux Toolkit:
-              <a href="https://redux-toolkit.js.org/rtk-query/overview" target="_blank"
-                >RTK Query</a
-              >
-            </li>
-          </ul>
         </section>
 
         <section id="t-typescript">
@@ -3117,267 +3211,6 @@ export default function App() {
           >
         </section>
 
-        <section data-markdown>
-          <textarea data-template>
-## Beispiel: TanStack Query
-
-* Früher: React Query
-
-* Workspace `01-tanstack-query-beispiel`
-*  - Implementieren: User
-*  - Implementieren: Post
-*  - Implementieren: Sidebar
-*  - Implementieren: Mutation
-
----
-
-### Der QueryClient
-
-* Zentrales Konfigurationsobject: `QueryClient`
-  * React-unabhängig
-* Wird beim Starten der Anwendung initialisiert
-  * Oft reichen Default-Einstellung
-  * Es können aber z.B. globale Refetch-Policies eingestellt werden
-* Das Objekt wird per QueryClientProvider in die Anwendung gereicht
-* ```typescript
-
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false
-      }
-    }
-  });
-
-  function App() {
-    return <QueryClientProvider client={queryClient}>
-      <Routes>
-        ...
-      </Routes>
-    </QueryClientProvider>
-  }
-
-  ```
-
----
-
-### Laden von Daten: useQuery
-
-* Queries werden mit dem [useQuery-Hook](https://tanstack.com/query/v4/docs/guides/queries) ausgeführt
-* Der Hook erwartet bis zu drei Parameter:
-  * Array mit Query Keys (zur Interaktion mit dem Cache)
-  * Funktion zum Laden der Daten
-  * Weitere Konfigurationen (optional)
-  * Es kann ein Typ-Parameter angegeben werden, der den Rückgabe-Typen
-    (also den Typ der geladenen Daten) beschreibt
-* ```typescript
-  import { useQuery } from "react-query";
-  import { loadBlogPosts } from "./blog-api";
-  function BlogListPage() {
-
-    const result = useQuery<BlogPost[]>(['posts'], loadBlogPosts);
-
-    // ...
-  }
-  ```
-
----
-
-### Query Keys
-
-* Mit den [Query Keys](https://tanstack.com/query/v4/docs/guides/query-keys) wird ein Ergebnis im Cache gespeichert
-* Ein Query Key besteht aus einem Array von Werten
-* Üblicherweise ist es ein Name (z.B. "posts") und dann ggf. die Query-Parameter (z.B. "P1")
-* ```typescript
-  import { useQuery } from "react-query";
-  import { loadBlogPosts } from "./blog-api";
-
-  function BlogPage({blogPostId}) {
-
-    // Für jeden Aufruf mit einer neuen blogPostId
-    //  wird das Ergebnis separat in den Cache gelegt
-    const result = useQuery(['blogPost', blogPostId], () => loadPost(blogPostId) );
-
-    // ...
-  }
-  ```
-* Wenn ein Query mit denselben Query Keys in mehr als einer Komponente ausgeführt wird
-  * stellt TanStack Query sicher, dass der Query nur einmal ausgeführt wird
-  * wenn sich das Ergebnis ändert, werden alle Komponenten, die den Query verwenden,
-    automatisch aus dem Cache aktualisiert
----
-
-### Query Function
-
-* `useQuery` erwartet eine [Query-Function](https://tanstack.com/query/v4/docs/guides/query-functions), die den eigentlichen Request ausführt
-* Die Signatur ist fast beliebig, die Funktion muss aber ein Promise zurückliefern:
-  * Wenn die Daten erfolgreich geladen wurden, muss das Promise mit den Daten "aufgelöst" werden
-  * Wenn es einen Fehler gab, muss die Funktion einen Fehler werfen
-* ```typescript
-  export async function loadBlogPost(postId: string): Promise<BlogPost> {
-    const response = await fetch("http://localhost:7000/posts" + postId);
-
-    if (!response.ok) {
-      throw new Error("Could not load blog post: " + response.status);
-    }
-
-    return response.json();
-  }
-  ```
-
----
-
-### Rückagebwert von `useQuery` (Query Ergebnis)
-
-* `useQuery` liefert ein Objekt zurück:
-  * `status`, gibt Informationen über den aktuellen Status des Queries:
-    * `error`: Es ist ein Fehler aufgetreten
-    * `loading`: Der Query lädt noch (und es sind keine Daten im Cache)
-    * `success`: Daten sind geladen
-  * `data` enthält die geladenen Daten (wenn `status === 'success'`)
-  * `error`: Fehlerobjekt aus der Query-Funktion ( wenn `status === 'error'`)    
-  * `fetchStatus`: Gibt an, ob der Query gerade läuft
-    * `idle`: Query läuft nicht
-    * `fetching`: Query wird ausgeführt (wenn `status === 'loading' und `fetchStatus === 'fetching'` befinden
-     sich Daten im Cache, aber der Query läuft und Cache wird ggf. aktualisiert)
-* Weitere [siehe Doku](https://tanstack.com/query/v4/docs/reference/useQuery)
-
----
-
-### TanStack Query: Mutations
-
-* Mutations werden verwendet, um Daten zu schreiben
-* Mutations haben keinen Cache-Key und werden auch nicht automatisch ausgeführt
-* Die Mutation-Funktion entspricht der Query-Function (nur dass sie Daten scrheibt und nicht liest)
-* Auch der `useMutation`-Hook liefert Informationen über den Zustand der Mutation zurück
-* Außerdem wird eine Funktion (`mutate`) zurückgeliefert, die die Mutation ausführt
-  * Übergeben wird der der Funktion die zu schreibenden Daten
-* ```typescript
-  import { useMutation } from "react-query";
-  import { savePost } from "./blog-api";
-
-  function PostEditorPage() {
-    const { mutate, error, isLoading } = useMutation(savePost, {
-      onSuccess() {
-        // optional: wird aufgerufen, wenn die Mutation erfolgreich war
-        // ...
-      }
-    });
-
-    if (error) {
-      return <h1>Error!</h1>;
-    }
-
-    if (isLoading) {
-      return <h1>Saving, please wait!</h1>;
-    }
-
-    return <PostEditor onSavePost={mutate} />;
-  }
-  ```
-
----
-
-### Aktualisieren von Daten
-
-* Alle Query-Ergebnisse von `useQuery` werden automatisch gecached
-* Alle Komponenten werden aktualisiert, wenn sich der Cache aktualisiert
-* Alle Daten im Cache werden als "stale" (veraltet) angesehen
-* [Per Default](https://tanstack.com/query/v4/docs/guides/important-defaults) werden Queries deswegen automatisch neu ausgeführt:
-  * Komponente wird (neu) gemounted
-  * Browser-Fenster bekommt den Focus
-  * Nachdem das Netzwerk offline war
-  
----
-
-### Manuelles Aktualisieren von Queries
-
-* Queries können per API manuell erneut ausgeführt werden
-* Das kann zum Beispiel nach einer Mutation sinnvoll sein, um die geänderten/gespeicherten Daten 
-  im Cache zu aktualisieren
-* Dazu wird die Funktion [`invalidateQueries`](https://tanstack.com/query/v4/docs/reference/QueryClient#queryclientinvalidatequeries) vom `QueryClient` verwendet
-  * Übergeben werden die Query Keys, deren Queries erneut ausgeführt werden sollen
-* ```typescript
-  import { useMutation, useQueryClient } from "react-query";
-  import { savePost } from "./blog-api";
-
-  function PostEditorPage() {
-    const queryClient = useQueryClient();
-    const { mutate, error, isLoading } = useMutation(savePost, {
-      onSuccess() {
-        // PostPage-Query erneut ausführen, wenn Mutation erfolgreich war
-        queryClient.invalidateQueries(['posts']);
-      }
-    });
-
-    // ...
-  }
-  ```
-
----
-
-### Beispiel: Blog-Post nicht neuladen
-
-* Ein einzelnes BlogPost kann im Cache verbleiben, da es sich in unserer App nicht ändert/nicht ändern kann
-* Mit den `refetch`-Funktionen kann die automatische Aktualisierung ausgeschaltet werden
-* ```typescript
-  function PostPage() {
-    // ...
-    const {
-      data: post,
-      isLoading,
-      error
-    } = useQuery(["blogPost", postId], () => loadBlogPost(postId!), {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false
-    });  
-
-    // ...
-  }
-  ```
-
----
-
-### Refetch
-
-* Das von `useQuery` zurückgeliefert Objekt enthält auch eine `refetch`-Funktion um einen Query
-  manuell neu auszuführen
-* ```typescript
-  function PostListPage() {
-    const { data, status, refetch } = useQuery(['posts', readPosts], {
-      // nicht automatisch aktualisieren
-      refetchOnMount: false, refetchOnWindowFocus: false
-    })
-
-    // ... status === loading, status === error ... 
-
-    return <div>
-      <button onClick={refetch}>Reload Posts</button>
-      <PostList posts={data} />
-    </div>
-  }
-  ```
-
-
----
-
-## Übung: Die Blog-Anwendung mit TanStack Query
-
-* _Ersetze die bestehenden fetch-Aufrufe mit TanStack Query_
-* Schritte:
-  * Arbeite bitte in `blog-example/workspace-typescript-app`
-  * Du findest im Workspace TODOs, am Besten bearbeitest Du die Dateien in folgender Reihenfolge:
-    1. `index.tsx` (QueryClient und Provider-Komponente)
-    2. `BlogListPage.tsx` (Laden der Blog-Vorschauen)
-    3. `BlogPage.tsx`  (Laden eines einzelnen Blog-Posts)
-    4. `PostEditorPage.tsx`   (Neuen Post mit Mutation speichern)
-* Mögliche Lösung findest Du in `steps/20-tanstack-query`
-* Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️
-
----
-</textarea
-          >
-        </section>
         <section>
           <h2>Geschafft! 😊</h2>
           <h3>Vielen Dank für Eure Teilnahme!</h3>

@@ -39,10 +39,6 @@
     ]
   },
   "devDependencies": {
-    "jest-fetch-mock": "^3.0.3",
-    "react-test-renderer": "^18.1.0"
-  },
-  "jest": {
-    "resetMocks": false
+    "jest-fetch-mock": "^3.0.3"
   }
 }

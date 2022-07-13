@@ -1,10 +1,9 @@
 import React from "react";
 import PostList from "./PostList";
 import PostEditor from "./PostEditor";
-import { NewBlogPost, BlogPost } from "./types";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-async function loadPostsFromBackend(): Promise<BlogPost[]> {
+async function loadPostsFromBackend() {
   const response = await fetch("http://localhost:7000/posts");
   if (!response.ok) {
     throw new Error("Could not load posts!");
@@ -12,7 +11,7 @@ async function loadPostsFromBackend(): Promise<BlogPost[]> {
   return response.json();
 }
 
-async function savePostToBackend(newPost: NewBlogPost) {
+async function savePostToBackend(newPost) {
   const response = await fetch("http://localhost:7000/posts", {
     method: "POST",
     headers: {
@@ -26,14 +25,11 @@ async function savePostToBackend(newPost: NewBlogPost) {
   return response.json();
 }
 
-type VIEW = "LIST" | "ADD";
-
 function App() {
   const queryClient = useQueryClient();
   const postResult = useQuery(["posts"], loadPostsFromBackend);
   const savePostMutation = useMutation(savePostToBackend);
-
-  const [view, setView] = React.useState<VIEW>("LIST");
+  const [view, setView] = React.useState("LIST");
 
   if (postResult.status === "loading") {
     return <h1>Loading Posts...</h1>;
@@ -43,7 +39,7 @@ function App() {
     return <h1>Failed to load blog posts!</h1>;
   }
 
-  function savePost(post: NewBlogPost) {
+  function savePost(post) {
     savePostMutation.mutate(post, {
       onSuccess() {
         queryClient.invalidateQueries(["posts"]);
