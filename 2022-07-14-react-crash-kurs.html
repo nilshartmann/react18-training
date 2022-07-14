@@ -656,7 +656,7 @@ function HelloWorld() {
         </section>
         <section>
           <h3>Schritte</h3>
-          <ol class="x-list">
+          <ol class="xx-list">
             <li>
               Zusätzlich zum "title", sollte es einen weiteren Zustand und eine Textarea geben:
               <code>body</code>. Ein <code>textarea</code>-Element hat dieselbe API wie ein
@@ -670,6 +670,12 @@ function HelloWorld() {
             <li>
               Füge einen "Clear"-Button hinzu, der beide Eingabefeld leert. Das Property auf dem
               Button ist <code>onClick</code>.
+            </li>
+            <li>
+              <b><em>Optional:</em></b
+              >Der Clear-Button soll disabled sein, wenn beide Eingabefelder leer sind. Ein
+              <code>button</code>-Element hat ein Attribute <code>disabled</code>, das Du dazu auf
+              <code>true</code> bzw. <code>false</code> setzen musst.
             </li>
             <li>Mögliche Lösung: <code>steps/2-editor</code></li>
             <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
@@ -1208,7 +1214,7 @@ const promise = getNameAsync();
 // Beispiel mit async/await:
 
 const response = await fetch('http://localhost:7000/posts');
-if (!reponse.ok) {
+if (!response.ok) {
   // http status code nicht 2xx
   console.error("Request failed")
   return;
