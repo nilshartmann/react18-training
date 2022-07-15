@@ -138,7 +138,19 @@
             </li>
 
             <li style="margin-top: 20px">
-              <a href="#/t-test">Teil VI: Ausblick: Bibliotheken, Eure Fragen etc.</a>
+              <a href="#/t-router">Teil VI: Router</a>
+            </li>
+
+            <li style="margin-top: 20px">
+              <a href="#/t-context">Teil VII: Context</a>
+            </li>
+
+            <li style="margin-top: 20px">
+              <a href="#/t-protected-routes">Teil VIII: Beispiel: Geschützte Routen mit Context</a>
+            </li>
+
+            <li style="margin-top: 20px">
+              Ausblick: <a href="#/t-libs">Typische Bibliotheken</a>, Eure Fragen etc.
             </li>
           </ul>
         </section>
@@ -2222,27 +2234,668 @@ const style: React.CSSProperties = type === "error" ?
           </ol>
         </section>
 
-        <!-- ============================================================================= -->
-        <section id="data-libs">
-          <h2>Data Libraries für React</h2>
-        </section>
-
         <section data-markdown>
           <textarea data-template>
-### Basis Libraries
+            <!-- .slide: id="t-router" -->            
+## Routing in React
 
-* [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch): Browser Standard API, Low-Level, keinerlei Abstraktionen, quasi HTTP "pur"
-* [axios](https://github.com/axios/axios) bzw. [redaxios](https://github.com/developit/redaxios): Quasi-standard (aber kein Browser API). 
-  * Etwas höhere Abstraktion als fetch: HTTP Fehlercodes werden auf Exceptions gemappt, Payload automatisch von/nach
-JSON konvertiert)
-  * axios benutzt "Ajax", Redaxios selbe API aber basiert auf fetch (sehr kleine lib)
-  * alle React-unabhängig!
-* Verwendung mit dem [Effect-Hook](https://reactjs.org/docs/hooks-reference.html#useeffect), wo notwendig  
-              </textarea
+* Anforderungen:
+  * URLs auf Komponenten abbilden
+  * (Interne) Links, die die Anwendung neu rendern, ohne zum Server zu gehen
+* React bringt keinen Router mit
+* In der Regel wird der [https://reactrouter.com/](https://reactrouter.com/) verwendet
+
+---
+
+## Der React Router
+
+* Homepage: [https://reactrouter.com/](https://reactrouter.com/)
+* Aktuelle Version v6
+* Achtung: Verhalten und API haben sich in Version 4, 5 und 6 geändert.
+  * Bei Beispielen/Dokumentation/Tutorial etc. die Version beachten!
+
+---
+
+## Der React Router
+
+### Beispiel
+
+```jsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+export default function App() {
+  &lt;Routes>
+    &lt;Route path="/" element={<Page />}>
+      &lt;Route index element={<PostListPage />} />
+      &lt;Route path="/post/:postId" element={<PostPage />} />
+      &lt;Route path="/add" element={<PostEditor onSavePost={savePost} />} />
+      &lt;Route path="*" element={<NotFoundPage />} />
+    &lt;/Route>
+  &lt;/Routes>
+}  
+```
+
+---
+
+### Die Router-Komponente
+
+* Als oberste Komponente muss eine `Router`-Komponente gerendert werden
+  * Nur unterhalb (direkt oder indirekt) darf mit `Routes` und `Route` gearbeitet werden
+* Router fest, welche URLs generiert werden soll:
+* [`HashRouter`](https://reactrouter.com/docs/en/v6/routers/hash-router): Die Route wird durch Hash-Zeichen (`#`) getrennt hinter die URL geschrieben (Beispiel: `http://loalhost:8080#/post/1`)
+  * Änderungen in der URL hinter dem Hash-Zeichen führen im Browser nicht zum Neuladen der Seite vom Server!
+  * Der Server wird also beim Seitenwechsel nie kontaktiert
+* [`BrowserRouter`](https://reactrouter.com/docs/en/v6/routers/browser-router): Die Route wird direkt hinter die URL geschrieben. Sieht dann aus wie eine "normale" Route vom Server (Beispiel: `http://localhost:8080/post/1`)  
+  * Empfohlene Implementierung
+  * Bei der Navigation durch die Anwendung unterbindet der Router Server-Requests
+  * Aber beim initalen Laden muss der Server sicherstellen, dass die URL gefunden wird
+    * Dazu muss der Webserver entsprechend konfiguriert werden ("/..." -> index.html)
+
+---
+
+### Konfiguration der Routen: Welche Komponente soll für welche Route angezeigt werden?
+
+* Mit [Routes und Route](https://reactrouter.com/docs/en/v6/components/route)-Komponenten gibt es eine Art "intelligentes" switch- oder if/else-Statement
+* `Route`-Komponenten müssen mit `Routes` umschlossen werden. Nach jedem Ändern der URL prüft der Router alle `Routes`-Komponenten in allen `Route`-Komponenten der Anwendung
+* ```javascript
+  &lt;Routes>
+    &lt;Route path="/" element={&lt;App />} /> 
+    &lt;Route path="/blog" element={&lt;App />} />
+  &lt;/Routes>
+```
+* `Route` funktioniert wie ein `if`-Statement: `if (path === "/post") renderElement &lt;Post />`
+
+---
+
+### Verschachtelte Routen
+
+* `Route`-Komponenten können geschachtelt werden, um Hierchien abzubilden
+* In den Child-Komponenten werden dann relative Pfade angegeben
+* ```javascript
+  &lt;Routes>
+    &lt;Route path="/" element={&lt;App />}> &lt;!-- Rendert "/" -->
+      &lt;Route path="blog" element={...}> &lt;!-- Rendert "/blog" -->
+        &lt;Route path="new" element={...}/> &lt;!-- Rendert "/blog/new" -->
+        &lt;Route path="post/:id" element={...}/> &lt;!-- Rendert "/blog/post/1" -->
+      &lt;/Route>
+    &lt;/Route>    
+  &lt;/Routes>    
+```
+* Die Oberkomponente muss dann jeweils die Unterkomponenten rendern
+  * Das funktioniert mit der [`<Outlet />`](https://reactrouter.com/docs/en/v6/components/outlet)-Komponente
+  * ```javascript
+    function App() {
+      return &lt;div className="App">
+        &lt;h1>Blog App</h1>
+        &lt;Outlet />
+      &lt;/div>
+  }
+```    
+
+---
+
+### Index Routes
+
+* Bei verschachtelten Routen muss für die Ober-Route eine Index Route gerendert werden
+* Beispiel:
+* ```javascript
+  &lt;Routes>
+    &lt;Route path="/" element={&lt;App />}> 
+      &lt;Route path="blog" element={&lt;Blog />} />
+    &lt;/Route>    
+  &lt;/Routes>    
+```
+* Hier wird `Blog` als `Outlet` in `App` für `/blog` gesetzt. Aber kein Outlet für `/`
+* Dazu muss eine Index-Route definiert werden. Die wird unterhalb der Ober-Route eingesetzt und
+  wird dann gerendert, wenn genau der Pfad der Ober-Route aufgerufen wird
+* Statt `path` wird darin einfach `index` angegeben:  
+  * ```javascript
+    &lt;Routes>
+      &lt;Route path="/" element={&lt;App />}> 
+        &lt;Route index element={&lt;Home /> } /> &lt;!-- Rendert "App" mit Outlet "Home" für "/" -->
+        &lt;Route path="blog" element={&lt;Blog />} /> &lt;!-- Rendert "App" mit Outlet "Blog" für "/blog" -->
+      &lt;/Route>    
+    &lt;/Routes>    
+```
+
+
+---
+
+### Fallback Route
+
+* Mit `path="*"` kann eine Fallback-Route angegeben werden, die aktiv ist, wenn keine andere Route passt
+* Beispiel:
+* ```javascript
+    &lt;Routes>
+      &lt;Route path="/" element={&lt;App />}> 
+        &lt;Route path="blog" element={&lt;Blog />} />
+
+        &lt;Route path="*" element={&lt;NotFound />} /> &lt;!-- Für alle Route, außer / und /blog -->
+      &lt;/Route>    
+    &lt;/Routes>    
+  ```
+
+---
+
+### Dynamische Parameter
+
+* In einer Route können Platzhalter ("Parameter") angegeben werden
+* Auf die entsprechenden Werte kann in einer Komponente mit `useParams` zugegriffen werden
+* ```javascript
+  export default function App() {
+    &lt;Routes>
+      &lt;Route path="/" element={<Page />}>
+        &lt;Route path="/post/:postId" element={<PostPage />} />
+      &lt;/Route>
+    &lt;/Routes>
+  }
+
+  function PostPage() {
+    const { postId } = useParams(); 
+    //  /post/p1  postId: "p1"
+    //  /post/1  postId: "1"
+  }
+  ```  
+
+---
+
+### Links
+
+* Links müssen mit der [`Link`](https://reactrouter.com/docs/en/v6/components/link)-Komponente gerendert werden
+* ```javascript
+  function PostTeaser({post}) {
+    return &lt;div>
+      &lt;h1>{post.title}&lt;/h1>
+      &lt;Link to={`/post/${post.id}`}>Read more&lt;/Link>
+    &lt;/div>  
+  }
+```
+* Die `Link`-Komponente rendert ein `a`-Element, verhindert aber, dass der Browser Serveraufrufe durchführt,
+  wenn darauf geklickt wird
+* Das gilt nur für interne Links, externe Links wie gewohnt mit HTML `a`-Element
+* Alternative: [`NavLink`](https://reactrouter.com/docs/en/v6/components/nav-link) weiß, ob der `to`-Pfad
+  der gerade aktiven Route entspricht und kann sich dann anders darstellen ("Aktiver Link", "Aktiver Tab", ...)
+  * ```javascript
+    function NavBar() {
+      return &lt;div>
+        &lt;NavLink to={`/home}`} className={active => active ? "Tab--active":"Tab--default" }>Home&lt;/Link>
+        &lt;NavLink to={`/about}`} className={active => active ? "Tab--active":"Tab--default" }>About&lt;/Link>
+        &lt;NavLink to={`/profile}`} className={active => active ? "Tab--active":"Tab--default" }>Profile&lt;/Link>
+      &lt;/div>  
+    }
+```
+* Mit `className` und `style` können Callback-Funktionen übergeben werden, die das konkrete Styling/CSS Klasse je nach Zustand
+  (active bzw not-active) zurückliefern. 
+
+---
+
+### Navigation per API
+
+* Die [`Navigate`](https://reactrouter.com/docs/en/v6/components/navigate)-Komponente kann gerendert werden,
+  wenn eine Komponente beim Rendern einen Redirect machen möchte
+* ```javascript
+  function BlogPost() {
+    const [error, setError] = useState(false);
+    const [post, setPost] = useState(null);
+
+    useEffect( () => fetch(...).catch(e => setError(true)), [] );
+
+    if (error) {
+      return &lt;Navigate to="/error" />
+    }
+
+    return &lt;BlogPost post={post} />
+  }
+  ```  
+* Mit [`useNavigate`](https://reactrouter.com/docs/en/v6/hooks/use-navigate) kann auch per API, z.B. in einem Event Handler, ein Redirect gemacht werden:
+* ```javascript
+  function LogoutButton() {
+    const useNaviate = useNavigate();
+
+    function handleClick() {
+      navigate("/");
+    }
+
+    return &lt;button onClick={handleClick}>Logout&lt;/button>
+  }
+  ```  
+
+
+
+  </textarea
           >
         </section>
+        <section id="t-context">
+          <h2>Context API</h2>
+          <p>Hintergrund: Context API</p>
+          <p>Kein Statemanagement, aber häufig zusammen erwähnt</p>
+          <p>"Dependency Injection"</p>
+          <p>Überblick: 👉 Miro</p>
+        </section>
+
         <section data-markdown>
           <textarea data-template>
+## Context in der Praxis
+
+* 👉 `material/state/01-context`
+          </textarea>
+        </section>
+
+        <section>
+          <h2>Im Detail: Context API</h2>
+          <p>Beispiel: <code>blog-example/steps/10-context</code></p>
+        </section>
+
+        <section>
+          <h2>Context...</h2>
+          <p>
+            <em
+              >erlaubt das Durchreichen von Informationen ohne explizites angeben als Properties</em
+            >
+          </p>
+
+          <ul>
+            <li>funktioniert nur innerhalb einer Hierarchie-Ebene</li>
+            <li>es können beliebg viele (fachliche) Context definiert werden</li>
+            <li>besteht aus <code>Provider</code> und <code>Consumer</code></li>
+            <li>
+              <a href="https://reactjs.org/docs/context.html" target="_blank">Doku</a>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Context Factory</h2>
+          <ul>
+            <li>
+              <em>erzeugt ein Objekt, mit <b>zwei Komponenten</b></em>
+            </li>
+            <li>
+              <code>Provider</code>, stellt Objekt mit Key-Value-Paaren zur Verfügung (der
+              Context-"Value")
+            </li>
+            <li>
+              <code>Consumer</code> wird in eigener Komponente verwendet, um auf einen Context
+              zuzugreifen ("versteckt" durch useContext Hook)
+            </li>
+            <li>
+              <pre><code class="line-numbers" data-leftpad>
+import react from "React";
+
+const AuthContext = React.createContext();
+
+// erzeugt:
+// AuthContext.Provider 
+// AuthContext.Consumer (mit Hooks API überflüssig)
+
+export AuthContext;
+                      </code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Context Factory mit TypeScript
+
+* Der `createContext` kann ein Typ-Parameter übergeben werden, der den Context-Wert beschreibt
+* `createContext` benötigt dann einen Default-Wert, der diesem Typen entspricht
+  * Der Default-Wert wird in der Anwendung in der Regel nicht verwendet
+  * Wird nur verwendet, wenn (fälschlich) auf den Kontext zugegriffen wird, ohne dass es einen Provider
+    gibt
+* ```typescript
+  type IAuthContext = { 
+    username: string | null;
+    onLogin(newUser: string): void;
+    onLogout(): void;
+  }
+
+  const AuthContext = React.createContext<IAuthContext>({
+    // Dummy-Implementierung vom Default Context
+    username: null,
+    onLogin() {},
+    onLogout() {}
+  });
+
+  export AuthContext;
+  ```
+
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Context Provider
+
+* _Eine React-Komponente, die einen Context zur Verfügung stellt_
+  * wird innerhalb einer eigenen Komponente eingebunden und zurückgeliefert
+  * Nimmt ein Objekt ("Context") mit beliebigen Werten entgegen (`value`-Property)
+  * Alle Einträge des Objektes sind für die Konsumenten verfügbar
+* ```typescript
+  const AuthContext = React.createContext&lt;IAuthContext>(/*...*/); // wie gesehen
+
+  type AuthProviderProps = {
+    children: React.ReactElement
+  }
+
+  export function AuthProvider(props: AuthProviderProps) {
+      const [ currentUser, setCurrentUser ] = React.useState(null);
+
+      const contextValue: IAuthContext = {
+        // the current user
+        currentUser,
+
+        // function to set new user
+        function onLogin(name) { setCurrentUser(name) },
+        function onLogout() { setCurrentUser(null) }
+      };
+
+      return &lt;AuthContext.Provider value={contextValue}>
+        {props.children}
+      &lt;/AuthContext.Provider>;
+  }             
+  ```
+  </textarea
+          >
+        </section>
+
+        <section>
+          <h2>useContext-Hook</h2>
+          <p><em>Zugriff auf die Werte aus dem Context</em></p>
+          <p>
+            In allen Komponenten unterhalb der Provider Komponente, kann mit
+            <code>useContext</code> auf den Kontext zugegriffen werden
+          </p>
+
+          <pre><code class="javascript">
+import { AuthContext } from "auth-context";
+
+function UserBadge() {
+  const { currentUser } = React.useContext(AuthContext);
+
+  return currentUser  ? &lt;h1>Welcome, {currentUser}&lt;h1> : null;
+}            
+          </code></pre>
+
+          <p>Aufrufen einer Funktion aus dem Context</p>
+          <p>Ändert im Context den Zustand der Provider-Komponente</p>
+          <p>Alle Konsumer werden neu gerendert und können den neuen Wert verwenden</p>
+          <pre><code class="javascript">
+function UserBadge() {
+  const { currentUser, logout } = React.useContext(AuthContext);
+
+  return currentUser  ? 
+    &lt;>&lt;h1>Welcome, {currentUser}&lt;h1>&lt;button onClick={logut}>Logout&lt;/button>&lt;/> 
+    : null;
+}                
+          </code></pre>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Zugriff mit Custom Hook
+
+* Übliches Pattern: für den Zugriff auf den Context wird ein eigener Hook zur Verfügung gestellt
+* ```typescript
+  export function useAuthContext(): IAuthContext {
+    const authContext = useContext(AuthContext);
+
+    return authContext;
+  }            
+  ```
+* ```typescript
+  import { useAuthContext } from "auth-context";
+  
+  export default function UserBadge() {
+    const authContext = useAuthContext();
+  }
+  ```  
+* "Versteckt" den Context vor der Anwendung
+  * eher fachliche API
+* Hook kann Plausibiltätsprüfungen machen, z.B. ob Provider korrekt initialisiert wurde
+* ```typescript
+
+  const defaultContext = { username: "__NOT__INITIALIZED__ ", /* ... */  }
+
+  // ...
+  
+  export function useAuthContext(): IAuthContext {
+    const authContext = useContext(AuthContext);
+
+    if (authContext.username === defaultContext.username) {
+      console.warn("Auth-Kontext wurde nicht korrekt initialisiert (kein Provider)")
+    }
+
+    return authContext;
+  }            
+  ```  
+
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Übung: Ein Auth-Context für die Blog-Anwendung 
+
+* _Baue einen Kontext, der den aktuellen User hält und diesen anzeigt_
+* Schritte:
+  * In `blog-example/backend-rest` bitte `npm start`ausführen  
+  * Arbeite bitte in `blog-example/workspace-typescript-app`
+    * ggf. `npm install` hier ausführen und dann `npm start` (alten Workspace beenden)
+  * Du findest im Workspace TODOs, am Besten bearbeitest Du die Dateien in folgender Reihenfolge:
+    1. `AuthContext.tsx` (Kontext-Provider-Komponente und -Hook)
+    2. `App.tsx` (Context zur Verfügung stellen)
+    3. `CurrentUser.tsx`  (Login-/Logout-Button bauen)
+    4. `PostEditor.tsx`   (Aktuellen Benutzer anzeigen)
+* Mögliche Lösung findest Du in `steps/10-context`
+* Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+            <!-- .slide: id="t-protected-routes" -->
+# Router: Protected Routes
+
+* Fertiges Beispiel `steps/50-router-mit-login`
+
+---
+
+### Pattern: Protected Routes
+
+* React Router kennt keine Protected Routes, man kann sich aber was selbst basteln
+* Idee: es gibt eine zentrale Instanz (z.B. Auth Context), in der abgelegt ist,
+  ob der User angemeldet ist oder nicht.
+* Je nachdem, wird eine Seite gerendert oder zur Login-Seite umgelenkt  
+* ```typescript
+  function ProtectedPage({children}: {children: React.ReactElement } ) {
+    // useAuthContext liefert authentication von "irgendwoher"
+    // zurück (z.b. React Context)
+    const auth = useAuthContext(); 
+
+    if (auth.currentUser)  {
+      // User ist angemeldet
+      return children;
+    }
+
+    return &lt;Navigate to="/login" />;
+  }
+
+  function App() {
+    return (
+      &lt;Routes>
+        &lt;Route path="/about" element={&lt;AboutPage/> />
+        &lt;Route path="/login" element={&lt;LoginPage/> />
+        &lt;Route path="/admin" element={&lt;ProtectedPage>&lt;AdminPage/>&lt;/ProtectedPage} />
+      &lt;/Routes>
+    );
+  }
+
+  ```  
+
+---
+
+### Navigieren mit dem React Router
+
+* Zum Navigieren kann man entweder die `Navigate`-Komponente oder den `useNavigate`-Hook verwenden
+  * `Navigate`-Komponente kann als Return-Wert einer Komponente verwendet werden
+  * `useNavigate` wenn programmatisch die URL geändert werden soll
+* Beide APIs bieten dieselben Features
+
+---
+
+### Die `Navigate`-Komponente
+* Mit `to` wird der Ziel-Pfad angegeben: `<Navigate to="/login" />` 
+  * Der Pfad kann relativ zur Ober-Route angegeben werden
+* Mit `state` kann man ein beliebiges Objekt übergeben, dass auf der aufgerufenen Seite abgefragt werden kann
+  * Dieses Object wird in der Browser History (!) gespeichert, ist also auch nach Reload noch verfügbar
+  * `<Navigate to="..." state={{ redirectAfter: "/"}} />`
+* Mit `replace` kann ausgedrückt werden, dass die aufgerufene Route die aktuelle Route im Browser
+  ersetzen will 
+  * `<Navigate to="..." state={...} replace={true} />`
+  * Back-Button würde dann die aktuelle Route überspringen
+  * Beispiel: `/home ➡️ /login ➡️ <Navigate to="/admin" replace /> ➡️ /admin 🔙 /home`
+    * Die `/login`-Route taucht nicht in der Browser-History auf, nachdem `/admin` gerendert wurde
+
+---
+
+### Der `useNavigate`-Hook
+
+- Der `useNavigate`-Hook liefert die `navigate`-Funktion
+- API ähnlich wie `Navigate`-Komponente
+- Ziel-Pfad ist erster Parameter: `navigate("/login")`
+- `state` und `replace` sind Optionen, die als zweiter Parameter übergeben werden können (beide optional):
+- ```typescript
+  function ProtectedRoute() {
+    const navigate = useNavigate();
+
+    function handleRedirect() {
+      navigate("/login", {
+        state: { redirectAfter: "/about" },
+        replace: true
+      });
+    }
+
+    // ...
+  }
+  ```
+
+---
+
+### Location
+
+* Die `Location` gibt Auskunft über die aktuelle URL
+* Instanz kann mit `useLocation` abgefragt werden
+* Hierüber gibt es zum Beispiel:
+  * den aktuellen Pfad (`location.pathname`)
+  * die Such-Parameter hinter dem `?` in der URL (`location.search`)
+  * den State (`location.state`). Kann `undefined` sein.
+* ```typescript
+  function LoginPage() {
+    const location = useLocation();
+    const redirectAfter = location.state?.redirectAfter?.pathname || "/";
+    
+    // Login Formular rendern
+    // nach erfolgreichem Login navigate nach redirectAfter
+  }
+  ```
+
+---
+
+### Location und Location-State in TypeScript
+
+* **Achtung**: Der Typ von `location.state` in TypeScript ist `unknown``
+* Ihr müsst also vor der Verwendung überprüfen, ob der Typ Euren "Erwartungen" entspricht
+* Dazu könnt ihr zum Beispiel eine [Type Predicate Function](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates) bauen
+* ```typescript
+  // Beschreibt den LocationState, so wie ihn Eure Komponente erwartet
+  type LoginPageLocationState = {
+    redirectAfter: Location;
+  };
+
+  // Type Predicate Function: liefert 'true' zurück, wenn der (Location) State
+  //   dem LoginPageLocationState entspricht
+  //   TypeScript weiß dann auch, dass state von dem Typ ist
+  function isLoginPageLocationState(state: unknown): state is LoginPageLocationState {
+    return state !== null && typeof state === "object" && "redirectAfter" in state;
+  }
+
+  function LoginPage() {
+    const { state } = useLocation();
+    const redirectAfter = isLoginPageLocationState(state) ? state.redirectAfter : "/";
+
+    // ...
+  }
+  ```
+
+* Andere Lösung siehe `steps/50-router-mit-login/src/LoginPage.tsx`
+
+---
+
+### Beispiel: Navigieren zu ursprünglicher Location
+
+* Use-Case: 
+  1. Benutzer ruft "Protected URL" auf
+  2. Redirect auf Login
+  3. Nach erfolgreichem Login redirect auf ursprüngliche seite
+* ```typescript
+  function ProtectedPage({children}: {children: React.ReactElement } ) {
+    const auth = useAuthContext(); 
+    const location = useLocation();
+
+    if (auth.username)  { /* ... */ }
+
+    return &lt;Navigate to="/login" state={{redirectAfter: location}} replace />;
+  }
+
+  function App() {
+    return (
+      &lt;Routes>
+        &lt;Route path="/about" element={&lt;AboutPage/> />
+        &lt;Route path="/login" element={&lt;LoginPage/> />
+        &lt;Route path="/admin" element={&lt;ProtectedPage>&lt;AdminPage/>&lt;/ProtectedPage} />
+      &lt;/Routes>
+    );
+  }
+
+  function LoginPage() {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const redirectAfter = location.state?.redirectAfter?.pathname || "/";
+    function handleLogin() {
+      // login durchführen, dann:
+      navigate(redirectAfter, { replace: true} )
+    }
+
+    // Login Formular rendern
+  }
+
+  ```  
+
+---
+
+### Übung: Protected Routes
+
+* _Der PostEditor soll nur aufrufbar sein, wenn ein Benutzer angemeldet ist_
+* Schritte:
+  1. Implementiere die `ProtectedRoute` (siehe ProtectedRoute.tsx)
+  2. Füge die `LoginPage` mit dem `path` `/login` in der `App`-Komponente hinzu
+  2. Verwende die `ProtectedRoute` in der `App`-Komponente` für die `PostEditorPage`-Komponente
+    * `<Route path="/add" element={<ProtectedRoute><PostEditorPage /></ProtectedRoute>} />`
+    * Der PostEditor sollte nun nicht mehr dargestellt werden, wenn Du nicht eingeloggt bist
+      * Klicke auf den Login-Button, jetzt sollte sich der PostEditor öffnen lassen
+      * Wenn du auf Logout klickst, müsste er unsichtbar werden (bzw. LoginPage muss aufgehen)
+  3. Vervollständige die `LoginPage` (siehe `LoginPage.tsx`)
+   * Melde dort den Benutzer mit Namen an und führe ein Redirect durch
+  4. Wenn Du nun den PostEditor öffnest, soll das Login-Formular erscheinen, danach wieder der PostEditor 
+* Lösung in `steps/50-router-mit-login`
+* Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️
+
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+            <!-- .slide: id="t-libs" -->            
 
 ## React Bibliotheken
 
@@ -2955,266 +3608,6 @@ render(
               Selenium gibt's für mehrere Sprachen
             </li>
           </ul>
-        </section>
-
-        <section data-markdown>
-          <textarea data-template>
-            <!-- .slide: id="t-router" -->            
-## Routing in React
-
-* Anforderungen:
-  * URLs auf Komponenten abbilden
-  * (Interne) Links, die die Anwendung neu rendern, ohne zum Server zu gehen
-* React bringt keinen Router mit
-* In der Regel wird der [https://reactrouter.com/](https://reactrouter.com/) verwendet
-
----
-
-## Der React Router
-
-* Homepage: [https://reactrouter.com/](https://reactrouter.com/)
-* Aktuelle Version v6
-* Achtung: Verhalten und API haben sich in Version 4, 5 und 6 geändert.
-  * Bei Beispielen/Dokumentation/Tutorial etc. die Version beachten!
-
----
-
-## Der React Router
-
-### Beispiel
-
-```jsx
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-export default function App() {
-  &lt;Routes>
-    &lt;Route path="/" element={<Page />}>
-      &lt;Route index element={<PostListPage />} />
-      &lt;Route path="/post/:postId" element={<PostPage />} />
-      &lt;Route path="/add" element={<PostEditor onSavePost={savePost} />} />
-      &lt;Route path="*" element={<NotFoundPage />} />
-    &lt;/Route>
-  &lt;/Routes>
-}  
-```
-
----
-
-### Die Router-Komponente
-
-* Als oberste Komponente muss eine `Router`-Komponente gerendert werden
-  * Nur unterhalb (direkt oder indirekt) darf mit `Routes` und `Route` gearbeitet werden
-* Router fest, welche URLs generiert werden soll:
-* [`HashRouter`](https://reactrouter.com/docs/en/v6/routers/hash-router): Die Route wird durch Hash-Zeichen (`#`) getrennt hinter die URL geschrieben (Beispiel: `http://loalhost:8080#/post/1`)
-  * Änderungen in der URL hinter dem Hash-Zeichen führen im Browser nicht zum Neuladen der Seite vom Server!
-  * Der Server wird also beim Seitenwechsel nie kontaktiert
-* [`BrowserRouter`](https://reactrouter.com/docs/en/v6/routers/browser-router): Die Route wird direkt hinter die URL geschrieben. Sieht dann aus wie eine "normale" Route vom Server (Beispiel: `http://localhost:8080/post/1`)  
-  * Empfohlene Implementierung
-  * Bei der Navigation durch die Anwendung unterbindet der Router Server-Requests
-  * Aber beim initalen Laden muss der Server sicherstellen, dass die URL gefunden wird
-    * Dazu muss der Webserver entsprechend konfiguriert werden ("/..." -> index.html)
-
----
-
-### Konfiguration der Routen: Welche Komponente soll für welche Route angezeigt werden?
-
-* Mit [Routes und Route](https://reactrouter.com/docs/en/v6/components/route)-Komponenten gibt es eine Art "intelligentes" switch- oder if/else-Statement
-* `Route`-Komponenten müssen mit `Routes` umschlossen werden. Nach jedem Ändern der URL prüft der Router alle `Routes`-Komponenten in allen `Route`-Komponenten der Anwendung
-* ```javascript
-  &lt;Routes>
-    &lt;Route path="/" element={&lt;App />} /> 
-    &lt;Route path="/blog" element={&lt;App />} />
-  &lt;/Routes>
-```
-* `Route` funktioniert wie ein `if`-Statement: `if (path === "/post") renderElement &lt;Post />`
-
----
-
-### Verschachtelte Routen
-
-* `Route`-Komponenten können geschachtelt werden, um Hierchien abzubilden
-* In den Child-Komponenten werden dann relative Pfade angegeben
-* ```javascript
-  &lt;Routes>
-    &lt;Route path="/" element={&lt;App />}> &lt;!-- Rendert "/" -->
-      &lt;Route path="blog" element={...}> &lt;!-- Rendert "/blog" -->
-        &lt;Route path="new" element={...}/> &lt;!-- Rendert "/blog/new" -->
-        &lt;Route path="post/:id" element={...}/> &lt;!-- Rendert "/blog/post/1" -->
-      &lt;/Route>
-    &lt;/Route>    
-  &lt;/Routes>    
-```
-* Die Oberkomponente muss dann jeweils die Unterkomponenten rendern
-  * Das funktioniert mit der [`<Outlet />`](https://reactrouter.com/docs/en/v6/components/outlet)-Komponente
-  * ```javascript
-    function App() {
-      return &lt;div className="App">
-        &lt;h1>Blog App</h1>
-        &lt;Outlet />
-      &lt;/div>
-  }
-```    
-
----
-
-### Index Routes
-
-* Bei verschachtelten Routen muss für die Ober-Route eine Index Route gerendert werden
-* Beispiel:
-* ```javascript
-  &lt;Routes>
-    &lt;Route path="/" element={&lt;App />}> 
-      &lt;Route path="blog" element={&lt;Blog />} />
-    &lt;/Route>    
-  &lt;/Routes>    
-```
-* Hier wird `Blog` als `Outlet` in `App` für `/blog` gesetzt. Aber kein Outlet für `/`
-* Dazu muss eine Index-Route definiert werden. Die wird unterhalb der Ober-Route eingesetzt und
-  wird dann gerendert, wenn genau der Pfad der Ober-Route aufgerufen wird
-* Statt `path` wird darin einfach `index` angegeben:  
-  * ```javascript
-    &lt;Routes>
-      &lt;Route path="/" element={&lt;App />}> 
-        &lt;Route index element={&lt;Home /> } /> &lt;!-- Rendert "App" mit Outlet "Home" für "/" -->
-        &lt;Route path="blog" element={&lt;Blog />} /> &lt;!-- Rendert "App" mit Outlet "Blog" für "/blog" -->
-      &lt;/Route>    
-    &lt;/Routes>    
-```
-
-
----
-
-### Fallback Route
-
-* Mit `path="*"` kann eine Fallback-Route angegeben werden, die aktiv ist, wenn keine andere Route passt
-* Beispiel:
-* ```javascript
-    &lt;Routes>
-      &lt;Route path="/" element={&lt;App />}> 
-        &lt;Route path="blog" element={&lt;Blog />} />
-
-        &lt;Route path="*" element={&lt;NotFound />} /> &lt;!-- Für alle Route, außer / und /blog -->
-      &lt;/Route>    
-    &lt;/Routes>    
-  ```
-
----
-
-### Dynamische Parameter
-
-* In einer Route können Platzhalter ("Parameter") angegeben werden
-* Auf die entsprechenden Werte kann in einer Komponente mit `useParams` zugegriffen werden
-* ```javascript
-  export default function App() {
-    &lt;Routes>
-      &lt;Route path="/" element={<Page />}>
-        &lt;Route path="/post/:postId" element={<PostPage />} />
-      &lt;/Route>
-    &lt;/Routes>
-  }
-
-  function PostPage() {
-    const { postId } = useParams(); 
-    //  /post/p1  postId: "p1"
-    //  /post/1  postId: "1"
-  }
-  ```  
-
----
-
-### Links
-
-* Links müssen mit der [`Link`](https://reactrouter.com/docs/en/v6/components/link)-Komponente gerendert werden
-* ```javascript
-  function PostTeaser({post}) {
-    return &lt;div>
-      &lt;h1>{post.title}&lt;/h1>
-      &lt;Link to={`/post/${post.id}`}>Read more&lt;/Link>
-    &lt;/div>  
-  }
-```
-* Die `Link`-Komponente rendert ein `a`-Element, verhindert aber, dass der Browser Serveraufrufe durchführt,
-  wenn darauf geklickt wird
-* Das gilt nur für interne Links, externe Links wie gewohnt mit HTML `a`-Element
-* Alternative: [`NavLink`](https://reactrouter.com/docs/en/v6/components/nav-link) weiß, ob der `to`-Pfad
-  der gerade aktiven Route entspricht und kann sich dann anders darstellen ("Aktiver Link", "Aktiver Tab", ...)
-  * ```javascript
-    function NavBar() {
-      return &lt;div>
-        &lt;NavLink to={`/home}`} className={active => active ? "Tab--active":"Tab--default" }>Home&lt;/Link>
-        &lt;NavLink to={`/about}`} className={active => active ? "Tab--active":"Tab--default" }>About&lt;/Link>
-        &lt;NavLink to={`/profile}`} className={active => active ? "Tab--active":"Tab--default" }>Profile&lt;/Link>
-      &lt;/div>  
-    }
-```
-* Mit `className` und `style` können Callback-Funktionen übergeben werden, die das konkrete Styling/CSS Klasse je nach Zustand
-  (active bzw not-active) zurückliefern. 
-
----
-
-### Navigation per API
-
-* Die [`Navigate`](https://reactrouter.com/docs/en/v6/components/navigate)-Komponente kann gerendert werden,
-  wenn eine Komponente beim Rendern einen Redirect machen möchte
-* ```javascript
-  function BlogPost() {
-    const [error, setError] = useState(false);
-    const [post, setPost] = useState(null);
-
-    useEffect( () => fetch(...).catch(e => setError(true)), [] );
-
-    if (error) {
-      return &lt;Navigate to="/error" />
-    }
-
-    return &lt;BlogPost post={post} />
-  }
-  ```  
-* Mit [`useNavigate`](https://reactrouter.com/docs/en/v6/hooks/use-navigate) kann auch per API, z.B. in einem Event Handler, ein Redirect gemacht werden:
-* ```javascript
-  function LogoutButton() {
-    const useNaviate = useNavigate();
-
-    function handleClick() {
-      navigate("/");
-    }
-
-    return &lt;button onClick={handleClick}>Logout&lt;/button>
-  }
-  ```  
-
-
-
-  </textarea
-          >
-        </section>
-
-        <section data-markdown>
-          <textarea data-template>
-### Data Libraries für React: Anforderungen
-
-* Daten laden/schreiben, HTTP GET, POST, PUT, DELETE, ...
-* Caching samt korrektem Invalidieren...
-* Requests sollen nicht bei jedem Rendern ausgeführt werden
-* globales(!) Caching: Daten sollen über Komponentengrenzen und -wechsel erhalten bleiben
-* Re-fetching?
-* Fehlerbehandlung
-* Request-Lebenszyklus: Läuft mein Request noch? (Wie) wurde er beendet? 
-              </textarea
-          >
-        </section>
-
-        <section data-markdown>
-          <textarea data-template>
-                ### Data Libraries für React: Typische Vertreter
-    
-                * [SWR](https://swr.vercel.app/)
-                * [TanStack Query](https://tanstack.com/query/) (ehemals "React Query")
-                * Redux: [Redux Toolkit Query](https://rtk-query-docs.netlify.app/)
-                * Erste(?) Lib dieser Art: [Apollo](https://www.apollographql.com/docs/react/) (für GraphQL)
-                * Idee bei allen ähnlich: es gibt einen Custom-Hook, der Daten lädt/schreibt, man bekommt Request Status/Daten zurück, Ergebnisse werden gecached
-                * [React Router ab v6.4](https://beta.reactrouter.com/en/dev/routers/data-browser-router) - zurzeit noch Beta!
-              </textarea
-          >
         </section>
 
         <section>
