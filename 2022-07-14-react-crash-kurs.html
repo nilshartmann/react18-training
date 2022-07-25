@@ -1508,9 +1508,12 @@ const posts = await response.json();
 * Backend starten
   * Das Backend ist bereits fertig. Du kannst es starten mit:
   * ```
-  cd react-training/blog-example/backend-rest
+  cd blog-example/backend-rest
+  npm install (nur, falls noch nicht gemacht)
   npm start
   ```
+  * Danach sollte unter [http://localhost:7000/posts](http://localhost:7000/posts) 
+    die Liste mit den (JSON-)Posts zurückkommen
 * Schritte:
   * Kopiere `index.js` und `App.js` aus `material/4-remote-query` in dein `src`-Verzeichnis
   * In `App.js` findest Du TODOs mit weiteren Hinweisen
@@ -2046,6 +2049,20 @@ setView("POST_LISTE"); // ERROR
             👉 Lasst uns ausprobieren, wie das funktioniert! (<code>workspace-typescript</code>)
           </p>
         </section>
+
+        <!-- ============================================================================= -->
+
+        <section data-markdown>
+          <textarea data-template>
+### Übung TypeScript            
+
+* Im [TypeScript Playground](https://www.typescriptlang.org), Online-Editor für TypeScript
+* Source Code
+  * Ausgangsmaterial: `blog-example/material/ts-intro/01_hello_typescript.ts`
+  * Lösung: `blog-example/material/ts-intro/01_solution_hello_typescript.ts`
+          </textarea>
+        </section>
+
         <section>
           <h2>Typsicherheit in Funktionskomponenten</h2>
           <pre><code class="line-numbers typescript" data-leftpad>
