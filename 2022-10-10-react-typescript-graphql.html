@@ -4018,9 +4018,9 @@ root.render(
 
 ---
 ### Übung: Query ausführen
-<!-- .element: class="todo" -->
+
 * Die `PostListPage` soll eine Liste von Posts anzeigen
-* Ergänze in `src/PostListPage/PostListPage.tsx` den dazu notwendigen Code
+* Ergänze in `src/PostListPage.tsx` den dazu notwendigen Code
 * In der Datei findest Du TODOs mit weiteren Informationen
 * Eine mögliche Lösung findest Du in `steps/9-graphql-with-typescript`
 
@@ -4265,7 +4265,6 @@ root.render(
 ---
 
 ### Übung: eine Mutation
-<!-- .element: class="todo" -->
 * Die Logik zum Anlegen eines BlogPosts implementieren
 * Die Mutation (`AddBlogPostMutation`) ist schon fertig und der Code dafür generiert
 * In `PostEditorPage` musst Du den Code vervollständigen, siehe dort für weitere Informationen
@@ -4290,6 +4289,7 @@ root.render(
   ```
 * In diesem Beispiel kann Apollo das Objekt <b>P1</b> im Cache automatisch aktualisieren
   (neue Anzahl von likes)
+* PostPage, Like vergeben <!-- .element: class="demo" --> 
 ---
 ### Den Cache nach einer Mutation aktualisieren
 * Mit [refetch Queries](https://www.apollographql.com/docs/react/data/mutations/#refetching-queries) kannst Du eine Liste von Queries angeben, die erneut ausgeführt werden, wenn
