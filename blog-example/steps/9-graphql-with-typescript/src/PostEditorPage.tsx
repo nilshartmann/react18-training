@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAddBlogPostMutation } from "./generated/graphql";
 import PostEditor from "./PostEditor";
 import { NewBlogPost } from "./types";
@@ -17,12 +17,17 @@ function SuccessConfirmation() {
 
 export default function PostEditorPage() {
   const [mutate, { error, data, called, loading }] = useAddBlogPostMutation();
+  const navigate = useNavigate();
   async function savePost(post: NewBlogPost) {
-    mutate({
+    const { data } = await mutate({
       variables: {
         postData: post
       }
     });
+
+    if (data?.newPost.blogPost) {
+      navigate("/");
+    }
   }
 
   const errorMessage = error ? error.toString() : data?.newPost.error;

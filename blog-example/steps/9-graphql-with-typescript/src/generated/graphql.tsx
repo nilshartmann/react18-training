@@ -13,7 +13,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  Upload: any;
 };
 
 export type BlogPost = {
@@ -22,7 +21,6 @@ export type BlogPost = {
   date: Scalars["String"];
   id: Scalars["ID"];
   likes: Scalars["Int"];
-  /** Returns the first n-th chars of the body */
   teaser?: Maybe<Scalars["String"]>;
   title: Scalars["String"];
   user: User;
@@ -31,11 +29,6 @@ export type BlogPost = {
 export type BlogPostTeaserArgs = {
   maxLength?: InputMaybe<Scalars["Int"]>;
 };
-
-export enum CacheControlScope {
-  Private = "PRIVATE",
-  Public = "PUBLIC"
-}
 
 export type CreateBlogPostResult = {
   __typename?: "CreateBlogPostResult";
@@ -133,6 +126,18 @@ export type AddBlogPostMutation = {
   };
 };
 
+export type LikePostMutationVariables = Exact<{
+  postId: Scalars["ID"];
+}>;
+
+export type LikePostMutation = {
+  __typename?: "Mutation";
+  likePost: {
+    __typename?: "LikePostResult";
+    blogPost?: { __typename?: "BlogPost"; id: string; likes: number } | null;
+  };
+};
+
 export type PostListPageQueryVariables = Exact<{ [key: string]: never }>;
 
 export type PostListPageQuery = {
@@ -158,6 +163,7 @@ export type PostPageQuery = {
     title: string;
     date: string;
     body: string;
+    likes: number;
     user: { __typename?: "User"; name: string };
   } | null;
 };
@@ -216,12 +222,56 @@ export type AddBlogPostMutationOptions = Apollo.BaseMutationOptions<
   AddBlogPostMutation,
   AddBlogPostMutationVariables
 >;
+export const LikePostDocument = gql`
+  mutation LikePost($postId: ID!) {
+    likePost(postId: $postId) {
+      blogPost {
+        id
+        likes
+      }
+    }
+  }
+`;
+export type LikePostMutationFn = Apollo.MutationFunction<
+  LikePostMutation,
+  LikePostMutationVariables
+>;
+
+/**
+ * __useLikePostMutation__
+ *
+ * To run a mutation, you first call `useLikePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLikePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [likePostMutation, { data, loading, error }] = useLikePostMutation({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useLikePostMutation(
+  baseOptions?: Apollo.MutationHookOptions<LikePostMutation, LikePostMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<LikePostMutation, LikePostMutationVariables>(LikePostDocument, options);
+}
+export type LikePostMutationHookResult = ReturnType<typeof useLikePostMutation>;
+export type LikePostMutationResult = Apollo.MutationResult<LikePostMutation>;
+export type LikePostMutationOptions = Apollo.BaseMutationOptions<
+  LikePostMutation,
+  LikePostMutationVariables
+>;
 export const PostListPageDocument = gql`
   query PostListPage {
     posts {
       date
       title
-      teaser
+      teaser(maxLength: 20)
       id
     }
   }
@@ -276,6 +326,7 @@ export const PostPageDocument = gql`
       user {
         name
       }
+      likes
     }
   }
 `;

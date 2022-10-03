@@ -1,7 +1,7 @@
 import * as React from "react";
 import Post from "./Post";
 import { useParams, Link } from "react-router-dom";
-import { usePostPageQuery } from "./generated/graphql";
+import { useLikePostMutation, usePostPageQuery } from "./generated/graphql";
 
 export default function PostPage() {
   const { postId } = useParams<{ postId: string }>();
@@ -10,6 +10,10 @@ export default function PostPage() {
     variables: {
       postId: postId!
     }
+  });
+
+  const [likePost] = useLikePostMutation({
+    variables: { postId: postId! }
   });
 
   if (loading) {
@@ -26,6 +30,12 @@ export default function PostPage() {
           Home
         </Link>
         <Post post={data.post} />
+
+        <div>
+          <p>{data.post.likes} likes</p>
+
+          <button onClick={() => likePost()}>Like!</button>
+        </div>
       </>
     );
   }

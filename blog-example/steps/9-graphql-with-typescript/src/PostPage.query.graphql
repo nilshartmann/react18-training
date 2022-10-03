@@ -7,5 +7,6 @@ query PostPage($postId: ID!) {
     user {
       name
     }
+    likes
   }
 }

@@ -33,6 +33,11 @@ Reveal.initialize({
   // Learn about plugins: https://revealjs.com/plugins/
   plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
 }).then(() => {
+  document.querySelectorAll("section[data-hidden]").forEach((n) => {
+    console.log("RMEOVE ", n);
+    n.remove();
+  });
+
   if (isLocalServer) {
     // only applies to presentation version
 

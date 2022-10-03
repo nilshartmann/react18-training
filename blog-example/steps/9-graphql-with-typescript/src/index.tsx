@@ -15,9 +15,9 @@ const client = new ApolloClient({
 const root = createRoot(document.getElementById("root") as HTMLElement);
 
 root.render(
-  <ApolloProvider client={client}>
-    <Router>
+  <Router>
+    <ApolloProvider client={client}>
       <App />
-    </Router>
-  </ApolloProvider>
+    </ApolloProvider>
+  </Router>
 );

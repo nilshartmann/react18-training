@@ -70,6 +70,11 @@
     "prefix": "mdt",
     "body": ["<!-- .element: class=\"todo\" -->$0"]
   },
+  "Markdown hidden": {
+    "scope": "html",
+    "prefix": "mdh",
+    "body": ["<!-- .slide: data-hidden=\"true\" -->$0"]
+  },
   "Markdown Note": {
     "scope": "html",
     "prefix": "mdn",
