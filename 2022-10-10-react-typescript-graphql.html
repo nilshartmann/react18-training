@@ -41,14 +41,14 @@
           <div>
             <h3><span class="transparent-bg">Slides</span></h3>
             <p>
-              <span class="transparent-bg">Lokal: 2022-06-09-react-typescript.html</span>
+              <span class="transparent-bg">Lokal: 2022-10-10-react-typescript-graphql.html</span>
             </p>
             <p>
               <span class="transparent-bg"
                 >Remote:
                 <a
-                  href="https://nilshartmann.github.io/react18-training/2022-06-09-react-typescript.html"
-                  >https://nilshartmann.github.io/react18-training/2022-06-09-react-typescript.html</a
+                  href="https://nilshartmann.github.io/react18-training/2022-10-10-react-typescript-graphql.html"
+                  >https://nilshartmann.github.io/react18-training/2022-10-10-react-typescript-graphql.html</a
                 ></span
               >
             </p>
@@ -3566,29 +3566,6 @@ export default function App() {
           <h2>Clients mit Apollo React</h2>
         </section>
 
-        <section data-markdown="">
-          <textarea data-template>
-### Vorbereitung: Workspace starten
-
-* **Backend**
-*   `publy-backend/src`-Verzeichnis *löschen* (ggf. vorher Eure Änderungen sichern)
-  * `steps/90_app/src`-Verzeichnis nach `publy-backend` kopieren
-  * `publy-userservice` starten (Klasse: `nh.graphql.publy.userservice.UserserviceApplication`)
-  * `publy-backend` starten (Klasse: `nh.publy.backend.PublyApplication`)
-  * Diese beiden Prozesse können im folgenden einfach immer weiter laufen. Wir machen daran keine Änderungen mehr.
-* **Frontend** (Verzeichnis: `publy-frontend`)
-  * Verzeichnis `publy-frontend/src` löschen
-  * `frontend-steps/01_initial_uebungen/src` nach `publy-frontend/src` kopieren
-  * Im Verzeichnis `publy-frontend` Packages installieren und starten:
-    * `pnpm install`
-    * `pnpm start`
-  * Frontend sollte dann auf http://localhost:3000 laufen
-    * Header und "Read more"-Button sollten angezeigt werden
-* Wenn fertig, bitte in Zoom "Hand heben" 🙋
-  </textarea
-          >
-        </section>
-
         <section>
           <h3>Apollo Client</h3>
           <p>
@@ -4016,6 +3993,25 @@ root.render(
   }
   ```
 
+---
+### Übung: Query ausführen
+
+* **Vorbereitung:**
+  * Bitte GraphQL Backend starten
+  * ```bash
+  cd blog-example/backend-graphql
+  npm install # falls noch nicht gemacht
+  npm start
+  ```
+  * GraphQL Explorer sollte auf [http://localhost:4000](http://localhost:4000) laufen
+  * Bitte im GraphQL Workspace arbeiten!
+  * Bestehenden Frontend-Prozess beenden (Ctrl+C)
+  * In `workspace-graphql` das Frontend starten
+  * ```bash
+  cd blog-example/workspace-graphql
+  npm install # falls noch nicht gemacht
+  npm start
+  ```
 ---
 ### Übung: Query ausführen
 
