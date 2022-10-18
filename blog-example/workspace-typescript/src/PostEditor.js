@@ -1,22 +1,11 @@
 import React from "react";
+import { NewBlogPost } from "./types";
 
-// TODO: add TypeScript typings
+type PostEditorProps = {
+  onSavePost(newBlogPost: NewBlogPost): void
+};
 
-// 1. Rename this file to PostEditor.tsx
-//    (you might have to re-run "npm start" afterwards. Cancel the running process with Ctrl+C)
-// 2. Create a Type for props for 'Message' (see below)
-//
-// 3. Create a Type for the props object for 'PostEditor'.
-//    - Remeber: the props object consists of the entries:
-//       - a callback - function called "onSave"
-//    - The 'onSave'-callback function takes one parameter: the new blog post
-//      - The new Blog post consists of title and body (both strings).
-//      - A type for new Blog post is already defined in "../types". You can import the type
-//        using ES6 import as you would import a function or class
-
-// 3. Add your type to the PostEditor function signature
-
-export default function PostEditor(props) {
+export default function PostEditor(props: PostEditorProps) {
   const [title, setTitle] = React.useState("");
   const [body, setBody] = React.useState("");
 
@@ -71,12 +60,8 @@ export default function PostEditor(props) {
 }
 
 // TODO:
-//   - add type for properties.
-//     Remember:
-//       - 'msg' is a mandatory string
-//       - 'type' can only be 'error' or 'info'
-//
-//     The type for the 'style' const is 'React.CSSProperties'
+//   - add type for properties, you can simply use 'any' here :-)
+//     The type for the 'style' variable is 'React.CSSProperties' (or use 'any')
 function Message({ msg, type = "error" }) {
   const style = type === "error" ? { color: "red", fontWeight: "bold" } : { color: "green" };
 

@@ -10,7 +10,7 @@ export default function PostList({ posts, onAddPost }) {
     <>
       <button onClick={onAddPost}>Add Post</button>
       {posts.map(p => (
-        <article key={p.id} className="Container">
+        <article className="Container">
           <p className="Date">{formattedDate(p.date)}</p>
           <h1>{p.title}</h1>
           <p>{p.body}</p>
