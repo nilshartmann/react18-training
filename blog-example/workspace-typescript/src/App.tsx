@@ -2,58 +2,56 @@ import React from "react";
 import PostList from "./PostList";
 import PostEditor from "./PostEditor";
 import { NewBlogPost, BlogPost } from "./types";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-
-async function loadPostsFromBackend(): Promise<BlogPost[]> {
-  const response = await fetch("http://localhost:7000/posts");
-  if (!response.ok) {
-    throw new Error("Could not load posts!");
-  }
-  return response.json();
-}
-
-async function savePostToBackend(newPost: NewBlogPost) {
-  const response = await fetch("http://localhost:7000/posts", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(newPost)
-  });
-  if (!response.ok) {
-    throw new Error("Could not save post!");
-  }
-  return response.json();
-}
+import LoadingIndicator from "./LoadingIndicator";
 
 type VIEW = "LIST" | "ADD";
 
-function App() {
-  const queryClient = useQueryClient();
-  const postResult = useQuery(["posts"], loadPostsFromBackend);
-  const savePostMutation = useMutation(savePostToBackend);
+type FetchState = {
+  posts?: BlogPost[];
+  loading?: boolean;
+  error?: string;
+};
 
+function App() {
   const [view, setView] = React.useState<VIEW>("LIST");
 
-  if (postResult.status === "loading") {
-    return <h1>Loading Posts...</h1>;
-  }
+  const [fetchState, setFetchState] = React.useState<FetchState>({});
 
-  if (postResult.status === "error") {
-    return <h1>Failed to load blog posts!</h1>;
-  }
+  React.useEffect(() => {
+    setFetchState({ loading: true });
+    fetch("http://localhost:7000/posts")
+      .then(response => response.json())
+      .then(json => {
+        setFetchState({ posts: json });
+      })
+      .catch(err => {
+        setFetchState({ error: String(err) });
+      });
+  }, []);
 
   function savePost(post: NewBlogPost) {
-    savePostMutation.mutate(post, {
-      onSuccess() {
-        queryClient.invalidateQueries(["posts"]);
+    setFetchState({ posts: fetchState.posts, loading: true });
+    fetch("http://localhost:7000/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(post)
+    })
+      .then(response => response.json())
+      .then(newPost => {
+        setFetchState({ posts: [newPost, ...(fetchState.posts || [])] });
         setView("LIST");
-      }
-    });
+      })
+      .catch(err => console.error("Saving failed: " + err));
+  }
+
+  if (fetchState.loading) {
+    return <LoadingIndicator>Server Request running. Please wait.</LoadingIndicator>;
   }
 
   if (view === "LIST") {
-    return <PostList posts={postResult.data} onAddPost={() => setView("ADD")} />;
+    return <PostList posts={fetchState.posts || []} onAddPost={() => setView("ADD")} />;
   }
 
   return <PostEditor onSavePost={savePost} />;

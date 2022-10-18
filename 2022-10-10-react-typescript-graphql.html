@@ -2801,9 +2801,20 @@ function App(props) {
               Beim <b>Laden</b> der Daten mit fetch, bitte <b>Promise API</b> verwenden und
               <b>nicht <code>async/await</code></b> API!
             </li>
+            <li>Füge in <code>App.js</code> den Code zum <b>Speichern</b> der Blog-Posts hinzu.</li>
 
             <li>
-              Füge einen Loading Indicator hinzu
+              Die URL ist identisch mit dem GET-Request, aber Du musst als HTTP Methode
+              <code>POST</code> verwenden
+            </li>
+            <li>Du musst als Header den Content-Type <code>application/json</code> setzen</li>
+            <li>Als <code>body</code> musst Du den neuen Blog-Post an den Server schicken</li>
+            <li>
+              In der Antwort bekommst Du den gespeicherten Post vom Server zurück. Diesen musst Du
+              in die Liste der BlogPosts einfügen
+            </li>
+            <li>
+              <b>Schritt 2:</b>Füge einen Loading Indicator hinzu
               <ul>
                 <li>
                   Wenn Du <code>?slow</code> an die URLs im <code>fetch</code>-Aufruf hängst, wird
@@ -2825,7 +2836,7 @@ function App(props) {
           </ol>
         </section>
 
-        <section>
+        <!-- <section>
           <h3>Übung: Speichern</h3>
           <ol class="x-list">
             <li>Füge in <code>App.js</code> den Code zum <b>Speichern</b> der Blog-Posts hinzu.</li>
@@ -2847,7 +2858,7 @@ function App(props) {
             <li>Mögliche Lösung in <code>steps/4-remote</code></li>
             <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
           </ol>
-        </section>
+        </section> -->
 
         <!-- ============================================================================= -->
         <section>
