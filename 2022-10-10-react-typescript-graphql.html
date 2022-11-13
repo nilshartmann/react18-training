@@ -3166,35 +3166,36 @@ function PostEditor(props) {
             Füge die fehlenden Typ-Informationen in <code>PostList.js</code> und
             <code>PostEditor.js</code> hinzu
           </p>
+          <p><b>Neuer Workspace</b>: <code>blog-example/workspace-typescript</code></p>
+          <p></p>
           <ol style="font-size: 80%" class="x-list">
+            <li>
+              In <code>types.ts</code> findest Du fertige "fachliche" Typen für die Blog-Anwendung,
+              die Du im folgenden verwenden kannst
+            </li>
             <li>
               Benenne <code><b>PostList.js</b></code> in <code>PostList.tsx</code> um und starte
               <code>npm start</code> neu
             </li>
             <li>Stelle <code>PostList.tsx</code> auf TypeScript um</li>
             <li>
-              Der Type für die MessageProps ist:
-
-              <pre><code class="javascript">
-type MessageProps = {
-  msg: string;
-  type: "error" | "info"
-}
-              </code></pre>
+              Benenne <code><b>PostEditor.js</b></code> in <code>PostEditor.tsx</code> um und starte
+              <code>npm start</code> neu
             </li>
+            <li>Stelle <code>PostEditor.tsx</code> auf TypeScript um</li>
             <li>
-              Und für <code>style</code> in <code>Message</code>:
+              Für Properties der <code>Message</code>-Komponente kannst Du als Typ einfach
+              <code>any</code> verwenden.
+            </li>
+
+            <li>
+              Und für <code>style</code> in <code>Message</code> ebenfalls einfach
+              <code>React.CSSProperties</code> angeben:
               <pre><code class="javascript">
 const style: React.CSSProperties = type === "error" ? 
   { color: "red", fontWeight: "bold" } : { color: "green" };
               </code></pre>
             </li>
-            <li>
-              Benenne <code><b>PostEditor.js</b></code> in <code>PostEditor.tsx</code> um und starte
-              <code>npm start</code> neu
-            </li>
-            <li>Stelle <code>PostEditor.tsx</code> auf TypeScript um</li>
-            <li>Weitere Informationen kannst Du in den Dateien finden.</li>
             <li>Mögliche Lösung in <code>steps/5-typescript</code></li>
             <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
           </ol>
