@@ -268,12 +268,12 @@ if ("" == false) {
         <!-- ============================================================================= -->
         <section>
           <h3>JavaScript: Datatypes</h3>
-          <p>Boolean, Null, Undefined, Number, String, Symbol</p>
 
           <pre><code class="javascript">
             // typeof liefert den Typ einer Variable als String zurück
             console.log(typeof 123); // "number"
           </code></pre>
+          <p>boolean, null, undefined, number, string, symbol, bigint</p>
 
           <pre class="fragment"><code class="javascript">
               const check = true; // typeof check === "boolean"
@@ -1364,14 +1364,17 @@ const olderPersons = persons.map( p => {
             </li>
 
             <li style="margin-top: 20px">
-              <a href="#/t-context">Teil V: Context API</a>
+              <a href="#/t-test">Teil VI: Testen</a>
+            </li>
+            <li style="margin-top: 20px">
+              <a href="#/t-context">Teil VII: Context API</a>
             </li>
 
             <li style="margin-top: 20px">
-              <a href="#/t-router">Teil V: Router (evtl.)</a>
+              <a href="#/t-router">Teil VIII: Router (evtl.)</a>
             </li>
             <li style="margin-top: 20px">
-              <a href="#/t-apollo-react">Teil VI: Apollo GraphQL Client</a>
+              <a href="#/t-apollo-react">Teil IX: Apollo GraphQL Client</a>
             </li>
           </ul>
         </section>
@@ -1811,6 +1814,9 @@ function HelloWorld() {
             <li>
               Füge einen "Clear"-Button hinzu, der beide Eingabefeld leert. Das Property auf dem
               Button ist <code>onClick</code>.
+            </li>
+            <li>
+              Der "Clear"-Button soll <b>disabled</b> sein, wenn beide Eingabefelder leer sind
             </li>
             <li>Mögliche Lösung: <code>steps/2-editor</code></li>
             <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
@@ -2780,7 +2786,7 @@ function App(props) {
           <div>
             <p>Das backend ist bereits fertig. Ihr könnt es starten mit:</p>
             <pre><code>
-                  cd react-training/blog-example/backend-rest
+                  cd react18-training/blog-example/backend-rest
                   npm start
                 </code></pre>
             <p>Der Server läuft auf Port 7000</p>
@@ -2813,7 +2819,7 @@ function App(props) {
               In der Antwort bekommst Du den gespeicherten Post vom Server zurück. Diesen musst Du
               in die Liste der BlogPosts einfügen
             </li>
-            <li>
+            <!-- <li>
               <b>Schritt 2:</b>Füge einen Loading Indicator hinzu
               <ul>
                 <li>
@@ -2830,7 +2836,7 @@ function App(props) {
                   wait")
                 </li>
               </ul>
-            </li>
+            </li> -->
             <li>Mögliche Lösung in <code>steps/4-remote</code></li>
             <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
           </ol>
@@ -5061,8 +5067,8 @@ render(
             </li>
             <li>
               <a href="https://devexpress.github.io/testcafe/" target="_blank">TestCafe</a> (mit
-              Support für sehr viele Browser, u.a. auch Cloud-Service
-              <a href="https://www.browserstack.com/" target="_blank">BrowserStack</a>
+              Support für sehr viele Browser, u.a. auch den Cloud-Service
+              <a href="https://www.browserstack.com/" target="_blank">BrowserStack</a>)
             </li>
             <li><a href="https://www.cypress.io/" target="_blank">Cypress</a></li>
             <li>
