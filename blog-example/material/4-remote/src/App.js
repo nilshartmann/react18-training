@@ -1,31 +1,22 @@
 import React from "react";
 import PostList from "./PostList";
 import PostEditor from "./PostEditor";
+import mockPosts from "./mock";
 
 const BACKEND_URL = "http://localhost:7000/posts";
 
 function App() {
-  const [posts, setPosts] = React.useState([]);
+  const [posts, setPosts] = React.useState(mockPosts);
   const [view, setView] = React.useState("LIST");
 
-  React.useEffect(() => {
-    // TODO #1: Register an effect with 'React.useEffect':
-    //   - the effect should read data from our API (http://localhost:7000/posts)
-    //   - the data read from that endpoint matches the structure needed in our
-    //     client, so you can just set the result to posts!
-    //   - in case of an error, write the error to console.error
-  }, []);
-
   function savePost(post) {
-    // TODO #2:
-    // use fetch to store data on our endpoint (same URL as above but with POST),
-    //  - make sure you set the correct Content-Type header ("application/json")
-    //  - convert the post to JSON using JSON.stringify
-    //  - the answer you receive is a new blog post.
-    //  - add the blog post to the list of existing blogpost in the state
-    //       You can create a new state like this: setPosts([postReadFromApi, ...posts])
-    //  - open the LIST view
-    //
+    // TODO:
+    // Verwende 'fetch', um den neuen Blog-Post zu speichern.
+    //  - Setz den 'content-type' auf 'application/json'
+    //  - Schicke das post-Objekt als Payload
+    //  - Die Antwort vom Server enthält den gespeicherten Post
+    //    - Das Objekt musst du dann in die 'posts'-Liste im State
+    //      einfügen.
   }
 
   if (view === "LIST") {

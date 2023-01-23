@@ -4,23 +4,24 @@ import PostEditor from "./PostEditor";
 import LoadingIndicator from "./LoadingIndicator";
 
 function App() {
-  const [posts, setPosts] = React.useState([]);
   const [view, setView] = React.useState("LIST");
-  const [isLoading, setIsLoading] = React.useState(true);
+
+  const [fetchState, setFetchState] = React.useState({});
 
   React.useEffect(() => {
-    setIsLoading(true);
+    setFetchState({ loading: true });
     fetch("http://localhost:7000/posts?slow")
       .then(response => response.json())
       .then(json => {
-        setPosts(json);
+        setFetchState({ posts: json });
       })
-      .catch(err => console.error("Loading data failed: " + err))
-      .finally(() => setIsLoading(false));
+      .catch(err => {
+        setFetchState({ error: String(err) });
+      });
   }, []);
 
   function savePost(post) {
-    setIsLoading(true);
+    setFetchState({ posts: fetchState.posts, loading: true });
     fetch("http://localhost:7000/posts?slow", {
       method: "POST",
       headers: {
@@ -30,19 +31,18 @@ function App() {
     })
       .then(response => response.json())
       .then(newPost => {
-        setPosts([newPost, ...posts]);
+        setFetchState({ posts: [newPost, ...(fetchState.posts || [])] });
         setView("LIST");
       })
-      .catch(err => console.error("Saving failed: " + err))
-      .finally(() => setIsLoading(false));
+      .catch(err => console.error("Saving failed: " + err));
   }
 
-  if (isLoading) {
+  if (fetchState.loading) {
     return <LoadingIndicator>Server Request running. Please wait.</LoadingIndicator>;
   }
 
   if (view === "LIST") {
-    return <PostList posts={posts} onAddPost={() => setView("ADD")} />;
+    return <PostList posts={fetchState.posts || []} onAddPost={() => setView("ADD")} />;
   }
 
   return <PostEditor onSavePost={savePost} />;

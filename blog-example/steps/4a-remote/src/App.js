@@ -1,19 +1,11 @@
 import React from "react";
 import PostList from "./PostList";
 import PostEditor from "./PostEditor";
+import mockPosts from "./mock";
 
 function App() {
-  const [posts, setPosts] = React.useState([]);
+  const [posts, setPosts] = React.useState(mockPosts);
   const [view, setView] = React.useState("LIST");
-
-  React.useEffect(() => {
-    fetch("http://localhost:7000/posts")
-      .then(response => response.json())
-      .then(json => {
-        setPosts(json);
-      })
-      .catch(err => console.error("Loading data failed: " + err));
-  }, []);
 
   function savePost(post) {
     fetch("http://localhost:7000/posts", {
