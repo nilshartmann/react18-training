@@ -2,7 +2,7 @@ console.log("Please edit index.js");
 
 function helloWorld(name) {
   if (typeof name !== "string") {
-    return null;
+    return "";
   }
 
   return `Hallo, ${name}`;
@@ -10,7 +10,8 @@ function helloWorld(name) {
 
 console.log(helloWorld()); // ""
 console.log(helloWorld(null)); // ""
-console.log(helloWorld("Susi")); // Hallo, Susi
+console.log(helloWorld("Susi")); // "Hallo, Susi"
+console.log(helloWorld("")); // "Hallo, "
 
 // ZUSTATZ AUFGABE: ---------------------------------------
 function helloWorldZusatz(name) {
