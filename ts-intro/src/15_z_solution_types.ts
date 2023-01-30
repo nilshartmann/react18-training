@@ -20,10 +20,10 @@ function Printer(options: PrinterOptions) {
   options.onPrintFinished(true);
 }
 
-interface PrinterOptions {
+type PrinterOptions = {
   device: string;
   onPrintFinished(result: boolean): void;
-}
+};
 
 // Define here the type PrinterOptions (as 'type' or 'interface')
 
@@ -35,7 +35,7 @@ const localPrinterOptions: PrinterOptions = {
     } else {
       console.log("Printing failed");
     }
-  },
+  }
 };
 
 Printer(localPrinterOptions);
