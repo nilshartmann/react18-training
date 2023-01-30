@@ -1530,10 +1530,10 @@ const olderPersons = persons.map( p => {
                   Kannst Du unter dem Eingabefeld den gerade eingegebenen Text ausgeben lassen, so
                   dass dieser immer dem aktuellen Inhalt des Eingabefeldes entspricht?
                 </li>
-                <li>
+                <!-- <li>
                   Wenn das Textfeld leer ist, soll ein Hinweis für den Benutzer ausgegeben werden
                   ("Bitte Titel eingeben")
-                </li>
+                </li> -->
               </ul>
             </li>
             <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
@@ -2212,7 +2212,10 @@ function App() {
                 material/3-hierarchy)</span
               >
             </li>
-
+            <li>
+              Nach dem Kopieren den <code>npm start</code>-Prozess beenden (Win: Ctrl+C bzw. Mac:
+              Cmd+C) und neu starten (wieder mit <code>npm start</code>)
+            </li>
             <li>
               Erweitere die <code>App</code> Komponente, so dass sie den
               <code>PostEditor</code> anzeigt, wenn der User auf den <code>Add</code> Button klickt.
@@ -2527,7 +2530,7 @@ const promise = getNameAsync()
       body: JSON.stringify(newBlogPost)  
     });
 
-    if (response.httpStatus === 200) {
+    if (response.status === 200) {
 
       // 2. mit den Methoden 'json()' bzw. 'text()' kann der Payload der
       //    Antwort ausgelesen werden:
@@ -2535,7 +2538,7 @@ const promise = getNameAsync()
 
       console.log("Answer from server", answer)
     } else {
-      console.error("Received status code from server:", response.httpStatus);
+      console.error("Received status code from server:", response.status);
     }
   } catch (err) {
     // 4. In case something goes wrong, log error
@@ -2588,7 +2591,8 @@ const promise = getNameAsync()
             <li>Das Speichern soll in der <code>savePost</code>-Funktion erfolgen</li>
             <li>Du musst als HTTP Methode <code>POST</code> verwenden</li>
             <li>
-              Du musst als Header den <code>Content-Type</code> <code>application/json</code> setzen
+              Du musst als Header den <code>Content-Type</code> auf
+              <code>"application/json"</code> setzen
             </li>
             <li>Als <code>body</code> musst Du den neuen Blog-Post an den Server schicken</li>
             <li>
@@ -2601,7 +2605,7 @@ const promise = getNameAsync()
               anzeigen lässt: <a href="http://localhost:7000/posts">http://localhost:7000/posts</a>.
             </li>
             <li>Mögliche Lösung in <code>steps/4a-remote</code></li>
-            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
           </ol>
         </section>
 
@@ -3118,6 +3122,368 @@ export default function useApi(url, initialValue) {
           <p>Example: code/blog-example/steps/5-typescript</p>
         </section>
 
+        <!-- ######################################################  -->
+        <section>
+          <h2>TypeScript</h2>
+          <ol>
+            <li><a href="#/t-typescript-grundlagen">Einführung in TypeScript</a></li>
+            <li><a href="#/t-typescript-react">React mit TypeScript</a></li>
+          </ol>
+        </section>
+
+        <section id="t-typescript-grundlagen">
+          <h2>Einführung: Die Sprache TypeScript</h2>
+          <p class="fragment">
+            <em>TypeScript is a superset of JavaScript that compiles to plain JavaScript </em>(
+            <a href="http://www.typescriptlang.org/" target="_blank"
+              >http://www.typescriptlang.org/</a
+            >)
+          </p>
+          <ul>
+            <li class="fragment">Erweitert JavaScript um ein Typen System</li>
+            <li class="fragment">
+              Jeder gültige JavaScript Code ist auch gültiger TypeScript Code
+            </li>
+            <li class="fragment">
+              Mittels des TypeScript Compilers wird aus TS Code JavaScript Code
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>TypeScript Grundlagen</h3>
+          <p>Typ-Angaben werden hinter einen Bezeichner geschrieben</p>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // Variablen können Typ-Informationen bekommen
+  let foo: string;
+  foo = 'yo';
+  // Error: number: This type is incompatible with string
+  foo = 10;
+                 </code></pre>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // Funktionen
+  function sayIt(what: string): string {
+    return `Saying: ${what}`;
+  }
+  
+  sayIt('Klaus'); // ok
+  sayIt(10); // error
+  </code></pre>
+
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // Arrow Funktionen
+  const sayIt = (what: string): string => `Saying: ${what}`;
+  
+  sayIt('Moin');
+  sayIt(123); // Error: Argument of type '123' is not assignable
+              // to parameter of type 'string'.
+  </code></pre>
+        </section>
+
+        <section>
+          <h2>Eingebaute Typen</h2>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // string
+  let city: string = 'Hamburg';
+  
+  // boolean
+  let isDone: boolean = false;
+  
+  // number
+  let theAnswer: number = 42;
+  
+  // array (note the [])
+  let cities: string[] = ['Hamburg', 'Barcelona'];
+  // alternative:
+  let languages: Array&lt;string> = ['JavaScript', 'TypeScript'];
+  
+  // void
+  function log(s: string): void { /* ... */ }
+              </code></pre>
+        </section>
+        <section>
+          <h2>Eingebaute Typen: any und unknown</h2>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // any: kann alle Typen aufnehmen, Typ-Prüfung ist ausgeschaltet
+  let theUnknown: any = 'Who cares';
+  theUnknown = 666; // ok
+  theUnknown = true; // ok
+  let a: number = theUnknown; // ok
+  function loadData(): any { return "" // ok }
+  let b:number = loadData(); // ok
+  
+              </code></pre>
+        </section>
+        <section>
+          <h2>Eingebaute Typen: any und unknown</h2>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // unknown: kann ebefalls alle Typen aufnehmen, erzwingt aber vor der Verwendung Typ-Prüfung
+  function loadData(): unknown { return "" // ok }
+  let b = loadData(); 
+  b.toUpperCase(); // ERROR
+  if (typeof b === "string") {
+    // b ist jetzt string (typeof ist Laufzeitprüfung!)
+    b.toUpperCase(); // OK
+  }
+              </code></pre>
+        </section>
+        <section>
+          <h2>Typen können abgeleitet (inferred) werden</h2>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  let city = 'Hamburg'; // city ist ein String
+  
+  city = 42;
+  // Fehler: [ts] Type '42' is not assignable to type 'string'.
+  </code></pre>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // Explizite Angabe eines Types (parameter)
+  // und abgeleiteter Typ (Return Type der Funktion)
+  
+  function sayIt(what: string) {
+    return `Saying: ${what}`;
+  }
+  
+  const said: string = sayIt('Hello TypeScript'); // ok
+  const saidItWrong: number = sayIt('Hello TypeScript'); // error!
+  
+  
+  </code></pre>
+        </section>
+
+        <section>
+          <h2>Type Check ausschalten</h2>
+          <p>
+            Mit <code>@ts-ignore</code> (als Kommentar) kann wird die Überprüfung der nächsten Zeile
+            ausgeschaltet:
+          </p>
+          <pre><code class="typescript line-numbers" contenteditable data-trim>
+  let city:string = "Hamburg";
+  
+  city = 20259; // error: [ts] Type '20259' is not assignable to type 'string'.
+  
+  // @ts-ignore
+  city = 20259; // ok                
+  </code></pre>
+          <p class="fragment">
+            Nützlich in corner cases, die nur schwer mit TypeScript abbildbar sind oder bei
+            Migration
+          </p>
+        </section>
+        <section>
+          <h2>null und undefined</h2>
+          <div class="fragment">
+            <p><code>null</code> muss explizit zugelassen werden <em>(strictNullChecks</em>):</p>
+            <pre><code class="typescript line-numbers" contenteditable data-trim>
+  let city:string = null; //Type 'null' is not assignable to type 'string'.
+  
+  let optionalCity:string|null = null; // OK
+              </code></pre>
+          </div>
+          <div class="fragment">
+            <p><code>undefined</code> muss ebenfalls explizit zugelassen werden:</p>
+            <pre><code class="typescript line-numbers" contenteditable data-trim>
+    let city:string = undefined; //Type 'undefined' is not assignable to type 'string'.
+    
+    let optionalCity:string|undefined = undefined; // OK
+    let optionalCity:string|undefined|null = null; // OK
+                </code></pre>
+          </div>
+          <div class="fragment">
+            <p>
+              Optionale Parameter können mit ? gekennzeichnet werden (erlauben dann auch
+              <code>undefined</code>)
+            </p>
+            <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  function greet(name: string, greeting?: string) {
+    console.log(`${greeting || 'Hello'}, {name}`);
+  }
+  
+  greet('Susi', 'Moin')// Moin, Susi
+  
+  // 2. Parameter ist optional:
+  greet('Klaus'); // Hello, Klaus
+  
+  greet('Peter', null); // Argument of type 'null' is not assignable
+                        // to parameter of type 'string | undefined'.
+              </code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h2>Eigene Typen</h2>
+          <p>
+            Mit <code>interface</code> und <code>type</code>können eigene Typen (Objekt-Strukturen)
+            definiert werden:
+          </p>
+
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+  // Komplexer Typ
+  interface Person {
+    name: string; // Pflicht
+    livesIn?: string; // Optional
+  }
+
+  // Alternativ (interface und type fast synonym)
+  type Person = { name: string; livesIn?: string; }
+  
+  const susi: Person = { // OK
+    name: 'Klaus',
+    livesIn: 'Hamburg'
+  };
+  const klaus: Person = { // OK (livesIn ist optional)
+    name: 'Klaus'
+  }
+  
+  const helmut: Person = {} // Error: Property 'name' is missing
+  
+  const lukas: Person = {
+    name: 'Lukas',
+    profession: 'Lokführer'
+  } // Error: 'profession' does not exist in type 'Person'.
+                 </code></pre>
+        </section>
+
+        <section>
+          <h2>Eigene Typen II</h2>
+          <p>Eigene Objekt-Typen können sowohl "Attribute" als auch Funktionen enthalten:</p>
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+            // Komplexer Typ
+            type Person {
+              name: string; // Pflicht
+              greet(greeting: string): string;
+            }
+
+            const p:Person = {
+              name: "Klaus",
+              greet(greeting: string) { 
+                return `${greeting}, ${this.name}`
+              }
+            }
+            p.greet("Hello"); // OK
+            p.greet(123); // ERR: Argument of type '123' is not 
+                          // assignable to parameter of type 'string'.
+
+            const wrong:Person = {
+              name: "Susi", // OK
+              greet(greeting: number) { return "hello" } 
+                // ERR: Type '(greeting: number) => string' is not assignable to 
+                //      type '(greeting: string) => string'.
+                //      Types of parameters 'greeting' and 'greeting' are incompatible.
+                //      Type 'string' is not assignable to type 'number'.
+            }
+                           </code></pre>
+        </section>
+        <section>
+          <h2>Union Types</h2>
+          <p>Variablen, Parameter etc. können mehr als einen Typ annehmen:</p>
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+type Person = { name: string };
+type Movie = { title: string };
+
+function printNameOrTitle(obj: Person | Movie) { 
+
+  console.log(obj.title); // ERR: Property 'title' does not 
+                          // exist on type 'Person | Movie'
+ 
+  if ("title" in obj) { // Abfrage ist ein "Type Guard"
+    // obj ist Movie hier, title ist definiert
+    console.log(obj.title);
+  } else {
+    // obj ist Person hier: name ist definiert
+    console.log(obj.name);
+  }
+}
+
+printNameOrTitle({name: "Klaus"}); //OK
+printNameOrTitle({title: "Pulp Fiction"}); //OK
+printNameOrTitle({label: "Save"}); // ERR
+    
+          </code></pre>
+        </section>
+        <section>
+          <h2>Type Guards</h2>
+          <p>Durch einen Type Guard können Typen "eingeengt" werden</p>
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+type Person = { name: string };
+type Movie = { title: string };
+
+// Wenn diese Funktion true zurueckgibt, nimmt Typescript an,
+// dass das übergebene Argument vom Typ Movie ist
+function isMovie(candidate: any): candidate is Movie {
+  return ("title" in candidate);
+}
+
+function printNameOrTitle(obj: Person | Movie) { 
+  if (isMovie(obj)) {
+    // movie
+  }
+}
+    
+          </code></pre>
+        </section>
+        <section>
+          <h2>Type Assertions</h2>
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+type Person = { name: string };
+type Movie = { title: string };
+
+// Wenn diese Funktion zurueckkehrt (kein Error geworfen wird) nimmt Typescript an,
+// dass das übergebene Argument vom Typ Movie  ist
+function assertIsMovie(candidate: any): asserts candidate is  Movie {
+  if ("title" in candidate) {
+    return;
+  }
+  throw new Error("Candidate is not a movie!")
+}
+
+function printTitle(hopefullyAMovie: any) { 
+  assertPersonIsMovie(hopefullyAMovie)
+  // hopefullyAMovie ist jetzt Movie
+  hopefullyAMovie.title; // OK
+}
+    
+          </code></pre>
+        </section>
+        <section>
+          <h2>String Literal Types</h2>
+          <p>Beispiel: String Aufzählungstyp</p>
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+// Beispiel:             
+type View = "POST_LIST" | "POST_EDITOR";
+
+const s:View = "POST_LIST"; // OK
+const t:View = "POST_LISTE" // FEHLER
+
+function setView(v: VIEW) {
+    if (v === "POST_LIST") { ... } // ok
+    if (v === "POST_LISTE") { ... } // error: immer false
+}
+
+setView("POST_LIST"); //OK
+setView("POST_LISTE"); // ERROR
+          </code></pre>
+        </section>
+
+        <!-- <section>
+          <h2>Übung: Hello, TypeScript!</h2>
+          <h3>
+            <em>Mach dich mit den Grundzügen der Sprache TypeScript vertraut</em>
+          </h3>
+
+          <ol class="x-list">
+            <li>Öffne den TypeScript Playground im Browser (den Link gibts per Chat)</li>
+            <li>Link zu den Slides als Referenz gibt's ebenfalls im Chat</li>
+            <li>
+              Bearbeite die Datei, so dass keine Compile-Fehler mehr vorhanden sind, TODOs siehe
+              dort
+            </li>
+            <li>
+              Lösung in <code>blog-example/material/ts-intro/01_solution_hello_typescript.ts</code>
+            </li>
+          </ol>
+        </section> -->
+        <!-- ########################################################### -->
+
         <section id="t-typescript-react">
           <h2>React Anwendungen mit TypeScript</h2>
           <em
@@ -3207,43 +3573,6 @@ function App() {
 }
                             </code></pre>
           </div>
-        </section>
-
-        <section>
-          <h2>React Events in TypeScript</h2>
-          <p>
-            Events in React sind Instanzen von <code>React.SyntheticEvent</code>, die die nativen
-            DOM Events wrappen (und so "ähnlich" aussehen)
-          </p>
-          <p>
-            In TypeScript gibt es für die konkreten Events eigene Typen (z.B. ChangeEvent,
-            MouseEvent)
-          </p>
-          <p>
-            Die Event-Typen erwarten einen Typ-Parameter, der auf den Typ des HTML Elements gesetzt
-            werden muss, das das Event auslöst
-          </p>
-          <p>TypeScript kennt dann die Eigenschaften des Events bei der Verarbeitung</p>
-          <span>
-            <pre><code class="line-numbers typescript" data-leftpad>
-function PostEditor(props) {
-  const [title, setTitle] = React.useState("");
-
-  function handleChange(e: React.ChangeEvent&lt;HTMLInputElement>) {
-    setTitle(e.currentTaget.value);
-  }
-
-  return &lt;input onChange={handleChange} value={title} />
-}              
-          </code></pre>
-            <a
-              href="https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11508#issuecomment-256045682"
-              target="_blank"
-            >
-              <code>target</code> vs
-              <code>currentTarget</code>
-            </a>
-          </span>
         </section>
 
         <section>
