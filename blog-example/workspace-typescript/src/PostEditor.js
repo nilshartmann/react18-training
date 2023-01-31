@@ -1,11 +1,6 @@
 import React from "react";
-import { NewBlogPost } from "./types";
 
-type PostEditorProps = {
-  onSavePost(newBlogPost: NewBlogPost): void
-};
-
-export default function PostEditor(props: PostEditorProps) {
+export default function PostEditor(props) {
   const [title, setTitle] = React.useState("");
   const [body, setBody] = React.useState("");
 
@@ -61,7 +56,6 @@ export default function PostEditor(props: PostEditorProps) {
 
 // TODO:
 //   - add type for properties, you can simply use 'any' here :-)
-//     The type for the 'style' variable is 'React.CSSProperties' (or use 'any')
 function Message({ msg, type = "error" }) {
   const style = type === "error" ? { color: "red", fontWeight: "bold" } : { color: "green" };
 
