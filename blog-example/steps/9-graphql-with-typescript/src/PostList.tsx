@@ -25,7 +25,7 @@ export default function PostList({ posts }: PostListProps) {
         <Link key={p.id} to={`/post/${p.id}`}>
           <article className="Container">
             <p className="Date">{formattedDate(p.date)}</p>
-            <h1>{p.title}</h1>
+            <h2>{p.title}</h2>
             <p>{p.teaser}</p>
           </article>
         </Link>
