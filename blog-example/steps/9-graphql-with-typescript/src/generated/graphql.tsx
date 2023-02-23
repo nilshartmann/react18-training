@@ -164,7 +164,6 @@ export type PostPageQuery = {
     date: string;
     body: string;
     likes: number;
-    user: { __typename?: "User"; name: string };
   } | null;
 };
 
@@ -323,9 +322,6 @@ export const PostPageDocument = gql`
       title
       date
       body
-      user {
-        name
-      }
       likes
     }
   }

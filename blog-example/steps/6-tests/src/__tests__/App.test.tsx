@@ -3,7 +3,6 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import App from "../App";
 import userEvent from "@testing-library/user-event";
-import { act } from "react-dom/test-utils";
 
 const mockPosts = [
   { id: "1", title: "One Fetch Mock", body: "Lorem ipsum" },
@@ -71,10 +70,7 @@ function getPostEditorModel() {
       userEvent.type(this.bodyInput, newBody);
     },
     clickSave() {
-      // Still gives warning on the console
-      // known bug that re-appears with each new release of react
-      //  https://github.com/testing-library/react-testing-library/issues/1051
-      act(() => userEvent.click(this.saveButton));
+      userEvent.click(this.saveButton);
     }
   };
 }

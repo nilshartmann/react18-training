@@ -637,6 +637,11 @@ test('it should render correctly', () => {
               expect(articleOne).toBeInTheDocument(); // YIPPIE, WORKS
             });
           </code></pre>
+          <p>
+            Achtung! Ihr müsst <code>find</code> Query-Funktionen verwenden, da die
+            <code>get</code>-Funktionen davon ausgehen, dass ein Element bereits vorhanden ist, und
+            nicht noch darauf warten.
+          </p>
         </section>
 
         <!-- ============================================================================= -->
@@ -1532,7 +1537,98 @@ root.render(
 
 ### Testen vom Client
 
+* Wenn ihr GraphQL Anwendungen testen wollt, müsst ihr möglicherweise den Netzwerkverkehr mocken
+* Dazu könnt ihr die besprochenen Techniken verwenden (jest-fetch-mock, msw, etc.)
+* Alternativ: [MockedProvider](https://www.apollographql.com/docs/react/development-testing/testing) von GraphQL
+* Damit könnt ihr Ergebnisse von Queries setzen
+* Der Apollo Client liefert dann die Mock-Ergebnisse zurück und führt keine Netzwerkanfragen aus
+* 🧑‍💻 Beispiel: Test für PostListPage
+* ```typescript
+  test("rendering works", () => {
+    render(
+        <MockedProvider mocks={[mock]}>
+          <PostListPage />
+        </MockedProvider>
+    );
+  })
+  ```
 
+---
+
+### MockResponse
+
+* Dem `MockedProvider` übergebt ihr eine Liste mit `mocks`
+* Das sind `MockResponse`-Objekte, die aus zwei Properties bestehen:
+  * `request`: Gibt an, für welchen GraphQL Request die Antwort zurückgeliefert werden soll
+    * Ihr könnt einen Query angeben (Achtung! Der muss genau dem Query in Eurer Anwendung entsprechen!)
+    * Ihr könnt zusätzlich Variablen für den Query angeben, die Eure Anwendung übergibt
+  * `result`: Enthält die typischen Ergebnisse einer GraphQL Operation: entweder `data` oder eine Liste mit `GraphQLError`-Objekten (`errors`)-Knoten
+* Der `MockResponse`-Typ in TypeScript ist typisiert, so dass ihr dort als Typ-Parameter den generierten Query-Typen angeben kann
+* Dann ist zumindest das `result`-Feld typsicher
+
+---
+### MockResponse: Beispiel für data
+
+```typescript
+  const mock: MockedResponse<PostListPageQuery> = {
+    request: {
+      query: PostListPageDocument,
+      operationName: "PostListPage"
+    },
+    result: {
+      data: {
+        posts: [
+          {
+            date: "2022-02-23",
+            title: "Hello World",
+            teaser: "Lorem ipsum",
+            id: "P1"
+          }
+        ]
+      }
+    }
+  };
+
+  test("rendering works", async () => {
+    render(
+        <MockedProvider mocks={[mock]}>
+          <PostListPage />
+        </MockedProvider>
+     );
+     // Loading Indicator ist sofort sichtbar:
+     expect(screen.getByRole("heading", {name: /please wait/i})).toBeInTheDocument();
+    
+     // Achtung Asynchron:
+     expect(await screen.findByRole("heading", {name: /hello world/i})).toBeInTheDocument();
+  });
+```
+---
+### MockResponse: Beispiel für error
+
+```typescript
+const mock: MockedResponse<PostListPageQuery> = {
+  request: {
+    query: PostListPageDocument,
+    operationName: "PostListPage"
+  },
+  result: {
+    errors: [new GraphQLError("au weia!")]
+  }
+};
+
+// Verwendung wie gesehen
+```
+
+---
+### Übung: GraphQL Requests testen
+
+* In `PostPage.test.tsx` gibt es zwei Testfälle, die fertig implementiert werden müssen!
+* Du musst dort die Mocks korrekt definieren, ein Anfang findest Du dort bereits
+* Der generierte TypeScript-Typ der Queries ist `PostPageQuery`.
+* Tipp: mit TypeScript oder im Netzwerk-Tab der laufenden Anwendung prüfen, wie die Daten aussehen, die zurückgegeben werden müssen.
+* Du kannst die Tests ausführen mit: `npm test -- PostPage`
+* Eine mögliche Lösung findest Du in `steps/9-graphql-with-typescript/src/__tests__`
+* Wenn Du fertig bist, bitte Hand heben! 🙋🏻‍♀️
 
 </textarea
           >

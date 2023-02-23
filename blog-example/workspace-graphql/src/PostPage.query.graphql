@@ -4,9 +4,6 @@ query PostPage($postId: ID!) {
     title
     date
     body
-    user {
-      name
-    }
     likes
   }
 }
