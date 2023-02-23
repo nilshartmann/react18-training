@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAddBlogPostMutation } from "./generated/graphql";
+import { useAddBlogPostMutation, PostListPageDocument } from "./generated/graphql";
 import PostEditor from "./PostEditor";
 import { NewBlogPost } from "./types";
 
@@ -22,7 +22,17 @@ export default function PostEditorPage() {
     const { data } = await mutate({
       variables: {
         postData: post
-      }
+      },
+      // Alternativen:
+      //   - fetchPolicy in PostListPage ändern
+      //   - pollingInterval in PostListPage
+      //   - refetch-Button in PostListPage
+      //   - Cache direkt ändern (kommt noch)
+      refetchQueries: [
+        {
+          query: PostListPageDocument
+        }
+      ]
     });
 
     if (data?.newPost.blogPost) {

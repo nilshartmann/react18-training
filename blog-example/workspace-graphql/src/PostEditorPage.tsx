@@ -11,8 +11,6 @@ import { NewBlogPost } from "./types";
 // - Verwende die generierte Hook-Funktion, um die Mutation auszuführen
 // - Nachdem die Mutation erfolgreich (!) ausgeführt wurde, verwende "navigate"
 //    um einen Redirect auf die Homepage ("/") zu machen
-//    - Achtung!
-//      Der neue Post wird dort nicht angezeigt => Das ist erstmal richtig, machen wir später!
 // - Wenn es einen Fehler gibt, gib die Fehlermeldung an den PostEditor weiter
 //    Du kannst einen Fehler provozieren, wenn Du einen Titel speicherst, der kürzer
 //    als vier Zeichen lang ist
@@ -24,6 +22,7 @@ export default function PostEditorPage() {
     // TODO:
     //  - Mutation ausführen
     //  - Bei Erfolg Redirect machen
+    //  - was musst Du tun, damit der neue Post auch auf der "/"-Seite angezeigt wird?
   }
 
   const errorMessage = null; // TODO: ggf. Error aus Antwort lesen

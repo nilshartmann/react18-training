@@ -96,17 +96,22 @@
               <a href="#/t-test">Testen mit Jest</a>
             </li>
             <li>
-              <a href="#/t2">Apollo Client</a>
+              <a href="#/t-apollo-react">Apollo Client</a>
+            </li>
+            <li>
+              <a href="#/t-apollo-react-deep-dive">Apollo Deep Dive</a>
             </li>
             <li>
               <a href="#/t-context">Context API</a>
             </li>
-            <li>
-              <a href="#/t-server">Apollo Deep Dive</a>
-            </li>
           </ul>
         </section>
 
+        <!-- ============================================================================= -->
+
+        <section id="t-test">
+          <h2>Testen von React Anwendungen</h2>
+        </section>
         <section data-markdown>
           <textarea data-template>
 ### Vorbereitung
@@ -130,11 +135,6 @@
 * Einmal die Anwendung im Browser öffnen, um zu sehen, ob's geht: http://localhost:3000    
 * Die gestartete Anwendung kannst Du verwenden, um dir den PostEditor anzusehen, für den wir Test schreiben werden    
           </textarea>
-        </section>
-
-        <!-- ########################## ENDE GRAPHQL ######################################### -->
-        <section id="t-test">
-          <h2>Testen von React Anwendungen</h2>
         </section>
 
         <section data-transition="slide none">
@@ -865,6 +865,917 @@ fetchMock.mockResponse(JSON.stringify(mockResponse), { status: 201 });
             </li>
           </ul>
         </section>
+
+        <!-- ============================================================================= -->
+
+        <!-- ########################## GRAPHQL ######################################### -->
+        <section id="t-apollo-react">
+          <h1>GraphQL</h1>
+          <h2>Clients mit Apollo React</h2>
+        </section>
+
+        <section>
+          <h3>Apollo Client</h3>
+          <p>
+            <a href="https://www.apollographql.com/docs/react/"
+              >https://www.apollographql.com/docs/react/</a
+            >
+          </p>
+          <p>React Hooks um mit GraphQL Services zu kommunizieren</p>
+          <p>
+            Stellt einen <b>globalen Cache</b> zur Verfügung, um konsistente Daten in der ganzen
+            Anwendung sicherzustellen
+          </p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Apollo Client DevTools</h3>
+
+          <p>Browser-Erweiterung, stellt z.B. den Inhalt des Caches dar</p>
+
+          <ul>
+            <li>
+              <a
+                href="https://chrome.google.com/webstore/detail/apollo-client-devtools/jdkknkkbebbapilgoeccciglkfbmbnfm"
+                >Chrome</a
+              >
+            </li>
+            <li>
+              <a href="https://addons.mozilla.org/de/firefox/addon/apollo-developer-tools/"
+                >Firefox</a
+              >
+            </li>
+          </ul>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+### Apollo Client
+
+* Das `ApolloClient`-Objekt ist unter anderem für den Netzwerkverkehr, den Cache
+            und Fehlerbehandlung zuständig
+* Der `ApolloClient` ist React-unabhängig und kann auch mit anderen JavaScript-Frameworks
+            verwendet werden.
+* ```javascript
+  import ApolloClient from "apollo-client";
+
+  const client = new ApolloClient({
+    link: new HttpLink({uri: "http://localhost:4000"}),
+    cache: new InMemoryCache()
+  }};
+  ```
+
+---
+
+### Link
+
+* Mit einem `Link` wird beschrieben, wie Apollo die HTTP-Requests zum Server machen soll
+  * Man kann zum Beispiel eigene HTTP Header hinzufügen
+  * Auch die Konfiguration für Websockets für Subscriptions erfolgt darüber
+* Für verschiedene Aufgaben gibt es verschiedene `Link`-Implementierungen, die
+  hintereinander ausgeführt werden können
+
+---
+
+### Link
+
+* Beispiel: Header für Authentifizierung
+* ```javascript
+  const authLink = setContext((_, { headers }) => {
+    // get the authentication token from local storage if it exists
+    const token = localStorage.getItem("publy.token");
+    if (!token) {
+      return headers;
+    }
+    // return the headers to the context so httpLink can read them
+    return {
+      headers: {
+        ...headers,
+        Authorization: `Bearer ${token}`,
+      },
+    };
+  });
+  ```
+
+---
+<!-- .slide: data-hidden="true" -->
+### Subscriptions
+
+* Um mit Subscriptions zu arbeiten, braucht man einen eigenen `Link`
+  * "Reguläre" Requests (für Queries und Mutations) müssen an den HTTP-Endpunkt gehen
+  * Für Subscriptions müssen die Requests über das WS-Protokoll an den WS-Endpunkt gehen
+* Es gibt einen eigenen Link dafür: `GraphQLWsLink`
+* ```javascript
+  const wsLink = new GraphQLWsLink(
+    createClient({
+      url: "ws://localhost:8080",
+    })
+  );
+  ```
+
+---
+<!-- .slide: data-hidden="true" -->
+### Subscriptions
+
+* Mit einem _Splitter_ kann ausgewählt werden, mit welchem `Link` ein Request an den Server gesendet werden soll
+* Damit können Subscriptions mit dem eigenen Websocket-Link ausgeführt werden
+* ```javascript
+  const wsLink = ...;
+  const httpLink = ...;
+
+  const remoteLink = split(
+    // split based on operation type
+    ({ query }) => {
+      const def = getMainDefinition(query);
+      return (
+        def.kind === "OperationDefinition" && def.operation === "subscription"
+      );
+    },
+    wsLink,
+    httpLink
+  );
+  ```
+
+---
+<!-- .slide: data-hidden="true" -->
+### Links
+
+* Die Links werden beim erzeugen des Apollo Clients aneinander gehängt
+* ```javascript
+  const authLink = ...;
+  const remoteLink = new HttpLink(...);
+  const client = new ApolloClient({
+    link: ApolloLink.from([authLink, remoteLink]),
+    cache: new InMemoryCache()
+  });
+```
+
+
+          </textarea>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Apollo React Client</h3>
+          <p>
+            Die Komponenten bzw. die React-spezifische API des Apollo Clients, benötigt Zugriff auf
+            den ApolloClient
+          </p>
+          <p>Das Client-Objekt muss der Anwendung bereitgestellt werden</p>
+          <p>
+            Dazu wird die <code>ApolloProvider</code>-Komponente verwendet, die allen
+            darunterliegenden Komponenten Zugriff auf den ApolloClient ermöglicht:
+          </p>
+
+          <pre class="fragment"><code class="javascript">
+import { ApolloProvider } from "@apollo/client";
+
+const client = ...;
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+    &lt;ApolloProvider client={client}>
+      &lt;App />
+    &lt;ApolloProvider>
+  );
+</code></pre>
+          <p class="fragment">
+            (Der Apollo Client verwendet intern die
+            <a ref="https://reactjs.org/docs/context.html">React Context API</a>)
+          </p>
+        </section>
+        <section>
+          <h3>Apollo GraphQL Client in React</h3>
+          <p>Live: workspace-graphql</p>
+          <p>👉 PostListPage.tsx</p>
+        </section>
+        <section data-markdown="">
+          <textarea data-template>
+### GraphQL Operationen beschreiben
+
+* GraphQL Operationen können inline oder in einer eigenen Datei beschrieben werden
+* Inline: mit der `gql` [Tagged Template Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates) direkt im Code
+* Die `gql`-Funktion erzeugt ein **GraphQL Document Object**, das die geparste Operation enthält
+    * Dieses Objekt verwenden wir zum Ausführen der Operation
+* ```javascript
+  import { gql } from "@apollo/client";
+
+  const PostListPageQuery = gql`
+    query PostListPageQuery {
+      posts {
+        id
+        title
+        teaser(maxLength: 20)
+        date
+      }
+    }
+  `;
+  ```
+* Um die GraphQL-Operationen in einer eigenen Datei abzulegen und zu importieren, müsst ihr [Euer Setup anpassen](https://create-react-app.dev/docs/loading-graphql-files/)
+  * Wenn ihr mit dem [GraphQL Codegenerator](https://www.graphql-code-generator.com/) arbeitet, braucht ihr das _nicht_
+
+
+---
+
+### Verwenden des Apollo React Clients
+* Apollo stellt für die drei GraphQL Operationstypen jeweils eigene
+              Hooks zur Verfügung:
+  * [useQuery](https://www.apollographql.com/docs/react/data/queries/#usequery-api) bzw. [useLazyQuery](https://www.apollographql.com/docs/react/data/queries/#manual-execution-with-uselazyquery)
+  * [useMutation](https://www.apollographql.com/docs/react/data/mutations/#usemutation-api)
+  * [useSubscription](https://www.apollographql.com/docs/react/data/subscriptions/#usesubscription-api-reference)
+* Die Hooks funktionieren alle ähnlich:
+  * Sie erwarten ein Dokument mit einer GraphQL Operation (Ergebnis von `gql`)
+  * Verhalten kann mit weiteren Argumenten konfiguriert werden, z.B. Setzen von Variablen
+  * Der Rückgabetyp ist ein Objekt mit Informationen über den Request (loading, data, error). Bei
+    `useMutation` kommt kommt außerdem eine Funktion zum Ausführen der Mutation zurück
+
+---
+
+### useQuery: GraphQL Query ausführen
+<!-- .slide: class="left" -->
+* Der `useQuery`-Hook führt einen GraphQL aus:
+* ```typescript
+  const PostListPageQuery = gql`...`;
+  function PostListPage() {
+    const { loading, error, data } = useQuery(PostListPageQuery);
+
+    if (loading) {
+      return <h1>Loading, please wait...</h1>;
+    }
+
+    if (error) {
+      return <h1>GraphQL Failed: {error.toString()}</h1>;
+    }
+
+    return &lt;PostList posts={data.posts} />;
+  }
+  ```
+---
+
+### useQuery - Lebenszyklus
+* `useQuery` führt den übergebenen Query automatisch aus, sobald die Komponente _gemounted_ wurde
+* Sobald der Request läuft, gibt die Funktion ein Objekt zurück, in dem `loading` auf `true` gesetzt ist. Damit kannst Du z.B. einen Loading Indikator anzeigen
+* Sobald die Antwort des Queries ankommt, wird deine Komponente erneut gerendert
+  * Der useQuery-Hook gibt nun ein Objekt zurück, in dem entweder <code>error</code> oder
+              `data` gesetzt ist und `loading` nun `false` ist.
+  * Du kannst die Informationen nutzen, um die Darstellung zu aktualisieren
+  * Wenn der Request erfolgreich war, aktualisiert Apollo den globalen Cache mit den
+              geladenen Daten
+  * _Alle_ sichtbaren Komponenten, die (Teile der) geladenen Daten darstellen,
+              werden automatisch aktualisiert
+
+---
+
+### useQuery: Variablen
+* GraphQL Queries können Variablen enthalten
+* Das (optionale) zweite Argument von `useQuery` ist ein Objekt mit Konfigurationsoptionen
+* Mit diesem Argument kannst Du Variablen an deinen Query übergeben
+* ```graphql
+  const PostPageQuery = gql`
+    query PostPage($postId: ID!) {
+      post(postId: $postId) {
+      id title date body
+      user { name }
+    }
+  }
+  
+  `;
+  ```
+* ```typescript
+  function PostPage() {
+    // Example: Receive postId from URL params
+    const { postId } = useParams();
+
+    const { loading, error, data } = useQuery(PostPageQuery,
+      {
+        variables: { postId }
+      }
+    );
+    // ...
+  }
+  ```
+---
+### Apollo Hooks mit TypeScript
+* Die Apollo Hooks können mit Typ-Parametern typsicher gemacht werden.
+* In der Regel können zwei Parameter angegeben werden:
+  * `TData`: beschreibt, wie die gelesenen Daten aussehen (`data`-Knoten)
+  * `TVariables`: beschreibt, ob/wie benötigte Variablen aussehen
+* ```typescript
+  const PostPageQuery = gql`...`;
+
+  type IPostPageQuery = {
+    id: String, title: String, date: string, body: string, user: { name: string } }
+  }
+
+  type PostPageVariables = { postId: string }
+
+  function PostPage({postId}: {postId: string}) {
+    const result = useQuery<PostPageQuery, PostPageVariables>({
+            variables: { postId });
+
+    result.data?.id; // OK
+    result.data?.content; // ERROR content not in data
+    // ...
+  }
+  ```
+* Das `data`-Field in dem Ergebnis ist in TypeScript _immer_ optional, da es
+  im Fehlerfall nicht gesendet wird!
+* ```typescript
+  const {data} = useQuery<...>();
+
+  data.story.id; // ERROR: data might be undefined
+  if (!data) {
+    return <h1>No Data!</h1>;
+  }
+  data.story.id; // OK
+  ```
+---
+
+### TypeScript Code generieren
+* Das Project [GraphQL Code Generator](https://www.the-guild.dev/graphql/codegen) bietet Code Generatoren für eine Reihe von GraphQL Frameworks, u.a. Apollo/React
+* Generiert werden können damit:
+  * Typen für das Query-Ergebnis (`TData`)
+  * Variablen (`TVariables`)
+  * Typen für verwendete Fragmente
+  * Fertige Hook-Funktionen
+
+---
+### Code Generator: Konfiguration
+* Je nach Konfiguration sucht der Generator nach `.graphql`-Dateien mit Queries und/oder `gql`-Funktionen
+* Die Typen werden in eine Datei (z.B. `generated.tsx`) geschrieben
+* Der Generator braucht Zugriff auf das Schema (lokal oder remote)
+* Der Generator kann im watch-Modus betrieben werden, dann wird automatisch neu generiert, wenn neue Queries geschrieben werden
+* ```yml
+  overwrite: true
+  schema:
+    # Remote Schema:
+    - "http://localhost:4000/graphql"
+    # ...oder aus lokaler JS, TS, GraphQL oder JSON-Datei:
+    - "../../backend-graphql/src/schema.js"
+  # In welchen Dateien soll nach GraphQL Queries gesucht werden?
+  documents: "./src/**/{*.graphql,*.tsx}"
+  # Was (und wohin) soll generiert werden:
+  generates:
+    src/generated/graphql.tsx:
+      plugins:
+        - "typescript"
+        - "typescript-operations"
+        - "typescript-react-apollo"
+```
+* Empfehlung: Code Generator auch im CI Build ausführen lassen!
+
+---
+### Code Generator
+* _Empfehlung_: Typen und Hooks generieren lassen
+* Die generierten Hooks sind "nur" Wrapper-Funktionen um `useQuery`, `useMutation`, ersparen
+  aber das hinschreiben der Typ-Informationen und des Dokuments mit dem Query
+* ```typescript
+  function PostPage({postId}: {postId: string}) {
+
+    // useQuery von Hand:
+    const { data } = useQuery<IStoryPageQuery, PostPageQueryVariables>(
+            PostPageQuery, { variables: { postId } });
+
+    // generierter Hook:
+    const { data } = usePostPageQuery({ variables: { postId } });
+
+    // data-Objekte in beiden Fällen gleich
+    // ...
+  }
+  ```
+---
+<!-- .slide: data-hidden="true" -->
+### Code Generator: Fragmente
+* Für verwendete Fragmente wird ein eigener TypeScript-Typ generiert, das kann praktisch
+  sein, wenn man Typen für Teile eines Queries benötigt.
+* Beispiel:
+* ```graphql
+  query { stories { member { user { id name } } } }
+```
+* Generierter Typ (konzeptionell):
+* ```typescript
+  type StoriesQuery = { stories: Array<{ member: { user: { id: string, name: string } } }> }
+  ```
+* Um nur den Typen für den User zu ermitteln (z.B. um in einer Komponente als Property zu verwenden),
+ kann man schreiben:
+* ```javascript
+  type UserType = StoriesQuery["stories"][0]["member"]["user"]; // 🤯 😱
+  ```
+* Einfacher mit einem Fragment:
+* ```graphql
+  fragment UserFragment on User { id name }
+  query { stories { member { user { ...UserFragment } } } }
+  ```
+* Nun wird ein `UserFragment`-Typ generiert:
+* ```typescript
+  type UserFragment = { id: string, name: string }; // 😊
+  ```
+---
+
+### Refetch Funktion
+* `useQuery` liefert eine **refetch**-Funktion, die Du verwenden kannst, um
+            den Query erneut auszuführen (z.B. nach Klick auf einen "Aktualisieren"-Button)
+* Bei Bedarf kannst Du der `refetch`-Funktion neue Variablen übergeben
+  * Zum Beispiel um eine weitere Seite eines Such-Ergebnisses zu laden
+* ```javascript
+  function PostListPage() {
+    const { loading, error, data, refetch } = usePostListPageQuery();
+
+    if (loading) {
+      return <h1>Loading, please wait...</h1>;
+    }
+
+    if (error) {
+      return <h1>GraphQL Failed: {error.toString()}</h1>;
+    }
+
+    return <PostList posts={data.posts} onRefetch={refetch} />;
+  }
+
+  function PostList({posts, onRefetch}) {
+    return <div>
+      <button onClick={onRefetch}>Refresh</button>
+      ...
+    </div>
+  }
+  ```
+
+---
+### Übung: Query ausführen
+
+* **Vorbereitung:**
+  * Bitte GraphQL Backend starten
+  * ```bash
+  cd blog-example/backend-graphql
+  npm install 
+  npm start
+  ```
+  * GraphQL Explorer sollte auf [http://localhost:4000](http://localhost:4000) laufen
+  * Bitte im GraphQL Workspace arbeiten!
+  * In `workspace-graphql` das Frontend starten
+  * ```bash
+  cd blog-example/workspace-graphql
+  npm install # falls noch nicht gemacht
+  npm start
+  ```
+---
+### Übung: Query ausführen
+
+* Die `PostListPage` soll eine Liste von Posts anzeigen
+* Ergänze in `src/PostListPage.tsx` den dazu notwendigen Code
+* In der Datei findest Du TODOs mit weiteren Informationen
+* Eine mögliche Lösung findest Du in `steps/9-graphql-with-typescript`
+
+---
+
+### useQuery: Caching
+* Wenn deine Komponente erneut gerendert wird, wird dein Query
+            **nicht erneut ausgeführt**, sofern Apollo das Ergebnis noch im Cache findet
+* <!-- .element: class="demo" -->Netzwerk-Tab
+* <!-- .element: class="demo" -->Zwischen Einzel-Ansichten wechseln
+---
+
+### Der Apollo Cache
+* Apollo _normalisiert_ die Daten bevor sie in den Cache gelegt werden:
+* Für jedes Objekt, das als Teil deines Queries geladen wurde (egal auf welchem Level),
+            Apollo ermittelt den **typename** (`__typename`-Feld)
+  * Das `__typename`-Feld wird dafür automatisch allen Queries von Euch
+            hinzugefügt!
+* Für jedes Objekt extrahiert Apollo dessen `id`
+  * Wenn das `id`-Feld eines Objektes nicht `id` heißt, muss das in der
+            Konfiguration von Apollo gesetzt werden
+  * **Empfehlung:** *Immer* das `id`-Feld in jedem Objekt in jedem Query
+            abfragen!
+* Achtung! Listen werden *nicht* aktualisiert, bzw. nicht erweitert/gekürzt
+---
+
+### Der Apollo Cache: Aktualisierung
+* Es gibt mehrere Möglichkeiten, den Cache zu aktualisieren:
+  * [Fetch Policy](https://www.apollographql.com/docs/react/data/queries/#setting-a-fetch-policy)
+  * [Refetch Function](https://www.apollographql.com/docs/react/data/queries/#refetching)
+  * [Polling](https://www.apollographql.com/docs/react/data/queries/#polling)
+  * Für Paginierung von Listen mit der [Fetch more](https://www.apollographql.com/docs/react/pagination/core-api/#the-fetchmore-function)-Funktion
+  * [Per Subscription](https://www.apollographql.com/docs/react/data/subscriptions/#subscribing-to-updates-for-a-query)
+  * Nach einer Mutation direkt mit der [Cache API](https://www.apollographql.com/docs/react/data/mutations/#updating-the-cache-directly)
+---
+
+### Fetch Policy
+* Mit einer Fetch Policy kannst Du bei `useQuery` einstellen, wann dein Query
+            erneut ausgeführt werden soll
+  * **cache-first**: Wenn die angeforderten Daten bereits im Cache sind, werden sie aus
+              dem Cache zurückgegeben, sonst vom Backend geladen (Default)
+  * **cache-and-network**: Falls vorhanden, Daten aus dem Cache zurückgeben, aber in
+              jedem Fall auch einen Backend-Request auszuführen, um ggf. aktualisierte Daten zu
+              laden (Schnelle Darstellung, die ggf. kurze Zeit später aktualisiert wird)
+  * **network-only**: Immer Daten vom Backend laden (keine Daten vom Cache verwenden),
+              aber mit dem Ergebnis den Cache aktualisieren
+  * **no-cache**: Immer Daten vom Backend laden und auch nicht den Cache aktualisieren
+  * **cache-only**: Nur Daten vom Cache verwenden. Wenn die Daten darin nicht gefunden
+              werden, wird kein Ergebnis zurückgeliefert
+---
+
+### Fetch Policy: Beispiel
+<!-- .slide: class="left" -->
+* ```javascript
+  function PostPage() {
+    const { postId } = useParams();
+
+    const { loading, error, data } = useQuery(PostPageQuery,
+      {
+        variables: { postId },
+        fetchPolicy: "network-only"
+      }
+    );
+    // ...
+  }
+  ```
+---
+### Polling
+* Du kannst ein `pollInterval` (Zeit in ms) als Query Option angeben. Apollo
+            führt dann den Query dann in dem angegebenen Interval automatisch neu aus und aktualisiert den Cache mit den gelesenen Daten
+* ```javascript
+  function PostListPage() {
+    const { loading, error, data } = useQuery(PostListPageQuery,
+      { pollInterval: 1500 }
+    );
+
+    // bzw:
+    const { loading, error, data } = usePostListPageQuery(
+      { pollInterval: 1500 }
+    );
+
+    // ...wie gesehen...
+  }
+  ```
+---
+
+
+### Apollo GraphQL: Mutations
+<!-- .slide: class="left" -->
+
+* Ausführen von Mutations ist ähnlich wie das Ausführen eines Queries
+* Hook: [useMutation](https://www.apollographql.com/docs/react/data/mutations/#executing-a-mutation)
+* Der `useMutation` Hook gibt ein Array (Tuple) mit zwei Einträgen zurück:
+  1. Eine Funktion zum Ausführen der Mutation (z.B. nach einer Benutzerinteraktion)
+  2. Das Ergebnis-Objekt, das wir schon bei `useQuery` gesehen haben
+            (zusätzlich: ein `called`-Property, das angibt, ob die Mutation bereits mind. einmal ausgeführt wurde)
+* ```jsx
+  function PostEditorPage() {
+    const [mutate, { error, data, called }] = useMutation<IAddPostMutation, IAddPostVariables>
+            (AddPostMutation);
+
+    // oder generiert:
+    const [mutate, { error, data, called }] = useAddPostMutation();
+
+    function addPost(postInput: {title: string, body: string} ) {
+      // Verwendung von mutate hier Typsicher, da TS
+      // das 'variables'-Objekt von useMutation kennt
+      mutate({
+          variables: { input: postInput }
+      });
+    }
+
+    const errorMessage = error ? ... : null;
+
+    if (called && !errorMessage) {
+      // Mutation has been executed and was successful
+      return &lt;SuccessConfirmation />;
+    }
+
+    // Mutation hasn't been run or failed with an error
+    return <PostEditor errorMessage={errorMessage} />
+  }
+  ```
+---
+
+### Die mutate-Funktion
+
+* Der `mutate`-Funktion können (fast) alle Argumente übergeben werden, die
+  auch an `useMutation` übergeben werden können (insb. Variablen)
+* Beim Aufruf der `mutate`-Funktion wird die Mutation ausgelöst und die Komponente
+  wird mit neuen Ergebnissen (oder Fehlern) neu gerendert (wie bei `useQuery`)
+* Die `mutate`-Funktion liefert ein Promise zurück, das mit dem Ergebnis
+  der Mutation (`data` oder `errors`) aufgelöst wird, sobald das Ergebnis da ist
+* Damit kannst Du weitere Logik unmittelbar nach dem Abschluss der Mutation ausführen
+* ```jsx
+  function PostEditorPage({onPostSaved}: {onPostSaved: () => void}) {
+    const [mutate, { error, data, called }] = useAddPostMutation();
+
+    async function addPost(postInput: {title: string, body: string}) {
+      const {data, error} = mutate({
+          variables: { input: postInput }
+      });
+
+      if (data) {
+        // Beispiel: Alles OK, jetzt Redirect machen
+        history.push("/...");
+        // ...oder Callback von Oberkomponente aufrufen:
+        onPostSaved();
+      }
+    }
+  ```
+---
+### Nach einer Mutation... wird der Cache automatisch aktualisiert (eventuell)
+* Wenn deine Mutation ein Objekt zurückliefert, das sich bereits im Cache befindet, wird
+            es dort aktualisiert
+* PostPage, Like vergeben <!-- .element: class="demo" -->             
+* Beispiel: Du *aktualisierst* eine existierende Story und das Ergebnis der
+            Mutation enthält irgendwo die aktualisierte Story (zumindest die aktualisierten Teile).
+  * Voraussetzung: im Ergebnis kommt auch die `id` der Story vor
+* ```javascript
+  const LikePostMutation = gql`
+    mutation {
+      likePost(postId: "P1") {
+          id
+          likes
+      }
+    }
+  ```
+* In diesem Beispiel kann Apollo das Objekt <b>P1</b> im Cache automatisch aktualisieren
+  (neue Anzahl von likes)
+
+---
+### Den Cache nach einer Mutation aktualisieren
+* Mit [refetch Queries](https://www.apollographql.com/docs/react/data/mutations/#refetching-queries) kannst Du eine Liste von Queries angeben, die erneut ausgeführt werden, wenn
+              eine Mutation erfolgreich war
+
+* ```typescript
+  import { useAddBlogPostMutation, PostListPageDocument } from "./generated/graphql";
+
+
+  async function savePost(post: NewBlogPost) {
+    const { data } = await mutate({
+      variables: { postData: post },
+      refetchQueries: [
+        {
+          query: PostListPageDocument
+        }
+      ]
+    });
+  }
+  ```
+* Mit der [update Function](https://www.apollographql.com/docs/react/data/mutations/#updating-the-cache-directly) kannst Du den Cache direkt per API manipulieren, sobald deine Mutation erfolgreich
+              war
+
+---
+
+### Übung: eine Mutation
+* Die Logik zum Anlegen eines BlogPosts implementieren
+* Die Mutation (`AddBlogPostMutation`) ist schon fertig und der Code dafür generiert
+* In `PostEditorPage` musst Du den Code vervollständigen, siehe dort für weitere Informationen
+* Was musst du tun, damit der neu gespeicherte Blog Post auch in der Liste auf der ersten Seite angezeigt wird?
+* Mögliche Lösung in `steps/9_graphql-with-typescript`
+
+---
+
+### Testen vom Client
+
+
+
+</textarea
+          >
+        </section>
+
+        <section id="t-apollo-react-deep-dive">
+          <h1>Apollo React Client</h1>
+          <h2>Deep dive</h2>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+### Wiederholung: Der Apollo Cache
+
+* <!-- .element: class="demo" --> Apollo Dev Tools mit fertiger Anwendung
+* <!-- .element: class="demo" --> Einzelne Artikel anzeigen
+* <!-- .element: class="demo" --> "Like" vergeben
+
+---
+
+
+### Aktualisieren von Listen
+* Wenn neue Daten für eine Liste geladen werden (oder welche entfernt werden),
+  weiß Apollo nicht, wie damit umzugehen ist
+* Der Cache kann dann nicht automatisch aktualisiert werden
+* Beispiel:
+  * Nach dem PostEditor wird der neue Post nicht auf der PostListPage angzeigt
+  * <!-- .element: class="demo" --> Zeigen, was passiert, wenn invalidateQueries entfernt wird
+  * Zusätzliche Posts werden auf der PostList gelesen (z.B. Button "Mehr laden")
+  * Müssen die gelesenen Posts am Anfang oder Ende der bestehenden Liste eingefügt werden?
+  * Sollen sie dort überhaupt eingefügt werden?
+
+---
+<!-- .slide: data-hidden="true" -->
+### Aktualisieren von Listen
+* Grundsätzlich können Listen mit verschiedenen Strategien aktualisiert werden:
+  * **fetch more**: Jemand klickt z.B. auf "Weitere Einträge laden"-Link
+    * Beispiel: Liste von Posts in PostList-Page
+  * **subscription**: Eine Subscription liefert neue Elemente, die (auch) in eine bestehende Liste eingefügt werden
+  * **update**: Nach einer Mutation, die ein neues Objekte erzeugt (oder löscht), soll das Objekt
+            in eine Liste hinzugefügt (oder gelöscht) werden
+    * Diesen Fall sehen wir uns im Zusammenhang mit Mutations an
+* In jedem Fall müssen wir dazu implementieren, *wie* die neuen Daten in die gecachten Listen kommen
+### Die Apollo Cache API
+* Du kannst den Query auslesen (mit einem GraphQL Query!)
+* Du kannst den Cache direkt modifizieren
+---
+
+### Beispiel: Den Cache aktualisieren
+* Du kannst die `update`-Function bei `useMutation` angeben:
+* Diese Funktion wird nach dem Ausführen der Mutation von Apollo aufgerufen
+* Die Funktion bekommt das Mutation-Ergebnis sowie den aktuellen Cache von Apollo
+            übergeben
+* Mit der Cache API kannst Du das neue Objekt in den Cache an allen erforderlichen Stellen einfügen
+* ```javascript
+  const ReadPostsFromCache = gql`
+    query ReadPosts {
+      posts {
+        id
+      }
+    }
+  `;
+
+  function PostEditorPage() {
+    function savePost(newPost) {
+      mutate({
+        variables: {...},
+        update: (cache, {data}) => {
+          const { posts } = cache.readQuery({
+            query: ReadPostsFromCache
+          });
+          cache.writeQuery({
+            query: ReadPostsFromCache,
+            data: { posts: stories.concat(data.newPost) }
+          });
+      })
+    }
+
+    return ...;
+  }
+  ```
+
+
+---
+
+### Aktualisieren von Listen: Pagination mit fetchMore
+<!-- .element: class="todo" -->auf BlogExample umstellen
+* Anwendungsfall:
+  * es gibt eine Liste, durch die durchgeblättert werden kann
+  * die jeweils neu geladenen Objekte sollen der Liste auch im Cache hinzugefügt werden
+  * Vorteil: wenn Benutzer dann nochmal zurückblättert, sind die Objekte schon da
+* Dazu liefert `useQuery` eine weitere Funktion zurück: `fetchMore`
+
+* Diese Funktion akzeptiert im einfachsten Fall neue Query _Variablen_ und führt den Query neu aus
+* ```javascript
+  function FeedPage() {
+    const { loading, data, error, fetchMore } = useFeedPageQuery();
+
+    // ...
+
+    const handleFetchMore = () => {
+      fetchMore({
+        variables: {
+          page: data.stories.page.pageNumber + 1, // fetch next page
+        },
+      });
+    };
+
+    return <div>
+       {data.page.hasNext && <button onClick={handleFetchMore}>Next</button>}
+       // ...
+    </>
+  }
+  ```
+* Die geladenen Daten landen aber nicht im Cache 😭
+* <!-- .element: class="demo" --> Cache im DevTools mit fetchMore
+---
+<!-- .element: class="todo" -->auf BlogExample umstellen
+### Type Policy
+* Mit einer **Type Policy** muss die Aktualisierung des Caches für ein Feld angepasst werden
+  * Achtung 1: Das ist - je nach Schema, Query und Fachlichkeit - nicht trivial!
+  * Achtung 2: TypeScript-Support an der Stelle nur eingeschränkt!
+* In der Cache-Konfiguration beim Erzeugen des Apollo Clients:
+* ```javascript
+  const apolloClient = new ApolloClient({
+    // ...
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            stories: {
+              keyArgs: false,
+              merge(
+                existing: StoryConnection | undefined | null,
+                incoming: StoryConnection
+              ) {
+                if (!existing) { return incoming; }
+                const merged = {
+                  page: incoming.page,
+                  stories: [...existing.stories, ...incoming.stories],
+                };
+                return merged;
+              }  }  }  } }
+            }),
+        });
+  ```
+  * <!-- .element: class="demo" -->Der Cache in den Developer-Tools mit fetchMore-Funktion in FeedPage
+
+---
+<!-- .slide: data-hidden="true" -->
+### Ausblick: Aktualisieren des Caches mit Subscriptions
+<!-- .slide: class="left" -->
+* Bei den bisher gesehen Aktualisierungen, hat der Client die Aktualisierung
+  ausgelöst.
+* Dadurch werden Änderungen an Daten, die nicht vom Server vorgenommen werden, aber nicht
+  berücksichtigt
+* Beispiel: Anderer Benutzer erzeugt einen Kommentar
+* Man kann das Query-Ergebnis (insb. für Listen) mit einer Subscription aktualisieren
+* Beispiel: onNewComment Subscription
+---
+### Ausblick: Aktualisieren des Caches mit Subscriptions
+<!-- .slide: data-hidden="true" -->
+<!-- .slide: class="left" -->
+* `useQuery` stellt dazu die Funktion `subscribeToMore` zur Verfügung
+* Dieser Funktion wird übergeben:
+  * Als Typ-Parameter der Name des Typs, der das Ergebnis der Subscription beschreibt
+  * Als Parameter ein Objekt:
+    * mit `document` (Ergebnis des `gql`-Aufrufs mit der Subscription bzw. des generierten Codes)
+    * evtl. `variables` für die Mutation
+    * `updateQuery`-Funktion
+* Immer wenn die Subscription neue Daten liefert, wird die Callback-Funktion `updateQuery`
+  mit den alten und neuen Daten aufgerufen
+* In `updateQuery` können die neuen Daten dem Cache hinzugefügt werden
+* <!-- .element: class="demo" --> Cache Verhalten in Apollo Dev Tools
+---
+### Ausblick: Aktualisieren von Listen mit Subscriptions
+<!-- .slide: data-hidden="true" -->
+<!-- .slide: class="left" -->
+
+* ```javascript
+  function StoryComments({ storyId }) {
+
+    // initial Kommentare für eine Story lesen
+    const { data, loading, error, subscribeToMore } = useStoryCommentsQuery({
+      variables: { storyId },
+    });
+
+    React.useEffect(() => {
+
+      // Aktualisieren der Liste im Cache mit Subscription
+      subscribeToMore<OnNewCommentSubscription>({
+        document: OnNewCommentDocument,
+        variables: { storyId },
+        updateQuery: (prev, { subscriptionData }) => {
+          // Wenn die Subscription keine Daten geliefert hat (z.B. Fehler)
+          // den alten Cache-Inhalt unverändert zurückliefern
+          if (!subscriptionData.data) return prev;
+
+          // Bestehenden Cache-Inhalt ('prev') kopieren und in das
+          // 'comments'-Feld den neuen Kommentar einfügen
+
+          // Achtung! Wie das einfügen genau funktioniert, hängt natürlich
+          //  immer von deiner jeweiligen Daten-Struktur ab
+          const newComment = subscriptionData.data.onNewComment.newComment;
+          const newData = Object.assign({}, prev, {
+            comments: [newComment, ...prev.comments],
+          });
+
+          // Neuen Wert zurückliefern; dieser ersetzt dann
+          // den gecachten Wert des Queries, für den diese
+          // updateQuery-Funktion ausgeführt wurde
+          return newData;
+        },
+      });
+    }, [subscribeToMore, storyId]);
+
+    return ...;
+  }
+  ```
+---
+### Übung: Den Cache manuell aktualisieren
+
+---
+### Lokale Felder
+* https://www.apollographql.com/docs/react/local-state/managing-state-with-field-policies
+* Lokales Schema: https://www.apollographql.com/docs/react/local-state/client-side-schema
+* Neuen Workspace und "step"
+* Beispiel: Formatieren des Datum eines Blogposts
+* Empfehlung: würde man das wirklich wollen? 😱
+* Zum Schreiben auf keinen Fall! Dann lieber reaktive Variables
+---
+### Reactive Variables
+* https://www.apollographql.com/docs/react/local-state/managing-state-with-field-policies#storing-and-updating-local-state-with-reactive-variables
+* Beispiel: Lese Historie in der Sidebar
+
+
+
+
+  </textarea
+          >
+        </section>
+
+        <!-- ============================================================================= -->
         <section>
           <h2>Geschafft! 😊</h2>
           <h3>Vielen Dank für Eure Teilnahme!</h3>
