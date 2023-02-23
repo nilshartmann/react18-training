@@ -1,5 +1,4 @@
 import React from "react";
-import renderer from "react-test-renderer";
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -12,8 +11,8 @@ const mockPosts = [
 ];
 
 it("renders correctly", () => {
-  const tree = renderer.create(<PostList posts={mockPosts} onAddPost={jest.fn()} />).toJSON();
-  expect(tree).toMatchSnapshot();
+  const result = render(<PostList posts={mockPosts} onAddPost={jest.fn()} />);
+  expect(result.asFragment()).toMatchSnapshot();
 });
 
 it("invokes callback on button click", () => {

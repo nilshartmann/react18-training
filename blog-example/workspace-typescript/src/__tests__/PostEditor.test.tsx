@@ -3,20 +3,19 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import PostEditor from "../PostEditor";
 
-// TODO: Write a test for the PostEditor component:
+// TODO: Write tests for the PostEditor component
 
 // test("Test PostEditor", () => { /* your test code here */ })
 
-// 1. Testcase:
-//    - Render the PostEditor (pass a mock function as 'onSavePost' property)
-//      const onSavePostMockFn = jest.fn();
-//    - Find the title and body input field (for example by their label)
-//    - fill both input fields with a value
-//    - find and click on the save button
-//    - expect that the mock function you used is invoked
-//
-//    Optional:
-//    - make sure save button is only enabled if *both* input fields contain texts
-//    - make sure the parameter passed to your mock function is actually correct
-//      (should be an object with title and body property that contains your input:
-//       { title: "Title from input field", body: "Body from input field"}
+// Ideas what you could test:
+//  - does the initial PostEditor renders correctly?
+//  - Does the enablement of the buttons work correctly?
+//     - Save button should only be enabled if both text fields are filled
+//     - Clear button should only be enabled if at least one text field is filled
+//  - Are the error/success messages correct?
+//     - If a field is empty, an error message should appear otherwise a success info message
+//  - Does the clear button work?
+//     - It should clear both input fields
+//  - Does the save button work?
+//     - It should invoke your onSavePost-callback function with an object
+//       that contains the values from the input field ({title: "...", body: "..."})

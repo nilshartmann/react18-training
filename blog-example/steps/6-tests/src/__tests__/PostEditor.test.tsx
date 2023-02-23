@@ -3,6 +3,28 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import PostEditor from "../PostEditor";
 
+test("renders correctly", () => {
+  const { asFragment } = render(<PostEditor onSavePost={jest.fn()} />);
+  expect(asFragment()).toMatchSnapshot();
+
+  screen.logTestingPlaygroundURL();
+});
+
+test("add post button callback", () => {
+  const savePostFn = jest.fn();
+  render(<PostEditor onSavePost={savePostFn} />);
+  const saveButton = screen.getByRole("button", { name: "Save Post" });
+  const titleInput = screen.getByLabelText("Title");
+  const bodyInput = screen.getByLabelText("Body");
+
+  // enter form
+  userEvent.type(titleInput, "New Title");
+  userEvent.type(bodyInput, "New Body");
+  userEvent.click(saveButton);
+
+  expect(savePostFn).toHaveBeenCalledWith({ title: "New Title", body: "New Body" });
+});
+
 test("save button enablement", () => {
   render(<PostEditor onSavePost={jest.fn()} />);
 
@@ -43,20 +65,4 @@ test("clear button", () => {
 
   expect(titleInput).toHaveValue("");
   expect(bodyInput).toHaveValue("");
-});
-
-test("add post button callback", () => {
-  const savePostFn = jest.fn();
-  render(<PostEditor onSavePost={savePostFn} />);
-  const saveButton = screen.getByRole("button", { name: "Save Post" });
-  const titleInput = screen.getByLabelText("Title");
-  const bodyInput = screen.getByLabelText("Body");
-
-  // enter form
-  userEvent.type(titleInput, "New Title");
-  userEvent.type(bodyInput, "New Body");
-  userEvent.click(saveButton);
-
-  expect(savePostFn).toHaveBeenCalled();
-  expect(savePostFn).toHaveBeenCalledWith({ title: "New Title", body: "New Body" });
 });
