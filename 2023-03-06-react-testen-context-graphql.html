@@ -1197,8 +1197,34 @@ root.render(
   data.story.id; // OK
   ```
 ---
+### Übung: Query ausführen
 
+* **Vorbereitung:**
+  * Bitte GraphQL Backend starten
+  * ```bash
+  cd blog-example/backend-graphql
+  npm install 
+  npm start
+  ```
+  * GraphQL Explorer sollte auf [http://localhost:4000](http://localhost:4000) laufen
+  * Bitte im GraphQL Workspace arbeiten!
+  * In `workspace-graphql` das Frontend starten
+  * ```bash
+  cd blog-example/workspace-graphql
+  npm install # falls noch nicht gemacht
+  npm start
+  ```
+---
+### Übung: Query ausführen
+
+* Die `PostListPage` soll eine Liste von Post Teasern anzeigen
+* Ergänze in `src/PostListPage.tsx` den dazu notwendigen Code
+* In der Datei findest Du TODOs mit weiteren Informationen
+* Eine mögliche Lösung findest Du in der Datei <code>PostListPage<b>_useQuery.txt</b></code> in `steps/30-graphql-with-typescript`
+
+---
 ### TypeScript Code generieren
+* <!-- .element: class="demo" --> PostListPage Query mit generierten Hooks
 * Das Project [GraphQL Code Generator](https://www.the-guild.dev/graphql/codegen) bietet Code Generatoren für eine Reihe von GraphQL Frameworks, u.a. Apollo/React
 * Generiert werden können damit:
   * Typen für das Query-Ergebnis (`TData`)
@@ -1252,6 +1278,7 @@ root.render(
   ```
 ---
 ### Code Generator: Fragmente
+* * <!-- .element: class="demo" --> Beispiel: PostListPage fragt auch User ab
 * Für verwendete Fragmente wird ein eigener TypeScript-Typ generiert, das kann praktisch
   sein, wenn man Typen für Teile eines Queries benötigt.
 * Beispiel:
@@ -1276,35 +1303,16 @@ root.render(
 * ```typescript
   type UserFragment = { id: string, name: string }; // 😊
   ```
+---
+### Übung: Queries mit dem Codegenerator
+
+* Stelle die `PostListPage`-Komponente auf den generierte Query-Hook um
+* Im Workspace ist der Codegenerator installiert und eingerichtet
+* Die Hook-Funktionen sind auch schon generiert
+* Ersetze in der `PostListPage`-Komponente den `useQuery`-Aufruf durch den generierten Hook
+* Eine Lösung findest Du in `steps/30-graphql-with-typescript`
 
 ---
-### Übung: Query ausführen
-
-* **Vorbereitung:**
-  * Bitte GraphQL Backend starten
-  * ```bash
-  cd blog-example/backend-graphql
-  npm install 
-  npm start
-  ```
-  * GraphQL Explorer sollte auf [http://localhost:4000](http://localhost:4000) laufen
-  * Bitte im GraphQL Workspace arbeiten!
-  * In `workspace-graphql` das Frontend starten
-  * ```bash
-  cd blog-example/workspace-graphql
-  npm install # falls noch nicht gemacht
-  npm start
-  ```
----
-### Übung: Query ausführen
-
-* Die `PostListPage` soll eine Liste von Posts anzeigen
-* Ergänze in `src/PostListPage.tsx` den dazu notwendigen Code
-* In der Datei findest Du TODOs mit weiteren Informationen
-* Eine mögliche Lösung findest Du in `steps/30-graphql-with-typescript`
-
----
-
 ### useQuery: Caching
 * Wenn deine Komponente erneut gerendert wird, wird dein Query
             **nicht erneut ausgeführt**, sofern Apollo das Ergebnis noch im Cache findet
@@ -1333,7 +1341,9 @@ root.render(
   * [Polling](https://www.apollographql.com/docs/react/data/queries/#polling)
   * Für Paginierung von Listen mit der [Fetch more](https://www.apollographql.com/docs/react/pagination/core-api/#the-fetchmore-function)-Funktion
   * [Per Subscription](https://www.apollographql.com/docs/react/data/subscriptions/#subscribing-to-updates-for-a-query)
-  * Nach einer Mutation direkt mit der [Cache API](https://www.apollographql.com/docs/react/data/mutations/#updating-the-cache-directly)
+* Nach dem Ausführen einer Mutation...  
+  * ...direkt mit der [Cache API](https://www.apollographql.com/docs/react/data/mutations/#updating-the-cache-directly)
+  * ...mit [refetchQueries](https://www.apollographql.com/docs/react/data/mutations/#refetching-queries)
 
 ---
 ### Refetch Funktion
@@ -1480,6 +1490,7 @@ root.render(
       }
     }
   ```
+
 ---
 ### Nach einer Mutation... wird der Cache automatisch aktualisiert (eventuell)
 * Wenn deine Mutation ein Objekt zurückliefert, das sich bereits im Cache befindet, wird
@@ -1524,7 +1535,6 @@ root.render(
               war
 
 ---
-
 ### Übung: eine Mutation
 * Die Logik zum Anlegen eines BlogPosts implementieren
 * Die Mutation (`AddBlogPostMutation`) ist schon fertig und der Code dafür generiert
@@ -1533,8 +1543,12 @@ root.render(
 * Mögliche Lösung in `steps/9_graphql-with-typescript`
 
 ---
+### Optimistic Updates
 
-### Testen vom Client
+<!-- .element: class="todo" -->
+
+---
+### Testen vom Client (ggf. Deep Dive)
 
 * Wenn ihr GraphQL Anwendungen testen wollt, müsst ihr möglicherweise den Netzwerkverkehr mocken
 * Dazu könnt ihr die besprochenen Techniken verwenden (jest-fetch-mock, msw, etc.)
@@ -1655,7 +1669,7 @@ const mock: MockedResponse<PostListPageQuery> = {
 * Der Cache kann dann nicht automatisch aktualisiert werden
 * Beispiel:
   * Nach dem PostEditor wird der neue Post nicht auf der PostListPage angzeigt
-  * <!-- .element: class="demo" --> Zeigen, was passiert, wenn invalidateQueries entfernt wird
+  * <!-- .element: class="demo" --> Zeigen, was passiert, wenn refetchQueries entfernt wird
   * Zusätzliche Posts werden auf der PostList gelesen (z.B. Button "Mehr laden")
   * Müssen die gelesenen Posts am Anfang oder Ende der bestehenden Liste eingefügt werden?
   * Sollen sie dort überhaupt eingefügt werden?

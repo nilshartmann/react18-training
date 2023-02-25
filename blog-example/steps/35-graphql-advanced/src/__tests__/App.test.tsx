@@ -64,7 +64,7 @@ test("App Navigation works", async () => {
 
   expect(await screen.findByRole("heading", { name: /hello world/i })).toBeInTheDocument();
 
-  userEvent.click(screen.getByRole("link", { name: / hello world/i }));
+  userEvent.click(screen.getByRole("link", { name: /hello world/i }));
 
   expect(await screen.findByText("Lorem ipsum dolor sit")).toBeInTheDocument();
 });

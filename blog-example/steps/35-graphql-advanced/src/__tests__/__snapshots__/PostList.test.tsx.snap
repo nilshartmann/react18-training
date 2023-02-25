@@ -8,39 +8,45 @@ exports[`renders correctly 1`] = `
   >
     Add Post
   </a>
-  <a
-    href="/post/1"
+  <article
+    class="Container"
   >
-    <article
-      class="Container"
+    <a
+      href="/post/1"
     >
-      <p
-        class="Date"
-      >
-        23.08.2019
-      </p>
       <h2>
         One
       </h2>
-      <p />
-    </article>
-  </a>
-  <a
-    href="/post/2"
-  >
-    <article
-      class="Container"
+    </a>
+    <p
+      class="Date"
+    />
+    <p />
+    <button
+      class="small"
     >
-      <p
-        class="Date"
-      >
-        22.09.2019
-      </p>
+      Add to bookmark
+    </button>
+  </article>
+  <article
+    class="Container"
+  >
+    <a
+      href="/post/2"
+    >
       <h2>
         Second Post
       </h2>
-      <p />
-    </article>
-  </a>
+    </a>
+    <p
+      class="Date"
+    />
+    <p />
+    <button
+      class="small"
+    >
+      Add to bookmark
+    </button>
+  </article>
 </DocumentFragment>
 `;
