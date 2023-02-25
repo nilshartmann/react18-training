@@ -91,6 +91,11 @@ export type QueryPostArgs = {
   postId: Scalars["ID"];
 };
 
+export type QueryPostsArgs = {
+  page?: InputMaybe<Scalars["Int"]>;
+  pageSize?: InputMaybe<Scalars["Int"]>;
+};
+
 export type Subscription = {
   __typename?: "Subscription";
   onNewLike: BlogPost;
@@ -163,6 +168,7 @@ export type PostPageQuery = {
     __typename?: "BlogPost";
     id: string;
     title: string;
+    date: string;
     formattedDate: string;
     body: string;
     likes: number;
@@ -323,6 +329,7 @@ export const PostPageDocument = gql`
     post(postId: $postId) {
       id
       title
+      date
       formattedDate @client
       body
       likes

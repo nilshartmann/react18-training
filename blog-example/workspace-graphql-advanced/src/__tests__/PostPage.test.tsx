@@ -7,24 +7,15 @@ import { PostPageDocument, PostPageQuery } from "../generated/graphql";
 import PostPage from "../PostPage";
 
 test("PostPage", async () => {
-  const postPageMock: MockedResponse<PostPageQuery> = {
+  // todo: Vervollständige das Mock-Objekt, so dass der Test "grün" wird
+  //
+  //
+
+  const postPageMock: MockedResponse = {
     request: {
-      query: PostPageDocument,
-      variables: {
-        postId: "P1"
-      }
+      query: PostPageDocument
     },
-    result: {
-      data: {
-        post: {
-          date: "2023-02-23",
-          title: "Hello World",
-          id: "P1",
-          body: "Lorem ipsum dolor sit",
-          likes: 1
-        }
-      }
-    }
+    result: {}
   };
 
   render(
@@ -43,16 +34,15 @@ test("PostPage", async () => {
 });
 
 test("error works", async () => {
-  const postPageMockErr: MockedResponse<PostPageQuery> = {
+  // todo:
+  //   Vervollständige das Mock-Objekt,
+  //   so dass es einen Fehler zurücklieft ('errors' statt 'data')
+  //   und der Test dann "grün" wird
+  const postPageMockErr: MockedResponse = {
     request: {
-      query: PostPageDocument,
-      variables: {
-        postId: "P2"
-      }
+      query: PostPageDocument
     },
-    result: {
-      errors: [new GraphQLError("au weia!")]
-    }
+    result: {}
   };
 
   render(

@@ -21,6 +21,7 @@ test("App Navigation works", async () => {
         posts: [
           {
             date: "2022-02-23",
+            formattedDate: "2023-02-23",
             title: "Hello World",
             teaser: "Lorem ipsum",
             id: "P1"
@@ -41,6 +42,7 @@ test("App Navigation works", async () => {
       data: {
         post: {
           date: "2023-02-23",
+          formattedDate: "2023-02-23",
           title: "Hello World",
           id: "P1",
           body: "Lorem ipsum dolor sit",

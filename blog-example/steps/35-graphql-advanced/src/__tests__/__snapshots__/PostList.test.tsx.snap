@@ -20,7 +20,9 @@ exports[`renders correctly 1`] = `
     </a>
     <p
       class="Date"
-    />
+    >
+      2019-08-23
+    </p>
     <p />
     <button
       class="small"
@@ -40,7 +42,9 @@ exports[`renders correctly 1`] = `
     </a>
     <p
       class="Date"
-    />
+    >
+      2019-09-22
+    </p>
     <p />
     <button
       class="small"

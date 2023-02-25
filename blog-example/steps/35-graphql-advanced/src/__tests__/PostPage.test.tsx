@@ -18,6 +18,7 @@ test("PostPage", async () => {
       data: {
         post: {
           date: "2023-02-23",
+          formattedDate: "2023-02-23",
           title: "Hello World",
           id: "P1",
           body: "Lorem ipsum dolor sit",
