@@ -29,7 +29,19 @@ function buildTeaser({ body }, maxLength) {
 const resolvers = {
   Query: {
     ping: (_, { msg }) => `Hello, ${msg || "World"}`,
-    posts: () => datastore.getAllPosts(),
+    posts: (_, { page, pageSize }) => {
+      console.log("page", page, "pagesize", pageSize);
+      const allPosts = datastore.getAllPosts();
+      if (page === undefined) {
+        page = 0;
+      }
+
+      if (pageSize === undefined) {
+        pageSize = allPosts.length;
+      }
+
+      return allPosts.slice(page * pageSize, page * pageSize + pageSize);
+    },
     post: (_, { postId }) => datastore.getPost(postId),
     users: () => datastore.getAllUsers()
   },
