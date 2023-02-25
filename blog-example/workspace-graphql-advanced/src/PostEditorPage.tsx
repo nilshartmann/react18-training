@@ -23,11 +23,24 @@ export default function PostEditorPage() {
       variables: {
         postData: post
       },
-      // Alternativen:
-      //   - fetchPolicy in PostListPage ändern
-      //   - pollingInterval in PostListPage
-      //   - refetch-Button in PostListPage
-      //   - Cache direkt ändern (kommt noch)
+      // todo: entferne refetchQueries und füge die update-Funktion hinzu
+      //
+      //  - Wenn die update-Funktion NICHT mit data bzw. KEINEM neuen BlogPost
+      //     aufgerufen wurde, kannst Du die Funktion einfach mit "return" verlassen
+      //
+      //  - Sonst musst Du mit `readQuery` die Liste aller
+      //    BlogPosts aus dem Cache lesen
+      //    - Definiere dafür mit 'gql' einen GraphQL Query, der die 'id's aller
+      //      Posts ausliest
+      //  - Wenn es noch keine Einträge im Cache gibt, erzeuge eine neue Liste,
+      //    die nur aus dem neuen BlogPost besteht
+      //  - Wenn es bereits Einträge im Cache gibt, füge den BlogPost in die
+      //    Liste ein.
+      //    - Der neue Post soll am Anfang der Liste stehen
+      //    - Achtung: Bestehende Liste nicht verändern, sondern Kopie erzeugen!
+      //  - Schreibe die neue Liste mit 'writeQuery' zurück
+      //    - Als 'query' kannst Du dafür denselben Query wie bei 'readQuery'
+      //      verwenden
       refetchQueries: [
         {
           query: PostListPageDocument

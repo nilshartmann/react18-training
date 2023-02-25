@@ -878,7 +878,29 @@ fetchMock.mockResponse(JSON.stringify(mockResponse), { status: 201 });
           <h1>GraphQL</h1>
           <h2>Clients mit Apollo React</h2>
         </section>
-
+        <section data-markdown>
+          <textarea data-template>
+### Vorbereitung
+* Bitte das Repository klonen: `git clone https://github.com/nilshartmann/react18-training`
+* Das GraphQL Backend starten:
+* ```bash
+  cd blog-example/backend-graphql
+  npm install 
+  npm start
+  ```
+* GraphQL Explorer sollte auf [http://localhost:4000](http://localhost:4000) laufen
+* Wir arbeiten dann im Verzeichnis `blog-example/workspace-graphql`
+* Dort die Anwendung starten:
+* ```bash
+  cd blog-example/workspace-graphql
+  npm install 
+  npm start
+  ```
+* Anwendung sollte jetzt auf [http://localhost:3000](http://localhost:3000) laufen
+        
+  </textarea
+          >
+        </section>
         <section>
           <h3>Apollo Client</h3>
           <p>
@@ -1185,38 +1207,44 @@ root.render(
     // ...
   }
   ```
-* Das `data`-Field in dem Ergebnis ist in TypeScript _immer_ optional, da es
-  im Fehlerfall nicht gesendet wird!
-* ```typescript
-  const {data} = useQuery<...>();
+---
+### Das data-Field  
+* Das `data`-Field enthält im Erfolgsfall die geladenenen Daten
+* Das `data`-Field ist in TypeScript aber _immer_ optional (`TData | undefined`), da es
+  im Fehlerfall nicht gesendet wird, und in GraphQL Fehler und/oder Daten kommen können.
+* Deswegen vor der Verwendung prüfen:  
+  * ```typescript
+    const {data} = useQuery<...>();
 
-  data.story.id; // ERROR: data might be undefined
-  if (!data) {
-    return <h1>No Data!</h1>;
-  }
-  data.story.id; // OK
-  ```
+    data.story.id; // ERROR: data might be undefined
+    if (!data) {
+      return <h1>No Data!</h1>;
+    }
+    data.story.id; // OK
+    ```
+* Alternativ: eine TypeScript Type-Assertion-Funktion bauen:
+  * ```typescript
+    function assertData<T>(t: T): asserts t is NonNullable<T> {
+      if (!t) {
+        throw new Error("Data not defined");
+      }
+    }
+
+    // In der Komponente:
+    const { data, loading, error } = useQuery<...>();
+    // data hier TData | undefined
+
+    if (loading) { ... }
+    if (error) { ... }
+
+    assertData(data);
+
+    // data hier TData
+    ```
 ---
 ### Übung: Query ausführen
 
-* **Vorbereitung:**
-  * Bitte GraphQL Backend starten
-  * ```bash
-  cd blog-example/backend-graphql
-  npm install 
-  npm start
-  ```
-  * GraphQL Explorer sollte auf [http://localhost:4000](http://localhost:4000) laufen
-  * Bitte im GraphQL Workspace arbeiten!
-  * In `workspace-graphql` das Frontend starten
-  * ```bash
-  cd blog-example/workspace-graphql
-  npm install # falls noch nicht gemacht
-  npm start
-  ```
----
-### Übung: Query ausführen
-
+* Wir arbeiten im Verzeichnis `blog-example/workspace-graphql`
 * Die `PostListPage` soll eine Liste von Post Teasern anzeigen
 * Ergänze in `src/PostListPage.tsx` den dazu notwendigen Code
 * In der Datei findest Du TODOs mit weiteren Informationen
@@ -1543,11 +1571,6 @@ root.render(
 * Mögliche Lösung in `steps/9_graphql-with-typescript`
 
 ---
-### Optimistic Updates
-
-<!-- .element: class="todo" -->
-
----
 ### Testen vom Client (ggf. Deep Dive)
 
 * Wenn ihr GraphQL Anwendungen testen wollt, müsst ihr möglicherweise den Netzwerkverkehr mocken
@@ -1651,7 +1674,29 @@ const mock: MockedResponse<PostListPageQuery> = {
           <h1>Apollo React Client</h1>
           <h2>Deep dive</h2>
         </section>
-
+        <section data-markdown>
+          <textarea data-template>
+### Vorbereitung
+* Bitte das Repository klonen: `git clone https://github.com/nilshartmann/react18-training`
+* Das GraphQL Backend starten:
+* ```bash
+  cd blog-example/backend-graphql
+  npm install 
+  npm start
+  ```
+* GraphQL Explorer sollte auf [http://localhost:4000](http://localhost:4000) laufen
+* Wir arbeiten dann im Verzeichnis `blog-example/workspace-graphql-advanced`
+* Dort die Anwendung starten:
+* ```bash
+  cd blog-example/workspace-graphql-advanced
+  npm install 
+  npm start
+  ```
+* Anwendung sollte jetzt auf [http://localhost:3000](http://localhost:3000) laufen
+        
+  </textarea
+          >
+        </section>
         <section data-markdown>
           <textarea data-template>
 ### Wiederholung: Der Apollo Cache
@@ -1671,51 +1716,81 @@ const mock: MockedResponse<PostListPageQuery> = {
   * Nach dem PostEditor wird der neue Post nicht auf der PostListPage angzeigt
   * <!-- .element: class="demo" --> Zeigen, was passiert, wenn refetchQueries entfernt wird
   * Zusätzliche Posts werden auf der PostList gelesen (z.B. Button "Mehr laden")
-  * Müssen die gelesenen Posts am Anfang oder Ende der bestehenden Liste eingefügt werden?
+  * Müssen die neuen/zusätzlichen Posts am Anfang oder Ende der bestehenden Liste eingefügt werden?
   * Sollen sie dort überhaupt eingefügt werden?
 
 ---
 <!-- .slide: data-hidden="true" -->
 ### Aktualisieren von Listen
 * Grundsätzlich können Listen mit verschiedenen Strategien aktualisiert werden:
+  * **update**: Nach einer Mutation, die ein neues Objekte erzeugt (oder löscht), soll das Objekt
+  in eine Liste hinzugefügt (oder gelöscht) werden
+    * Sehen wir uns gleich exemplarisch an
   * **fetch more**: Jemand klickt z.B. auf "Weitere Einträge laden"-Link
     * Beispiel: Liste von Posts in PostList-Page
   * **subscription**: Eine Subscription liefert neue Elemente, die (auch) in eine bestehende Liste eingefügt werden
-  * **update**: Nach einer Mutation, die ein neues Objekte erzeugt (oder löscht), soll das Objekt
-            in eine Liste hinzugefügt (oder gelöscht) werden
-    * Diesen Fall sehen wir uns im Zusammenhang mit Mutations an
 * In jedem Fall müssen wir dazu implementieren, *wie* die neuen Daten in die gecachten Listen kommen
 ### Die Apollo Cache API
 * Du kannst den Query auslesen (mit einem GraphQL Query!)
-* Du kannst den Cache direkt modifizieren
+* Du kannst den Cache direkt modifizieren, zum Beispiel Objekte hinzufügen und löschen
+* 🫣 Ich bin kein großer Freund der Cache API, finde sie sehr verwirrend und übersichtlich und versuche deren Benutzung zu vermeiden, wenn es irgendwie geht
+
 ---
 
-### Beispiel: Den Cache aktualisieren
-* Du kannst die `update`-Function bei `useMutation` angeben:
-* Diese Funktion wird nach dem Ausführen der Mutation von Apollo aufgerufen
-* Die Funktion bekommt das Mutation-Ergebnis sowie den aktuellen Cache von Apollo
-            übergeben
-* Mit der Cache API kannst Du das neue Objekt in den Cache an allen erforderlichen Stellen einfügen
+### Das Apollo Cache Objekt
+* Das `Cache`-Objekt bietet Funktionen zum Zugriff auf den Cache
+* Das Objekt erhälst Du zum Beispiel über den `Client` oder als Argument in verschiedenen Callback-Funktionen
+* Du kannst Daten aus dem Cache lesen, in dem Du die `readQuery`-Funktion verwendest, die ein GraphQL Query(!) erwartet
+  * ```javascript
+    const ReadPostsFromCache = gql`{ posts { id } }`;
+
+    const posts = cache.read({query: ReadPostsFromCache});
+    ```
+* Der `read`-Funktion kannst Du einen Typ-Parameter mit dem Ergebnis des Queries angeben
+  * ```javascript
+    const ReadPostsFromCache = gql`{ posts { id } }`;
+
+    const posts = cache.read<{ posts: Array<{id: string}>}>({query: ReadPostsFromCache});
+    ```
+* Mit `writeQuery` kannst Du neue Daten setzen. Dazu gibts Du einen Query an und die neuen Daten dafür. Apollo mergt die dann im Cache zusammen:
 * ```javascript
-  const ReadPostsFromCache = gql`
-    query ReadPosts {
-      posts {
-        id
-      }
-    }
-  `;
+    const posts = cache.read({query: ReadPostsFromCache});
+    const newPosts = [...posts, { id: "P1000", title: "..." } ];
+
+    cache.write({
+      query: ReadPostsFromCache,
+      data: newPosts
+    })
+  ```
+* `readFragment`/`writeFragment` und `modifiy` gibt es weitere Möglichkeiten [zur Interaktion mit dem Cache](https://www.apollographql.com/docs/react/caching/cache-interaction)
+  * Diese können insbesondere besser geeignet sein, wenn Objekte modifziert werden sollen, die tiefer verschachtelt sind
+
+---
+### Cache nach einer Mutation aktualisieren
+* Mit der `update`-Function von `useMutation` kannst Du den Cache direkt verändern
+* Diese Funktion wird nach dem Ausführen der Mutation von Apollo aufgerufen
+  * Achtung! Die Funktion wird auch aufgerufen, wenn die Mutation fehlgeschlagen ist
+* Die Funktion bekommt zwei Parameter übergeben:
+  1. Das `cache`-Objekt
+  2. Ein Objekt, mit der Antwort der Mutation (`data` und `errors`)
+
+* ```javascript
+  const ReadPostsFromCache = gql`{ posts { id } }`;
 
   function PostEditorPage() {
     function savePost(newPost) {
       mutate({
         variables: {...},
-        update: (cache, {data}) => {
-          const { posts } = cache.readQuery({
-            query: ReadPostsFromCache
-          });
+        update: (cache, { data, errors }) => {
+          const existingPosts = cache.readQuery(...);
+
+          // Liste mit neuen Daten erzeugen
+          const newPosts = [data.newPost, ...existingPosts];
+
+          // Daten schreiben
           cache.writeQuery({
             query: ReadPostsFromCache,
-            data: { posts: stories.concat(data.newPost) }
+            data: { posts:  newPosts }
           });
       })
     }
@@ -1723,12 +1798,41 @@ const mock: MockedResponse<PostListPageQuery> = {
     return ...;
   }
   ```
+---
+### Cache nach einer Mutation aktualisieren
+<!-- .slide: class="left" -->
+* Beispiel mit TypeScript und Prüfungen
+* ```javascript
+  const ReadPostsFromCache = gql`{ posts { id } }`;
 
+  function PostEditorPage() {
+    function savePost(newPost) {
+      mutate({
+        variables: {...},
+        update: (cache, {data}) => {
+          if (!data) { return; }
+          const newBlogPost = data.newPost.blogPost;
+
+          const existingPosts = cache.readQuery<{ posts: Array<{ id: string }> }>({
+            query: ReadPostsFromCache
+          });
+
+          const newPosts = existingPosts ? [newBlogPost, ...existingPosts.posts] : [newBlogPost];
+          
+          cache.writeQuery({
+            query: ReadPostsFromCache,
+            data: { posts: [data.newPost, ...existingPosts] }
+          });
+      })
+    }
+
+    return ...;
+  }
+  ``` 
 
 ---
-
 ### Aktualisieren von Listen: Pagination mit fetchMore
-<!-- .element: class="todo" -->auf BlogExample umstellen
+<!-- .slide: data-hidden="true" -->
 * Anwendungsfall:
   * es gibt eine Liste, durch die durchgeblättert werden kann
   * die jeweils neu geladenen Objekte sollen der Liste auch im Cache hinzugefügt werden
@@ -1759,8 +1863,8 @@ const mock: MockedResponse<PostListPageQuery> = {
 * Die geladenen Daten landen aber nicht im Cache 😭
 * <!-- .element: class="demo" --> Cache im DevTools mit fetchMore
 ---
-<!-- .element: class="todo" -->auf BlogExample umstellen
 ### Type Policy
+<!-- .slide: data-hidden="true" -->
 * Mit einer **Type Policy** muss die Aktualisierung des Caches für ein Feld angepasst werden
   * Achtung 1: Das ist - je nach Schema, Query und Fachlichkeit - nicht trivial!
   * Achtung 2: TypeScript-Support an der Stelle nur eingeschränkt!
@@ -1791,8 +1895,8 @@ const mock: MockedResponse<PostListPageQuery> = {
   * <!-- .element: class="demo" -->Der Cache in den Developer-Tools mit fetchMore-Funktion in FeedPage
 
 ---
-<!-- .slide: data-hidden="true" -->
 ### Ausblick: Aktualisieren des Caches mit Subscriptions
+<!-- .slide: data-hidden="true" -->
 <!-- .slide: class="left" -->
 * Bei den bisher gesehen Aktualisierungen, hat der Client die Aktualisierung
   ausgelöst.
@@ -1863,6 +1967,9 @@ const mock: MockedResponse<PostListPageQuery> = {
   ```
 ---
 ### Übung: Den Cache manuell aktualisieren
+* Implementiere die `update`-Funktion für die `addPost`-Mutation
+* Versuche dabei, für `readQuery` einen TypeScript-Typen anzugeben
+* Beschreibung findest Du in `workspace-graphql-advanced/src/PostEditorPage.tsx`
 
 ---
 ### Field Policies

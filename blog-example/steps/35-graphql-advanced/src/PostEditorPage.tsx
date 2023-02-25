@@ -1,3 +1,4 @@
+import { gql } from "@apollo/client";
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAddBlogPostMutation, PostListPageDocument } from "./generated/graphql";
@@ -23,16 +24,30 @@ export default function PostEditorPage() {
       variables: {
         postData: post
       },
-      // Alternativen:
-      //   - fetchPolicy in PostListPage ändern
-      //   - pollingInterval in PostListPage
-      //   - refetch-Button in PostListPage
-      //   - Cache direkt ändern (kommt noch)
-      refetchQueries: [
-        {
-          query: PostListPageDocument
+      update(cache, { data }) {
+        const newBlogPost = data?.newPost.blogPost;
+        if (!newBlogPost) {
+          return;
         }
-      ]
+        const query = gql`
+          {
+            posts {
+              id
+            }
+          }
+        `;
+
+        const existingPosts = cache.readQuery<{ posts: Array<{ id: string }> }>({
+          query
+        });
+
+        const newPosts = existingPosts ? [newBlogPost, ...existingPosts.posts] : [newBlogPost];
+
+        cache.writeQuery({
+          query,
+          data: { posts: newPosts }
+        });
+      }
     });
 
     if (data?.newPost.blogPost) {
