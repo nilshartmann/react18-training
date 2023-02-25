@@ -99,10 +99,10 @@
               <a href="#/t-apollo-react">Apollo Client</a>
             </li>
             <li>
-              <a href="#/t-apollo-react-deep-dive">Apollo Deep Dive</a>
+              <a href="#/t-context">Context API</a>
             </li>
             <li>
-              <a href="#/t-context">Context API</a>
+              <a href="#/t-apollo-react-deep-dive">Apollo Deep Dive</a>
             </li>
           </ul>
         </section>
@@ -1054,7 +1054,7 @@ root.render(
         <section>
           <h3>Apollo GraphQL Client in React</h3>
           <p>Live: workspace-graphql</p>
-          <p>👉 PostListPage.tsx</p>
+          <p>👉 PostListPage.tsx mit <b>useQuery</b></p>
         </section>
         <section data-markdown="">
           <textarea data-template>
@@ -1251,60 +1251,30 @@ root.render(
   }
   ```
 ---
-<!-- .slide: data-hidden="true" -->
 ### Code Generator: Fragmente
 * Für verwendete Fragmente wird ein eigener TypeScript-Typ generiert, das kann praktisch
   sein, wenn man Typen für Teile eines Queries benötigt.
 * Beispiel:
 * ```graphql
-  query { stories { member { user { id name } } } }
+  query { posts { user { id name } } }
 ```
 * Generierter Typ (konzeptionell):
 * ```typescript
-  type StoriesQuery = { stories: Array<{ member: { user: { id: string, name: string } } }> }
+  type PostsQuery = { posts: Array<{ user: { id: string, name: string } }> }
   ```
 * Um nur den Typen für den User zu ermitteln (z.B. um in einer Komponente als Property zu verwenden),
  kann man schreiben:
 * ```javascript
-  type UserType = StoriesQuery["stories"][0]["member"]["user"]; // 🤯 😱
+  type UserType = PostsQuery["posts"][0]["user"]; // 🤯 😱
   ```
 * Einfacher mit einem Fragment:
 * ```graphql
   fragment UserFragment on User { id name }
-  query { stories { member { user { ...UserFragment } } } }
+  query { stories { user { ...UserFragment } } }
   ```
 * Nun wird ein `UserFragment`-Typ generiert:
 * ```typescript
   type UserFragment = { id: string, name: string }; // 😊
-  ```
----
-
-### Refetch Funktion
-* `useQuery` liefert eine **refetch**-Funktion, die Du verwenden kannst, um
-            den Query erneut auszuführen (z.B. nach Klick auf einen "Aktualisieren"-Button)
-* Bei Bedarf kannst Du der `refetch`-Funktion neue Variablen übergeben
-  * Zum Beispiel um eine weitere Seite eines Such-Ergebnisses zu laden
-* ```javascript
-  function PostListPage() {
-    const { loading, error, data, refetch } = usePostListPageQuery();
-
-    if (loading) {
-      return <h1>Loading, please wait...</h1>;
-    }
-
-    if (error) {
-      return <h1>GraphQL Failed: {error.toString()}</h1>;
-    }
-
-    return <PostList posts={data.posts} onRefetch={refetch} />;
-  }
-
-  function PostList({posts, onRefetch}) {
-    return <div>
-      <button onClick={onRefetch}>Refresh</button>
-      ...
-    </div>
-  }
   ```
 
 ---
@@ -1358,15 +1328,44 @@ root.render(
 
 ### Der Apollo Cache: Aktualisierung
 * Es gibt mehrere Möglichkeiten, den Cache zu aktualisieren:
-  * [Fetch Policy](https://www.apollographql.com/docs/react/data/queries/#setting-a-fetch-policy)
   * [Refetch Function](https://www.apollographql.com/docs/react/data/queries/#refetching)
+  * [Fetch Policy](https://www.apollographql.com/docs/react/data/queries/#setting-a-fetch-policy)
   * [Polling](https://www.apollographql.com/docs/react/data/queries/#polling)
   * Für Paginierung von Listen mit der [Fetch more](https://www.apollographql.com/docs/react/pagination/core-api/#the-fetchmore-function)-Funktion
   * [Per Subscription](https://www.apollographql.com/docs/react/data/subscriptions/#subscribing-to-updates-for-a-query)
   * Nach einer Mutation direkt mit der [Cache API](https://www.apollographql.com/docs/react/data/mutations/#updating-the-cache-directly)
----
 
+---
+### Refetch Funktion
+* `useQuery` liefert eine **refetch**-Funktion, die Du verwenden kannst, um
+            den Query erneut auszuführen (z.B. nach Klick auf einen "Aktualisieren"-Button)
+* Bei Bedarf kannst Du der `refetch`-Funktion neue Variablen übergeben
+  * Zum Beispiel um eine weitere Seite eines Such-Ergebnisses zu laden
+* ```javascript
+  function PostListPage() {
+    const { loading, error, data, refetch } = usePostListPageQuery();
+
+    if (loading) {
+      return <h1>Loading, please wait...</h1>;
+    }
+
+    if (error) {
+      return <h1>GraphQL Failed: {error.toString()}</h1>;
+    }
+
+    return <PostList posts={data.posts} onRefetch={refetch} />;
+  }
+
+  function PostList({posts, onRefetch}) {
+    return <div>
+      <button onClick={onRefetch}>Refresh</button>
+      ...
+    </div>
+  }
+  ```
+---
 ### Fetch Policy
+* <!-- .element: class="demo" --> `fetchPolicy` für `PostList` einstellen (`network-only`)
 * Mit einer Fetch Policy kannst Du bei `useQuery` einstellen, wann dein Query
             erneut ausgeführt werden soll
   * **cache-first**: Wenn die angeforderten Daten bereits im Cache sind, werden sie aus
@@ -1852,19 +1851,210 @@ const mock: MockedResponse<PostListPageQuery> = {
 ### Übung: Den Cache manuell aktualisieren
 
 ---
-### Lokale Felder
-* https://www.apollographql.com/docs/react/local-state/managing-state-with-field-policies
-* Lokales Schema: https://www.apollographql.com/docs/react/local-state/client-side-schema
-* Neuen Workspace und "step"
-* Beispiel: Formatieren des Datum eines Blogposts
-* Empfehlung: würde man das wirklich wollen? 😱
-* Zum Schreiben auf keinen Fall! Dann lieber reaktive Variables
+### Field Policies
+
+* Mit einer [Field Policy](https://www.apollographql.com/docs/react/caching/cache-field-behavior) kann die Interaktion mit dem Cache beim Zugriff auf ein Feld angepasst werden
+* Man kann damit konfigurieren:
+  * was beim Lesen eines Feldes passieren soll
+  * was beim Schreiben des Feldes in den Cache passieren soll
+  * Mit `keyargs` könnt ihr Argumente eines Feldes angeben, die nicht Bestandteil des Cache-Keys sein sollen
+
+---
+
+### Angabe der Field Policies
+
+* Die Policy für ein Field kann in der `Type Policy` des Parent-Typen gesetzt werden
+* Die Type Policies werden in der Cache-Konfiguration gesetzt.
+* Dabei handelt es sich um ein Objekt, das als Keys Namen von Objekt Typen aus Eurem GraphQL Schema enthält
+* Als Wert wird jeweils ein Objekt mit dem Property `fields` übergeben.
+* In diesem Objekt sind dann die Keys die Feldnamen des Typen. Die zugehörigen Werte sind dann die Field Policies
+* Beispiel: eine `read`-Policy für das `title`-Field am `Post`-Typen.
+  * ```javascript
+    const cache = new InMemoryCache({
+      typePolicies: {
+        // Name des Typen: "BlogPost"
+        BlogPost: {
+          fields: {
+            // Name des Feldes, das konfiguriert werden soll: "title"
+            title: {
+              read(currentTitle) { return currentTitle.toUpperCase() }
+            }
+          }
+        }
+      }
+    });
+  ```
+---
+### Details: Die read-Funktion 
+* Wenn man für einen Typen nur eine `read`-Funktion definiert, kann man eine kompaktere Schreibweise wählen:
+  * ```javascript
+    const cache = new InMemoryCache({
+      typePolicies: {
+        BlogPost: {
+          fields: {
+            // title ist hier kein Objekt, sondern direkt read-Funktion
+            title(currentTitle) { return currentTitle.toUpperCase() }
+          }
+        }
+      }
+    });
+  ```
+* Über den zweiten Parameter, bekommt man Zugriff auf die übergebenen Feld-Argumente
+  * ```javascript
+    const cache = new InMemoryCache({
+      typePolicies: {
+        BlogPost: {
+          fields: {
+            title(currentTitle, { args } ) { 
+              return args.transform === "uppercase" ? currentTitle.toUpperCase() : currentTitle 
+            }
+          }
+        }
+      }
+    });
+  ```
+* Nur sparsam (falls überhaupt) verwenden, denn in der Regel sollte ja die Logik auf dem Server ausgeführt werden
+---
+### Client-only Felder
+* Der Apollo Client erlaubt es, das GraphQL Schema um Felder zu erweitern, die nur auf dem Client zur Verfügung stehen
+* Die Logik für diese Felder wird dann in der `read`-Funktion der entsprechenden `FieldPolicy` hinterlegt
+* Ist das eine gute Idee? Wofür würdet ihr das nutzen? 🤔
+
+---
+### Beispiel: Client-only Felder
+
+* Formatiertes Datum im BlogPost
+* Mit der `@client` Direktive gebt ihr an, dass das Feld ein "client-only" Feld ist
+  * ```graphql
+      query PostPage($postId: ID!) {
+        post(postId: $postId) {
+          id
+          title
+          date
+          # Client-only Feld
+          formattedDate @client
+          body
+          likes
+        }
+      }
+    ```
+* Zur Ermittlung des Wertes legt ihr eine FieldPolicy an:
+* ```typescript
+    const client = new ApolloClient({
+      cache: new InMemoryCache({
+        typePolicies: {
+          BlogPost: {
+            fields: {
+              formattedDate(_, { readField }) {
+                const date = readField("date");
+                if (typeof date === "string") {
+                  // Datum formatieren
+                  return formattedDate(date); 
+                }
+              }
+            }
+          }
+        }
+      })
+    });
+  ```
+---
+### Client-only Felder
+* Achtung: Ihr müsst auch den Code-Generator umkonfigurieren, damit der Eure Client-only-Felder kennt
+* Dazu neue Schema-Datei anlegen und in die `codegen.yml`-Datei eintragen:
+  * ```graphql
+    #./client-schema.graphql
+    directive @client on FIELD
+
+    extend type BlogPost {
+      formattedDate: String!
+    }
+    ```
+  * Konfigurationsdatei:  
+  * ```yaml
+    generates:
+      src/generated/graphql.tsx:
+        schema: ./client-schema.graphql
+      ...
+    ```
 ---
 ### Reactive Variables
-* https://www.apollographql.com/docs/react/local-state/managing-state-with-field-policies#storing-and-updating-local-state-with-reactive-variables
-* Beispiel: Lese Historie in der Sidebar
+* [Reactive Variables](https://www.apollographql.com/docs/react/local-state/managing-state-with-field-policies#storing-and-updating-local-state-with-reactive-variables) sind eine Möglichkeit, globalen Zustand zu halten (ohne Apollo Cache)
+* <!-- .element: class="demo" --> Bookmarks in der Sidebar
+* <!-- .element: class="demo" --> Reactive Variables (workspace-graphql-advanced)
 
+---
+### Reactive Variablen
+* <!-- .element: class="demo" --> Last clicked oder click counter o.ä.
 
+---
+### Reactive Variables
+* Eine reaktive Variable wird mit `makeVar` angelegt.
+  * Als Parameter wird der initial Wert übergeben
+  * Als Typ-Parameter kann der TypeScript des gehaltenen Werts übergeben werden
+* ```javascript
+    import { makeVar } from "@apollo/client";
+    const counterVar = makeVar<number>(0);
+  ```
+* Zurückgeliefert wird eine Funktion, die zum Lesen und Schreiben des aktuellen Wertes dient
+  * Wenn die Funktion ohne Parameter aufgerufen wird, wird der aktuelle Wert zurückgegeben:
+    * ```javascript
+      const currentCounter = counterVar();
+      ```
+  * Wenn du der Funktion einen Wert übergibst, wird dieser Wert als neuer Wert gesetzt.
+    * ```javascript
+      counterVar(currentVar + 1);
+      ```
+    * Achtung! Wie bei React State ist der Wert immutable!
+    * Objekte und Arrays also nicht direkt verändern, sondern kopieren und die Kopien dann ändern und setzen
+  
+---
+### Reactive Variables: Verwendung in React
+* Die React Variables sind im (React-unabhängigen) Apollo Client implementiert
+* Mit dem [`useReactiveVar`](https://www.apollographql.com/docs/react/local-state/reactive-variables#usereactivevar-hook) kannst Du eine Variable in einer React Komponente auslesen
+  * Wenn die Variable sich ändert, wird die Komponente neu gerendert
+  * Dem Hook übergibst Du die Funktion, die `makeVar` zurückgeliefert hat
+  * ```javascript
+      // counter.ts
+      export const counterVar = makeVar<number>(0);
+    ```
+  * ```javascript
+      // CountView.tsx  
+      function CountView() {
+        const currentCount = useReactiveVar(counterVar);
+
+        // ...
+      }
+    ```
+  * Setzen der Variable unverändert, wie bereits gesehen
+  * ```jsx
+      // CountView.tsx  
+      function CountView() {
+        const currentCount = useReactiveVar(counterVar);
+
+        return <button onClick={ () => counterVar(currentCount+1) }>
+          Increase {currentCount}</button>
+      }
+    ```
+
+---
+### Reactive Variablen: Übung
+
+* Baue das Bookmark-Feature für die Blog-Anwendung
+* Im "globalen Zustand" soll eine Liste von Bookmarks gehalten werden
+* Ein `Bookmark` ist ein Objekt mit zwei Eigenschaften: `title` und `path`
+* Unter der Artikelvorschau (`PostTeaser` in der `PostList`) soll ein Button
+  hinzugefügt werden, mit dem der Artikel den Bookmarks hinzugefügt wird
+  * Der `title` soll der Titel des Artikels sein
+  * Der `path` ist `/post/${post.id}` (kannst Du in der Sidebar als `Link` verwenden)
+* In der Sidebar soll eine Liste aller Bookmarks angezeigt werden
+  * Hinter dem Bookmark soll ein Button o.ä. sein, mit dem man den Post wieder  
+    entfernen kann
+  * Über den `path` des Bookmarks kannst Du auch einen Link zur Post-Ansicht bauen, wenn Du willst (`<Link to={bookmark.path}>...</Link>`)  
+* Optional: 
+  * Zeig im _PostTeaser_ an, ob der dargestellte Post bereits gebookmarked ist
+  * Wenn ein Bookmark entfernt wird: schaffst Du es, dass nur der `PostTeaser` neu gerendert wird, der den Post aus dem gelöschten Bookmark darstellt?
+* Weitere Hinweise findest Du in `bookmarks.ts`
 
 
   </textarea

@@ -9,7 +9,21 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000",
-  cache: new InMemoryCache()
+  cache: new InMemoryCache({
+    typePolicies: {
+      // Name des Typen: "Post"
+      Post: {
+        fields: {
+          // Name des Feldes, das konfiguriert werden soll: "title"
+          title: {
+            read(currentTitle) {
+              return currentTitle.toUpperCase();
+            }
+          }
+        }
+      }
+    }
+  })
 });
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
