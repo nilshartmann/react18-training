@@ -65,6 +65,11 @@
     "prefix": "jsf",
     "body": ["```javascript", "  $0", "```", ""]
   },
+  "TypeScript Code Fragent Block": {
+    "scope": "html",
+    "prefix": "tsf",
+    "body": ["* ```typescript", "  $0", "  ```", ""]
+  },
   "Markdown Todo": {
     "scope": "html",
     "prefix": "mdt",
@@ -74,6 +79,11 @@
     "scope": "html",
     "prefix": "mdh",
     "body": ["<!-- .slide: data-hidden=\"true\" -->$0"]
+  },
+  "Markdown slide left": {
+    "scope": "html",
+    "prefix": "mdl",
+    "body": ["<!-- .slide: class=\"left\" -->$0"]
   },
   "Markdown Note": {
     "scope": "html",
