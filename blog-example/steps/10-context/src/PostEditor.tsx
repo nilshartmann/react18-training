@@ -9,6 +9,8 @@ type PostEditorProps = {
 export default function PostEditor(props: PostEditorProps) {
   const [title, setTitle] = React.useState("");
   const [body, setBody] = React.useState("");
+  // ----------------------------------------------------------------------
+  //  - Frage den AuthContext ab
   const authContext = useAuthContext();
 
   const clearDisabled = !title && !body;
@@ -19,6 +21,10 @@ export default function PostEditor(props: PostEditorProps) {
     setBody("");
   }
 
+  //  - Gib im Formular eine Meldung aus,
+  //    - wenn ein Benutzer eingeloggt ist, gib dessen username aus
+  //    - wenn KEIN Benutzer eingeloggt, gib einen anderen Hinweis aus
+  //      ("Sie sind nicht eingeloggt" o.ä.)
   const loginMsg = authContext.username
     ? `Logged in as ${authContext.username}`
     : `You're not logged in.`;

@@ -9,7 +9,7 @@ import PostPage from "../PostPage";
 test("PostPage", async () => {
   // todo: Vervollständige das Mock-Objekt, so dass der Test "grün" wird
   //
-  //
+  // Bitte denk dran, dass Du eine Variable mit der zu lesenden BlogPost ID ("P1") übergeben musst!
 
   const postPageMock: MockedResponse = {
     request: {

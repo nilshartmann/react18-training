@@ -26,7 +26,7 @@
       <div class="slides">
         <section data-state="title">
           <h2 class="title" style="font-size: 7rem">
-            <b>React &amp; TypeScript Workshop</b>
+            <b>React: Testen, Context, GraphQL</b>
           </h2>
 
           <h4>
@@ -41,14 +41,16 @@
           <div>
             <h3><span class="transparent-bg">Slides</span></h3>
             <p>
-              <span class="transparent-bg">Lokal: 2022-10-10-react-typescript-graphql.html</span>
+              <span class="transparent-bg"
+                >Lokal: 2023-03-06-react-testen-context-graphql.html</span
+              >
             </p>
             <p>
               <span class="transparent-bg"
                 >Remote:
                 <a
-                  href="https://nilshartmann.github.io/react18-training/2022-10-10-react-typescript-graphql.html"
-                  >https://nilshartmann.github.io/react18-training/2022-10-10-react-typescript-graphql.html</a
+                  href="https://nilshartmann.github.io/react18-training/2023-03-06-react-testen-context-graphql.html"
+                  >https://nilshartmann.github.io/react18-training/2023-03-06-react-testen-context-graphql.html</a
                 ></span
               >
             </p>
@@ -93,16 +95,16 @@
           <h2>Agenda</h2>
           <ul class="xx-list">
             <li>
-              <a href="#/t-test">Testen mit Jest</a>
+              <a href="#/t-test">Testen mit Jest (Montag, 06.03.)</a>
             </li>
             <li>
-              <a href="#/t-apollo-react">Apollo Client</a>
+              <a href="#/t-apollo-react">Apollo Client (Dienstag, 07.03.)</a>
             </li>
             <li>
-              <a href="#/t-context">Context API</a>
+              <a href="#/t-context">Context API (Montag, 13.03.)</a>
             </li>
             <li>
-              <a href="#/t-apollo-react-deep-dive">Apollo Deep Dive</a>
+              <a href="#/t-apollo-react-deep-dive">Apollo Deep Dive (Dienstag, 14.03.)</a>
             </li>
           </ul>
         </section>
@@ -118,22 +120,25 @@
 * Wir machen alle Übungen im `blog-example/workspace-typescript`-Verzeichnis.
 
 * Zunächst das "Backend" starten, in `blog-example/backend-rest`:
-  * ```
-  npm install
-  npm start
-  ```
-* In `blog-example/workspace-typescript` enthalten sind zwei _JavaScript_-Dateien. Diese Dateien bitte **löschen**!
+  * ```bash
+    cd blog-example/backend-rest
+
+    npm install
+    npm start
+    ```
+* In `blog-example/workspace-typescript` die Dateien `PostEditor.js` und `PostList.js` **löschen**!
 * Dann kopierst Du aus dem Verzeichnis <code>blog-example/steps/5-typescript/src</code> die beiden Dateien:
   * `PostEditor.tsx`
   * `PostList.tsx`
   * in den `src`-Ordner in deinem Workspace (`workspace-typescript/src`)
-* Dann bitte `npm install` ausführen und die Anwendung starten. In `blog-example/workspace-typescript`:
+* Dann bitte `npm install` ausführen und die Anwendung starten:
   * ```
+    cd blog-example/backend-rest
+
     npm install
     npm start
     ```  
 * Einmal die Anwendung im Browser öffnen, um zu sehen, ob's geht: http://localhost:3000    
-* Die gestartete Anwendung kannst Du verwenden, um dir den PostEditor anzusehen, für den wir Test schreiben werden    
           </textarea>
         </section>
 
@@ -431,19 +436,23 @@ render(
             </li>
           </ul>
         </section>
+        <section data-markdown>
+          <textarea data-template>
+### Snapshot Tests mit React
 
-        <section>
-          <h3>Snapshot Tests mit React</h3>
-          <pre><code class="javascript"  >import renderer from 'react-test-renderer';
-        
-test('it should render correctly', () => {
+```typescript
+  import { render } from "@testing-library/react";
+          
+  test('it should render correctly', () => {
+      const mockPosts = [ /* ... */ ];
 
-    const mockPosts = [ /* ... */ ];
-
-    const result = render(<PostList posts={mockPosts} onAddPost={jest.fn()} />);
-    expect(result.asFragment()).toMatchSnapshot();
-});
-            </code></pre>
+      const result = render(<PostList posts={mockPosts} onAddPost={jest.fn()} /> );
+      
+      expect(result.asFragment()).toMatchSnapshot();
+  });  
+```
+            
+          </textarea>
         </section>
 
         <!-- ######################### ########################### #################################################### -->
@@ -885,6 +894,7 @@ fetchMock.mockResponse(JSON.stringify(mockResponse), { status: 201 });
 * Das GraphQL Backend starten:
 * ```bash
   cd blog-example/backend-graphql
+
   npm install 
   npm start
   ```
@@ -893,6 +903,7 @@ fetchMock.mockResponse(JSON.stringify(mockResponse), { status: 201 });
 * Dort die Anwendung starten:
 * ```bash
   cd blog-example/workspace-graphql
+
   npm install 
   npm start
   ```
@@ -1570,8 +1581,43 @@ root.render(
 * Was musst du tun, damit der neu gespeicherte Blog Post auch in der Liste auf der ersten Seite angezeigt wird?
 * Mögliche Lösung in `steps/9_graphql-with-typescript`
 
----
-### Testen vom Client (ggf. Deep Dive)
+</textarea
+          >
+        </section>
+
+        <section id="t-apollo-react-deep-dive">
+          <h1>Apollo React Client</h1>
+          <h2>Deep dive</h2>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+### Vorbereitung
+* Bitte das Repository klonen: `git clone https://github.com/nilshartmann/react18-training`
+* Das GraphQL Backend starten:
+* ```bash
+  cd blog-example/backend-graphql
+
+  npm install 
+  npm start
+  ```
+* GraphQL Explorer sollte auf [http://localhost:4000](http://localhost:4000) laufen
+* Wir arbeiten dann im Verzeichnis `blog-example/workspace-graphql-advanced`
+* Dort die Anwendung starten:
+* ```bash
+  cd blog-example/workspace-graphql-advanced
+
+  npm install 
+  npm start
+  ```
+* Anwendung sollte jetzt auf [http://localhost:3000](http://localhost:3000) laufen
+        
+  </textarea
+          >
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+
+### Testen von GraphQL Clients
 
 * Wenn ihr GraphQL Anwendungen testen wollt, müsst ihr möglicherweise den Netzwerkverkehr mocken
 * Dazu könnt ihr die besprochenen Techniken verwenden (jest-fetch-mock, msw, etc.)
@@ -1630,12 +1676,12 @@ root.render(
         <MockedProvider mocks={[mock]}>
           <PostListPage />
         </MockedProvider>
-     );
-     // Loading Indicator ist sofort sichtbar:
-     expect(screen.getByRole("heading", {name: /please wait/i})).toBeInTheDocument();
+      );
+      // Loading Indicator ist sofort sichtbar:
+      expect(screen.getByRole("heading", {name: /please wait/i})).toBeInTheDocument();
     
-     // Achtung Asynchron:
-     expect(await screen.findByRole("heading", {name: /hello world/i})).toBeInTheDocument();
+      // Achtung Asynchron:
+      expect(await screen.findByRole("heading", {name: /hello world/i})).toBeInTheDocument();
   });
 ```
 ---
@@ -1665,41 +1711,11 @@ const mock: MockedResponse<PostListPageQuery> = {
 * Du kannst die Tests ausführen mit: `npm test -- PostPage`
 * Eine mögliche Lösung findest Du in `steps/30-graphql-with-typescript/src/__tests__`
 * Wenn Du fertig bist, bitte Hand heben! 🙋🏻‍♀️
+            
+---            
+### Wiederholung:
+## Der Apollo Cache
 
-</textarea
-          >
-        </section>
-
-        <section id="t-apollo-react-deep-dive">
-          <h1>Apollo React Client</h1>
-          <h2>Deep dive</h2>
-        </section>
-        <section data-markdown>
-          <textarea data-template>
-### Vorbereitung
-* Bitte das Repository klonen: `git clone https://github.com/nilshartmann/react18-training`
-* Das GraphQL Backend starten:
-* ```bash
-  cd blog-example/backend-graphql
-  npm install 
-  npm start
-  ```
-* GraphQL Explorer sollte auf [http://localhost:4000](http://localhost:4000) laufen
-* Wir arbeiten dann im Verzeichnis `blog-example/workspace-graphql-advanced`
-* Dort die Anwendung starten:
-* ```bash
-  cd blog-example/workspace-graphql-advanced
-  npm install 
-  npm start
-  ```
-* Anwendung sollte jetzt auf [http://localhost:3000](http://localhost:3000) laufen
-        
-  </textarea
-          >
-        </section>
-        <section data-markdown>
-          <textarea data-template>
-### Wiederholung: Der Apollo Cache
 
 * <!-- .element: class="demo" --> Apollo Dev Tools mit fertiger Anwendung
 * <!-- .element: class="demo" --> Einzelne Artikel anzeigen
@@ -2180,6 +2196,38 @@ const mock: MockedResponse<PostListPageQuery> = {
 
   </textarea
           >
+        </section>
+        <!-- ============================================================================== -->
+        <!-- ====                                                                      ==== -->
+        <!-- ====            C O N T E X T                                             ==== -->
+        <!-- ====                                                                      ==== -->
+        <!-- ============================================================================== -->
+        <section id="t-context">
+          <h3>React Context API</h3>
+          <p class="fragment">👉 Anwendungshierarchie mit Props in Miro</p>
+          <p class="fragment">
+            👉 <code>2021_12_06_ts_react/03_component_composition/01_form_example</code>
+          </p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Globaler Zustand</h3>
+          <ul>
+            <li>
+              Man kann Zustand in <b>lokalen Zustand</b> und <b>globalen Zustand</b> einteilen
+            </li>
+            <li>
+              <b>Lokaler Zustand</b> ist Zustand, der "mehr oder weniger" einer Komponente zur
+              Verfügung steht
+            </li>
+            <li>
+              <b>Globaler Zustand</b> hingegen ist für die ganze Anwendung oder große Teile davon
+              zuständig
+            </li>
+            <li>Die Übgergänge sind fließend, es gibt keine fixe Definition</li>
+            <li>Beispiele für globalen Zustand: angemeldeter Benutzer, Theme</li>
+          </ul>
         </section>
 
         <!-- ============================================================================= -->
