@@ -33,8 +33,10 @@ Reveal.initialize({
   // Learn about plugins: https://revealjs.com/plugins/
   plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
 }).then(() => {
+  const isBeta = !!document.querySelector("[data-beta='true']");
+  console.log("isBeta", isBeta);
+
   document.querySelectorAll("section[data-hidden]").forEach((n) => {
-    console.log("RMEOVE ", n);
     n.remove();
   });
 
@@ -74,24 +76,25 @@ Reveal.initialize({
     //   n.parentNode.insertBefore(div, n);
     //   div.appendChild(n);
     // });
-
-    // li having a code inside, should not have a bullet point (see also styles.css)
-    document.querySelectorAll("li > pre.code-wrapper").forEach((n) => {
-      n.parentNode.classList.add("no-icon");
-    });
-    document.querySelectorAll("li > img").forEach((n) => {
-      n.parentNode.classList.add("no-icon");
-    });
   } else {
     // public version
 
-    // remove presenter "demo" marks (children of demo)
-    document.querySelectorAll(".demo .demo").forEach((n) => n.remove());
-    // remove todos
-    document.querySelectorAll(".todo").forEach((n) => n.remove());
+    if (!isBeta) {
+      // remove presenter "demo" marks (children of demo)
+      document.querySelectorAll(".demo .demo").forEach((n) => n.remove());
+      // remove todos
+      document.querySelectorAll(".todo").forEach((n) => n.remove());
+    }
   }
 
   // Changes for both public and presenter version
+  // li having a code inside, should not have a bullet point (see also styles.css)
+  document.querySelectorAll("li > pre.code-wrapper").forEach((n) => {
+    n.parentNode.classList.add("no-icon");
+  });
+  document.querySelectorAll("li > img").forEach((n) => {
+    n.parentNode.classList.add("no-icon");
+  });
 
   // open all externals link in new tab
   document.querySelectorAll('a:not([href^="#"])').forEach((i) => {
