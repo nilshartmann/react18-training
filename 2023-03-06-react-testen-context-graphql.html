@@ -2203,16 +2203,15 @@ const mock: MockedResponse<PostListPageQuery> = {
         <!-- ====                                                                      ==== -->
         <!-- ============================================================================== -->
         <section id="t-context">
-          <h3>React Context API</h3>
-          <p class="fragment">👉 Anwendungshierarchie mit Props in Miro</p>
-          <p class="fragment">
-            👉 <code>2021_12_06_ts_react/03_component_composition/01_form_example</code>
-          </p>
+          <h2>React Context API</h2>
+          <p>Kein Statemanagement, aber häufig zusammen erwähnt</p>
+          <p>"Dependency Injection"</p>
+          <p>Überblick: 👉 Anwendungshierachie mit State und Props (Miro)</p>
         </section>
 
         <!-- ============================================================================= -->
         <section>
-          <h3>Globaler Zustand</h3>
+          <h3>Hintergrund: Globaler Zustand</h3>
           <ul>
             <li>
               Man kann Zustand in <b>lokalen Zustand</b> und <b>globalen Zustand</b> einteilen
@@ -2228,6 +2227,256 @@ const mock: MockedResponse<PostListPageQuery> = {
             <li>Die Übgergänge sind fließend, es gibt keine fixe Definition</li>
             <li>Beispiele für globalen Zustand: angemeldeter Benutzer, Theme</li>
           </ul>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Context in der Praxis
+
+* 👉 `material/state/01-context`
+          </textarea>
+        </section>
+
+        <section>
+          <h2>Im Detail: Context API</h2>
+          <p>Beispiel: <code>blog-example/steps/10-context</code></p>
+        </section>
+
+        <section>
+          <h2>Context...</h2>
+          <p>
+            <em
+              >erlaubt das Durchreichen von Informationen ohne explizites angeben als Properties</em
+            >
+          </p>
+
+          <ul>
+            <li>funktioniert nur innerhalb einer Hierarchie-Ebene</li>
+            <li>es können beliebg viele (fachliche) Context definiert werden</li>
+            <li>besteht aus <code>Provider</code> und <code>Consumer</code></li>
+            <li>
+              <a href="https://reactjs.org/docs/context.html" target="_blank">Doku</a>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Context Factory</h2>
+          <ul>
+            <li>
+              <em>erzeugt ein Objekt, mit <b>zwei Komponenten</b></em>
+            </li>
+            <li>
+              <code>Provider</code>, stellt Objekt mit Key-Value-Paaren zur Verfügung (der
+              Context-"Value")
+            </li>
+            <li>
+              <code>Consumer</code> wird in eigener Komponente verwendet, um auf einen Context
+              zuzugreifen ("versteckt" durch useContext Hook)
+            </li>
+            <li>
+              <pre><code class="line-numbers" data-leftpad>
+import react from "React";
+
+const AuthContext = React.createContext();
+
+// erzeugt:
+// AuthContext.Provider 
+// AuthContext.Consumer (mit Hooks API überflüssig)
+
+export AuthContext;
+                      </code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Context Factory mit TypeScript
+
+* Der `createContext` kann ein Typ-Parameter übergeben werden, der den Context-Wert beschreibt
+* `createContext` benötigt dann einen Default-Wert, der diesem Typen entspricht
+  * Der Default-Wert wird in der Anwendung in der Regel nicht verwendet
+  * Wird nur verwendet, wenn (fälschlich) auf den Kontext zugegriffen wird, ohne dass es einen Provider
+    gibt
+* ```typescript
+  type IAuthContext = { 
+    username: string | null;
+    onLogin(newUser: string): void;
+    onLogout(): void;
+  }
+
+  const AuthContext = React.createContext<IAuthContext>({
+    // Dummy-Implementierung vom Default Context
+    username: null,
+    onLogin() {},
+    onLogout() {}
+  });
+
+  export AuthContext;
+  ```
+
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Context Provider
+
+* _Eine React-Komponente, die einen Context zur Verfügung stellt_
+  * wird innerhalb einer eigenen Komponente eingebunden und zurückgeliefert
+  * Nimmt ein Objekt ("Context") mit beliebigen Werten entgegen (`value`-Property)
+  * Alle Einträge des Objektes sind für die Konsumenten verfügbar
+* ```typescript
+  const AuthContext = React.createContext&lt;IAuthContext>(/*...*/); // wie gesehen
+
+  type AuthProviderProps = {
+    children: React.ReactElement
+  }
+
+  export function AuthProvider(props: AuthProviderProps) {
+      const [ currentUser, setCurrentUser ] = React.useState(null);
+
+      const contextValue: IAuthContext = {
+        // the current user
+        currentUser,
+
+        // function to set new user
+        function onLogin(name) { setCurrentUser(name) },
+        function onLogout() { setCurrentUser(null) }
+      };
+
+      return &lt;AuthContext.Provider value={contextValue}>
+        {props.children}
+      &lt;/AuthContext.Provider>;
+  }             
+  ```
+  </textarea
+          >
+        </section>
+
+        <section>
+          <h2>useContext-Hook</h2>
+          <p><em>Zugriff auf die Werte aus dem Context</em></p>
+          <p>
+            In allen Komponenten unterhalb der Provider Komponente, kann mit
+            <code>useContext</code> auf den Kontext zugegriffen werden
+          </p>
+
+          <pre><code class="javascript">
+import { AuthContext } from "auth-context";
+
+function UserBadge() {
+  const { currentUser } = React.useContext(AuthContext);
+
+  return currentUser  ? &lt;h1>Welcome, {currentUser}&lt;h1> : null;
+}            
+          </code></pre>
+
+          <p>Aufrufen einer Funktion aus dem Context</p>
+          <p>Ändert im Context den Zustand der Provider-Komponente</p>
+          <p>Alle Konsumer werden neu gerendert und können den neuen Wert verwenden</p>
+          <pre><code class="javascript">
+function UserBadge() {
+  const { currentUser, logout } = React.useContext(AuthContext);
+
+  return currentUser  ? 
+    &lt;>&lt;h1>Welcome, {currentUser}&lt;h1>&lt;button onClick={logut}>Logout&lt;/button>&lt;/> 
+    : null;
+}                
+          </code></pre>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Zugriff mit Custom Hook
+
+* Übliches Pattern: für den Zugriff auf den Context wird ein eigener Hook zur Verfügung gestellt
+* ```typescript
+  export function useAuthContext(): IAuthContext {
+    const authContext = useContext(AuthContext);
+
+    return authContext;
+  }            
+  ```
+* ```typescript
+  import { useAuthContext } from "auth-context";
+  
+  export default function UserBadge() {
+    const authContext = useAuthContext();
+  }
+  ```  
+
+  * "Versteckt" den Context (Implementierungsdetail!) vor der Anwendung
+  * Sieht aus wie fachliche API
+  * Kann (vergleichsweise einfach) gemockt werden
+---
+###  Zugriff mit Custom Hook in TypeScript
+* Beim Erzeugen des Context muss man (in TypeScript) einen Default Context angeben:
+* ```typescript
+  const defaultContext: IAuthContext = {
+      // Dummy-Implementierung vom Default Context
+      username: null,
+      onLogin() {},
+      onLogout() {}
+  }
+  const AuthContext = React.createContext<IAuthContext>(defaultContext);
+  ```
+* Das ist nicht immer (sinnvoll) möglich, so dass man auch `ContextType | null` verwenden könnte:
+* ```typescript
+  const AuthContext = React.createContext<IAuthContext | null>(null);
+  ```
+* Nun liefert `useContext` aber immer auch `null` zurück, so dass die Verwendung jedes Mal überprüft werden muss:
+* ```typescript
+  function UserBadge() {
+    const { username } = useContext(AuthContext); // ERR: Property 'username' does not exist on type 'IAuthContext | null'
+  }
+  ```
+ 
+* Mit dem Custom Hook kann eine Plausibilitätsprüfung durchgeführt werden und ggf. ein sprechender Fehler erzeugt werden:
+* ```typescript
+  
+  export function useAuthContext(): IAuthContext {
+    const authContext = useContext(AuthContext);
+
+    if (!authContext.username) {
+      throw new Error("AuthContext not correctly initialized. Please wrap your application in a AuthContextProvider component");
+    }
+
+    return authContext;
+  }            
+  ```  
+
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Übung: Ein Auth-Context für die Blog-Anwendung 
+
+* _Baue einen Kontext, der den aktuellen User hält und diesen anzeigt_
+* Schritte:
+  * In `blog-example/backend-rest` bitte `npm start`ausführen  
+  * Arbeite bitte in `blog-example/workspace-typescript-app`
+    * ggf. `npm install` hier ausführen und dann `npm start` (alten Workspace beenden)
+  * Du findest im Workspace TODOs, am Besten bearbeitest Du die Dateien in folgender Reihenfolge:
+    1. `AuthContext.tsx` (Kontext-Provider-Komponente und -Hook)
+    2. `App.tsx` (Context zur Verfügung stellen)
+    3. `CurrentUser.tsx`  (Login-/Logout-Button bauen)
+    4. `PostEditor.tsx`   (Aktuellen Benutzer anzeigen)
+* Mögliche Lösung findest Du in `steps/10-context`
+* Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Context für "halb-globalen" Zustand
+
+* Miro
+* Beispiel: Formular
+  </textarea
+          >
         </section>
 
         <!-- ============================================================================= -->
