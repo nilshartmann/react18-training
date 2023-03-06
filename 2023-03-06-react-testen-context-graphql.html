@@ -36,7 +36,18 @@
               <a href="https://twitter.com/nilshartmann" target="_blank">@nilshartmann</a>
             </span>
           </h4>
-
+          <p style="margin-top: 4rem"></p>
+          <div>
+            <h3><span class="transparent-bg">Repository</span></h3>
+            <p>
+              <span class="transparent-bg"
+                >Remote:
+                <a href="https://github.com/nilshartmann/react18-training"
+                  >https://github.com/nilshartmann/react18-trainingl</a
+                ></span
+              >
+            </p>
+          </div>
           <p style="margin-top: 4rem"></p>
           <div>
             <h3><span class="transparent-bg">Slides</span></h3>
@@ -117,8 +128,7 @@
         <section data-markdown>
           <textarea data-template>
 ### Vorbereitung
-* Wir machen alle Übungen im `blog-example/workspace-typescript`-Verzeichnis.
-
+* Das Git-Repository https://github.com/nilshartmann/react18-training klonen
 * Zunächst das "Backend" starten, in `blog-example/backend-rest`:
   * ```bash
     cd blog-example/backend-rest
@@ -126,14 +136,15 @@
     npm install
     npm start
     ```
-* In `blog-example/workspace-typescript` die Dateien `PostEditor.js` und `PostList.js` **löschen**!
+* Wir machen alle Übungen im `blog-example/workspace-typescript`-Verzeichnis.
+* In `blog-example/workspace-typescript/src` die Dateien `PostEditor.js` und `PostList.js` **löschen**!
 * Dann kopierst Du aus dem Verzeichnis <code>blog-example/steps/5-typescript/src</code> die beiden Dateien:
   * `PostEditor.tsx`
   * `PostList.tsx`
   * in den `src`-Ordner in deinem Workspace (`workspace-typescript/src`)
 * Dann bitte `npm install` ausführen und die Anwendung starten:
   * ```
-    cd blog-example/backend-rest
+    cd blog-example/workspace-typescript
 
     npm install
     npm start
@@ -287,6 +298,7 @@ expect(aMockFn.mock.calls[0][1]).toBe("world");
 * Schreibe für diese Funktion einen Test in `workspace-typescript/__tests__/format-persons.test.ts`
 * Du kannst den Test mit `npm test -- format-person` ausführen
 * Hinweise dazu findest Du in `format-persons.test.ts`
+* Eine mögliche Lösung findest Du in `blog-example/steps/6-tests/__tests__`
 * Wenn Du fertig bist, bitte virtuell die Hand haben 🙋🏻‍♀️  
 
         </textarea
