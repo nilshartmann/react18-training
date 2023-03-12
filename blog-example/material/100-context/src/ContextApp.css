@@ -1,0 +1,7 @@
+.Flex {
+  display: flex;
+}
+
+.Flex > * {
+  flex: 1 1 0;
+}
