@@ -2245,7 +2245,7 @@ const mock: MockedResponse<PostListPageQuery> = {
         <section data-markdown>
           <textarea data-template>
 ## Context in der Praxis
-
+* <!-- .element: class="todo" --> muss noch gucken, wo ich das mache
 * 👉 `material/state/01-context`
           </textarea>
         </section>
@@ -2459,36 +2459,351 @@ function UserBadge() {
   }            
   ```  
 
-          </textarea>
-        </section>
+---
+### Ein "halbglobaler" Context
+<!-- .slide: class="left" -->
+* Ein Formular hat eine beliebige Menge von Feldern und Button
+* Kann man da mit Context was machen? 🤔
 
-        <section data-markdown>
-          <textarea data-template>
-## Übung: Ein Auth-Context für die Blog-Anwendung 
+* ```typescript
+  
+    type FormState = Record<string, string>;
 
-* _Baue einen Kontext, der den aktuellen User hält und diesen anzeigt_
+    function PersonForm() {
+      const [formState, setFormState] = React.useState<FormState>({});
+
+      function onClearForm() {
+        setFormState({});
+      }
+
+      function onFieldChange(fieldname: string, value: string) {
+        setFormState({
+          ...formState,
+          [fieldname]: value
+        });
+      }
+
+      return (
+        <Container title="PersonForm">
+          <FieldSet>
+            <Input name="firstname" formState={formState} onFieldChange={onFieldChange} />
+            <Input name="lastname" formState={formState} onFieldChange={onFieldChange} />
+          </FieldSet>
+          <ClearButton onClearForm={onClearForm} />
+        </Container>
+      );
+    }
+
+  ```
+
+---
+## Übung: Ein Formular-Context
+
+* *Baue einen Kontext, der Daten eines Formulars hält und diese verändern kann*
 * Schritte:
-  * In `blog-example/backend-rest` bitte `npm start`ausführen  
-  * Arbeite bitte in `blog-example/workspace-typescript-app`
-    * ggf. `npm install` hier ausführen und dann `npm start` (alten Workspace beenden)
-  * Du findest im Workspace TODOs, am Besten bearbeitest Du die Dateien in folgender Reihenfolge:
-    1. `AuthContext.tsx` (Kontext-Provider-Komponente und -Hook)
-    2. `App.tsx` (Context zur Verfügung stellen)
-    3. `CurrentUser.tsx`  (Login-/Logout-Button bauen)
-    4. `PostEditor.tsx`   (Aktuellen Benutzer anzeigen)
-* Mögliche Lösung findest Du in `steps/10-context`
-* Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️
-          </textarea>
-        </section>
+  * In `context-example/context-workspace` bitte Abhängigkeiten installieren und npm starten:
+  * ```bash
+    cd context-example/context-workspace
 
-        <section data-markdown>
-          <textarea data-template>
-## Context für "halb-globalen" Zustand
+    npm install
+    npm start 
+    ```
+  
+* In der `App.tsx`-Datei ist ein Formular implementiert (ohne Kontext).
+* Die Formulardaten und Callback-Funktionen sollen in einen Kontext.
+* Nähere Informationen findest Du direkt in der Datei.
+* Mögliche Lösung findest Du in `steps/10_PersonForm_mit_context.tsx`
+* Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️
 
-* Miro
-* Beispiel: Formular
-  </textarea
+---
+### Formular-Beispiel: was gäbe es für eine Alternative?
+
+* Wenn wir _keinen_ Kontext haben wollen, aber ein wiederverwendbares Formular "Framework"? 🤔
+
+* Man könnte `formState` und die Funktionen zum Ändern in einen Custom Hook packen
+* ```typescript
+    function useForm() {
+      const [formState, setFormState] = React.useState<FormState>({});
+
+      function onClearForm() {
+        setFormState({});
+      }
+
+      function onFieldChange(fieldname: string, value: string) {
+        setFormState({
+          ...formState,
+          [fieldname]: value
+        });
+      }
+
+      return { formState, onClearForm, onFieldChange };
+    }
+
+    function PersonForm() {
+      const { formState, setFormState, onFieldChange } = useForm();
+
+      return (
+        <div>
+          <FieldSet>
+            <Input name="firstname" formState={formState} onFieldChange={onFieldChange} />
+            <Input name="lastname" formState={formState} onFieldChange={onFieldChange} />
+          </FieldSet>
+          <ClearButton onClearForm={onClearForm} />
+        </div>
+      );
+    }  
+  ```
+* Vorteile? Nachteile? 🤔
+
+---
+### Renderverhalten von Context
+
+* <!-- .element: class="demo" --> Eine Komponente in den Kontext hinzufügen
+* <!-- .element: class="demo" --> Was passiert und warum? 🤔
+
+---
+### Renderverhalten von Context
+* Die `children` werden fertig übergeben
+* Deren Renderzyklus wird von der Komponente bestimmt, die die `children` erzeugt
+  * Das ist hier der Aufrufer von `Form`
+
+* ```typescript
+    function Form({ children }: FormProps) {
+      // ...
+      return (
+        <Container title="Form">
+          <FormContext.Provider
+            value={ /* ... */ }
           >
+            {children}
+          </FormContext.Provider>
+        </Container>
+      );
+    }  
+  ```
+---
+### Wie können wir das Rendern von Konsumenten unterdrücken?
+* Der `Clear`-Button wird immer gerendert, auch wenn der sich gar nicht ändert 😢
+* Woran liegt das?
+* Was müssen wir tun, damit der nicht gerendert wird?
+  * Wenn sich _irgendetwas_ im Kontext ändert, werden _alle_ Konsumenten neu gerendert
+    * Auch wenn sie auf Teile des Kontextes zugreifen, der sich nicht verändert hat.
+  * Um den `Clear`-Button vom Rendern auszuschliessen, muss also die `onClearForm`-Funktion
+    aus dem `FormContext`
+  * Dazu wird ein neuer Context erzeugt. Je nachdem kann eine Komponente dann den einen oder
+    anderen (oder beide) konsumieren.
+---
+### Rendern optimieren
+<!-- .slide: class="left" -->
+* Beispiel: zwei Kontexte für das Formular
+* ```typescript
+    // FormContext wie bisher, aber ohne onFieldChange und ohne onClearForm
+
+    // Neuer Context:
+    type IFormChangeContext = {
+      onClearForm(): void;
+      onFieldChange(fieldname: string, value: string): void;
+    };
+
+    const FormChangeContext = createContext<IFormChangeContext | null>(null);
+  ```
+* ```typescript
+    function Form({ children }: FormProps) {
+      // state + Callback-Funktionen wie bisher
+
+      return (
+        <FormContext.Provider
+          value={{
+            formState
+          }}
+        >
+          <FormChangeContext.Provider value={{ onClearForm, onFieldChange }}>
+            {children}
+          </FormChangeContext.Provider>
+        </FormContext.Provider>
+      );
+    }  
+  ```
+* Geht das?  
+* <!-- .element: class="demo" --> Prüfen!    
+---
+### Memoisieren von Komponenten
+* Wenn eine Komponente gerendert wird, werden grundsätzlich _alle_ Unterkomponenten gerendert
+* Das bedeutet im gezeigten Fall:
+  * beim Rendern von `Form` wird *immer* auch `FormContext.Provider` gerendert und *immer* auch `FormChangeContext.Provider`.
+  * Wir haben also noch nichts gewonnen.
+  * Oder? 🤔
+    * Eventuell haben wir immerhin eine sauberere Architektur durch Trennung in "lesenden" und "modifizierenden" Context
+---
+### Memoisieren von Komponenten  
+* Man kann das Rendern von Komponenten durch "Memoiseren" (eine Art Caching) unterdrücken
+* Komponenten werden dann nur gerendert, wenn sich ihre Properties verändert haben.
+* Variante 1 mit `React.memo`
+* ```typescript
+  const FormChangeContextProvider = React.memo( 
+    function FormChangeContextProvider({ children, onClearForm, onFieldChange }) {
+      return  <FormChangeContext.Provider value={{ onClearForm, onFieldChange }}>
+        {children}
+      </FormChangeContext.Provider>
+    }
+  );
+  ```
+* Für den Verwender ist das transparent:  
+* ```typescript
+  function Form({ children }: FormProps) {
+    // ...
+    return  <FormContext.Provider value={/* ... */}>
+        <FormChangeContextProvider 
+          onClearForm={onClearForm}
+          onFieldChange={onFieldChange}
+          >{children}</FormChangeContextProvider/>
+      </FormContext.Provider>
+  }
+  ```
+* Diese Komponente wird nun neugerendert, wenn sich eines der Properties ändert (`children`, `onClearForm` und/oder `onFieldChange`)
+* Reicht das? 🤔
+---
+### Memoisieren von Komponenten
+* Eine Komponente ist eine Funktion
+* Die Funktion wird bei jedem Rendern neu ausgeführt
+* Alle Dinge, die darin erzeugt werden, sind bei jedem rendern "neu" (neue Referenz)!
+* ```typescript
+  function Form() {
+    const onClearForm = () => setFormState({});
+
+    return ...;
+  }
+  ```
+* `onClearForm` ist bei jedem Rendern von `Form` "neu"
+* Dasselbe gilt für Objekte
+* ```typescript
+  function Form() {
+    const emptyArray = [];
+  ```
+* `emptyArray` ist bei jedem Rendern von `Form` "neu"
+* Wir müssen also dafür sorgen, dass diese Werte und Funktionen "stabil" über mehrere Renderzyklen sind
+---
+### useMemo und useCallback
+* Um Werte über mehrere Renderzyklen zu erhalten, kann man `useMemo` (Werte) und `useCallback` verwenden
+  * (`useCallback` ist eine Vereinfachung von `useMemo` für Funktionen)
+* Die Verwendung von beiden erinnert an `useEffect` 😱:
+  * Es gibt eine Callback-Funktion (die liefert den Wert bzw. die Funktion zurück)
+  * Es gibt ein Dependency-Array, das bestimmt, wann der Wert/Funktion ungültig ist.
+  * Das Dependency-Array _muss_ angegeben werden - im Gegensatz zu `useEffect`. Warum?
+* ```typescript
+  function Form({title, subtitle}) {
+    // Funktion wird nur einmal erzeugt
+    const onClearForm = useCallback( () => setFormState({}), []);
+
+    // Array wird immer neu erzeugt, wenn title oder subtitle sich ändert
+    const titleArray = useMemo( () => { return [title, subtitle] }, [title, subtitle] );
+  }
+  ```
+* Damit haben wir nun unser Problem gelöst?
+---
+### useMemo und useCallback: stale Values
+* Was passiert denn hier:
+* ```typescript
+  function Form() {
+    const [formState, setFormState] = React.useState({});
+
+    const onFieldChange = useCallback(function(fieldname, value) {
+      setFormState({
+        ...formState,
+        [fieldname]: value
+      });
+    }, []);
+  }
+  ```
+* Der Wert von `formState` wird beim erstmaligen rendern innerhalb der Callback-Funktion "eingefroren" 
+* Werte in einer Funktion (Closure) haben immer den Wert von dem Zeitpunkt, zu dem die Funktion ausgeführt wurde
+* Das fällt häufig gar nicht auf
+* Hier schon, denn formState verbleibt immer auf dem ersten Wert 😢
+* Was können wir tun?
+
+---
+### useMemo und useCallback: stale Values
+* Genau wie bei `useEffect` können wir bei `useMemo` und `useCallback` bestimmen, wann der gecachte Wert ungültig ist
+* Im gezeigten Beispiel wäre das, wenn `formState` sich ändert:
+* ```typescript
+    function Form() {
+      const [formState, setFormState] = React.useState({});
+
+      const onFieldChange = useCallback(function(fieldname, value) {
+        setFormState({
+          ...formState,
+          [fieldname]: value
+        })
+      }, [ formState ]);
+    } 
+  ```
+* Ist das gut?
+  * Es kommt drauf an!
+---
+### useMemo und useCallback: stale Values
+* Grundsätzlich kann es richtig sein, bei Änderung von Werten auch neue Werte und Funktionen zu erzeugen
+* Wir wollen ja nicht "für immer" cachen, sondern nur so lange "wie es geht"
+* Im gezeigten Fall würde das für die Form bedeuten:
+  * Immer wenn sich der State ändert, ändert sich `onFieldChange`
+  * Dadurch wird dann auch `FormChangeContextProvider` neu gerendert
+  * Das bedeutet, wir haben nichts gewonnen: wenn sich der Zustand ändert, wir dauch der Clear-Button neugerendert
+---
+### Callback-Funktion von useState
+* Im konkreten Fall können wir weiter optimieren, in dem wir beim Setzen des Zustandes eine Callback-Funktion angeben  
+* Die Callback-Funktion wird von React aufgerufen und ihr wird der _aktuellste_ Werte des States übergeben
+* Die Callback-Funktion liefert dann den neuen State zurück
+* Damit haben wir keinen Wert mehr in der Closure, der "stale" sein könnte, und es reicht, wenn wir die Funktion
+  einmal erzeugen (leeres Dependency Array)
+* ```typescript
+  function Form() {
+    const [formState, setFormState] = React.useState({});
+
+    const onFieldChange = useCallback(function(fieldname, value) {
+      setFormState( () => return {
+        ...formState,
+        [fieldname]: value
+      })
+    }, [ ]);
+  }   
+  ```
+---
+### Memoisieren: memo, useCallback und useMemo
+<!-- .slide: class="left" -->
+* Sollte man das immer und überall machen?
+* Alles mit useMemo und useCallback umschliessen?
+* ```typescript
+  function Greet({name}) {
+    const greeting = useMemo(`Hello, ${name}!`, [name]); // 🤔
+
+    return <h1>{greeting}</h1>
+  }  
+
+  ```
+* Was spricht dafür? Was spricht dagegen? 🤔
+---
+### Übung: Memoisieren von Komponenten
+* Teile den `FormContext` in zwei Teile:
+  * `FormContext`: die beiden Callback-Funktionen entfernen
+  * `FormChangeContext`: hierein die beiden Funktionen zum Modifizieren des Zustands
+* Einzige Änderung im Verhalten: die `ClearButton`-Komponente soll den neuen Kontext verwenden (und sich _nicht_ neu rendern, wenn das Formular ausgefüllt wird)
+* Kannst Du statt der gesehenen `FormChangeContextProvider` eine Lösung mit `React.useMemo` statt `React.memo` bauen? 😳
+* Wenn Du vorhin nicht fertig geworden bist, oder deine Lösung nicht funktioniert, kopiere `steps/10_PersonForm_mit_context.tsx` in deine `App.tsx`-Datei als Basis für die Übung
+* Eine fertige Lösung findest Du in `steps/20_PersonForm_mit_context_und_memo.tsx`
+* Wenn Du fertig bist, bitte die Hand heben ✋
+
+---
+### Context vs Apollo Reactive Vars             
+* Context: Standard React API
+* Context: muss nicht global sein
+* Reactive Vars können als Werte im Apollo Cache verwendet werden (`read`-Funktion)
+* Reactive Vars "leben" außerhalb der Komponenten
+  * Erzeugt als "normale" Variablen
+  * Funktionen zum modifizieren "normale" Funktionen
+* Identisch: wenn sich "irgendwas" in der Variable / Context ändert, werden alle Konsumenten neu gerendert
+  * Bei Reactive Vars sind die Funktionen zum Modifizieren außerhalb, d.h. potentiell weniger Komponenten betroffen  
+          
+
+          </textarea>
         </section>
 
         <!-- ============================================================================= -->
