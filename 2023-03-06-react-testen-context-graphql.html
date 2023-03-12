@@ -1009,7 +1009,7 @@ fetchMock.mockResponse(JSON.stringify(mockResponse), { status: 201 });
   ```
 
 ---
-<!-- .slide: data-hidden="true" -->
+<!-- .slide: data-visibility="hidden" -->
 ### Subscriptions
 
 * Um mit Subscriptions zu arbeiten, braucht man einen eigenen `Link`
@@ -1025,7 +1025,7 @@ fetchMock.mockResponse(JSON.stringify(mockResponse), { status: 201 });
   ```
 
 ---
-<!-- .slide: data-hidden="true" -->
+<!-- .slide: data-visibility="hidden" -->
 ### Subscriptions
 
 * Mit einem _Splitter_ kann ausgewählt werden, mit welchem `Link` ein Request an den Server gesendet werden soll
@@ -1048,7 +1048,7 @@ fetchMock.mockResponse(JSON.stringify(mockResponse), { status: 201 });
   ```
 
 ---
-<!-- .slide: data-hidden="true" -->
+<!-- .slide: data-visibility="hidden" -->
 ### Links
 
 * Die Links werden beim erzeugen des Apollo Clients aneinander gehängt
@@ -1725,7 +1725,7 @@ const mock: MockedResponse<PostListPageQuery> = {
 * Eine mögliche Lösung findest Du in `steps/30-graphql-with-typescript/src/__tests__`
 * Wenn Du fertig bist, bitte Hand heben! 🙋🏻‍♀️
             
----            
+---
 ### Wiederholung:
 ## Der Apollo Cache
 
@@ -1749,7 +1749,7 @@ const mock: MockedResponse<PostListPageQuery> = {
   * Sollen sie dort überhaupt eingefügt werden?
 
 ---
-<!-- .slide: data-hidden="true" -->
+<!-- .slide: data-visibility="hidden" -->
 ### Aktualisieren von Listen
 * Grundsätzlich können Listen mit verschiedenen Strategien aktualisiert werden:
   * **update**: Nach einer Mutation, die ein neues Objekte erzeugt (oder löscht), soll das Objekt
@@ -1861,7 +1861,7 @@ const mock: MockedResponse<PostListPageQuery> = {
 
 ---
 ### Aktualisieren von Listen: Pagination mit fetchMore
-<!-- .slide: data-hidden="true" -->
+<!-- .slide: data-visibility="hidden" -->
 * Anwendungsfall:
   * es gibt eine Liste, durch die durchgeblättert werden kann
   * die jeweils neu geladenen Objekte sollen der Liste auch im Cache hinzugefügt werden
@@ -1893,7 +1893,7 @@ const mock: MockedResponse<PostListPageQuery> = {
 * <!-- .element: class="demo" --> Cache im DevTools mit fetchMore
 ---
 ### Type Policy
-<!-- .slide: data-hidden="true" -->
+<!-- .slide: data-visibility="hidden" -->
 * Mit einer **Type Policy** muss die Aktualisierung des Caches für ein Feld angepasst werden
   * Achtung 1: Das ist - je nach Schema, Query und Fachlichkeit - nicht trivial!
   * Achtung 2: TypeScript-Support an der Stelle nur eingeschränkt!
@@ -1925,7 +1925,7 @@ const mock: MockedResponse<PostListPageQuery> = {
 
 ---
 ### Ausblick: Aktualisieren des Caches mit Subscriptions
-<!-- .slide: data-hidden="true" -->
+<!-- .slide: data-visibility="hidden" -->
 <!-- .slide: class="left" -->
 * Bei den bisher gesehen Aktualisierungen, hat der Client die Aktualisierung
   ausgelöst.
@@ -1936,7 +1936,7 @@ const mock: MockedResponse<PostListPageQuery> = {
 * Beispiel: onNewComment Subscription
 ---
 ### Ausblick: Aktualisieren des Caches mit Subscriptions
-<!-- .slide: data-hidden="true" -->
+<!-- .slide: data-visibility="hidden" -->
 <!-- .slide: class="left" -->
 * `useQuery` stellt dazu die Funktion `subscribeToMore` zur Verfügung
 * Dieser Funktion wird übergeben:
@@ -1951,7 +1951,7 @@ const mock: MockedResponse<PostListPageQuery> = {
 * <!-- .element: class="demo" --> Cache Verhalten in Apollo Dev Tools
 ---
 ### Ausblick: Aktualisieren von Listen mit Subscriptions
-<!-- .slide: data-hidden="true" -->
+<!-- .slide: data-visibility="hidden" -->
 <!-- .slide: class="left" -->
 
 * ```javascript
@@ -2339,6 +2339,7 @@ export AuthContext;
 * _Eine React-Komponente, die einen Context zur Verfügung stellt_
   * wird innerhalb einer eigenen Komponente eingebunden und zurückgeliefert
   * Nimmt ein Objekt ("Context") mit beliebigen Werten entgegen (`value`-Property)
+  * Woher die Werte kommen (State, Props, anderer Kontext, ...) spielt keine Rolle!
   * Alle Einträge des Objektes sind für die Konsumenten verfügbar
 * ```typescript
   const AuthContext = React.createContext&lt;IAuthContext>(/*...*/); // wie gesehen
@@ -2429,9 +2430,7 @@ function UserBadge() {
 * ```typescript
   const defaultContext: IAuthContext = {
       // Dummy-Implementierung vom Default Context
-      username: null,
-      onLogin() {},
-      onLogout() {}
+      username: null, onLogin() {}
   }
   const AuthContext = React.createContext<IAuthContext>(defaultContext);
   ```
@@ -2452,7 +2451,7 @@ function UserBadge() {
   export function useAuthContext(): IAuthContext {
     const authContext = useContext(AuthContext);
 
-    if (!authContext.username) {
+    if (authContext === null) {
       throw new Error("AuthContext not correctly initialized. Please wrap your application in a AuthContextProvider component");
     }
 
