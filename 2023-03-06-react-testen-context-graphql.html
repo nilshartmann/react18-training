@@ -2242,17 +2242,20 @@ const mock: MockedResponse<PostListPageQuery> = {
           </ul>
         </section>
 
-        <section data-markdown>
-          <textarea data-template>
-## Context in der Praxis
-* <!-- .element: class="todo" --> muss noch gucken, wo ich das mache
-* 👉 `material/state/01-context`
-          </textarea>
-        </section>
-
         <section>
           <h2>Im Detail: Context API</h2>
-          <p>Beispiel: <code>blog-example/steps/10-context</code></p>
+          <p>Beispiel: <code>context-example/context-workspace</code></p>
+          <p>
+            In <code>Container.tsx</code> Anzeige der Border einschalten (<code
+              >hideBorder = false</code
+            >)
+          </p>
+          <p><code>CounterApp</code> rendern!</p>
+          <p>
+            In <code>Container.tsx</code> Anzeige der Renderings einschalten (<code
+              >showRenderings = true</code
+            >)
+          </p>
         </section>
 
         <section>
@@ -2558,7 +2561,7 @@ function UserBadge() {
 ---
 ### Renderverhalten von Context
 
-* <!-- .element: class="demo" --> Eine Komponente in den Kontext hinzufügen
+* <!-- .element: class="demo" --> Eine Komponente in den Kontext (`CounterContext`) hinzufügen
 * <!-- .element: class="demo" --> Was passiert und warum? 🤔
 
 ---
@@ -2581,6 +2584,11 @@ function UserBadge() {
       );
     }  
   ```
+---
+### Renderverhalten von Context #2
+* Unterdrücken von erneutem Rendern
+* <!-- .element: class="demo" --> `CounterDispay` aufteilen in lesen und schreiben
+
 ---
 ### Wie können wir das Rendern von Konsumenten unterdrücken?
 * Der `Clear`-Button wird immer gerendert, auch wenn der sich gar nicht ändert 😢
@@ -2801,6 +2809,7 @@ function UserBadge() {
   * Funktionen zum modifizieren "normale" Funktionen
 * Identisch: wenn sich "irgendwas" in der Variable / Context ändert, werden alle Konsumenten neu gerendert
   * Bei Reactive Vars sind die Funktionen zum Modifizieren außerhalb, d.h. potentiell weniger Komponenten betroffen  
+* Beispiel: `context-example/reactive-vars-vs-context`  
           
 
           </textarea>

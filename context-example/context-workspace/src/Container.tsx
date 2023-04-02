@@ -14,6 +14,10 @@ type ContainerProps = {
  */
 const showRenderings = false;
 
+/**
+ */
+const hideBorder = true;
+
 const renderMap: Record<string, number> = {};
 
 export default function Container({ children, title, color = "black" }: ContainerProps) {
@@ -22,24 +26,23 @@ export default function Container({ children, title, color = "black" }: Containe
 
   console.log(`Render '${title}'`, renderCount);
 
-  if (!showRenderings) {
+  if (!showRenderings && hideBorder) {
     return <div>{children}</div>;
   }
 
   const style: React.CSSProperties = {
     padding: "0.5rem",
     margin: "0.5rem",
-    border: `1px solid ${color}`
+    border: `1px dotted ${color}`
   };
-
   return (
     <div style={style}>
-      <div>
-        <b>
-          {title} (Renderings: {renderCount})
+      <div style={{ marginBottom: "1rem" }}>
+        <b style={{ color: "gray" }}>
+          {title} {showRenderings && <>(Renderings: {renderCount})</>}
         </b>
-        {children}
       </div>
+      <div style={{ marginLeft: "0.5rem" }}>{children}</div>
     </div>
   );
 }
