@@ -1730,7 +1730,7 @@ const mock: MockedResponse<PostListPageQuery> = {
 ## Der Apollo Cache
 
 
-* <!-- .element: class="demo" --> Apollo Dev Tools mit fertiger Anwendung
+* <!-- .element: class="demo" --> Apollo Dev Tools mit fertiger Anwendung (`35-graphql-advanced`)
 * <!-- .element: class="demo" --> Einzelne Artikel anzeigen
 * <!-- .element: class="demo" --> "Like" vergeben
 
@@ -1763,6 +1763,7 @@ const mock: MockedResponse<PostListPageQuery> = {
 * Du kannst den Query auslesen (mit einem GraphQL Query!)
 * Du kannst den Cache direkt modifizieren, zum Beispiel Objekte hinzufügen und löschen
 * 🫣 Ich bin kein großer Freund der Cache API, finde sie sehr verwirrend und übersichtlich und versuche deren Benutzung zu vermeiden, wenn es irgendwie geht
+* <!-- .element: class="demo" --> Implementieren in `PostEditorPage` (`workspace-graphql-advanced`)
 
 ---
 
@@ -1830,7 +1831,7 @@ const mock: MockedResponse<PostListPageQuery> = {
 ---
 ### Cache nach einer Mutation aktualisieren
 <!-- .slide: class="left" -->
-* Beispiel mit TypeScript und Prüfungen
+* Vollständiges Beispiel mit TypeScript und Prüfungen
 * ```javascript
   const ReadPostsFromCache = gql`{ posts { id } }`;
 
@@ -1997,7 +1998,6 @@ const mock: MockedResponse<PostListPageQuery> = {
 ---
 ### Übung: Den Cache manuell aktualisieren
 * Implementiere die `update`-Funktion für die `addPost`-Mutation
-* Versuche dabei, für `readQuery` einen TypeScript-Typen anzugeben
 * Beschreibung findest Du in `workspace-graphql-advanced/src/PostEditorPage.tsx`
 
 ---
@@ -2008,6 +2008,7 @@ const mock: MockedResponse<PostListPageQuery> = {
   * was beim Lesen eines Feldes passieren soll
   * was beim Schreiben des Feldes in den Cache passieren soll
   * Mit `keyargs` könnt ihr Argumente eines Feldes angeben, die nicht Bestandteil des Cache-Keys sein sollen
+* <!-- .element: class="demo" --> `workspace-graphql-advanced/index.tsx`  
 
 ---
 
@@ -2127,15 +2128,16 @@ const mock: MockedResponse<PostListPageQuery> = {
         schema: ./client-schema.graphql
       ...
     ```
+
+---
+## Reactive Variables
+    
 ---
 ### Reactive Variables
 * [Reactive Variables](https://www.apollographql.com/docs/react/local-state/managing-state-with-field-policies#storing-and-updating-local-state-with-reactive-variables) sind eine Möglichkeit, globalen Zustand zu halten (ohne Apollo Cache)
-* <!-- .element: class="demo" --> Bookmarks in der Sidebar
+* <!-- .element: class="demo" --> Fertiges Beispiel: Bookmarks in der Sidebar (`steps/35-graphql-advanced`)
 * <!-- .element: class="demo" --> Reactive Variables (workspace-graphql-advanced)
 
----
-### Reactive Variablen
-* <!-- .element: class="demo" --> Last clicked oder click counter o.ä.
 
 ---
 ### Reactive Variables
@@ -2201,9 +2203,6 @@ const mock: MockedResponse<PostListPageQuery> = {
   * Hinter dem Bookmark soll ein Button o.ä. sein, mit dem man den Post wieder  
     entfernen kann
   * Über den `path` des Bookmarks kannst Du auch einen Link zur Post-Ansicht bauen, wenn Du willst (`<Link to={bookmark.path}>...</Link>`)  
-* Optional: 
-  * Zeig im _PostTeaser_ an, ob der dargestellte Post bereits gebookmarked ist
-  * Wenn ein Bookmark entfernt wird: schaffst Du es, dass nur der `PostTeaser` neu gerendert wird, der den Post aus dem gelöschten Bookmark darstellt?
 * Weitere Hinweise findest Du in `bookmarks.ts`
 
 

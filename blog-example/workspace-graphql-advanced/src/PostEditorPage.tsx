@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAddBlogPostMutation, PostListPageDocument } from "./generated/graphql";
 import PostEditor from "./PostEditor";
 import { NewBlogPost } from "./types";
+import { gql } from "@apollo/client";
 
 function SuccessConfirmation() {
   return (
@@ -14,6 +15,8 @@ function SuccessConfirmation() {
     </div>
   );
 }
+
+type BlogPostIds = { posts: Array<{ id: string }> };
 
 export default function PostEditorPage() {
   const [mutate, { error, data, called, loading }] = useAddBlogPostMutation();
@@ -32,6 +35,7 @@ export default function PostEditorPage() {
       //    BlogPosts aus dem Cache lesen
       //    - Definiere dafür mit 'gql' einen GraphQL Query, der die 'id's aller
       //      Posts ausliest
+      //      - TypeScript-Typ für das Ergebnis von `readQuery` ist BlogPostIds (s.o.)
       //  - Wenn es noch keine Einträge im Cache gibt, erzeuge eine neue Liste,
       //    die nur aus dem neuen BlogPost besteht
       //  - Wenn es bereits Einträge im Cache gibt, füge den BlogPost in die
@@ -41,6 +45,8 @@ export default function PostEditorPage() {
       //  - Schreibe die neue Liste mit 'writeQuery' zurück
       //    - Als 'query' kannst Du dafür denselben Query wie bei 'readQuery'
       //      verwenden
+      // update(cache, result) {
+      // },
       refetchQueries: [
         {
           query: PostListPageDocument

@@ -12,18 +12,6 @@ type PostListProps = {
 };
 
 export default function PostList({ posts }: PostListProps) {
-  // todo:
-  //  - jedes dargestellte Post soll einen Button bekommen,
-  //    mit dem er als Bookmark hinzugefügt werden kann
-  //  - du kannst die Logik hier oder in PostTeaser implementieren
-  //    - wo findest Du es besser?
-  //
-  //  optional:
-  //  - wenn der Blogpost bereits in der Liste der Bookmarks ist,
-  //     zeige das an (z.B. disable den Hinzufügen-Button)
-  //  - kannst du die Komponente(n) so bauen, dass nur die gerendert
-  //     werden, die als Bookmark hinzugefügt oder entfernt wurden?
-
   return (
     <>
       <Link className="Button" to="/add">
@@ -40,10 +28,19 @@ type PostTeaserProps = {
   post: IPostTeaser;
 };
 function PostTeaser({ post }: PostTeaserProps) {
+  const path = `/post/${post.id}`;
+  const title = post.title;
+
+  // todo:
+  //  - jedes dargestellte Post soll einen Button bekommen,
+  //    mit dem er als Bookmark hinzugefügt werden kann
+  //    - die nötigen Informationen (path, title) sind oben
+  //      schon als Variable vorhanden
+
   return (
     <article key={post.id} className="Container">
-      <Link to={`/post/${post.id}`}>
-        <h2>{post.title}</h2>
+      <Link to={path}>
+        <h2>{title}</h2>
       </Link>
       <p className="Date">{post.formattedDate}</p>
 

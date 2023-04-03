@@ -10,27 +10,7 @@ import { formattedDate } from "./formatter";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000",
-  cache: new InMemoryCache({
-    typePolicies: {
-      // Name des Typen: "BlogPost"
-      BlogPost: {
-        fields: {
-          // Name des Feldes, das konfiguriert werden soll: "title"
-          title: {
-            read(currentTitle) {
-              return currentTitle.toUpperCase();
-            }
-          },
-          formattedDate(_, { readField }) {
-            const date = readField("date");
-            if (typeof date === "string") {
-              return formattedDate(date);
-            }
-          }
-        }
-      }
-    }
-  })
+  cache: new InMemoryCache({})
 });
 
 const root = createRoot(document.getElementById("root") as HTMLElement);

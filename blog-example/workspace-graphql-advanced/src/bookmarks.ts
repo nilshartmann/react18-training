@@ -1,5 +1,3 @@
-import { makeVar, useReactiveVar } from "@apollo/client";
-
 // Beschreibt ein Bookmark
 export type IBookmark = {
   // Titel eines Blogposts
