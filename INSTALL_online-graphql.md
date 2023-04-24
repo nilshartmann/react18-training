@@ -7,7 +7,7 @@
 Auf deinem Laptop/PC sollte installiert sein:
 
 - Git (zum installieren des Workspaces)
-- [NodeJS](https://nodejs.org/en/download/) LTS version, aktuell 16.x (vielleicht gehen auch vorherige Versionen, wenn die Installation unten klappt, dann ist alles gut) und die darin enthaltene npm Version
+- [NodeJS](https://nodejs.org/en/download/) Version 16.x (vielleicht gehen auch vorherige Versionen, wenn die Installation unten klappt, dann ist alles gut) und die darin enthaltene npm Version
 - Browser (am besten Firefox oder Chrome)
 - Eine IDE oder ein Texteditor. Wenn Du bereits einen "Lieblingseditor" verwendest, benutze diesen während des Trainings, damit Du nicht auch noch ein neues Tool lernen musst. Ansonsten funktionieren folgende Tools zum Beispiel:
   - [Visual Studio Code](https://code.visualstudio.com/)
@@ -23,7 +23,7 @@ Auf deinem Laptop/PC sollte installiert sein:
 
 - Da wir vor und während des Trainings ggf. noch Aktualisierungen installieren müssen, bitte sicherstellen, dass auch während des Trainings auf deinem Computer der Internet-Zugang (logisch, online-Schulung 🙃) funktioniert - und zwar auch **für git und npm** (Proxies beachten!)
   - Informationen zum Einrichten eines Proxies für npm findest Du bei Bedarf [zum Beispiel hier](http://wil.boayue.com/blog/2013/06/14/using-npm-behind-a-proxy/).
-- **Ich freue mich, wenn Du während des Trainings deine Kamera an hast**, damit wir uns sehen können 🎥. Mikrofon hingegen bitte nur anmachen, wenn Du etwas sagen oder fragen möchtest (was Du natürlich jederzeit darfst!)
+- **Bitte schalte während des Trainings deine Kamera an**, damit wir uns sehen können 🎥. Mikrofon hingegen bitte nur anmachen, wenn Du etwas sagen oder fragen möchtest (was Du natürlich jederzeit darfst!)
 - W-LAN ist bequem, aber gerade bei (langen) Streamings ist ein Kabel-gebundenes Netzwerk stabiler als W-LAN, also im Zweifel lieber das Kabel einstecken (und W-LAN deaktivieren) 😊
 
 # Installation und Vorbereitung des Workspaces für die Schulung
