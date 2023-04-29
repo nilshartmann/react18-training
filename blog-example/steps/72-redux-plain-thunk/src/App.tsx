@@ -1,60 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PostList from "./PostList";
 import PostEditor from "./PostEditor";
-import { NewBlogPost, BlogPost } from "./types";
+import { NewBlogPost } from "./types";
 import LoadingIndicator from "./LoadingIndicator";
+import { useAppDispatch, useAppSelector } from "./redux/redux-hooks";
+import { loadPosts, savePost } from "./redux/posts-slice";
 
 type VIEW = "LIST" | "ADD";
 
-type FetchState = {
-  posts?: BlogPost[];
-  loading?: boolean;
-  error?: string;
-};
-
 function App() {
   const [view, setView] = React.useState<VIEW>("LIST");
+  const dispatch = useAppDispatch();
 
-  const [fetchState, setFetchState] = React.useState<FetchState>({});
+  const posts = useAppSelector(state => state.posts);
 
-  React.useEffect(() => {
-    setFetchState({ loading: true });
-    fetch("http://localhost:7000/posts")
-      .then(response => response.json())
-      .then(json => {
-        setFetchState({ posts: json });
-      })
-      .catch(err => {
-        setFetchState({ error: String(err) });
-      });
-  }, []);
+  useEffect(() => {
+    dispatch(loadPosts());
+  }, [dispatch]);
 
-  function savePost(post: NewBlogPost) {
-    setFetchState({ posts: fetchState.posts, loading: true });
-    fetch("http://localhost:7000/posts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(post)
-    })
-      .then(response => response.json())
-      .then(newPost => {
-        setFetchState({ posts: [newPost, ...(fetchState.posts || [])] });
-        setView("LIST");
-      })
-      .catch(err => console.error("Saving failed: " + err));
+  async function handleSavePost(post: NewBlogPost) {
+    await dispatch(savePost(post));
+    setView("LIST");
   }
 
-  if (fetchState.loading) {
+  if (posts.loading === "idle") {
+    return <LoadingIndicator>App is starting... Please wait.</LoadingIndicator>;
+  }
+
+  if (posts.loading === "pending") {
     return <LoadingIndicator>Server Request running. Please wait.</LoadingIndicator>;
   }
 
   if (view === "LIST") {
-    return <PostList posts={fetchState.posts || []} onAddPost={() => setView("ADD")} />;
+    return <PostList posts={posts.posts || []} onAddPost={() => setView("ADD")} />;
   }
 
-  return <PostEditor onSavePost={savePost} />;
+  return <PostEditor onSavePost={handleSavePost} />;
 }
 
 export default App;
