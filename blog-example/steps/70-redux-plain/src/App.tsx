@@ -29,7 +29,7 @@ function App() {
       });
   }, []);
 
-  function savePost(post: NewBlogPost) {
+  function handleSavePost(post: NewBlogPost) {
     setFetchState({ posts: fetchState.posts, loading: true });
     fetch("http://localhost:7000/posts", {
       method: "POST",
