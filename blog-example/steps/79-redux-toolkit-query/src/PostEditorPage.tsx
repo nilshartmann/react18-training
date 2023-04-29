@@ -1,18 +1,19 @@
-import React, { useEffect } from "react";
-import PostList from "./PostList";
+import React from "react";
 import PostEditor from "./PostEditor";
 import { NewBlogPost } from "./types";
-import LoadingIndicator from "./LoadingIndicator";
-import { useAppDispatch, useAppSelector } from "./redux/redux-hooks";
-import { loadPosts, savePost } from "./redux/posts-slice";
 import { useNavigate } from "react-router-dom";
+import { useSavePostMutation } from "./redux/posts-slice";
 
 export default function PostEditorPage() {
-  const dispatch = useAppDispatch();
+  const [savePost, savePostResult] = useSavePostMutation();
   const navigate = useNavigate();
   async function handleSavePost(post: NewBlogPost) {
-    await dispatch(savePost(post));
+    await savePost(post);
     navigate("/");
+  }
+
+  if (savePostResult.isLoading) {
+    return <h2>Post is saving...</h2>;
   }
 
   return <PostEditor onSavePost={handleSavePost} onClose={() => navigate("/")} />;

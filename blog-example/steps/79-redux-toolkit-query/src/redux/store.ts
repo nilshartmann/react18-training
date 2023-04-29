@@ -1,12 +1,13 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
 import editor from "./editor-slice";
-import posts from "./posts-slice";
+import { postsApi } from "./posts-slice";
 
 export const store = configureStore({
   reducer: {
     editor,
-    posts
-  }
+    [postsApi.reducerPath]: postsApi.reducer
+  },
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(postsApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

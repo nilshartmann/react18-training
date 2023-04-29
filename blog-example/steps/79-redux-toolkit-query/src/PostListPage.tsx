@@ -1,25 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PostList from "./PostList";
-import { loadPosts } from "./redux/posts-slice";
-import { useAppDispatch, useAppSelector } from "./redux/redux-hooks";
 import LoadingIndicator from "./LoadingIndicator";
+import { useLoadPostsQuery } from "./redux/posts-slice";
 
 export default function PostListPage() {
-  const dispatch = useAppDispatch();
+  const loadPostsQuery = useLoadPostsQuery();
 
-  const posts = useAppSelector(state => state.posts);
-
-  useEffect(() => {
-    dispatch(loadPosts());
-  }, [dispatch]);
-
-  if (posts.loading === "idle") {
+  if (loadPostsQuery.isUninitialized) {
     return <LoadingIndicator>App is starting... Please wait.</LoadingIndicator>;
   }
 
-  if (posts.loading === "pending") {
+  if (loadPostsQuery.isLoading) {
     return <LoadingIndicator>Server Request running. Please wait.</LoadingIndicator>;
   }
 
-  return <PostList posts={posts.posts} />;
+  if (loadPostsQuery.isError) {
+    return <h1>Error while fetching data!</h1>;
+  }
+
+  return <PostList posts={loadPostsQuery.data} />;
 }

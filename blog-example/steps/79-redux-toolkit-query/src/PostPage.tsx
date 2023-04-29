@@ -1,31 +1,32 @@
 import React from "react";
 import Post from "./Post";
 import { useParams, Link } from "react-router-dom";
-import { BlogPost } from "./types";
+import { useGetPostQuery } from "./redux/posts-slice";
+import LoadingIndicator from "./LoadingIndicator";
 
 export default function PostPage() {
   const { postId } = useParams();
-  const [post, setPost] = React.useState<BlogPost | null>(null);
 
-  React.useEffect(() => {
-    fetch(`http://localhost:7000/posts/${postId}`)
-      .then(response => response.json())
-      .then(json => {
-        setPost(json);
-      })
-      .catch(err => console.error("Loading data failed: " + err));
-  }, [postId]);
-
-  if (post) {
-    return (
-      <>
-        <Link className="Button" to="/">
-          Home
-        </Link>
-        <Post post={post} />
-      </>
-    );
+  if (!postId) {
+    throw new Error("Param 'postId' missing!");
   }
 
-  return <h1>Please wait, Post is loading</h1>;
+  const getPostQuery = useGetPostQuery(postId);
+
+  if (getPostQuery.isUninitialized || getPostQuery.isLoading) {
+    return <LoadingIndicator>Please wait, Post with Id {postId} is loading...</LoadingIndicator>;
+  }
+
+  if (getPostQuery.isError) {
+    return <h2>Loading Post with Id {postId} failed 😟</h2>;
+  }
+
+  return (
+    <>
+      <Link className="Button" to="/">
+        Home
+      </Link>
+      <Post post={getPostQuery.data} />
+    </>
+  );
 }
