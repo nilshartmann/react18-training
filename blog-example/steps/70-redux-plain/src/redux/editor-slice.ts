@@ -1,5 +1,3 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
 type EditorSliceState = {
   currentTitle: string;
   currentBody: string;
@@ -10,29 +8,46 @@ const initialState: EditorSliceState = {
   currentBody: ""
 };
 
-type UpdateTitleAction = {
-  newTitle: string;
-};
+export function clear() {
+  return {
+    type: "editor/clear"
+  } as const;
+}
 
-type UpdateBodyAction = {
-  newBody: string;
-};
+type ClearAction = ReturnType<typeof clear>;
 
-const editorSlice = createSlice({
-  name: "editor",
-  initialState,
-  reducers: {
-    updateTitle(state, action: PayloadAction<UpdateTitleAction>) {
-      state.currentTitle = action.payload.newTitle;
-    },
-    updateBody(state, action: PayloadAction<UpdateBodyAction>) {
-      state.currentBody = action.payload.newBody;
-    },
-    clear() {
+export function setBody(body: string) {
+  return {
+    type: "editor/setBody",
+    body
+  } as const;
+}
+
+type SetBodyAction = ReturnType<typeof setBody>;
+
+export function setTitle(title: string) {
+  return {
+    type: "editor/setTitle",
+    title
+  } as const;
+}
+
+type SetTitleAction = ReturnType<typeof setTitle>;
+
+type EditorAction = ClearAction | SetTitleAction | SetBodyAction;
+
+export default function editorReducer(
+  state: EditorSliceState = initialState,
+  action: EditorAction
+): EditorSliceState {
+  switch (action.type) {
+    case "editor/clear":
       return initialState;
-    }
+    case "editor/setBody":
+      return { ...state, currentBody: action.body };
+    case "editor/setTitle":
+      return { ...state, currentTitle: action.title };
+    default:
+      return state;
   }
-});
-
-export default editorSlice.reducer;
-export const { clear, updateBody, updateTitle } = editorSlice.actions;
+}

@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { updateBody, updateTitle, clear } from "./redux/editor-slice";
-import { useAppSelector } from "./redux/useAppSelector";
+import { setBody, setTitle, clear } from "./redux/editor-slice";
+import { useAppSelector } from "./redux/redux-hooks";
 import { NewBlogPost } from "./types";
 
 type PostEditorProps = {
@@ -22,16 +22,7 @@ export default function PostEditor(props: PostEditorProps) {
 
       <label>
         Title
-        <input
-          value={title}
-          onChange={e =>
-            dispatch(
-              updateTitle({
-                newTitle: e.currentTarget.value
-              })
-            )
-          }
-        />
+        <input value={title} onChange={e => dispatch(setTitle(e.currentTarget.value))} />
       </label>
       {title ? (
         <Message type="info" msg="Title correctly filled"></Message>
@@ -41,16 +32,7 @@ export default function PostEditor(props: PostEditorProps) {
 
       <label>
         Body
-        <textarea
-          value={body}
-          onChange={e =>
-            dispatch(
-              updateBody({
-                newBody: e.currentTarget.value
-              })
-            )
-          }
-        />
+        <textarea value={body} onChange={e => dispatch(setBody(e.currentTarget.value))} />
       </label>
       {body ? (
         <Message type="info" msg="Body correctly filled"></Message>

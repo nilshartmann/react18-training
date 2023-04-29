@@ -1,7 +1,6 @@
 import React from "react";
 import moment from "moment";
 import { BlogPost } from "./types";
-import { Link } from "react-router-dom";
 
 function formattedDate(date: string) {
   return moment(date).format("DD.MM.YYYY");
@@ -9,21 +8,19 @@ function formattedDate(date: string) {
 
 type PostListProps = {
   posts: BlogPost[];
+  onAddPost(): void;
 };
 
-export default function PostList({ posts }: PostListProps) {
+export default function PostList({ onAddPost, posts }: PostListProps) {
   return (
     <>
-      <Link className="Button" to="/add">
-        Add Post
-      </Link>
+      <button onClick={onAddPost}>Add Post</button>
       {posts.map(p => (
-        <Link key={p.id} to={`/post/${p.id}`}>
-          <article className="Container">
-            <p className="Date">{formattedDate(p.date)}</p>
-            <h1>{p.title}</h1>
-          </article>
-        </Link>
+        <article key={p.id} className="Container">
+          <p className="Date">{formattedDate(p.date)}</p>
+          <h1>{p.title}</h1>
+          <p>{p.body}</p>
+        </article>
       ))}
     </>
   );
