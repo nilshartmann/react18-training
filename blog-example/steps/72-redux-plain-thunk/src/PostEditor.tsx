@@ -6,6 +6,7 @@ import { NewBlogPost } from "./types";
 
 type PostEditorProps = {
   onSavePost(post: NewBlogPost): void;
+  onClose(): void;
 };
 
 export default function PostEditor(props: PostEditorProps) {
@@ -54,6 +55,7 @@ export default function PostEditor(props: PostEditorProps) {
       >
         Save Post
       </button>
+      <button onClick={props.onClose}>Close</button>
     </div>
   );
 }

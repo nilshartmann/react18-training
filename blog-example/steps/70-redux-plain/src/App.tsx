@@ -54,7 +54,7 @@ function App() {
     return <PostList posts={fetchState.posts || []} onAddPost={() => setView("ADD")} />;
   }
 
-  return <PostEditor onSavePost={savePost} />;
+  return <PostEditor onSavePost={handleSavePost} onClose={() => setView("LIST")} />;
 }
 
 export default App;

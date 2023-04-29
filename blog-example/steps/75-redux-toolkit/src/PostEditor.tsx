@@ -23,7 +23,7 @@ export default function PostEditor(props: PostEditorProps) {
 
       <label>
         Title
-        <input value={title} onChange={e => dispatch(setTitle(e.currentTarget.value))} />
+        <input value={title} onChange={e => dispatch(setTitle({ title: e.currentTarget.value }))} />
       </label>
       {title ? (
         <Message type="info" msg="Title correctly filled"></Message>
@@ -33,7 +33,7 @@ export default function PostEditor(props: PostEditorProps) {
 
       <label>
         Body
-        <textarea value={body} onChange={e => dispatch(setBody(e.currentTarget.value))} />
+        <textarea value={body} onChange={e => dispatch(setBody({ body: e.currentTarget.value }))} />
       </label>
       {body ? (
         <Message type="info" msg="Body correctly filled"></Message>
