@@ -1,3 +1,4 @@
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { BlogPost, NewBlogPost } from "../types";
 import { AsyncAppThunk } from "./store";
 
@@ -14,58 +15,22 @@ const initialPostsState: PostsSliceState = {
   loading: "idle"
 };
 
-function postsLoading() {
-  return { type: "posts/loading" } as const;
-}
-
-type PostsLoadingAction = ReturnType<typeof postsLoading>;
-
-function postLoadingFailed(error: any) {
-  return { type: "posts/loadingFailed", error: error.toString() } as const;
-}
-
-type PostLoadingFailedAction = ReturnType<typeof postLoadingFailed>;
-
-function postLoadingSucceeded(postsLoaded: BlogPost[]) {
-  return {
-    type: "posts/loadingSucceeded",
-    posts: postsLoaded
-  } as const;
-}
-
-type PostLoadingSucceededAction = ReturnType<typeof postLoadingSucceeded>;
-
-function addPost(post: BlogPost) {
-  return {
-    type: "posts/add",
-    post
-  } as const;
-}
-
-type AddPostAction = ReturnType<typeof addPost>;
-
-type PostAction =
-  | PostsLoadingAction
-  | PostLoadingFailedAction
-  | PostLoadingSucceededAction
-  | AddPostAction;
-
 export function loadPosts(): AsyncAppThunk {
   return async dispatch => {
-    dispatch(postsLoading());
+    dispatch(postsSlice.actions.postsLoading());
     try {
       const response = await fetch("http://localhost:7000/posts?slow");
       const json = await response.json();
-      dispatch(postLoadingSucceeded(json));
+      dispatch(postsSlice.actions.postLoadingSucceeded({ posts: json }));
     } catch (err) {
-      dispatch(postLoadingFailed(err));
+      dispatch(postsSlice.actions.postLoadingFailed({ err: err!.toString() }));
     }
   };
 }
 
 export function savePost(post: NewBlogPost): AsyncAppThunk<void> {
   return async dispatch => {
-    dispatch(postsLoading());
+    dispatch(postsSlice.actions.postsLoading());
     try {
       const response = await fetch("http://localhost:7000/posts?slow", {
         method: "POST",
@@ -75,43 +40,45 @@ export function savePost(post: NewBlogPost): AsyncAppThunk<void> {
         body: JSON.stringify(post)
       });
       const newPost = await response.json();
-      dispatch(addPost(newPost));
+      dispatch(postsSlice.actions.addPost({ post: newPost }));
     } catch (err) {
-      dispatch(postLoadingFailed(err));
+      dispatch(postsSlice.actions.postLoadingFailed({ err: err!.toString() }));
     }
   };
 }
 
-export default function postsReducer(
-  state = initialPostsState,
-  action: PostAction
-): PostsSliceState {
-  switch (action.type) {
-    case "posts/loading":
-      return {
-        loading: "pending",
-        // preserve posts while loading
-        posts: state.posts
-      };
-    case "posts/loadingFailed": {
-      return {
-        loading: "failed",
-        posts: [],
-        error: action.error
-      };
-    }
-    case "posts/add": {
-      // Is it really a good idea to modify data we received from the server?
-      return { loading: "succeeded", posts: [action.post, ...state.posts] };
-    }
+type AddPostAction = {
+  post: BlogPost;
+};
 
-    case "posts/loadingSucceeded": {
-      return {
-        loading: "succeeded",
-        posts: action.posts
-      };
+type PostLoadingSucceededAction = {
+  posts: BlogPost[];
+};
+
+type PostLoadingFailedAction = {
+  err: string;
+};
+
+const postsSlice = createSlice({
+  name: "posts",
+  initialState: initialPostsState,
+  reducers: {
+    postsLoading(state) {
+      state.loading = "pending";
+    },
+    postLoadingSucceeded(state, action: PayloadAction<PostLoadingSucceededAction>) {
+      state.loading = "succeeded";
+      state.posts = action.payload.posts;
+    },
+    postLoadingFailed(state, action: PayloadAction<PostLoadingFailedAction>) {
+      state.loading = "failed";
+      state.error = action.payload.err;
+    },
+    addPost(state, action: PayloadAction<AddPostAction>) {
+      state.loading = "succeeded";
+      state.posts.push(action.payload.post);
     }
-    default:
   }
-  return state;
-}
+});
+
+export default postsSlice.reducer;
