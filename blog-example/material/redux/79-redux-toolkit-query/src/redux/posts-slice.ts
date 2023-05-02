@@ -13,7 +13,7 @@ export const postsApi = createApi({
     getPost: builder.query<BlogPost, string>({
       query: postId => `/posts/${postId}/?slow`,
       providesTags: (_result, _error, postId) => {
-        return [{ type: "BlogPost", id: postId }];
+        return [{ type: "BlogPost", id: postId }, "BlogPost"];
       }
     }),
     savePost: builder.mutation<BlogPost, NewBlogPost>({

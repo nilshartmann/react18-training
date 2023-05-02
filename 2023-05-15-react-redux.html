@@ -152,7 +152,7 @@
             </li>
 
             <li style="margin-top: 20px">
-              <a href="#/t-redux">Teil VI: Globales Zustandsmanagement mit Redux Toolkit</a>
+              <a href="#/t-state">Teil VI: Globales Zustandsmanagement mit Redux Toolkit</a>
             </li>
 
             <li>
@@ -2429,9 +2429,19 @@ const style: React.CSSProperties = type === "error" ?
         </section>
 
         <!-- ##################################### REDUX ############################################## -->
-
-        <section id="t-state">
-          <h2>Externes Statemanagement mit Redux (und Context API als Vergleich)</h2>
+        <section data-markdown>
+          <textarea data-template>
+    <!-- .slide: id="t-state" -->
+    ## Globales Statemanagement mit Redux   
+    
+    * Themen
+      * [Redux Grundlagen](#/t-redux)
+      * [Redux Toolkit](#/t-rtk)
+      * Asynchrone Actions mit [Redux Thunk](#/t-redux-thunk)
+      * Data Fetching mit [Redux Toolkit Query](#/t-rtk-query)
+      
+  </textarea
+          >
         </section>
 
         <!-- ============================================================================= -->
@@ -2799,37 +2809,22 @@ root.render(
             </li>
           </ul>
         </section>
-        <section>
-          <h3>Redux Toolkit</h3>
-          <p>
-            <em
-              >"The official, opinionated, batteries-included toolset for efficient Redux
-              development"</em
-            >
-          </p>
-          <ul>
-            <li><a href="https://redux-toolkit.js">https://redux-toolkit.js.org/</a></li>
-            <li>
-              Das ist jetzt das "offizielle" Redux
-              <ul>
-                <li>
-                  Mit vorkonfiguriertem Setup (inklusive
-                  <a href="https://github.com/immerjs/immer">immer</a> für Reducer-Funktionen)
-                </li>
-                <li>
-                  Vereinfacht erheblich das Arbeiten mit Reducer, generiert z.B. Action Creator zur
-                  Laufzeit
-                </li>
-                <li>
-                  Vereinfacht typische Anwendungsfälle wie API Calls mit
-                  <a href="https://redux-toolkit.js.org/rtk-query/overview">RTK Query</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </section>
+
         <section data-markdown>
           <textarea data-template>
+<!-- .slide: id="t-rtk" -->
+### Redux Toolkit
+* _"The official, opinionated, batteries-included toolset for efficient Redux
+development"_
+* Das ist mittlerweile das "offizielle" Redux
+  * [https://redux-toolkit.js](https://redux-toolkit.js)
+  * Mit vorkonfiguriertem Setup (inklusive
+  [immer](https://github.com/immerjs/immer) für Reducer-Funktionen)
+  * Vereinfacht erheblich das Arbeiten mit Reducer, generiert z.B. Action Creator zur
+  Laufzeit
+  * Vereinfacht typische Anwendungsfälle wie API Calls mit dem integrierten [RTK Query](https://redux-toolkit.js.org/rtk-query/overview)
+  
+---
 ### createSlice    
 * Ein "Slice" repräsentiert einen fachnlichen "Schnitt" in Eurer Anwendung
 * Ein Slice wird mit der Funktion <code>createSlice</code> erzeugt
@@ -3159,39 +3154,21 @@ export const store = configureStore({
 
 * `editorSlice` bauen
 * <!-- .element: class="todo" -->Übung vorbereiten
-</textarea
-          >
-        </section>
-        <section>
-          <h3>Redux</h3>
-          <h2>Asynchrone Actions</h2>
-          <p><em>Problem: Asynchronität, z.B. beim Laden von Daten</em></p>
-          <ul>
-            <li>
-              Wo unterbringen?
-              <ul>
-                <li>Reducer sind Seiteneffekt-frei!</li>
-                <li>Actions sind nur JavaScript-Objekte (keine Logik)!</li>
-              </ul>
-            </li>
-            <li>
-              Weiteres Problem: fachliche Abläufe meistens komplex(er) als nur eine Action.
-              <ul>
-                <li>
-                  Typisch: Request Start, Request läuft, Request erfolgreich/Request fehlgeschlagen
-                </li>
-              </ul>
-            </li>
-            <li>Redux bringt dafür nix mit :-(</li>
-            <li>
-              Es gibt aber Antworten:
-              <a href="https://github.com/reduxjs/redux-thunk">Redux Thunk</a> (die "offizielle"
-              Lösung) und Saga, Observable
-            </li>
-          </ul>
-        </section>
-        <section data-markdown>
-          <textarea data-template>
+
+---
+<!-- .slide: id="t-redux-thunk" -->
+### Redux
+## Komplexe Actions
+
+* Problem 1: **Asynchroner Code** (z.B. beim Laden von Daten), Arbeiten mit Promises
+* Wo unterbringen?
+  * **Reducer** müssen Seiteneffekt-frei sein!
+  * **Actions** sind reine JavaScript-Objekte ohne Methoden/Logik!
+* Problem 2: Weiteres Problem: fachliche Abläufe oft komplex(er) als nur eine Action.
+  * Zum Beispiel Lifecycle eines Server-Requests: Typisch: Request Start, Request läuft, Request erfolgreich/Request fehlgeschlagen
+* In solchen Fällen werden üblicherweise [Thunk Actions](https://github.com/reduxjs/redux-thunk) verwendet
+  * Alternativen: Redux Saga oder Redux Observable
+---
 ### Thunk Actions 
 
 * <!-- .element: class="demo" --> Laden der Posts mit normaler Thunk Action
@@ -3474,11 +3451,13 @@ automatisch dispatchen
 
 ---
 ## Redux Toolkit Query
+<!-- .slide: id="t-rtk-query" -->
+
 
 ---
 ### Redux Toolkit Query
 
-* Die [RTK Query](https://redux-toolkit.js.org/rtk-query/overview) API ist der "offizielle" Weg vom Redux Toolkit, um mitDaten vom Server zu arbeiten
+* Die [RTK Query](https://redux-toolkit.js.org/rtk-query/overview) API ist der "offizielle" Weg des Redux Toolkits, um mit Daten vom Server zu arbeiten
   * Aus dem [Redux Styleguide](https://redux.js.org/style-guide/#use-rtk-query-for-data-fetching): _we recommend using RTK Query as the default approach for data fetching and caching in a Redux app. We recommend against writing data fetching logic by hand in almost all cases._
 * RTK Query unterstützt Lesen und Schreiben von Daten (per HTTP), Caching und Lifecycle
 
@@ -3531,24 +3510,24 @@ automatisch dispatchen
 * Der **Wert** ist jeweils ein konfigurierter Endpunkt, der mit dem `builder` erzeugt wurde. 
   * Das folgende Beispiel zeigt zwei Query-Endpunkte mit den Namen `loadPosts` bzw. `getPost`  
   * ```typescript
-  export const postsApi = createApi({
-    endpoints: builder => return {
-      loadPosts: builder.query<BlogPost[], void>({
-        query: () => "/posts"
-      }),
+    export const postsApi = createApi({
+      endpoints: builder => return {
+        loadPosts: builder.query<BlogPost[], void>({
+          query: () => "/posts"
+        }),
 
-      getPost: builder.query<BlogPost, string>({
-        query: postId => `/posts/${postId}`
-      })
-    }
-  });
+        getPost: builder.query<BlogPost, string>({
+          query: postId => `/posts/${postId}`
+        })
+      }
+    });
 
     ```
 ---
 ### Queries an Endpunkten definieren
 * Mit der `query`-Funktion kann ein Query-Endpunkt (in der Regel HTTP GET) definiert werden
-* Die Funktion erwartet zwei Typ-Argumente und einen Parameter:
-  * Die Typ-Argumente geben an:
+* Die Funktion erwartet zwei _Typ-Argumente_ für TypeScript und einen _Parameter_:
+  * Die _Typ-Argumente_ geben an:
     1. den Rückgabe-Typ der Daten, die über den Endpunkt gelesen werden
     2. Ein Typ, der erforderliche Parameter für den Endpunkt beschreibt (oder `void` für keinen Parameter)
     * ```typescript
@@ -3558,10 +3537,10 @@ automatisch dispatchen
         // Lierfert BlogPost zurück, erwartet einen Parameter vom Typ string
         builder.query<BlogPost, string>(...);
       ```
-    * Mit dem Parameter übergibst du ein Objekt mit der eigentlichen Konfiguration für diesen Endpunkt
-      * Du musst mindestens die `query`-Funktion angeben, die den Pfad/URL des Endpunktes zurückliefert
+  * Mit dem _Parameter_ übergibst du ein Objekt mit der eigentlichen Konfiguration für diesen Endpunkt
+    * Du musst mindestens die `query`-Funktion angeben, die den Pfad/URL des Endpunktes zurückliefert
 
----      
+---
 ### Endpunkt-Konfiguration
 
 * Die `query`-Callback-Funktion nimmt einen Parameter entgegen
@@ -3583,10 +3562,138 @@ automatisch dispatchen
 ---
 ### Ausführen von Queries
 
-* Für jeden Endpunkt werden mehrere React Hooks generiert, die Du verwenden kannst, um den Endpunkt aufzurufen und die Daten abzufragen.
-* 
-  
+* Für jeden Endpunkt werden [React Hooks](https://redux-toolkit.js.org/rtk-query/api/created-api/hooks#hooks-overview) generiert, die Du verwenden kannst, um den Endpunkt aufzurufen und die Daten abzufragen.
+* Wir betrachten den [`useQuery`](https://redux-toolkit.js.org/rtk-query/api/created-api/hooks#usequery) Hook
+* Der Name ist `useEndpunktNameQuery` (also zum Beispiel `useGetPostQuery`)
+* Die generierten Hooks stehen über das API-Objekt (Rückgabe von `createApi`) zur Verfügung:
+* ```typescript
+    export const postsApi = createApi({
+      // ...
+      endpoints: builder => ({
 
+          loadPosts: builder.query<BlogPost[], void>({ ... })
+
+          getPost: builder.query<BlogPost, string>({ ... })
+        })
+    });
+
+    export const { useLoadPostsQuery, useGetPostQuery } = postsApi;
+  ```
+---
+### Ausführen von Queries mit dem useQuery-Hook
+
+* Den generierten Hook kannst Du in deiner Komponente verwenden
+* Der Query wird unmittelbar beim Rendern der Komponente ausgeführt
+* Sind die Daten für den Enpunkt (noch) im Cache vorhanden, werden die Daten stattdessen aus dem Cache zurückgegeben
+  * Auch wenn die geladenen Daten automatisch im "normalen" Redux Store abgelegt werden, greift man immer über die Query-Hooks darauf zu
+  (nie über `useSelector`)
+* Der Hook liefert ein `UseQueryResult`-Objekt zurück, das Informationen über den Query-Status und die Daten gibt.
+* ```typescript
+    function PostListPage() {
+      const loadPostsQueryResult = useLoadPostsQuery();
+
+      if (loadPostsQueryResult.isLoading) {
+        return <LoadingIndicator>Server Request running. Please wait.</LoadingIndicator>;
+      }
+
+      if (loadPostsQueryResult.isError) {
+        return <h1>Error while fetching data!</h1>;
+      }
+
+      return <PostList posts={loadPostsQueryResult.data} />;
+    }
+  ```
+
+---
+### Das Query-Ergebnis
+* Der `useQuery`-Hook liefert unmittelbar ein Result-Objekt zurück und führt dann den Query aus
+* Über das Result-Objekt kannst Du Status des Requests und ggf. Daten bzw. Fehler abfragen
+* Sobald sich der Status ändert (zum Beispiel Request ist zurückgekehrt), wird die Komponente neu gerendert und der Hook gibt ein neues Result-Objekt zurück
+* Bestandteil des Result-Objektes:
+  * `isUninitialized`: Request wurde noch nicht gestartet
+  * `isLoading`: Request läuft gerade
+  * `isError`: `true` wenn beim Lesen der Daten ein Fehler aufgetreten ist
+  * `data`: Die geladenen Daten (nur wenn `isLoading` und `isError` `false` sind)
+  * `error`: Beim Laden aufgetretener Fehler (nur wenn `isError` `true` ist)
+
+---
+### Parameter übergeben
+* Sofern Du in der Endpunkt-Konfiguration angegeben hast, dass der Endpunkt Parameter braucht, musst Du diese bei dem Hook angeben:
+* Beispiel: ein Endpunkt mit zwei Parametern
+  * ```typescript
+    // 
+    type GetCommentParams = { postId: string; commentId: string }
+
+    export const postsApi = createApi({
+      // ...
+      endpoints: builder => ({
+
+        getComment: builder.query<BlogPost, GetCommentParams>({
+          query: params => `/posts/${params.postId}/comments/${params.commentId}`,
+        })
+
+      })
+    });
+    export const { useGetCommentQuery } = postsApi;
+    ```
+* Verwendung des Hooks:  
+  * ```typescript
+    function CommentPage() {
+      const result = useGetCommentQuery({postId: "P1", commentId: "C1"});
+
+      // result wie gesehen
+    }  
+    ```
+
+---
+### Ausführen des Queries unterbinden
+
+* Der `useQuery` führt den Query unmittelbar beim Rendern der Komponente aus
+* Das will man aber nicht immer. 
+* Um die Ausführung zu unterbinden, kannst Du das `skipToken` oder die `skip`-Option verwenden. 
+* Die `skip`-Option kann als zweiter Parameter übergeben werden:
+* ```typescript
+  type PostPageProps = { postId: string, loadPost: boolean }
+
+  function PostPage({ postId, loadPost }: PostPageProps) {
+
+    const r = useGetPostQuery(postId, { skip: !loadPost });
+
+  }
+  ```
+* Das `skipToken` ist ein Objekt, dass von RTK Query bereitsgestellt wird, und das (statt Query-Parameter) als erster Parameter übergeben werden kann:
+  * ```typescript
+    import { skipToken } from '@reduxjs/toolkit/query/react'
+
+    function PostListPage() {
+      const r = useLoadPostsQuery(skipToken);
+    }
+    ```
+---
+### Das skipToken  
+* Das `skipToken` musst Du verwenden, wenn dein Query _keine_ Parameter hat, _oder_ Du die erforderlichen Parameter nicht zur Verfügung hast
+* Beispiel: die folgende Komponente erwartet _optional_ eine postId als Property. Für den Query ist die `postId` aber Pflicht.
+* ```typescript
+  type PostPageProps = { postId?: string | null}
+      
+  function PostPage({postId}: PostPageProps) {
+
+    const r = useGetPostQuery(postId); // Compile-Error, weil postId undefined oder null sein kann
+
+  }
+  ```
+* In diesem Fall kannst Du statt des Query-Parameters (`postId`) das `skipToken` übergeben, wenn die `postId` nicht gesetzt ist:
+* ```typescript
+  import { skipToken } from '@reduxjs/toolkit/query/react'
+
+  type PostPageProps = { postId?: string | null}
+      
+  function PostPage({postId}: PostPageProps) {
+
+    const r = useGetPostQuery(postId ?? skipToken); // OK: Entwender postId oder - falls null - das skipToken
+
+  }
+  ```
 ---
 ### Übung: Daten laden mit RTK Query
 
@@ -3594,6 +3701,226 @@ automatisch dispatchen
 
 ---
 ### RTK Query: Mutations und Cache
+
+---
+### Mutations
+
+* **Mutations** sind Operationen, die Daten auf dem Server _verändern_
+  * Im Gegensatz dazu, sind Queries nur für _lesende_ Abfragen gedacht
+* Mutations und Queries sind in RTK Query sehr ähnlich, es gibt aber unterschiede:
+  * Bei Mutations wird häufig ein Request Payload übergeben (bei Queries nicht möglich)  
+  * Es werden unterschiedliche HTTP Verben (POST/PUT/PATCH/DELETE) verwendet
+  * Die Mutations werden nicht beim Rendern der Komponente ausgeführt, sondern z.B. nach einer Benutzerinteraktion
+  * Da Mutations Daten verändern, kann es sein, dass danach Daten im lokalen Cache veraltet sind
+
+---
+### Defintion der Endpunkte
+* Die Definition der Mutations erfolgt ebenfalls über den `builder`, mit dem das `endpoint`-Objekt beschrieben wird.
+* Die zugehörige Methode am `builder` heißt in diesem Fall `mutation` (nicht `query`)
+* Üblicherweise ist das `query`-Objekt, das dem `builder` übergeben wird, hier eine Funktion, die ein Objekt zurückgibt
+* Das Objekt beschreibt dann nicht nur den Pfad, sondern auch den Payload und HTTP Header.
+* ```typescript
+    export const postsApi = createApi({
+      // ...
+      endpoints: builder => ({
+
+        // Query (GET)-Endpunkt:
+        loadPosts: builder.query<BlogPost[], void>({
+          query: () => "/posts?slow",
+        }),
+
+        // Mutation (POST)-Endpunkt:
+        savePost: builder.mutation<BlogPost, NewBlogPost>({
+          query: newPost => ({
+            url: `posts`,
+            method: "POST",
+            body: newPost
+          })
+        })
+      })
+    });
+
+    export const { useLoadPostsQuery, useSavePostMutation } = postsApi;
+  
+  ```
+---
+### Mutations ausführen
+
+* Auch für jede Mutation wird ein React Hook generiert.
+* Dieser [`useMutation`-Hook](https://redux-toolkit.js.org/rtk-query/api/created-api/hooks#usemutation) hat das Namenspattern `useEndpunktNameMutation`
+* Im Gegensatz zu `useQuery` wird die Mutation nicht beim Rendern ausgeführt.
+* Stattdessen liefert der Hook nicht nur das Result-Objekt zurück, sondern auch eine `trigger`-Funktion zum Ausführen der Mutation
+* Ähnlich wie bei Reacts `useState` ist der Rückgabe-Typ ein Tuple mit der `trigger`-Funktion und dem Result-Objekt:
+* ```typescript
+  const [savePost, savePostResult] = useSavePostMutation();
+
+  function onSavePostClick(newPost: NewBlogPost) {
+    savePost(newPost);
+  }
+
+  if (savePost.isLoading) {
+    return <div>Saving new post...</div>
+  }
+
+  if (savePost.isError) {
+    return <div>Saving Post failed...</div>
+  }
+
+  if (savePost.isSuccess) {
+    return <div>Saving Post succeeded!</div>
+  }
+
+  return ...;
+
+  ```
+---
+### Der RTK Query Cache
+
+* Alle gelesenen Daten werden im Store abgelegt und dort gechached
+* Wie lange sie darin liegen, hängt unter anderem davon ab, ob noch eine Komponente auf die Daten zugreift
+  * Grundsätzlich ist das pro Endpunkt einstellbar
+* In einer Mutation kannst Du auch explizit festlegen, welche Daten von dieser geändert werden
+  * Die Daten werden im Cache dann als "veraltet" markiert und in jedem Fall beim nächsten Query neu gelesen
+* Dazu kennt RTK Query das Konzept von **Tags**
+
+---
+### Tags
+
+* Jeder Query-Endpunkt kann mit einem oder mehreren Tags assoziiert werden.
+* Über die Tags kann eine Mutation ausdrücken, welche Daten von ihr verändert bzw. nach der Ausführung nicht mehr gültig sind.
+* Angabe der Tags:
+  * Mit `tagTypes` wird beim Erzeugen der API (`createApi`) angegeben, welche "Typen" von Tags es überhaupt gibt, z.B. `Post` oder `User`
+  * Angegeben werden die konkreten Tags dann mit der `provideTags`-Eigenschaft bei der Konfiguration des Endpunkts
+* ```typescript
+  export const postsApi = createApi({
+    tagTypes: ["BlogPost"],
+
+    endpoints: builder => ({
+      loadPosts: builder.query<BlogPost[], void>({
+        query: () => "/posts?slow",
+        providesTags: ["BlogPost"]
+      }),
+
+      getPost: builder.query<BlogPost, string>({
+        query: postId => `/posts/${postId}/?slow`,
+        providesTags: (_result, _error, postId) => {
+          return [{ type: "BlogPost", id: postId }, "BlogPost"];
+        }
+      })
+    })
+  });
+  
+  ```
+<!-- .element: class="todo" -->ist das Beispiel richtig, oder muss getPost auch 'Post' haben?  
+---
+### Tags
+
+* Ein Tag kann entweder nur ein String sein (`BlogPost`, `User`) oder ein Objekt, bestehend aus `type` und `id`
+  * Mit der Id kann ein Tag genauer beschrieben werden:
+    * _Ohne_ Id: dieser Endpunkt stellt allgemein "irgendwelche" Daten dieses Typs zur Verfügung
+    * _Mit_ Id: dieser Endpunkt stellt genau diese Daten ("Instanzen") zur Verfügung
+* `provideTags` kann entweder ein Array mit Tags sein oder ein Callback-Funktion
+  * Die Callback-Funktion wird von RTK Query aufgerufen mit dem Query-Ergebnis (oder Fehler) und den übergebenen Parametern
+  * Auf dieser Basis kann die Funktion dann eine Liste von Tags für das konkrete Ergebnis zurückliefern.
+  * Im folgenden Beispiel ist die postId nicht vor der Ausführung des Queries bekannt.
+  * Der Cache Tag kann also erst auf Basis der geladenen Daten ermittelt werden:
+  * ```typescript
+      export const postsApi = createApi({
+        tagTypes: ["BlogPost"],
+
+        endpoints: builder => ({
+          getNewestPost: builder.query<BlogPost, string>({
+            query: postId => `/posts?orderBy=date&limit=1`,
+            providesTags: (result) => {
+              return result ? [{ type: "BlogPost", id: result.postId }] : [ "BlogPost" ]
+            }
+          })
+        })
+      });
+    ```
+---
+### Tags invalidieren
+* Eine Mutation kann angeben, welche Tags nach ihrer Ausführung ungültig sind
+* Dazu wird die `invalidatesTags`-Eigenschaft bei der Defintion des Mutation-Endpunkts verwendet.
+* Die Mutation kann ein einzelnes Tags oder eine Liste von Tags invalidieren
+* Wie bei `provideTags` kann die `invalidatesTags`-Eigenschaft eine Liste oder eine Funktion zurückliefern. 
+  * Der Funktion werden dieselben Argumente übergeben wie `provideTags`
+* ```typescript
+    export const postsApi = createApi({
+      tagTypes: ["BlogPost"],
+
+      
+      endpoints: builder => ({
+        savePost: builder.mutation<BlogPost, NewBlogPost>({
+          query: newPost => ( ... ),
+          invalidatesTags: ["BlogPost"]
+        }),
+
+        updatePost: builder.mutation<BlogPost, BlogPost>({
+          query: post => ( ... ),
+          invalidatesTags(result, error, param) { return [type: "BlogPost", id: param.id] }
+        })
+      })
+    });
+  ```
+---
+### Tags invalidieren
+* In diesem Beispiel soll ein einzelner Blog Post aktualisiert werden:
+* ```typescript
+    export const postsApi = createApi({
+      tagTypes: ["BlogPost"],
+
+      loadPosts: builder.query<BlogPost[], void>({
+        query: () => "/posts",
+        providesTags: ["BlogPost"]
+      }),
+      
+      endpoints: builder => ({
+        updatePost: builder.mutation<BlogPost, BlogPost>({
+          query: post => ( ... ),
+          invalidatesTags(result, error, param) { return [type: "BlogPost", id: param.id] }
+        })
+      })
+    });
+  ```
+
+* Die entsprechende Mutation markiert den Blog Post mit seinem Cache als veraltet
+* Die Daten des `loadPosts` Endpunkts sind allerdings nur mit dem `BlogPost`-Tag assoziiert
+* Das heißt die Daten, die `loadPosts` zurückgeliefert hat, werden nicht als veraltet markiert. In dieser Liste könnte also der alte Blog Post weiterhin vorhanden sein.
+---
+### Tags invalidieren
+
+* Um das Problem zu lösen gibt es zwei Möglichkeiten
+  1. `updatePost` liefert auch den Tag `BlogPost` zurück. Damit würde die Liste ungültig
+  2. Die `loadPosts`-Daten werden auch mit einer `id` assoziiert
+* In beiden Fällen wird komplette Ergebnis von `loadPosts` als veraltet markiert und die erste Komponente, die `useLoadPostsQuery` verwendet, würde die Daten erneut laden.
+* Beispiel: hier werden die Ids der Blog Posts, die `loadPosts` geladen hat, ebenfalls als Tag für `loadPosts` verwendet:
+* ```typescript
+    export const postsApi = createApi({
+      tagTypes: ["BlogPost"],
+
+      loadPosts: builder.query<BlogPost[], void>({
+        query: () => "/posts",
+        providesTags(result) { return result.map(p => ({type: "BlogPost", id: p.id})).concat("BlogPost") }
+      }),
+      
+      endpoints: builder => ({
+        updatePost: builder.mutation<BlogPost, BlogPost>({
+          query: post => ( ... ),
+          invalidatesTags(result, error, param) { return [type: "BlogPost", id: param.id] }
+        })
+      })
+    });
+  ```
+---
+### Übung: Mutations mit RTK Query
+
+* <!-- .element: class="todo" --> Mutation zum Speichern des neuen Posts
+* Liste wird nicht aktualisiert 😢
+* TagTypes hinzufügen `BlogPost`
+
+
+
                         
           </textarea>
         </section>
@@ -3676,7 +4003,7 @@ automatisch dispatchen
   </ol>
 </section> -->
 
-        <section>
+        <!-- <section>
           <h2>Zusammenfassung Redux-Architektur</h2>
           <img
             src="slides/images/redux-03-resulting-redux-architecture.png"
@@ -3696,7 +4023,7 @@ automatisch dispatchen
           <div>
             <img src="slides/images/three-kinds-of-state.png" style="max-height: 650px" />
           </div>
-        </section>
+        </section> -->
 
         <!-- #################################### AUSBLICK  ########################################## -->
 
@@ -3707,7 +4034,8 @@ automatisch dispatchen
 * [Routing](#/t-router)
 * [Testen](#/t-test)
 
-            <!-- .slide: id="t-router" -->            
+---
+<!-- .slide: id="t-router" -->            
 ## Routing in React
 
 * Anforderungen:
