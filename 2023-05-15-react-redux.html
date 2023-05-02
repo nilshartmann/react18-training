@@ -106,11 +106,9 @@
           <p class="fragment">Bitte schaltet Euer Video ein 🙏</p>
           <p class="fragment"><b>Jederzeit:</b> Fragen und Diskussionen! Bringt euch gerne ein.</p>
           <p class="fragment">Motto: Es gibt keine dummen Fragen!</p>
+          <p class="fragment">Bemerkbar machen per Audio, "Hand heben" oder Chat</p>
           <p class="fragment">
-            Bemerkbar machen per Audio, Chat oder Zoom Reaktion "Hand erheben"
-            <span class="fragment"
-              ><img width="50%" src="slides/images/zoom-reaktionen.png"
-            /></span>
+            <img width="50%" src="slides/images/screenshot-teams-hand-heben.png" />
           </p>
 
           <p class="fragment">
@@ -1895,10 +1893,13 @@ export default function useApi(url, initialValue) {
 }
 </code></pre>
         </section>
-        <section id="t-typescript">
-          <h1>Teil V</h1>
-          <h2>React Anwendungen mit TypeScript</h2>
-          <p>Example: code/blog-example/steps/5-typescript</p>
+        <section data-markdown>
+          <textarea data-template>
+<!-- .slide: id="t-typescript" -->
+# Teil V
+## React Anwendungen mit TypeScript
+* <!-- .element: class="demo" --> Beispiel: blog-example/steps/5-typescript
+          </textarea>
         </section>
 
         <!-- ######################################################  -->
@@ -2453,251 +2454,28 @@ const style: React.CSSProperties = type === "error" ?
           </ul>
         </section>
 
-        <section id="t-context">
-          <h2>Context API</h2>
-          <p>Hintergrund: Context API</p>
-          <p>Kein Statemanagement, aber häufig zusammen erwähnt</p>
-          <p>"Dependency Injection"</p>
-          <p>Überblick: 👉 Miro</p>
-        </section>
-
-        <section data-markdown>
-          <textarea data-template>
-## Context in der Praxis
-
-* 👉 `material/state/01-context`
-  </textarea
-          >
-        </section>
-
-        <section>
-          <h2>Im Detail: Context API</h2>
-          <p>Beispiel: <code>blog-example/steps/10-context</code></p>
-        </section>
-
-        <section>
-          <h2>Context...</h2>
-          <p>
-            <em
-              >erlaubt das Durchreichen von Informationen ohne explizites angeben als Properties</em
-            >
-          </p>
-
-          <ul>
-            <li>funktioniert nur innerhalb einer Hierarchie-Ebene</li>
-            <li>es können beliebg viele (fachliche) Context definiert werden</li>
-            <li>besteht aus <code>Provider</code> und <code>Consumer</code></li>
-            <li>
-              <a href="https://reactjs.org/docs/context.html" target="_blank">Doku</a>
-            </li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Context Factory</h2>
-          <ul>
-            <li>
-              <em>erzeugt ein Objekt, mit <b>zwei Komponenten</b></em>
-            </li>
-            <li>
-              <code>Provider</code>, stellt Objekt mit Key-Value-Paaren zur Verfügung (der
-              Context-"Value")
-            </li>
-            <li>
-              <code>Consumer</code> wird in eigener Komponente verwendet, um auf einen Context
-              zuzugreifen ("versteckt" durch useContext Hook)
-            </li>
-            <li>
-              <pre><code class="line-numbers" data-leftpad>
-import react from "React";
-
-const AuthContext = React.createContext();
-
-// erzeugt:
-// AuthContext.Provider 
-// AuthContext.Consumer (mit Hooks API überflüssig)
-
-export AuthContext;
-              </code></pre>
-            </li>
-          </ul>
-        </section>
-
-        <section data-markdown>
-          <textarea data-template>
-## Context Factory mit TypeScript
-
-* Der `createContext` kann ein Typ-Parameter übergeben werden, der den Context-Wert beschreibt
-* `createContext` benötigt dann einen Default-Wert, der diesem Typen entspricht
-* Der Default-Wert wird in der Anwendung in der Regel nicht verwendet
-* Wird nur verwendet, wenn (fälschlich) auf den Kontext zugegriffen wird, ohne dass es einen Provider
-gibt
-* ```typescript
-type IAuthContext = { 
-username: string | null;
-onLogin(newUser: string): void;
-onLogout(): void;
-}
-
-const AuthContext = React.createContext<IAuthContext>({
-// Dummy-Implementierung vom Default Context
-username: null,
-onLogin() {},
-onLogout() {}
-});
-
-export AuthContext;
-```
-
-  </textarea
-          >
-        </section>
-
-        <section data-markdown>
-          <textarea data-template>
-## Context Provider
-
-* _Eine React-Komponente, die einen Context zur Verfügung stellt_
-* wird innerhalb einer eigenen Komponente eingebunden und zurückgeliefert
-* Nimmt ein Objekt ("Context") mit beliebigen Werten entgegen (`value`-Property)
-* Alle Einträge des Objektes sind für die Konsumenten verfügbar
-* ```typescript
-const AuthContext = React.createContext&lt;IAuthContext>(/*...*/); // wie gesehen
-
-type AuthProviderProps = {
-children: React.ReactElement
-}
-
-export function AuthProvider(props: AuthProviderProps) {
-const [ currentUser, setCurrentUser ] = React.useState(null);
-
-const contextValue: IAuthContext = {
-// the current user
-currentUser,
-
-// function to set new user
-function onLogin(name) { setCurrentUser(name) },
-function onLogout() { setCurrentUser(null) }
-};
-
-return &lt;AuthContext.Provider value={contextValue}>
-{props.children}
-&lt;/AuthContext.Provider>;
-}             
-```
-</textarea
-          >
-        </section>
-
-        <section>
-          <h2>useContext-Hook</h2>
-          <p><em>Zugriff auf die Werte aus dem Context</em></p>
-          <p>
-            In allen Komponenten unterhalb der Provider Komponente, kann mit
-            <code>useContext</code> auf den Kontext zugegriffen werden
-          </p>
-
-          <pre><code class="javascript">
-import { AuthContext } from "auth-context";
-
-function UserBadge() {
-const { currentUser } = React.useContext(AuthContext);
-
-return currentUser  ? &lt;h1>Welcome, {currentUser}&lt;h1> : null;
-}            
-  </code></pre>
-
-          <p>Aufrufen einer Funktion aus dem Context</p>
-          <p>Ändert im Context den Zustand der Provider-Komponente</p>
-          <p>Alle Konsumer werden neu gerendert und können den neuen Wert verwenden</p>
-          <pre><code class="javascript">
-function UserBadge() {
-const { currentUser, logout } = React.useContext(AuthContext);
-
-return currentUser  ? 
-&lt;>&lt;h1>Welcome, {currentUser}&lt;h1>&lt;button onClick={logut}>Logout&lt;/button>&lt;/> 
-: null;
-}                
-  </code></pre>
-        </section>
-
-        <section data-markdown>
-          <textarea data-template>
-## Zugriff mit Custom Hook
-
-* Übliches Pattern: für den Zugriff auf den Context wird ein eigener Hook zur Verfügung gestellt
-* ```typescript
-export function useAuthContext(): IAuthContext {
-const authContext = useContext(AuthContext);
-
-return authContext;
-}            
-```
-* ```typescript
-import { useAuthContext } from "auth-context";
-
-export default function UserBadge() {
-const authContext = useAuthContext();
-}
-```  
-* "Versteckt" den Context vor der Anwendung
-* eher fachliche API
-* Hook kann Plausibiltätsprüfungen machen, z.B. ob Provider korrekt initialisiert wurde
-* ```typescript
-
-const defaultContext = { username: "__NOT__INITIALIZED__ ", /* ... */  }
-
-// ...
-
-export function useAuthContext(): IAuthContext {
-const authContext = useContext(AuthContext);
-
-if (authContext.username === defaultContext.username) {
-console.warn("Auth-Kontext wurde nicht korrekt initialisiert (kein Provider)")
-}
-
-return authContext;
-}            
-```  
-
-  </textarea
-          >
-        </section>
-
-        <section data-markdown>
-          <textarea data-template>
-## Übung: Ein Auth-Context für die Blog-Anwendung 
-
-* _Baue einen Kontext, der den aktuellen User hält und diesen anzeigt_
-* Schritte:
-* In `blog-example/backend-rest` bitte `npm start`ausführen  
-* Arbeite bitte in `blog-example/workspace-typescript-app`
-* ggf. `npm install` hier ausführen und dann `npm start` (alten Workspace beenden)
-* Du findest im Workspace TODOs, am Besten bearbeitest Du die Dateien in folgender Reihenfolge:
-1. `AuthContext.tsx` (Kontext-Provider-Komponente und -Hook)
-2. `App.tsx` (Context zur Verfügung stellen)
-3. `CurrentUser.tsx`  (Login-/Logout-Button bauen)
-4. `PostEditor.tsx`   (Aktuellen Benutzer anzeigen)
-* Mögliche Lösung findest Du in `steps/10-context`
-* Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️
-  </textarea
-          >
-        </section>
-
-        <section data-markdown>
-          <textarea data-template>
-## Context für "halb-globalen" Zustand
-
-* Miro
-* Beispiel: Formular
-</textarea
-          >
-        </section>
-
         <section id="t-redux">
           <h2>External Statemanagement mit Redux</h2>
           <h3>Demo: Redux & Redux Devtools</h3>
           <p>👉 steps/15-exkurs-redux-toolkit</p>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+
+
+
+# Redux Plain mit Thunk Action Plain
+  -> Editor
+  -> PostList (keine Posts laden)
+  
+# Thunk Actions Plain
+  -> Eine Thunk Action für PostList            
+
+
+# Thunk Action mit createThunkAction
+# Redux Toolkit Query            
+          </textarea>
         </section>
 
         <section>
@@ -2711,23 +2489,24 @@ return authContext;
           <img src="slides/images/redux-02-extracting-responsibility.png" style="width: 900px" />
         </section>
 
-        <section>
-          <h2>Redux im Code</h2>
-          <p>(npm start in advanced/workspace-typescript-app)</p>
-        </section>
-
-        <section>
-          <h2>Strukturierter Überblick über alle Redux Teile</h2>
-        </section>
-
         <section data-markdown>
           <textarea data-template>
-    ### Redux: Konzepte
+## Redux im Code
+* <!-- .element: class="demo" -->Schritt-für-Schritt: "Plain Redux" 
+* <!-- .element: class="demo" -->Schritt-für-Schritt: "Redux Toolkit"
+* <!-- .element: class="demo" --> (jeweils workspace-redux)
+---
+## Strukturierter Überblick über alle Redux Teile            
+* Wir sehen uns zunächst die Grundlagen des "klassichen" Redux an
+* Im Projekt setzt man aber Redux Toolkit ein. Das sehen wir uns danach an.
+* Hier geht's jetzt erstmal "nur" darum, die Konzepte und Ideen von Redux zu verstehen.
+---
+### Redux: Konzepte
 
-    * **Store**: eine Art "Datenbank", die außerhalb der Komponentenhierachie liegt. Hier ist der globale Zustand untergebracht. Komponenten werden über Veränderungen informiert und können sich re-rendern
-    * **Actions**: Einfache JavaScript-Objekte, die beschreiben was in einer Anwendung passiert. Bestehen aus einem Type und einem fachlichen Payload.
-    * **Reducer**-Funktionen: Funktionen, in denen die Logik zur Verarbeitung des Zustands untergebracht ist. Sie erhalten eine Action und einen (alten) Zustand, verarbeiten die Action und liefern neuen Zustand zurück.
-    * **Action Creator**: Factory-Funktionen, die Action Objekte erzeugen
+* **Store**: eine Art "Datenbank", die außerhalb der Komponentenhierachie liegt. Hier ist der globale Zustand untergebracht. Komponenten werden über Veränderungen informiert und können sich re-rendern
+* **Actions**: Einfache JavaScript-Objekte, die beschreiben was in einer Anwendung passiert. Bestehen aus einem Type und einem fachlichen Payload.
+* **Reducer**-Funktionen: Funktionen, in denen die Logik zur Verarbeitung des Zustands untergebracht ist. Sie erhalten eine Action und einen (alten) Zustand, verarbeiten die Action und liefern neuen Zustand zurück.
+* **Action Creator**: Factory-Funktionen, die Action Objekte erzeugen
   </textarea
           >
         </section>
@@ -2767,7 +2546,6 @@ return authContext;
       reducer(old_state, action) => new_state
     </code></pre>
             </li>
-            <li><em>In React mit useReducer (ohne Redux) einsetzbar</em></li>
           </ul>
         </section>
 
@@ -2779,20 +2557,21 @@ return authContext;
               Bekommt den vorherigen Zustand übergeben und liefert neuen Zustand zurück (oder den
               unveränderten alten)
             </li>
-            <li>
-              Zustand ist immutable! Kann mit der
-              <a href="https://github.com/immerjs/immer">Bibliothek "immer"</a> kombiniert werden
-            </li>
+            <li>Der Zustand ist immutable, deswegen den bestehenden Zustand immer kopieren!</li>
             <li>
               <pre><code class="javascript">
       function editorReducer(state = initalDraftPost, action) {
         switch (action.type) {
+
           case "editor/clearDraft":
             return initalDraftPost;
+
           case "editor/setDraftBody":
             return { ...state, body: action.body };
+
           case "editor/setDraftTitle":
             return { ...state, title: action.title };
+            
           default:
             return state;
         }
@@ -2859,17 +2638,29 @@ return authContext;
         <section>
           <h3>Action Creator...</h3>
           <ul class="no-fragment">
-            <li>...sind "Factory-Funktionen", die Action-Objekte erzeugen</li>
+            <li>...sind "Factory-Funktionen", die deine Action-Objekte erzeugen</li>
             <li>...sind optional, werden aber nahezu immer verwendet</li>
             <li>
               <pre><code class="javascript">
       function setDraftTitle(newTitle) {
         return { 
           type: "editor/setDraftTitle", 
-          title 
-        };
+          title: newTitle
+        }
+      }  
+    </code></pre>
+            </li>
+            <li>Beim dispatchen wird dann der Action-Creator aufgerufen:</li>
+            <li>
+              <pre><code class="javascript">
+      function PostEditor() {
+        const dispatch = useDispatch();
+        function handleTitleChange(newTitle) {
+          dispatch(setDraftTitle(newTitle));
+        }
+        // ...
       }
-      }  </code></pre>
+    </code></pre>
             </li>
           </ul>
 
@@ -2969,21 +2760,18 @@ return authContext;
             Der Store wird allen Componenten über die Wrapper-Komponente <em>Provider</em>
             zur Verfügung gestellt
           </p>
-          <pre><code class="typescript line-numbers"  >
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import { rootReducer } from './reducers';
+          <pre><code class="javascript">
+import { store } from "./store";
+import { Provider } from "react-redux";
 
-// http://redux.js.org/docs/api/createStore.html
-const store = createStore(
-rootReducer // reducer
+const root = createRoot(document.getElementById("root"));
+
+root.render(
+  &lt;Provider store={store}>
+      &lt;App />
+  &lt;/Provider>
 );
-ReactDOM.render(
-&lt;Provider store={store}>
-&lt;App />
-&lt;/Provider>,
-mountNode
-);
+            
 </code></pre>
         </section>
 
@@ -2992,8 +2780,8 @@ mountNode
           <h3>Redux Dev Tools</h3>
 
           <p>
-            Die Redux Dev Tools (Browser-Erweiterung) können in der Anwendung beim Konfiguration des
-            Stores ein- oder ausgeschaltet werden
+            Mit den Redux Dev Tools kannst Du unter anderem im Browser den Store einsehen und die
+            ausgelösten Actions nachverfolgen
           </p>
 
           <ul>
@@ -3022,141 +2810,792 @@ mountNode
           <ul>
             <li><a href="https://redux-toolkit.js">https://redux-toolkit.js.org/</a></li>
             <li>
-              Vorkonfiguriertes Setup (inklusive
-              <a href="https://github.com/immerjs/immer">immer</a> für Reducer und Thunk Middleware)
-            </li>
-            <li>
-              Vereinfacht erheblich das Arbeiten mit Reducer, generiert z.B. Action Creator zur
-              Laufzeit
-            </li>
-            <li>Vereinfacht typische Anwendungsfälle wie API Calls</li>
-            <li>
-              Outstanding TypeScript support! Ihr wollt das nicht ohne TypeScript verwenden 😉
-            </li>
-            <li>
-              <em>Wenn ihr Redux nutzen wollt, <b>nehmt bitte das RTK</b></em>
+              Das ist jetzt das "offizielle" Redux
+              <ul>
+                <li>
+                  Mit vorkonfiguriertem Setup (inklusive
+                  <a href="https://github.com/immerjs/immer">immer</a> für Reducer-Funktionen)
+                </li>
+                <li>
+                  Vereinfacht erheblich das Arbeiten mit Reducer, generiert z.B. Action Creator zur
+                  Laufzeit
+                </li>
+                <li>
+                  Vereinfacht typische Anwendungsfälle wie API Calls mit
+                  <a href="https://redux-toolkit.js.org/rtk-query/overview">RTK Query</a>
+                </li>
+              </ul>
             </li>
           </ul>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+### createSlice    
+* Ein "Slice" repräsentiert einen fachnlichen "Schnitt" in Eurer Anwendung
+* Ein Slice wird mit der Funktion <code>createSlice</code> erzeugt
+* Diese Funktion erwartet ein Konfigurationsobjekt
+  * legt den initialen Zustand fest
+  * definiert die Reducer-Funktionen
+    * Für jede reducer-Funktion werden automatisch Action-Creator erzeugt
+* ```typescript
+  const editorSlice = createSlice({
+    name: "editor",
+    initalState: { title: "", body: "" },
+    reducers: {
+      updateTitle(state, action) {
+        state.title = action.payload.newTitle
+      }
+    }
+  })
+  ```
+* ```typescript
+  const dispatch = useDispatch();
+
+  dispatch(editorSlice.actions.updateTitle({
+    newTitle: "Hello RTK"
+  }))
+  ```
+---
+### TypeScript-Typen #1
+
+* Der Typ des States eines Slices wird automatisch vom RTK aus dem `initialState` abgeleitet
+  * Natürlich könnt ihr dafür auch explizit einen Typen definieren
+  * ```typescript
+    type EditorSliceState = { title: string, body: string }
+
+    const editorSlice = createSlice({
+      name: "editor",
+      initalState: { title: "", body: "" } as EditorSliceState,
+      // ...
+    })
+    ```
+  * oder:
+  * ```typescript
+    type EditorSliceState = { title: string, body: string }
+
+    const initialState: EditorSliceState = { title: "", body: "" };
+
+    const editorSlice = createSlice({
+      name: "editor",
+      initalState,
+      // ...
+    })
+    ```
+  
+---
+### Reducer-Funktionen
+
+* Das `reducers`-Objekt enthält die Reducer-Funktionen für einen Slice
+* Der Key bzw. der Funktionsname entspricht dem Reducer-Namen
+* Die Funktion kann zwei Parameter bekommen:
+  * 1. Den aktuellen State des Slices
+    * **Achtung!**: Der State hier ist nur der State des jeweiligen Slices, nicht der Gesamt-State aller Slices!
+    * Ein Slice arbeitet immer nur auf "seinem" State und hat auch keinen Zugriff auf State anderer Slices.
+  * 2. Das Action-Objekt (optional. Wenn eine Action keinen Payload hat, könnt ihr den Parameter weglassen)
+* Der übergebene `state` ist ein [immer](https://immerjs.github.io/immer/) `Draft`-Objekt, das ihr direkt verändern dürft:
+  * ```typescript
+    reducers: {
+      addBlogPost(state, action) {
+        state.posts.push({...}); // push ist erlaubt hier
+        state.posts[0].title = action.payload.newTitle; // direkte Modifikation erlaubt
+      }
+    }
+  ```
+* Alternativ könnt ihr auch ein komplett neues Objekt zurückgeben, dann wird der bestehende
+  State durch das neue Objekt komplett ersetzt:
+* ```typescript
+  reducers: {
+    clearEditor(state) {
+      return { title: "", body: ""}; 
+    }
+  }
+  ```
+
+---
+### Action Creator  
+* Für jede Reducer-Funktion generiert das RTK automatisch eine Action-Creator-Funktion
+* Die generierte Action-Create-Funktion erzeugt den _Payload_, der Action, die an die `reducer`-Funktion
+  als 2. Parameter übergeben wird
+* Die generierten Funktionen liegen im erzeugten Slice-Objekt unter `slice.actions`:
+* ```typescript
+  const editorSlice = createSlice({ reducers: { updateTitle(...) { ... } });
+
+  const { updateTitle } = createSlice.actions;
+  // updateTitle kann 'dispatched' werden
+  ```
+---
+### Actions im RTK
+
+* Eine Action in RTK ist immer ein Objekt im folgenden Format:
+  * ```typescript
+    type Action<P> = {
+      type: string
+      payload: P
+    }
+    ```
+* Der `type` setzt sich aus dem `name` des Slices und dem Namen der Reducer-Funktion zusammen
+  * `editor/updateTitle`
+---
+### Action Payload  
+* Der **Payload** ergibt sich aus dem zweiten Parameter der Reducer-Funktion
+* Damit der Typ korrekt bestimmt werden kann, müsst ihr einen TypeScript-Typen für den **Payload** definieren.
+  Diesen gebt ihr dann - "verpackt" im `PayloadAction`-Typen - für den Action-Parameter in Eurem Reducer an:
+* ```typescript
+  type UpdateTitle = { newTitle: string };
+  ```
+* ```typescript
+  const editorSlice = createSlice({
+    reducers: {
+      updateTitle(state, action: PayloadAction<UpdateTitle>) {
+        state.title = action.payload.newTitle
+      }
+    }
+  })
+  ```
+* Auf diese Weise ist sowohl `action`-Parameter korrekt getypt als auch der Action-Creator:
+* ```typescript
+  // OK
+  dispatch(editorSlice.actions.updateTitle({
+    newTitle: "Hello" 
+  }));
+
+  // ERR newTitle darf nicht null sein
+  dispatch(editorSlice.actions.updateTitle({
+    newTitle: null 
+  }));
+
+  // ERR newTitel statt newTitel
+  dispatch(editorSlice.actions.updateTitle({
+    newTitel: "Moin"
+  }));
+
+  ```
+---
+### Extra Reducer
+
+- Actions in Redux können prinzipiell von _allen_ Reducern verarbeitet werden
+- Bislang haben wir nur gesehen, wie die Actions direkt von dem Reducer verarbeitet werden,
+  der sie "definiert" (als 2. Parameter)
+- Für alle weiteren Actions können `extraReducers` an einem Slice definiert werden
+- Ein "extra reducer" ist eine gewöhnliche Reducer-Funktion, d.h. sie bekommt den State des Slices und eine Action übergeben
+- Welche Action sie übergeben bekommt, kann sie an Hand verschiedener Kriterien auswählen
+- Das `extraReducers`-Feld an `createSlice` ist eine Funktion, die ein `builder`-Objekt übergeben bekommt
+- Mit diesem `builder`-Objekt kann sie ihre Reducer definieren
+  * ```typescript
+    const editorSlice = createSlice({
+      // ...
+      extraReducers: builder => {
+        builder.addCase(logoutAction, (state, action) => {
+          state.title = "";
+          state.body = "";
+        }
+      }
+    })
+    ```
+---
+### Extra Reducer
+- Über das `builder`-Objekt können Reducer hinzugefügt werden
+- Dabei wird jeweils ausgewählt für welche Action(s) ein Reducer aufgerufen werden soll
+- Dazu gibt es zwei Methoden (`addCase` und `addMatcher`)
+- Der erste Parameter wählt aus, ob eine Action verarbeitet werden soll oder nicht
+- Der zweite Parameter ist die reducer-Funktion (identisch mit den Reducern aus `reducers`)
+---
+### Extra Reducer: addCase
+- Mit `addCase` kann eine Action aus einem anderen Slice angegeben werden. Wenn diese Action ausgelöst wird,
+  wird die Reducer-Funktion aufgerufen:
+  * ```typescript
+    const userSlice = createSlice({ reducers: { logout(...) { ... }}});
+    export const { logout } = userSlice.actions;
+
+    const editorSlice = createSlice({
+      // ...
+      extraReducers: builder => {
+        builder.addCase(logout, (state, action) => {
+          // action ist 'Logout'-Action aus 'userSlice'
+          state.title = "";
+          state.body = "";
+        }
+      }
+    })
+    ```
+---
+### Extra Reducer: addMatcher
+- Mit `addMatcher` wird eine CallbackFunktion angegeben
+- Diese Funktion wird für jede Action aufgerufen und liefert `true` bzw. `false` zurück, um zu entscheiden,
+  ob die Reducer-Funktion aufgerufen werden soll
+- Die Funktion ist außerdem eine TypeScript [Type Predicate](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates)-Funktion. Dadurch ist die Reducer-Funktion dann
+  automatisch korrekt getypt.
+  * ```typescript
+
+    type SavePostAction = { type: "savePost", payload: { title: string, body: string } };
+
+    function isSavePostAction(a: AnyAction): a is SavePostAction {
+      return a.type === "savePost";
+    }
+
+    const editorSlice = createSlice({
+      // ...
+      extraReducers: builder => {
+        builder.addMatcher(isSavePostAction, (state, action) => {
+          // Action ist eine SavePostAction
+          // ...
+        }
+      }
+    })
+    ```
+  
+---
+### Verwenden des Slices
+
+* Das erzeugte Slice-Objekt hat zwei Properties:
+  * `reducer`: Dieses Objekt wird in der Store-Konfiguration angegeben
+  * `actions`: enthält die automatisch generierten Action-Creator-Funktionen
+* Beide Teile könnt ihr exportieren, in der Regel wird `reducer` per `default` exportiert:
+* ```typescript
+  const editorSlice = createSlice({ ... });
+
+  export default editorSlice.reducer;
+  export const { updateTitle, updateBody } = editorSlice.actions;
+  ```
+---
+### Konfiguration
+* Der globale Store wird mit der `configureStore`-Funktion erzeugt
+* Diesem übergebt ihr alle `reducer`, die ihr mit `createSlice` (oder auf "klassichem" Weg) erzeugt habt:
+* ```typescript
+  import { configureStore } from "@reduxjs/toolkit";
+  import editor from "./editor-slice";
+  import posts from "./posts-slice";
+
+  export const store = configureStore({
+    reducer: {
+      editor,
+      posts
+    }
+  });
+  ```
+* **Achtung!** Der Name des Keys im `reducer`-Objekt bestimmt den "Pfad" im globalen State:
+  * Im Beispiel oben besteht der globale State aus zwei Root-Pfaden (`editor` und `posts`)
+  * Zugriff zum Beispiel: `useSelector( state => state.editor.title )`
+* In folgenden Beispiel bestünde der State aus den Pfaden `editorSlice` und `posts`:
+* ```typescript
+export const store = configureStore({
+  reducer: {
+    editorSlice: editor,
+    posts
+  }
+});
+  ```
+---
+### Den Store bekannt machen
+
+* Der Store ist ein Singleton, der beim Starten der Anwendung initial erzeugt wird
+* Das erzeugte `store`-Objekt müsst ihr über die `Provider`-Komponente in Eure React-Anwendung bringen:
+* ```typescript
+  import React from "react";
+  import { createRoot } from "react-dom/client";
+
+  import { configureStore } from "@reduxjs/toolkit";
+  import { Provider } from "react-redux";
+
+  import App from "./App";
+
+  const store = configureStore({ .... });
+
+  createRoot(document.getElementById("root"))
+    .render(
+      <Provider store={store}>
+          <App />
+      </Provider>
+  );
+  ```
+---
+### TypeScript-Typen für Zugriff auf den Store
+
+* Aus dem erzeugten Store könnt ihr einen TypeScript-Typen für den globalen State erzeugen:
+* ```typescript
+  export const store = configureStore({ ... });
+
+  export type RootState = ReturnType<typeof store.getState>;
+  ```
+* Den `RootState` könnt ihr jetzt z.B. für typsicheren Zugriff auf den State in `useSelector` verwenden:
+* ```typescript
+  const title = useSelector<RootState>(state => state.editor.newTitle); // OK
+  const title = useSelector<RootState>(state => state.editor.newTitel); // ERR
+  ```
+* In der Regel erzeugt man sich eine `useAppSelector`-Funktion, die direkt den `RootState` Eurer Anwendung kennt:
+* ```typescript
+  // redux-hooks.ts
+
+  import { TypedUseSelectorHook, useSelector } from "react-redux";
+  import { AppDispatch, RootState } from "./store";
+
+  export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+  ```
+* Typsichere Verwendung:
+* ```typescript
+  import {useAppSelector} from "../redux-hooks"
+
+  function Editor() {
+    const title = useAppSelector(state => state.editor.title); // Typsicher!
+
+    // ...
+  }
+  ```
+
+---
+### useAppDispatch
+
+* Auch für die `useDispatch`-Funktion könnt ihr Euch einen TS-Typen und einen Hook erzeugen
+* Die getypte Variante kennt dann auch alle Action-Typen, die per installierter Middleware (z.B. Thunk) erlaubt sind
+* ```typescript
+  type AppDispatch = typeof store.dispatch;
+
+  export const useAppDispatch: () => AppDispatch = useDispatch;
+  ```
+* Anstatt der `useDispatch`-Funktion verwendet ihr in Eurer Anwendung dann einfach `useAppDispatch`
+
+---
+### Übung: Redux Toolkit
+
+* `editorSlice` bauen
+* <!-- .element: class="todo" -->Übung vorbereiten
+</textarea
+          >
+        </section>
+        <section>
+          <h3>Redux</h3>
+          <h2>Asynchrone Actions</h2>
+          <p><em>Problem: Asynchronität, z.B. beim Laden von Daten</em></p>
+          <ul>
+            <li>
+              Wo unterbringen?
+              <ul>
+                <li>Reducer sind Seiteneffekt-frei!</li>
+                <li>Actions sind nur JavaScript-Objekte (keine Logik)!</li>
+              </ul>
+            </li>
+            <li>
+              Weiteres Problem: fachliche Abläufe meistens komplex(er) als nur eine Action.
+              <ul>
+                <li>
+                  Typisch: Request Start, Request läuft, Request erfolgreich/Request fehlgeschlagen
+                </li>
+              </ul>
+            </li>
+            <li>Redux bringt dafür nix mit :-(</li>
+            <li>
+              Es gibt aber Antworten:
+              <a href="https://github.com/reduxjs/redux-thunk">Redux Thunk</a> (die "offizielle"
+              Lösung) und Saga, Observable
+            </li>
+          </ul>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+### Thunk Actions 
+
+* <!-- .element: class="demo" --> Laden der Posts mit normaler Thunk Action
+* <!-- .element: class="demo" --> Laden der Posts mit createAsyncThunk
+                        
+          </textarea>
         </section>
 
         <section>
-          <h3>createSlice</h3>
+          <h3>Hintergrund: Redux Middleware</h3>
           <ul>
-            <li>Ein "Slice" repräsentiert einen fachnlichen "Schnitt" in Eurer Anwendung</li>
-            <li>Ein Slice wird mit der Funktion <code>createSlice</code> erzeugt</li>
-            <li>Diese Funktion erwartet ein Konfigurationsobjekt</li>
-            <li>Über dieses Objekt können reducer und der initiale Zustand festgelegt werden</li>
             <li>
-              Für jede reducer-Funktion wird per Default ein action-creator automatisch generiert
+              Eine Middleware-Funktion bekommt alle dispatchen Actions übergeben, bevor sie in den
+              Store gelangen
             </li>
             <li>
-              <pre><code class="javascript">
-      const hello = createSlice({
-        name: "hello",
-        initalState: { name: "world" },
-        reducers: {
-          greet(state, action) {
-            // ...
-          }
-        }
-      })
-    </code></pre>
+              Die Middleware kann die Action annehmen, verändern, ablehnen und/oder weiterleiten
             </li>
-            <li>
-              <pre><code class="javascript">
-      const dispatch = useDispatch();
-
-      dispatch(hello.actions.greet({
-        name: "World"
-      }))
-    </code></pre>
-            </li>
+            <li>Typische Anwendungsfälle: Logging, asynchrone Verarbeitung</li>
+            <li>Die Middleware-Funktionen werden bei der Konfiguration des Stores angegeben</li>
+            <li>In der Regel schreibst Du keine Middlewares selbst, sondern verwendest fertige</li>
           </ul>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+### Thunk Action
+
+- Als `Thunk Action` wird eine Action bezeichnet, die selbst eine Funktion (!) ist
+- Ein Action-Creator kann eine Thunk Action, also eine Funktion zurückliefern.
+- Diese Funktion wird von der Thunk Middleware aufgerufen
+- Der Thunk-Funktion werden zwei Parameter übergeben:
+  - Die `dispatch`-Funktion. Damit kann sie beliebig viele Actions auslösen
+  - Die `getState`-Funktion, mit der sie (lesenden) Zugriff auf den State hat
+- Die Thunk-Funktion darf asynchron sein!  
+          </textarea>
         </section>
 
         <section>
-          <h3>reducer</h3>
-          <ul>
-            <li>Wie gesehen, bekommen reducer den slice-State und die Action übergeben</li>
-            <li>
-              Die reducer-Funktionen werden mit <b>immer</b> umschlossen, so dass der State dort
-              <b>mutable</b> ist (bzw so aussieht, als ob er mutable ist)
-            </li>
-            <li>
-              Der State kann deshalb direkt bearbeitet werden oder es kann ein komplett neues Objekt
-              zurückgegeben werden
-            </li>
-            <li>
-              <pre><code class="javascript">
-      const hello = createSlice({
-        // ...
-        reducers: {
-          greet(state, action) {
-            state.name = action.payload.name;
-          },
-          clear() {
-            return { name: "" };
-          }
-        }
-      })
-    </code></pre>
-            </li>
-          </ul>
+          <h3>Asynchrone Actions mit Thunk Middleware</h3>
+          <p>
+            Schritt 1: <b>Dispatchen von Actions</b>: Komponente bleibt unverändert, dispatched
+            weiterhin eine Action, die wie eine "normale" Redux Action aussieht
+          </p>
+          <div>
+            <pre><code>
+      import { loadPosts } from "./posts-slice";
+
+      function App() {
+        React.useEffect( 
+          () => dispatch(loadPosts()),
+          []
+        );
+
+        return ...;
+    }
+  </code></pre>
+          </div>
         </section>
+
         <section>
-          <h3>reducer und Action Creator</h3>
-          <ul>
-            <li>Zu jeder reducer-Funktion wird eine Action-Creator-Funktion erzeugt</li>
-            <li>Diese Funktion erwartet einen Parameter: den Action-Payload (oder gar nichts)</li>
-            <li>
-              Die Funktionen liegen unterhalb von <code>sliceName.actions</code> und können von dort
-              exportiert werden, so dass die Anwendung darauf Zugriff hat
-            </li>
-            <li>
-              <pre><code class="javascript">
-      const hello = createSlice({
-        // ...
-        reducers: {
-          
-          greet(state, action) { ... },
-          clear() { ... }
-          }
-        }
-      })   
-    
-      export const { greet, clear } = hello.actions;
-    
+          <h3>Asynchrone Actions mit Thunk Middleware</h3>
+          <p>
+            Schritt 2: <b>Action Creator</b>: Hier können jetzt weitere Actions, auch asynchron,
+            dispatched werden
+          </p>
+          <pre><code>
+            // 'loadPosts' ist ein Action-Creator, der eine Thunk-Action zurückliefert!
+            export function loadPostsWithCache() {
+              //              v--- Thunk-Action!
+              return (dispatch, getState) => {
+                dispatch(loadPostRequestStarted()); 
+                try {
+                  posts = await loadPostsWithFetch();
+                  dispatch(loadPostRequestFinished(posts));
+                } catch (err) {
+                  dispatch(loadPostRequestFailed(err));
+                }
+              }
+            }  
     </code></pre>
-            </li>
-            <li>
-              <pre><code class="javascript">
-      import { greet } from "./hello-slice";
-
-      // in der Komponente
-      dispatch(greet({name: "Klaus"}));
-
-      // ohne payload
-      dispatch(clear());
-    </code></pre>
-            </li>
-          </ul>
         </section>
 
+        <section data-markdown>
+          <textarea data-template>
+### Asynchrone Actions
+
+* In einer Thunk-Action könnt ihr auf den State _lesend_ zugreifen (`getState`-Parameter)
+* Ihr könnt den State aber _nicht verändern_!
+* In den Thunk-Actions könnt ihr beliebig viele weitere (Thunk-) Actions dispatchen
+* Ihr könnt also z.B. "normale" Actions dispatchen, dei dann von "normalen" Reducern verarbeitet werden
+  * Im gezeigten Beispiel sind dass die "Lifecycle-Actions" (`loadPostRequestStarted` etc.)
+  </textarea
+          >
+        </section>
+
+        <section>
+          <h2>Redux Thunk</h2>
+          <p>Thunk Actions können nicht nur für asynchone Anwendungsfälle verwendet werden</p>
+          <ul>
+            <li>
+              Für Anwendungsfälle in den allgemein mehr als eine Action dispatched werden soll
+            </li>
+            <li>
+              Es ist darin erlaubt, beliebige Seiteneffkte auszuführen, z.B. eine uuid generieren
+              oder auf die Uhrzeit zuzugreifen
+            </li>
+            <li>
+              Im Gegensatz zum Reducer hat ein Action-Creator Zugriff auf den gesamten State und
+              kann z.B. eine Cache-Funktionaliät implementieren
+            </li>
+            <li>
+              <pre><code class="typescript line-numbers"  >
+      export function loadPostsWithCache() {
+        return (dispatch, getState) => {
+
+          if (getState().posts.posts) {
+            // Posts sind schon geladen => nicht erneut laden
+            return;
+          }
+
+
+          dispatch(postsLoading());
+
+          // ...wie gesehen: Posts laden etc.
+        };
+      }    </code></pre>
+            </li>
+          </ul>
+          <!-- <p>
+        <strong
+          >Action-Creators sind die einzigen Teile einer Redux-Anwendung, die asynchrone
+          Operationen ausführen dürfen</strong
+        >
+      </p> -->
+        </section>
         <!-- ============================================================================= -->
-        <section>
-          <h3>Asynchrone Actions</h3>
-          <ul>
-            <li>Die Redux Thunk Middleware ist in Redux Toolkit integriert</li>
-            <li>
-              Asynchrone Action Creator können aber nicht als reducer definiert werden, du schreibst
-              sie wie in Redux außerhalb von createSlice hin.
-            </li>
-            <li>
-              Mit <a href="https://redux-toolkit.js.org/api/createAsyncThunk">createAsyncThunk</a>
-              kannst Du vereinfachte Thunk-Actions schreiben, die automatisch Lifecycle Actions
-              dispatchen (request started, request failed, ...)
-            </li>
-          </ul>
+
+        <section data-markdown>
+          <textarea data-template>
+### Redux Thunk in Redux Toolkit
+* Die Redux Thunk Middleware ist in Redux Toolkit integriert
+* (Asynchrone) Thunk Action Creator können aber nicht im `reducers`-Objekt eines Slices definiert werden
+* Ihr müsst sie als "normale" Funktion außerhalb von <code>createSlice</code> hinschreiben (wie im Beispiel gesehen)
+* Aber natürlich könnt ihr in dem Thunk Action Creator die Actions aus Euren Slices dispatchen:
+* ```typescript
+  type LoadPostRequestFinished = { loadedPosts: BlogPost[] };
+  const postsSlice = createSlice({
+    reducers: {
+      loadPostRequestStarted(state) {
+        state.loading = true;
+      }
+      loadPostRequestFinished(state, action: PayloadAction<LoadPostRequestFinished>) {
+        state.loading = false;
+        state.posts = action.payload.loadedPosts;
+        }
+    }
+  });
+
+  // Thunk Action Creator
+  export function loadPosts() { 
+    return async (dispatch, getState) => {
+      dispatch(postsSlice.action.loadPostRequestStarted());
+      const posts = ...;
+      dispatch(postsSlice.action.loadPostRequestFinished({loadedPosts: posts }));
+    }
+  }
+  ```
+--- 
+### createAsyncThunk: Automatische Lifecycle-Actions
+* In der asynchronen Verarbeitung soll häufig eine Art Lifecycle ausgedrückt werden (z.B. "loading", "finished", "failed")
+* Mit [createAsyncThunk](https://redux-toolkit.js.org/api/createAsyncThunk) kannst Du vereinfacht Thunk-Actions schreiben, die solche Actions
+automatisch dispatchen
+* Du musst dann nur noch die fachliche Logik implementieren (z.B. das Laden der Daten)
+* Deine Thunk Action liefert ein Promise zurück.
+* Vom Zustand des Promises macht RTK dann abhängig, welche Lifecycle-Action dispatched wird:
+  * `pending` (Promise wird gerade verarbeitet, z.B.: Server-Call läuft)
+  * `fulfilled` (Promise wurde erfolgreich aufgelöst/resolved, Daten sind geladen worden)
+  * `rejected` (Beim Verarbeiten des Promises ist ein Fehler aufgetreten)
+---
+### createAsyncThunk: API
+
+* Die `createAsyncThunk`-Funktion erwartet zwei Parameter:
+  * Den Action `type` als String (z.B. `"posts/load"`)
+  * Eine Callback-Funktion (`payloadCreator`), in der die Action-Logik (z.B. das Laden von Daten) implementiert ist
+* ```typescript
+  export const loadPosts = createAsyncThunk("posts/load", async () => {
+    const response = await fetch("http://localhost:7000/posts?slow");
+    const json = (await response.json()) as BlogPost[];
+    return json;
+  });
+  ```
+*  Diese `loadPosts`-Action kann wie gewohnt dispatched werden:
+* ```typescript
+  dispatch(loadPosts());
+  ```
+* Es werden dann drei Actions dispatched:
+  * `posts/load/pending` und dann:
+  * `posts/load/fulfilled` oder `posts/load/rejected`
+* Die `posts/load/fulfilled`-Action enthält außerdem den ermittelten Wert des Promises
+
+---
+###  createAsyncThunk: Verarbeiten der Actions
+
+* Der Rückgabe-Wert der Thunk-Action wird als `payload` an die `fulfilled`-Action gehängt
+* Wenn die Thunk-Action fehlschlägt, wird der Fehler der Payload als `error` übergeben
+* Die ausgelösten "Lifecycle"-Actions kannst Du mit einem `extraReducer` am Slice verarbeiten
+  * Damit kannst du zum Beispiel den aktuellen Lifecycle in den State hängen
+  * Oder die geladenen Daten bzw. den aufgetretenen Fehler
+* Um die Actions auszuwählen kannst du die `addCase`-Funktion von `extraReducers` verwenden
+  * Für die drei Lifecycle Status gibt es jeweils ein Attribute an der Action, das Du übergeben kannst:
+* ```typescript
+  const loadPosts = createAsyncThunk(...);
+
+  const postsSlice = createSlice({
+    initialState: { loading: false, posts: [] },
+
+    extraReducers: builder => {
+
+      builder.addCase(loadPosts.pending, (state) => { 
+        state.loading = true;
+      })
+
+      builder.addCase(loadPosts.fulfilled, (state, action) => { 
+        state.loading = false;
+        state.posts = action.payload;
+      });
+
+      builder.addCase(loadPosts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      });
+    }
+  })
+  ```
+  
+
+---
+###  createAsyncThunk: API Details
+
+* Die [`payloadCreator`-Callback-Funktion](https://redux-toolkit.js.org/api/createAsyncThunk#payloadcreator) von `createAsyncThunk` kann zwei Parameter annehmen:
+  1. Parameter: Objekt, mit dem Du Argumente beim dispatchen übergeben kannst (z.B. Id der zu lesenden Daten)
+  2. `thunkAPI`-Objekt. Dieses Objekt enthält unter anderem die `dispatch` und die `getState`-Funktion, um weitere Actions zu dispatchen oder auf den State lesend zuzugreifen. Mit `rejectWithValue` kann ein angepasster `error` zurückgeliefert werden
+* ```typescript
+  export const loadPostById = createAsyncThunk("posts/loadById", async (postId: string, thunkApi) => {
+
+    // Beispiel: Zugriff auf State
+    const post = getState().posts.find(p => p.id === postId);
+    if (post) {
+
+      // Beispiel: Dispatch weiterer Actions
+      thunkApi.dispatch(metricSlice.actions.cacheHit(postId));
+      return post;
+    }
+    thunkApi.dispatch(metricSlice.actions.cacheMiss(postId));
+
+    const response = await fetch(`http://localhost:7000/posts/${postId}`);
+
+    if (response.status === 404) {
+
+      // Beispiel: Eigenes Fehler-Objekt
+      return thunkApi.rejectWithValue({errorMessage: "Blog Post not found"});
+    }
+
+    return response.json();
+  });
+  ```
+* ```typescript
+  dispatch(loadPostById(123))
+  ```
+  
+
+---
+### Übung: Thunk
+
+* <!-- .element: class="todo" -->Posts laden mit createAsyncThunk
+* <!-- .element: class="todo" -->Dabei: fullfilled und reject behandeln
+* <!-- .element: class="todo" -->Nach **Speichern** load-dispatchen
+
+
+---
+## Redux Toolkit Query
+
+---
+### Redux Toolkit Query
+
+* Die [RTK Query](https://redux-toolkit.js.org/rtk-query/overview) API ist der "offizielle" Weg vom Redux Toolkit, um mitDaten vom Server zu arbeiten
+  * Aus dem [Redux Styleguide](https://redux.js.org/style-guide/#use-rtk-query-for-data-fetching): _we recommend using RTK Query as the default approach for data fetching and caching in a Redux app. We recommend against writing data fetching logic by hand in almost all cases._
+* RTK Query unterstützt Lesen und Schreiben von Daten (per HTTP), Caching und Lifecycle
+
+---
+### Redux Toolkit Query
+
+* Mit `createApi` wird eine Art API-Slice definiert (ähnlich wie `createSlice` aber für API-Endpunkte)
+* Damit wird beschrieben, welche Endpunkte es gibt, und wie auf diese Zugegriffen werden soll
+* Auch die Konfiguration des Caches erfolgt darüber
+* Für alle konfigurierten Endpunkte werden React Hooks generiert, mit denen die Server-Requests ausgeführt werden können
+* ```typescript
+  import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+  export const postsApi = createApi({
+    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:7000" }),
+
+    endpoints: builder => ({
+      loadPosts: builder.query<BlogPost[], void>({
+        query: () => "/posts",
+      }),
+
+      getPost: builder.query<BlogPost, string>({
+        query: postId => `/posts/${postId}`,
+        }
+      })
+    })
+  });
+
+  export const { useLoadPostsQuery, useGetPostQuery } = postsApi;
+
+  ```
+---
+### createApi
+
+* An [createApi](https://redux-toolkit.js.org/rtk-query/api/createApi) wird eine Objekt mit der Konfiguration deiner Endpunkte übergeben.
+* Du musst darin zwei Dinge zwingend angeben:
+  * Den `baseQuery`. Eine Funktion, die bestimmt, wie Server Requests technisch durchgeführt werden sollen. 
+    * Für viele Fälle ist die [`fetchBaseQuery`](https://redux-toolkit.js.org/rtk-query/api/fetchBaseQuery)-Funktion aus dem RTK ausreichend. Dieser übergibst Du eine `baseUrl` und die Requests werden dann mit der `fetch` API durchgeführt.
+  * `endpoints` Eine Callback-Funktion, mit der Du deine Endpunkt-Konfiguration festlegen kannst.
+
+---
+### Endpunkte
+
+* Die Endpunkte deiner API werden mit der `endpoints`-Callback-Funktion festgelegt.
+* Diese Funktion erhält ein `builder`-Objekt, mit Du mit der `query`- und `mutation`-Funktion Endpunkte definieren kannst
+  * Die `query`-Endpunkte sind zum lesen von Daten
+  * Die `mutation`-Endpunkte sind für alle Arten von verändernden Server-Zugriffen (z.B. HTTP POST oder HTTP PUT)
+* Die `endpoints`-Funktion liefert ein Objekt zurück, in dem die **Keys** (fachliche) Namen von Endpunkten sind. 
+  * Die Namen bestimmen unter anderem die generierten Hook-Funktion zum Aufrufen der Endpunkte
+* Der **Wert** ist jeweils ein konfigurierter Endpunkt, der mit dem `builder` erzeugt wurde. 
+  * Das folgende Beispiel zeigt zwei Query-Endpunkte mit den Namen `loadPosts` bzw. `getPost`  
+  * ```typescript
+  export const postsApi = createApi({
+    endpoints: builder => return {
+      loadPosts: builder.query<BlogPost[], void>({
+        query: () => "/posts"
+      }),
+
+      getPost: builder.query<BlogPost, string>({
+        query: postId => `/posts/${postId}`
+      })
+    }
+  });
+
+    ```
+---
+### Queries an Endpunkten definieren
+* Mit der `query`-Funktion kann ein Query-Endpunkt (in der Regel HTTP GET) definiert werden
+* Die Funktion erwartet zwei Typ-Argumente und einen Parameter:
+  * Die Typ-Argumente geben an:
+    1. den Rückgabe-Typ der Daten, die über den Endpunkt gelesen werden
+    2. Ein Typ, der erforderliche Parameter für den Endpunkt beschreibt (oder `void` für keinen Parameter)
+    * ```typescript
+        // Liefert BlogPost[] zurück, erwartet keine Parameter
+        builder.query<BlogPost[], void>(...);
+
+        // Lierfert BlogPost zurück, erwartet einen Parameter vom Typ string
+        builder.query<BlogPost, string>(...);
+      ```
+    * Mit dem Parameter übergibst du ein Objekt mit der eigentlichen Konfiguration für diesen Endpunkt
+      * Du musst mindestens die `query`-Funktion angeben, die den Pfad/URL des Endpunktes zurückliefert
+
+---      
+### Endpunkt-Konfiguration
+
+* Die `query`-Callback-Funktion nimmt einen Parameter entgegen
+* Der Typ des Paramters wird `builder.query` übergeben.
+* Den Wert für diesen Parameter muss der Aufrufer beim Ausführen des Queries übergeben
+* _Ohne_ Parameter:
+  * ```typescript
+    builder.query<BlogPost[], void>({ query: () => `/api/posts ` });
+    ```
+* _Mit_ Parameter (Beispiel: Objekt mit `postId` und `commentId`):
+  * ```typescript
+    builder.query<Comment, {postId: string, commentId: string}>({
+      query: ({postId, commentId}) => `/api/posts/${postId}/comments/${commentId`
+    })
+    ```
+  * Bei diesem Endpunkt müsste der Aufrufer ein Objekt mit `postId` und `commentId` übergeben (dazu später mehr)
+* Es gibt noch eine ganze Reihe weiterer Konfigurationsmöglichkeiten für einen Endpunkt, siehe dazu die ausführliche Dokumentation
+
+---
+### Ausführen von Queries
+
+* Für jeden Endpunkt werden mehrere React Hooks generiert, die Du verwenden kannst, um den Endpunkt aufzurufen und die Daten abzufragen.
+* 
+  
+
+---
+### Übung: Daten laden mit RTK Query
+
+* <!-- .element: class="todo" -->Posts laden 
+
+---
+### RTK Query: Mutations und Cache
+                        
+          </textarea>
         </section>
 
         <!-- <section>
@@ -3236,209 +3675,7 @@ mountNode
     <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
   </ol>
 </section> -->
-        <section>
-          <h3>Redux</h3>
-          <h2>Asynchrone Actions</h2>
-          <p><em>Problem: Asynchronität, z.B. beim Laden von Daten</em></p>
-          <ul>
-            <li>
-              Wo unterbringen?
-              <ul>
-                <li>Reducer sind Seiteneffekt-frei!</li>
-                <li>Actions sind nur JavaScript-Objekte (keine Logik)!</li>
-              </ul>
-            </li>
-            <li>
-              Weiteres Problem: fachliche Abläufe meistens komplex(er) als nur eine Action.
-              <ul>
-                <li>
-                  Typisch: Request Start, Request läuft, Request erfolgreich/Request fehlgeschlagen
-                </li>
-              </ul>
-            </li>
-            <li>Redux bringt dafür nix mit :-(</li>
-            <li>Es gibt aber Antworten: Thunk (Promi?), Saga, Observable</li>
-          </ul>
-        </section>
-        <section>
-          <h3>Redux</h3>
-          <h2>Asynchrone Actions</h2>
-          <em>Grundsätzliche Idee, bei allen Bibliotheken (Thunk, Saga, Observable) ähnlich</em>
-          <ul>
-            <li>Im <b>Action Creator</b> kann asynchroner Code ausgeführt werden</li>
-            <li>
-              Es können <b>mehrere Actions</b> innerhalb des Action Creators dispatched werden
-            </li>
-            <li>Alle genannten Bibliotheken werden über <b>Middlewares</b> eingebunden</li>
-          </ul>
-        </section>
 
-        <section>
-          <h3>Middleware</h3>
-          <ul>
-            <li>
-              Eine Middleware-Funktion bekommt alle dispatchen Actions übergeben, bevor sie in den
-              Store gelangen
-            </li>
-            <li>
-              Die Middleware kann die Action annehmen, verändern, ablehnen und/oder weiterleiten
-            </li>
-            <li>Typische Anwendungsfälle: Logging, asynchrone Verarbeitung</li>
-            <li>Die Middleware-Funktionen werden bei der Konfiguration des Stores angegeben</li>
-            <li>In der Regel schreibst Du keine Middlewares selbst, sondern verwendest fertige</li>
-          </ul>
-        </section>
-
-        <section>
-          <h3>Asynchrone Actions</h3>
-          <em>Beispiel (konzeptionell)</em>
-          <p>
-            Schritt 1: <b>Dispatchen von Actions</b>: Komponente bleibt unverändert, dispatched
-            weiterhin eine Action, die wie eine "normale" Redux Action aussieht
-          </p>
-          <div>
-            <pre><code>
-      import { loadPosts } from "./posts-slice";
-
-      function App() {
-        React.useEffect( 
-          () => dispatch(loadPosts()),
-          []
-        );
-
-        return ...;
-    }
-  </code></pre>
-          </div>
-        </section>
-        <section>
-          <h3>Asynchrone Actions</h3>
-          <em>Beispiel (konzeptionell)</em>
-          <p>
-            Schritt 2: <b>Action Creator</b>: Hier können jetzt weitere Actions, auch asynchron,
-            dispatched werden
-          </p>
-          <pre><code>
-      // asynchroner Action Creator (pseudo code)
-      function loadPosts() {
-
-        dispatchAction "REQUEST_START"
-
-        try {
-          posts = await loadPostsWithFetch() // ASYNCHRON !!!
-          dispatchAction "REQUEST_SUCCESS"
-          dispatchAction "SET_POSTS" posts
-        } catch (err) {
-          dispatchAction "REQUEST_FAILURE" err
-        }
-      }
-    </code></pre>
-        </section>
-
-        <section>
-          <h3>Asynchrone Actions</h3>
-          <em>Beispiel (konzeptionell)</em>
-          <p>Schritt 3: <b>Reducer</b>: Unverändert. Reducer empfangen "normale" Actions</p>
-        </section>
-
-        <section>
-          <h2>Beispiele für Middlewares zum Arbeiten mit Asynchronität</h2>
-          <ul>
-            <li>
-              <a href="https://github.com/reduxjs/redux-thunk">Redux Thunk</a> (die "offizielle"
-              Lösung)
-            </li>
-
-            <li>Redux Saga</li>
-            <li>Redux Observable</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Redux Thunk</h2>
-          <ul>
-            <li>
-              Ein Thunk Action Creator gibt kein Action-Objekt, sondern eine
-              <b>Callback-Funktion</b> zurück. Diese Funktion wird von Redux an die Middlewares
-              weitergegeben. (Redux gibt nahezu alles, was wir dispatch übergeben an die Middlewares
-              bzw. den Store weiter...)
-            </li>
-            <li>In der Callback-Funktion ist dann die (asynchrone) Logik untergebracht</li>
-            <li>
-              Wenn die Thunk-Middleware eine Funktion entdeckt (und kein Objekt), ruft die
-              Middleware diese Funktion auf, und übergibt eine <code>dispatch</code>- und eine
-              <code>getState</code>-Funktion
-            </li>
-            <li>
-              Mit <code>dispatch</code> kann die Callback-Funktion diverse weitere "reguläre" und
-              Thunk-Actions auslösen
-            </li>
-            <li>
-              <pre><code class="typescript line-numbers"  >
-      export function loadPosts() {
-        return (dispatch, getState) => {
-
-          dispatch(postsLoading());
-
-          fetch("http://localhost:7000/posts")
-            .then(response => response.json())
-            .then(json => {
-              dispatch(postLoadingSucceeded(json));
-            })
-            .catch(err => {
-              dispatch(postLoadingFailed(err));
-            });
-        };
-      }    </code></pre>
-            </li>
-          </ul>
-          <!-- <p>
-        <strong
-          >Action-Creators sind die einzigen Teile einer Redux-Anwendung, die asynchrone
-          Operationen ausführen dürfen</strong
-        >
-      </p> -->
-        </section>
-        <section>
-          <h2>Redux Thunk</h2>
-          <p>Thunk Actions können nicht nur für asynchone Anwendungsfälle verwendet werden</p>
-          <ul>
-            <li>
-              Für Anwendungsfälle in den allgemein mehr als eine Action dispatched werden soll
-            </li>
-            <li>
-              Es ist darin erlaubt, beliebige Seiteneffkte auszuführen, z.B. eine uuid generieren
-              oder auf die Uhrzeit zuzugreifen
-            </li>
-            <li>
-              Im Gegensatz zum Reducer hat ein Action-Creator Zugriff auf den gesamten State und
-              kann z.B. eine Cache-Funktionaliät implementieren
-            </li>
-            <li>
-              <pre><code class="typescript line-numbers"  >
-      export function loadPostsWithCache() {
-        return (dispatch, getState) => {
-
-          if (getState().posts.posts) {
-            // Posts sind schon geladen => nicht erneut laden
-            return;
-          }
-
-
-          dispatch(postsLoading());
-
-          // ...wie gesehen: Posts laden etc.
-        };
-      }    </code></pre>
-            </li>
-          </ul>
-          <!-- <p>
-        <strong
-          >Action-Creators sind die einzigen Teile einer Redux-Anwendung, die asynchrone
-          Operationen ausführen dürfen</strong
-        >
-      </p> -->
-        </section>
         <section>
           <h2>Zusammenfassung Redux-Architektur</h2>
           <img

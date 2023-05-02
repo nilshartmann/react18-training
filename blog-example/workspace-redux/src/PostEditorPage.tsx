@@ -2,19 +2,21 @@ import React from "react";
 import PostEditor from "./PostEditor";
 import { NewBlogPost } from "./types";
 import { useNavigate } from "react-router-dom";
-import { useSavePostMutation } from "./redux/posts-slice";
 
 export default function PostEditorPage() {
-  const [savePost, savePostResult] = useSavePostMutation();
   const navigate = useNavigate();
-  async function handleSavePost(post: NewBlogPost) {
-    await savePost(post);
-    navigate("/");
+  function savePost(post: NewBlogPost) {
+    fetch("http://localhost:7000/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(post)
+    })
+      .then(response => response.json())
+      .then(_ => navigate("/"))
+      .catch(err => console.error("Saving failed: " + err));
   }
 
-  if (savePostResult.isLoading) {
-    return <h2>Post is saving...</h2>;
-  }
-
-  return <PostEditor onSavePost={handleSavePost} onClose={() => navigate("/")} />;
+  return <PostEditor onSavePost={savePost} onClose={() => navigate("/")} />;
 }

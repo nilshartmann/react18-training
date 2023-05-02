@@ -1,24 +1,24 @@
 import React from "react";
 import Post from "./Post";
 import { useParams, Link } from "react-router-dom";
-import { useGetPostQuery } from "./redux/posts-slice";
-import LoadingIndicator from "./LoadingIndicator";
+import { BlogPost } from "./types";
 
 export default function PostPage() {
   const { postId } = useParams();
+  const [post, setPost] = React.useState<BlogPost | null>(null);
 
-  if (!postId) {
-    throw new Error("Param 'postId' missing!");
-  }
+  React.useEffect(() => {
+    fetch(`http://localhost:7000/posts/${postId}?slow`)
+      .then(response => response.json())
+      .then(json => {
+        setPost(json);
+      })
+      .catch(err => console.error("Loading data failed: " + err));
+  }, [postId]);
 
-  const getPostQuery = useGetPostQuery(postId);
-
-  if (getPostQuery.isUninitialized || getPostQuery.isLoading) {
-    return <LoadingIndicator>Please wait, Post with Id {postId} is loading...</LoadingIndicator>;
-  }
-
-  if (getPostQuery.isError) {
-    return <h2>Loading Post with Id {postId} failed 😟</h2>;
+  // simplified => no explicit loading state. Also no errors covered here.
+  if (!post) {
+    return <h1>Please wait, Post is loading</h1>;
   }
 
   return (
@@ -26,7 +26,7 @@ export default function PostPage() {
       <Link className="Button" to="/">
         Home
       </Link>
-      <Post post={getPostQuery.data} />
+      <Post post={post} />
     </>
   );
 }
