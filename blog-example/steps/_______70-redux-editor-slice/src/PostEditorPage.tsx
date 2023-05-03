@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function PostEditorPage() {
   const navigate = useNavigate();
-
   function savePost(post: NewBlogPost) {
     fetch("http://localhost:7000/posts", {
       method: "POST",

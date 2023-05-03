@@ -3,7 +3,6 @@ import PostList from "./PostList";
 
 export default function PostListPage() {
   const [posts, setPosts] = React.useState([]);
-
   React.useEffect(() => {
     fetch("http://localhost:7000/posts?short&slow")
       .then(response => response.json())

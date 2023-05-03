@@ -2521,26 +2521,31 @@ const style: React.CSSProperties = type === "error" ?
           >
         </section>
         <!-- ============================================================================= -->
-        <section>
-          <h3>Actions</h3>
-          <ul>
-            <li>Pure JavaScript-Objekte, die eine Aktion in der Anwendung beschreiben</li>
-            <li>Haben üblicherweise <b>type</b> und <b>payload</b></li>
-            <li>Über das <b>type</b>-Property können sie identifiziert werden</li>
-            <li>Der <b>Payload</b> enthält Action-spezifische Daten</li>
-            <li>
-              <pre><code class="javascript">
-      clearDraftAction = {
-        type: "editor/clearDraft"; // kein Payload erforderlich
-      }
-    
-      setDraftTitleAction = {
-        type: "editor/setDraftTtiel",
-        newTitle: "..."  // Action-spezifischer Payload (hier: der neue Blog-Titel)
-      }
-    </code></pre>
-            </li>
-          </ul>
+
+        <section data-markdown>
+          <textarea data-template>
+### Actions
+* Pure JavaScript-Objekte, die eine Aktion in der Anwendung beschreiben
+* Haben üblicherweise <b>type</b> und <b>payload</b>
+* Über das <b>type</b>-Property können sie identifiziert werden
+* Der <b>Payload</b> enthält Action-spezifische Daten
+* Beispiel 1: Action-Objekt ohne Payload:
+* ```typescript
+  {
+    type: "editor/clearDraft"; 
+  }
+  ```
+* Beispiel 2: Action-Objekt mit Payload:
+* ```typescript
+  {
+    type: "editor/setDraftTitle",
+    newTitle: "..."  // Action-spezifischer Payload 
+                     // (hier: der neue Blog-Titel)
+  }
+  ```
+  
+
+          </textarea>
         </section>
         <section>
           <h3>Reducer-Funktion #1</h3>
@@ -2653,10 +2658,12 @@ const style: React.CSSProperties = type === "error" ?
             <li>
               <pre><code class="javascript">
       function setDraftTitle(newTitle) {
+
         return { 
           type: "editor/setDraftTitle", 
           title: newTitle
         }
+
       }  
     </code></pre>
             </li>
@@ -2665,9 +2672,11 @@ const style: React.CSSProperties = type === "error" ?
               <pre><code class="javascript">
       function PostEditor() {
         const dispatch = useDispatch();
+
         function handleTitleChange(newTitle) {
           dispatch(setDraftTitle(newTitle));
         }
+
         // ...
       }
     </code></pre>
@@ -2883,10 +2892,10 @@ development"_
 * Das `reducers`-Objekt enthält die Reducer-Funktionen für einen Slice
 * Der Key bzw. der Funktionsname entspricht dem Reducer-Namen
 * Die Funktion kann zwei Parameter bekommen:
-  * 1. Den aktuellen State des Slices
+  1. Den aktuellen State des Slices
     * **Achtung!**: Der State hier ist nur der State des jeweiligen Slices, nicht der Gesamt-State aller Slices!
     * Ein Slice arbeitet immer nur auf "seinem" State und hat auch keinen Zugriff auf State anderer Slices.
-  * 2. Das Action-Objekt (optional. Wenn eine Action keinen Payload hat, könnt ihr den Parameter weglassen)
+  2. Das Action-Objekt (optional. Wenn eine Action keinen Payload hat, könnt ihr den Parameter weglassen)
 * Der übergebene `state` ist ein [immer](https://immerjs.github.io/immer/) `Draft`-Objekt, das ihr direkt verändern dürft:
   * ```typescript
     reducers: {
@@ -3152,7 +3161,10 @@ export const store = configureStore({
 ---
 ### Übung: Redux Toolkit
 
-* `editorSlice` bauen
+* _Verwende für die Inhalte der PostEditor-Komponente einen RTK Slice_
+* Dafür arbeiten wir im Workspace `blog-example/workspace-redux`. 
+  * Bitte bestehenden `npm start`-Prozess beenden und in `workspace-redux` erneut ausführen
+
 * <!-- .element: class="todo" -->Übung vorbereiten
 
 ---
@@ -3283,6 +3295,7 @@ export const store = configureStore({
             <li>
               <pre><code class="typescript line-numbers"  >
       export function loadPostsWithCache() {
+
         return (dispatch, getState) => {
 
           if (getState().posts.posts) {
@@ -3315,29 +3328,31 @@ export const store = configureStore({
 * Ihr müsst sie als "normale" Funktion außerhalb von <code>createSlice</code> hinschreiben (wie im Beispiel gesehen)
 * Aber natürlich könnt ihr in dem Thunk Action Creator die Actions aus Euren Slices dispatchen:
 * ```typescript
-  type LoadPostRequestFinished = { loadedPosts: BlogPost[] };
-  const postsSlice = createSlice({
-    reducers: {
-      loadPostRequestStarted(state) {
-        state.loading = true;
-      }
-      loadPostRequestFinished(state, action: PayloadAction<LoadPostRequestFinished>) {
-        state.loading = false;
-        state.posts = action.payload.loadedPosts;
+    type LoadPostRequestFinished = { loadedPosts: BlogPost[] };
+    
+    const postsSlice = createSlice({
+      reducers: {
+        loadPostRequestStarted(state) {
+          state.loading = true;
         }
-    }
-  });
+        loadPostRequestFinished(state, action: PayloadAction<LoadPostRequestFinished>) {
+          state.loading = false;
+          state.posts = action.payload.loadedPosts;
+        }
+      }
+    });
 
-  // Thunk Action Creator
-  export function loadPosts() { 
-    return async (dispatch, getState) => {
-      dispatch(postsSlice.action.loadPostRequestStarted());
-      const posts = ...;
-      dispatch(postsSlice.action.loadPostRequestFinished({loadedPosts: posts }));
+    // Thunk Action Creator
+    export function loadPosts() { 
+
+      return async (dispatch, getState) => {
+        dispatch(postsSlice.action.loadPostRequestStarted());
+        const posts = ...;
+        dispatch(postsSlice.action.loadPostRequestFinished({loadedPosts: posts }));
+      }
     }
-  }
   ```
---- 
+---
 ### createAsyncThunk: Automatische Lifecycle-Actions
 * In der asynchronen Verarbeitung soll häufig eine Art Lifecycle ausgedrückt werden (z.B. "loading", "finished", "failed")
 * Mit [createAsyncThunk](https://redux-toolkit.js.org/api/createAsyncThunk) kannst Du vereinfacht Thunk-Actions schreiben, die solche Actions
@@ -3371,7 +3386,7 @@ automatisch dispatchen
 * Die `posts/load/fulfilled`-Action enthält außerdem den ermittelten Wert des Promises
 
 ---
-###  createAsyncThunk: Verarbeiten der Actions
+### createAsyncThunk: Verarbeiten der Actions
 
 * Der Rückgabe-Wert der Thunk-Action wird als `payload` an die `fulfilled`-Action gehängt
 * Wenn die Thunk-Action fehlschlägt, wird der Fehler der Payload als `error` übergeben
@@ -3442,11 +3457,12 @@ automatisch dispatchen
   
 
 ---
-### Übung: Thunk
+### Übung: Thunk Actions
+
+* TODOs siehe `posts-slice-thunk.ts`
 
 * <!-- .element: class="todo" -->Posts laden mit createAsyncThunk
 * <!-- .element: class="todo" -->Dabei: fullfilled und reject behandeln
-* <!-- .element: class="todo" -->Nach **Speichern** load-dispatchen
 
 
 ---
