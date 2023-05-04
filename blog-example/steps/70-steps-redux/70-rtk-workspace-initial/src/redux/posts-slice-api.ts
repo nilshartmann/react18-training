@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { BlogPost, NewBlogPost } from "../types";
 
 // ------------------------------------------------------------------------------------------
-// ÜBUNG RTK Query "QUERIES"
+// ÜBUNG 1 RTK Query "QUERIES"
 // ------------------------------------------------------------------------------------------
 //
 // SCHRITT 1: Vervollständige die 'postsApi'

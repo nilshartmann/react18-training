@@ -5,6 +5,11 @@ import { BlogPost } from "./types";
 
 export default function PostPage() {
   const { postId } = useParams();
+
+  if (!postId) {
+    throw new Error("Param 'postId' missing!");
+  }
+
   const [post, setPost] = React.useState<BlogPost | null>(null);
 
   React.useEffect(() => {
