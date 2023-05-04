@@ -20,7 +20,7 @@ import { BlogPost } from "../types";
 // Schritt 3: Verwende den Slice in der PostListPage
 //  - Die PostListPage enthält zzt die geladenenen Posts im lokalen Zustand
 //  - Entferne den lokalen Zustand und ersetze ihn durch:
-//     - dispatchen der Thunk Action
+//     - dispatchen der Thunk Action (muss innerhalb von useEffect passieren)
 //     - Auswahl der geladenen Posts aus dem PostsSlice
 
 type PostsSliceState = {
