@@ -21,36 +21,13 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 //  - Ersetze den lokalen State durch useSelector-Aufrufe und dispatche
 //    deine Actions, um den globalen State zu aktualisieren
 
-type EditorState = {
-  currentTitle: string;
-  currentBody: string;
-};
-
-const initialState: EditorState = {
-  currentTitle: "",
-  currentBody: ""
-};
-
-type SetBodyAction = { body: string };
-
-type SetTitleAction = { title: string };
+type EditorState = {};
+const initialState: EditorState = {};
 
 const editorSlice = createSlice({
   initialState,
   name: "editor",
-  reducers: {
-    clear() {
-      return initialState;
-    },
-    setTitle(state, action: PayloadAction<SetTitleAction>) {
-      state.currentTitle = action.payload.title;
-    },
-
-    setBody(state, action: PayloadAction<SetBodyAction>) {
-      state.currentBody = action.payload.body;
-    }
-  }
+  reducers: {}
 });
 
 export default editorSlice.reducer;
-export const { clear, setBody, setTitle } = editorSlice.actions;

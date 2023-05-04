@@ -1,22 +1,21 @@
 import React from "react";
 import PostList from "./PostList";
-import { useLoadPostsQuery } from "./redux/posts-slice-api";
-import LoadingIndicator from "./LoadingIndicator";
 
 export default function PostListPage() {
-  const loadPostsQuery = useLoadPostsQuery();
+  const [posts, setPosts] = React.useState([]);
 
-  if (loadPostsQuery.isUninitialized) {
-    return <LoadingIndicator>App is starting... Please wait.</LoadingIndicator>;
+  React.useEffect(() => {
+    fetch("http://localhost:7000/posts?short&slow")
+      .then(response => response.json())
+      .then(json => {
+        setPosts(json);
+      })
+      .catch(err => console.error("Loading data failed: " + err));
+  }, []);
+
+  if (!posts.length) {
+    return <h1>Loading, please wait...</h1>;
   }
 
-  if (loadPostsQuery.isLoading) {
-    return <LoadingIndicator>Server Request running. Please wait.</LoadingIndicator>;
-  }
-
-  if (loadPostsQuery.isError) {
-    return <h1>Error while fetching data!</h1>;
-  }
-
-  return <PostList posts={loadPostsQuery.data} />;
+  return <PostList posts={posts} />;
 }

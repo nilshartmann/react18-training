@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { BlogPost } from "../types";
 
 // TODO: Baue eine Thunk Action zum Laden der Posts!
@@ -34,30 +34,12 @@ const initialPostsState: PostsSliceState = {
   loading: "idle"
 };
 
-export const loadPosts = createAsyncThunk("posts/load", async () => {
-  const response = await fetch("http://localhost:7000/posts?slow");
-  const json = (await response.json()) as BlogPost[];
-  return json;
-});
-
 const postsSlice = createSlice({
   name: "posts",
   initialState: initialPostsState,
   reducers: {},
 
-  extraReducers: builder => {
-    builder.addCase(loadPosts.pending, state => {
-      state.loading = "pending";
-    });
-    builder.addCase(loadPosts.fulfilled, (state, action) => {
-      state.loading = "succeeded";
-      state.posts = action.payload;
-    });
-    builder.addCase(loadPosts.rejected, (state, action) => {
-      state.loading = "failed";
-      state.error = action.error.toString();
-    });
-  }
+  extraReducers: builder => {}
 });
 
 export default postsSlice.reducer;
