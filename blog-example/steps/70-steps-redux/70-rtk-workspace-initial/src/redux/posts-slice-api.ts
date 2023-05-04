@@ -37,6 +37,7 @@ export const postsApi = createApi({
 //  - Die URL zum Server ist weiterhin http://localhost:7000
 //  - Endpunkt zum Speichern des Posts: "/posts"
 //     - HTTP-Methode: POST. Als Body den neuen Post übergeben
+//  - Denk dran, den generierten useSavePostMutation-Hook zu exportieren!
 //
 // SCHRITT 2: Verwende den Endpunkt in der PostEditorPage
 //  - Ersetze den Data-Fetching-Code dort durch den generierten "useSavePostMutation"-Hook

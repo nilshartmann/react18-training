@@ -3952,7 +3952,17 @@ automatisch dispatchen
 ---
 ### Übung: Mutations mit RTK Query
 
-* <!-- .element: class="todo" --> Mutation zum Speichern des neuen Posts
+* _Baue eine Mutation zum Speichern eines neuen BlogPosts_
+* In der `PostEditorPage` wird `fetch` zum Speichern des Blog Posts verwendet. 
+* Erweitere in `redux/posts-slice-api` die `postsApi` um eine Mutation zum Speichern des Posts
+  * Weitere Informationen und Todos findest Du dort
+* Ersetze den `fetch`-Code in `PostEditorPage` durch den `useSavePostMutation`-Hook
+* Wenn das funktioniert, kannst Du noch _Cache Tags_ einführen, um den Cache nach dem Speichern eines Posts als "veraltet" zu markieren
+* Mögliche Lösung: `steps/70-redux/78-rtk-query-mutation`
+  * Dateien: `posts-slice-api.ts`, `PostEditorPage.tsx`
+* Wenn Du fertig bist, bitte die Hand in Teams heben 🙋
+
+
 * Liste wird nicht aktualisiert 😢
 * TagTypes hinzufügen `BlogPost`
 
