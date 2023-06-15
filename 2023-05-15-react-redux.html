@@ -1024,10 +1024,16 @@ function App() {
               (<code>onSave</code>) übergeben wird. <br />Siehe TODO in
               <code>blog-example/material/3-hierarchy/src/PostEditor.js</code>
             </li>
-            <!-- <li style="font-size: 75%;">
-              <b>Optional:</b> Füge einen <b>neuen</b> Button "Cancel" im PostEditor hinzu, der die
-              PostList öffnet, ohne das eingebene Post zu speichern.
-            </li> -->
+            <li>
+              Füge einen <b>neuen</b> Button "Cancel" im PostEditor hinzu, der die PostList öffnet,
+              ohne das eingebene Post zu speichern.
+              <ul>
+                <li style="font-size: 75%">
+                  <b>Optional:</b> Wie könnte nach Klick auf "Cancel" eine Rückfrage an den Benutzer
+                  implementiert werden: "Wollen Sie wirklich abbrechen"?
+                </li>
+              </ul>
+            </li>
             <li>Mögliche Lösung: <code>steps/3-hierarchy</code></li>
             <li>Wenn Du fertig bist, bitte in Teams "Hand heben" 🙋‍♀️</li>
           </ol>
@@ -1377,32 +1383,52 @@ const promise = getNameAsync()
         </section>
 
         <section>
-          <h2>Übung Fetch #1 (Speichern)</h2>
+          <h2>Übung Fetch und useEffect</h2>
           <h3>Schritte</h3>
           <ol class="x-list">
-            <li>Füge in <code>App.js</code> den Code zum <b>Speichern</b> der Blog-Posts hinzu.</li>
+            <li>
+              Füge in <code>App.js</code> den Code zum <b>Laden und Speichern</b> der Blog-Posts
+              hinzu.
+            </li>
             <li>
               Du kannst deine eigene <code>App.js</code>-Datei verwenden oder
               <code>material/4-remote/src/App.js</code>
             </li>
-            <li>Das Speichern soll in der <code>savePost</code>-Funktion erfolgen</li>
-            <li>Du musst als HTTP Methode <code>POST</code> verwenden</li>
+            <li>Das Laden soll in einem Effekt in der <code>App</code>-Komponente erfolgen</li>
             <li>
-              Du musst als Header den <code>Content-Type</code> auf
-              <code>"application/json"</code> setzen
+              Das Speichern soll in der <code>savePost</code>-Funktion erfolgen
+
+              <ul>
+                <li>Du musst als HTTP Methode <code>POST</code> verwenden</li>
+                <li>
+                  Du musst als Header den <code>Content-Type</code> auf
+                  <code>"application/json"</code> setzen
+                </li>
+                <li>Als <code>body</code> musst Du den neuen Blog-Post an den Server schicken</li>
+                <li>
+                  In der Antwort bekommst Du den gespeicherten Post vom Server zurück. Diesen musst
+                  Du in die Liste der bestehenden BlogPosts einfügen
+                </li>
+              </ul>
             </li>
-            <li>Als <code>body</code> musst Du den neuen Blog-Post an den Server schicken</li>
+
             <li>
-              In der Antwort bekommst Du den gespeicherten Post vom Server zurück. Diesen musst Du
-              in die Liste der bestehenden BlogPosts einfügen
+              <b>Optional, wenn noch Zeit ist</b>: Füge einen Loading Indicator hinzu
+              <ul>
+                <li>
+                  Wenn Du <code>?slow</code> an die URLs im <code>fetch</code>-Aufruf hängst, wird
+                  der Server-Call künstlich verlangsamt:
+                  <code>http://localhost:7000/posts?slow</code>
+                </li>
+                <li>
+                  Gib während des laufenden Server-Requests (Daten laden) eine Meldung aus ("Please
+                  wait")
+                </li>
+                <li>Mögliche Lösung in <code>steps/4c-remote-with-loading</code></li>
+              </ul>
             </li>
-            <li>
-              Da wir noch keine Posts vom Server laden, kannst Du kontrollieren, ob das Speichern
-              auch auf dem Server geklappt hat, in dem Du in einem neuen Browserfenster die Posts
-              anzeigen lässt: <a href="http://localhost:7000/posts">http://localhost:7000/posts</a>.
-            </li>
-            <li>Mögliche Lösung in <code>steps/4a-remote</code></li>
-            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+            <li>Mögliche Lösung in <code>steps/4b-remote-use_effect</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
           </ol>
         </section>
 
@@ -2415,16 +2441,8 @@ function App() {
               <code>any</code> verwenden.
             </li>
 
-            <li>
-              Und für <code>style</code> in <code>Message</code> ebenfalls einfach
-              <code>React.CSSProperties</code> angeben:
-              <pre><code class="javascript">
-const style: React.CSSProperties = type === "error" ? 
-  { color: "red", fontWeight: "bold" } : { color: "green" };
-              </code></pre>
-            </li>
             <li>Mögliche Lösung in <code>steps/5-typescript</code></li>
-            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
           </ol>
         </section>
 
