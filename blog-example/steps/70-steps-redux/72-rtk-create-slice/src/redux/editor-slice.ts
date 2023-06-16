@@ -40,9 +40,15 @@ const editorSlice = createSlice({
   name: "editor",
   reducers: {
     clear() {
-      return initialState;
+      return {
+        currentTitle: "",
+        currentBody: ""
+      };
     },
     setTitle(state, action: PayloadAction<SetTitleAction>) {
+      if (action.payload.title.includes("!")) {
+        return;
+      }
       state.currentTitle = action.payload.title;
     },
 

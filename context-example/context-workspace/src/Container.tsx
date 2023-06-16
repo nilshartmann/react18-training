@@ -12,7 +12,7 @@ type ContainerProps = {
 
 /*Auf true stellen, dann wird die Anzahl der Renderings angezeigt
  */
-const showRenderings = false;
+const showRenderings = true;
 
 /**
  */

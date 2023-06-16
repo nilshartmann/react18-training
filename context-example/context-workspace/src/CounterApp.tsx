@@ -2,6 +2,11 @@ import { useState } from "react";
 import React from "react";
 import Container from "./Container";
 import TwoColumns from "./TwoColumns";
+import CounterProvider, {
+  CounterContext,
+  useCounter,
+  useCounterSetterContext
+} from "./CounterContext";
 
 function Main() {
   // was wird neu gerendert wenn sich der lokale Zustand ändert?
@@ -21,21 +26,29 @@ function Main() {
 }
 
 function CounterDisplay() {
-  // Context verwenden
   return (
     <Container title="Counter Display">
       <h1>Counter</h1>
-      <NumberDisplay label="Current Counter value" value={7} />
-      <button>Increase!</button>
+      <NumberDisplay label="Current Counter value" />
+      <IncreaseButton />
+    </Container>
+  );
+}
+
+function IncreaseButton() {
+  const { increase } = useCounterSetterContext();
+  return (
+    <Container title="IncreaseButton">
+      <button onClick={increase}>Increase!</button>
     </Container>
   );
 }
 
 type NumberDisplayProps = {
   label: string;
-  value: number;
 };
-function NumberDisplay({ label, value }: NumberDisplayProps) {
+function NumberDisplay({ label }: NumberDisplayProps) {
+  const { value } = useCounter();
   return (
     <Container title="NumberDisplay">
       <p>
@@ -47,8 +60,10 @@ function NumberDisplay({ label, value }: NumberDisplayProps) {
 
 export default function App() {
   return (
-    <Container title="Root">
-      <Main />
-    </Container>
+    <CounterProvider>
+      <Container title="Root">
+        <Main />
+      </Container>
+    </CounterProvider>
   );
 }
