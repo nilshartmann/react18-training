@@ -293,7 +293,7 @@
           <h3>Der Trainingsworkspace</h3>
           <ul class="x-list">
             <li style="margin-bottom: 40px">
-              <code>2023-05-15-react-redux.html</code>: Die Slides
+              <code>2023-10-09-react-einstieg.html</code>: Die Slides
             </li>
             <li style="margin-bottom: 40px">
               Der Code ist im <code><b>blog-example</b></code> Verzeichnis
@@ -3157,68 +3157,124 @@ function App() {
 ### Beispiel
 
 ```jsx
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+const routerConfig = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      {
+        index: true,
+        element: <PostListPage />
+      },
+
+      {
+        path: "post/:postId",
+        element: <PostPage />
+      },
+      {
+        path: "add",
+        element: <PostEditorPage />
+      },
+
+      { path: "*", element: <NotFoundPage /> }
+    ]
+  }
+]);
+
 export default function App() {
-  &lt;Routes>
-    &lt;Route path="/" element={<Page />}>
-      &lt;Route index element={<PostListPage />} />
-      &lt;Route path="/post/:postId" element={<PostPage />} />
-      &lt;Route path="/add" element={<PostEditor onSavePost={savePost} />} />
-      &lt;Route path="*" element={<NotFoundPage />} />
-    &lt;/Route>
-  &lt;/Routes>
-}  
+  return <RouterProvider router={routerConfig} />;
+} 
 ```
 
 ---
 
 ### Die Router-Komponente
 
-* Als oberste Komponente muss eine `Router`-Komponente gerendert werden
-  * Nur unterhalb (direkt oder indirekt) darf mit `Routes` und `Route` gearbeitet werden
+* Als oberste Komponente muss die `RouterProvider`-Komponente gerendert werden
+* Dieser wird die Router-Konfiguration übergeben
+* Es gibt verschiedene Router-Typen, die sich unter anderem darin unterscheiden, wie mit den URLs umgegangen wird:
 * Router fest, welche URLs generiert werden soll:
-* [`HashRouter`](https://reactrouter.com/docs/en/v6/routers/hash-router): Die Route wird durch Hash-Zeichen (`#`) getrennt hinter die URL geschrieben (Beispiel: `http://loalhost:8080#/post/1`)
+* [Hash Router](https://reactrouter.com/en/main/routers/create-hash-router): Die Route wird durch Hash-Zeichen (`#`) getrennt hinter die URL geschrieben (Beispiel: `http://loalhost:8080#/post/1`)
   * Änderungen in der URL hinter dem Hash-Zeichen führen im Browser nicht zum Neuladen der Seite vom Server!
   * Der Server wird also beim Seitenwechsel nie kontaktiert
-* [`BrowserRouter`](https://reactrouter.com/docs/en/v6/routers/browser-router): Die Route wird direkt hinter die URL geschrieben. Sieht dann aus wie eine "normale" Route vom Server (Beispiel: `http://localhost:8080/post/1`)  
+* [Browser Router](https://reactrouter.com/en/main/routers/create-browser-router): Die Route wird direkt hinter die URL geschrieben. Sieht dann aus wie eine "normale" Route vom Server (Beispiel: `http://localhost:8080/post/1`)  
   * Empfohlene Implementierung
   * Bei der Navigation durch die Anwendung unterbindet der Router Server-Requests
   * Aber beim initalen Laden muss der Server sicherstellen, dass die URL gefunden wird
     * Dazu muss der Webserver entsprechend konfiguriert werden ("/..." -> index.html)
+* [Memory Router](https://reactrouter.com/en/main/routers/create-memory-router): Zum Testen außerhalb eines Browsers, simuliert das Browser Verhalten    
 * 👉 Demo im Browser, Netzwerkverkehr untersuchen
 
 ---
 
 ### Konfiguration der Routen: Welche Komponente soll für welche Route angezeigt werden?
 
-* Mit [Routes und Route](https://reactrouter.com/docs/en/v6/components/route)-Komponenten gibt es eine Art "intelligentes" switch- oder if/else-Statement
-* `Route`-Komponenten müssen mit `Routes` umschlossen werden. Nach jedem Ändern der URL prüft der Router alle `Routes`-Komponenten in allen `Route`-Komponenten der Anwendung
-* ```javascript
-  &lt;Routes>
-    &lt;Route path="/" element={&lt;App />} /> 
-    &lt;Route path="/blog" element={&lt;App />} />
-  &lt;/Routes>
+* Mit dem `Route`-Objekt wird die Konfiguration beschrieben, welche Pfade es in Eurer Anwendung gibt, und welche Komponenten jeweils gerendert werden sollen.
+* Es gibt zwei Notationen, eine Objekt- und eine Komponenten-Form
+  * Beide sind identisch
+  * Wenn ihr die Komponenten-Form verwendet, müsst ihr die Komponenten an die Funktion `createRoutesFromElements` übergeben
+---
+### Routen als Objekt
+
+```typescript
+  const routerConfig = createBrowserRouter([
+    {
+      path: "/",
+      element: <RootLayout />,
+      children: [
+        {
+          index: true,
+          element: <PostListPage />
+        },
+
+        {
+          path: "post/:postId",
+          element: <PostPage />
+        },
+      ]
+    }
+  ]);
 ```
-* `Route` funktioniert wie ein `if`-Statement: `if (path === "/post") renderElement &lt;Post />`
+---
+### Routen als Komponenten
+
+```typescript
+  const routerConfig = createBrowserRouter(
+    createRoutesFromElements(
+      &lt;Route path="/" element={&lt;RootLayout />}> 
+
+        &lt;Route index element={&lt;BlogListPage /> } />
+
+        &lt;Route path="post/:postId" element={&lt;PostPage />}> 
+
+      &lt;/Route>
+    )
+  );
+```
 
 ---
-
 ### Verschachtelte Routen
 
 * `Route`-Komponenten können geschachtelt werden, um Hierchien abzubilden
 * In den Child-Komponenten werden dann relative Pfade angegeben
 * ```javascript
-  &lt;Routes>
     &lt;Route path="/" element={&lt;App />}> &lt;!-- Rendert "/" -->
       &lt;Route path="blog" element={...}> &lt;!-- Rendert "/blog" -->
+
         &lt;Route path="new" element={...}/> &lt;!-- Rendert "/blog/new" -->
+
         &lt;Route path="post/:id" element={...}/> &lt;!-- Rendert "/blog/post/1" -->
+
       &lt;/Route>
     &lt;/Route>    
-  &lt;/Routes>    
-```
+  ```
+---
+### Outlet
+
+* Eine Komponente für eine Route kann die Komponenten für die Unter-Routen einbinden
+* Auf diese Weise kann eine Oberkomponente zum Beispiel ein gemeinsames Layout implementieren
 * Die Oberkomponente muss dann jeweils die Unterkomponenten rendern
-  * Das funktioniert mit der [`<Outlet />`](https://reactrouter.com/docs/en/v6/components/outlet)-Komponente
+  * Das funktioniert mit der [`<Outlet />`](https://reactrouter.com/en/main/components/outlet)-Komponente
   * ```javascript
     function App() {
       return &lt;div className="App">
@@ -3235,24 +3291,20 @@ export default function App() {
 * Bei verschachtelten Routen muss für die Ober-Route eine Index Route gerendert werden
 * Beispiel:
 * ```javascript
-  &lt;Routes>
     &lt;Route path="/" element={&lt;App />}> 
       &lt;Route path="blog" element={&lt;Blog />} />
     &lt;/Route>    
-  &lt;/Routes>    
-```
+  ```
 * Hier wird `Blog` als `Outlet` in `App` für `/blog` gesetzt. Aber kein Outlet für `/`
 * Dazu muss eine Index-Route definiert werden. Die wird unterhalb der Ober-Route eingesetzt und
   wird dann gerendert, wenn genau der Pfad der Ober-Route aufgerufen wird
 * Statt `path` wird darin einfach `index` angegeben:  
   * ```javascript
-    &lt;Routes>
-      &lt;Route path="/" element={&lt;App />}> 
-        &lt;Route index element={&lt;Home /> } /> &lt;!-- Rendert "App" mit Outlet "Home" für "/" -->
-        &lt;Route path="blog" element={&lt;Blog />} /> &lt;!-- Rendert "App" mit Outlet "Blog" für "/blog" -->
-      &lt;/Route>    
-    &lt;/Routes>    
-```
+    &lt;Route path="/" element={&lt;App />}> 
+      &lt;Route index element={&lt;Home /> } /> &lt;!-- Rendert "App" mit Outlet "Home" für "/" -->
+      &lt;Route path="blog" element={&lt;Blog />} /> &lt;!-- Rendert "App" mit Outlet "Blog" für "/blog" -->
+    &lt;/Route>    
+  ```
 
 
 ---
@@ -3262,13 +3314,11 @@ export default function App() {
 * Mit `path="*"` kann eine Fallback-Route angegeben werden, die aktiv ist, wenn keine andere Route passt
 * Beispiel:
 * ```javascript
-    &lt;Routes>
-      &lt;Route path="/" element={&lt;App />}> 
-        &lt;Route path="blog" element={&lt;Blog />} />
+    &lt;Route path="/" element={&lt;App />}> 
+      &lt;Route path="blog" element={&lt;Blog />} />
 
-        &lt;Route path="*" element={&lt;NotFound />} /> &lt;!-- Für alle Route, außer / und /blog -->
-      &lt;/Route>    
-    &lt;/Routes>    
+      &lt;Route path="*" element={&lt;NotFound />} /> &lt;!-- Für alle Route, außer / und /blog -->
+    &lt;/Route>    
   ```
 
 ---
@@ -3278,13 +3328,11 @@ export default function App() {
 * In einer Route können Platzhalter ("Parameter") angegeben werden
 * Auf die entsprechenden Werte kann in einer Komponente mit `useParams` zugegriffen werden
 * ```javascript
-  export default function App() {
-    &lt;Routes>
-      &lt;Route path="/" element={<Page />}>
-        &lt;Route path="/post/:postId" element={<PostPage />} />
-      &lt;/Route>
-    &lt;/Routes>
-  }
+  // Konfiguration:
+  &lt;Route path="/" element={<Page />}>
+    &lt;Route path="/post/:postId" element={<PostPage />} />
+    // ...
+  &lt;/Route>
 
   function PostPage() {
     const { postId } = useParams(); 
@@ -3343,7 +3391,7 @@ export default function App() {
     return &lt;BlogPost post={post} />
   }
   ```  
-* Mit [`useNavigate`](https://reactrouter.com/docs/en/v6/hooks/use-navigate) kann auch per API, z.B. in einem Event Handler, ein Redirect gemacht werden:
+* Mit [`useNavigate`](https://reactrouter.com/en/6.16.0/hooks/use-navigate) kann auch per API, z.B. in einem Event Handler, ein Redirect gemacht werden:
 * ```javascript
   function LogoutButton() {
     const useNaviate = useNavigate();
@@ -3355,6 +3403,37 @@ export default function App() {
     return &lt;button onClick={handleClick}>Logout&lt;/button>
   }
   ```  
+
+---
+### Übung: Router
+
+* Stelle die Anwendung auf den React Router um
+* **Vorbereitung**:
+  * Wir arbeiten im `workspace-typescript`
+  * 👉 Kopiere die Dateien aus `material/7-router` in dein `src`-Verzeichnis
+  * Darin enthalten ist bereits jeweils eine `Page`-Komponente für jede Route
+    * Diese Komponenten "wrappen" unsere bisherigen Komponenten (PostList, PostEditor)
+
+---
+### Übung: Router
+
+**Schritte**  
+1. Baue die `App`-Komponente um. Diese soll jetzt nur noch einen `RouterProvider` rendern
+2. Erzeuge die Router-Konfiguration dafür:
+    - `/` soll das `RootLayout` redern
+      - Darin musst Du noch die `Outlet`-Komponente ergänzen
+    - Die `index`-Komponente für `/` soll `PostListPage` sein
+      - In deiner `PostList`-Komponente reicht es nun, wenn du statt `post.body` nur `post.title` anzeigst 
+        - Es soll ja nur eine "Vorschau" auf den Blog-Post sein
+      - Jeder der Titel soll ein Link auf die neue vollständige Darstellung enthalten (`/post/${post.id}`)
+      - Außerdem musst Du den `onAdd` Handler entfernen und stattdessen einen `Link` auf die `add`-Route setzen
+        (den Button durch Link ersetzen)
+    - Für `/post/:postId` soll die `PostPage` generdert werden
+      - Darin musst Du den `postId`-Parameter aus der URL auslesen!
+    - Für `/add` soll die `PostEditorPage` gerendert wreden
+3. Lösung findest Du in `steps/7-router-with-typescript`
+4. Wenn Du fertig bist, bitte Hand heben ✋  
+
                   </textarea
           >
         </section>
