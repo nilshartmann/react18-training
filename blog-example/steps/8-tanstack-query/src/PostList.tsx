@@ -1,4 +1,3 @@
-import React from "react";
 import moment from "moment";
 import { BlogPostTeaser } from "./types";
 import { Link } from "react-router-dom";
