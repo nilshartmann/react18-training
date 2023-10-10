@@ -27,8 +27,8 @@ function App() {
   /*
       TODO:
 
-      1. Add the add-Button in your PostEditor component 
-            - the add-Button should invoke a callback function from the PostEditor's 
+      1. Add the Save-Button in your PostEditor component 
+            - the Save-Button should invoke a callback function from the PostEditor's 
               properties (onSavePost). 
             - the callback function should take ONE argument, that is an OBJECT
               containing the new blog post with 'title' and 'body':
