@@ -324,10 +324,14 @@
           <h3>Schritt #1: Tool Chain starten</h3>
           <p>Gemeinsam, Schritt-für-Schritt:</p>
           <ol class="x-list" style="font-size: 85%">
+            <li>Verzeichnis <code>blog-example/workspace</code> im Editor öffnen</li>
+
             <li>
               <code>cd blog-example/workspace</code>
             </li>
-
+            <li>
+              <code>npm install</code>
+            </li>
             <li>
               <code>npm start</code>
             </li>
@@ -1426,18 +1430,14 @@ const promise = getNameAsync()
         </section>
 
         <section>
-          <h2>Übung Fetch und useEffect</h2>
+          <h2>Übung Fetch POST</h2>
           <h3>Schritte</h3>
           <ol class="x-list">
-            <li>
-              Füge in <code>App.js</code> den Code zum <b>Laden und Speichern</b> der Blog-Posts
-              hinzu.
-            </li>
+            <li>Füge in <code>App.js</code> den Code zum <b>Speichern</b> der Blog-Posts hinzu.</li>
             <li>
               Du kannst deine eigene <code>App.js</code>-Datei verwenden oder
               <code>material/4-remote/src/App.js</code>
             </li>
-            <li>Das Laden soll in einem Effekt in der <code>App</code>-Komponente erfolgen</li>
             <li>
               Das Speichern soll in der <code>savePost</code>-Funktion erfolgen
 
@@ -1455,23 +1455,8 @@ const promise = getNameAsync()
               </ul>
             </li>
 
-            <li>
-              <b>Optional, wenn noch Zeit ist</b>: Füge einen Loading Indicator hinzu
-              <ul>
-                <li>
-                  Wenn Du <code>?slow</code> an die URLs im <code>fetch</code>-Aufruf hängst, wird
-                  der Server-Call künstlich verlangsamt:
-                  <code>http://localhost:7000/posts?slow</code>
-                </li>
-                <li>
-                  Gib während des laufenden Server-Requests (Daten laden) eine Meldung aus ("Please
-                  wait")
-                </li>
-                <li>Mögliche Lösung in <code>steps/4c-remote-with-loading</code></li>
-              </ul>
-            </li>
-            <li>Mögliche Lösung in <code>steps/4b-remote-use_effect</code></li>
-            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
+            <li>Mögliche Lösung in <code>steps/4a-remote</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
           </ol>
         </section>
 
@@ -1785,6 +1770,7 @@ function App(props) {
               Struktur entsprechen, die wir im Client erwarten (Properties id, title, body). Du
               kannst die Liste nach dem Lesen also unverändert in den Zustand setzen.
             </li>
+            <li>Vorheriger fertiger Stand in <code>steps/4a-remote</code></li>
             <li>Mögliche Lösung in <code>steps/4b-remote-use_effect</code></li>
             <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
             <li>
@@ -2326,7 +2312,7 @@ setView("POST_LISTE"); // ERROR
               Bearbeite die Datei, so dass keine Compile-Fehler mehr vorhanden sind, TODOs siehe
               dort
             </li>
-            <li>Lösung in <code>blog-example/material/ts-intro/15_z_solution_types.ts</code></li>
+            <li>Link zur Lösung gibt's ebenfalls im Chat</li>
           </ol>
         </section>
         <!-- ########################################################### -->
