@@ -25,7 +25,7 @@ Auf deinem Laptop/PC sollte installiert sein:
   - Bitte stelle sicher, dass das Installieren von npm-Paketen und das Klonen von Git-Repositories **auch während der Schulung** funktioniert
   - Dazu kontrollieren, dass keine Proxy, VPN- oder Firewall- oder andere Einstellungen den Zugang zu Git und npm verhindern.
   - Informationen zum Einrichten eines Proxies für npm findest Du bei Bedarf [zum Beispiel hier](http://wil.boayue.com/blog/2013/06/14/using-npm-behind-a-proxy/).
-- **Schalte während des gesamten Trainings deine Kamera ein!**. Eine Schulung ohne Kamera ist wie eine Nachrichtensendung im Radio und wir sind ja weder eine Nachrichtensendung noch im Radio 😉
+- **Schalte während des gesamten Trainings deine Kamera ein!**. Eine Schulung ohne Kamera ist wie eine Nachrichtensendung im Radio und weder bin ich Nachrichtensprecher noch sind wir im Radio 😉
   - Dein Mikrofon brauchst Du nur anmachen, wenn Du etwas sagen oder fragen möchtest (was Du natürlich jederzeit darfst!)
 - W-LAN ist bequem, aber gerade bei (langen) Streamings ist ein Kabel-gebundenes Netzwerk stabiler als W-LAN, also im Zweifel lieber das Kabel einstecken (und W-LAN deaktivieren) 😊
 
