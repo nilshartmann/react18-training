@@ -3,8 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import PostPage from "./PostPage";
 import PostListPage from "./PostListPage";
 import NotFoundPage from "./NotFound";
-import Page from "./Page";
-import PostEditorPage from "./PostEditorPage";
+import Page from "./components/Page";
+import PostEditorPage from "./post-editor/PostEditorPage";
 
 function App() {
   // TODO Übung "Context":

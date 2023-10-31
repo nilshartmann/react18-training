@@ -4,7 +4,7 @@ import PostEditor from "./PostEditor";
 import { NewBlogPost, BlogPost } from "./types";
 import LoadingIndicator from "./LoadingIndicator";
 
-type VIEW = "LIST" | "ADD";
+type View = "LIST" | "ADD";
 
 type FetchState = {
   posts?: BlogPost[];
@@ -12,8 +12,38 @@ type FetchState = {
   error?: string;
 };
 
+type SuccessMessage = {
+  success: true;
+  msg: string;
+};
+
+type ErrorMessage = {
+  success: false;
+  msg: string;
+  errorDetails: string;
+};
+
+const m: SuccessMessage = {
+  success: true,
+  msg: "..."
+};
+
+function showMessage(m: string | SuccessMessage | ErrorMessage) {
+  if (typeof m === "string") {
+    m.toLowerCase();
+    return;
+  }
+
+  if ("errorDetails" in m) {
+  }
+
+  if (m.success === false) {
+    const x = m.errorDetails.toUpperCase();
+  }
+}
+
 function App() {
-  const [view, setView] = React.useState<VIEW>("LIST");
+  const [view, setView] = React.useState<View>("LIST");
 
   const [fetchState, setFetchState] = React.useState<FetchState>({});
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import PostEditor from "./PostEditor";
-import { NewBlogPost } from "./types";
+import { NewBlogPost } from "../types";
 
 export default function PostEditorPage() {
   const navigate = useNavigate();

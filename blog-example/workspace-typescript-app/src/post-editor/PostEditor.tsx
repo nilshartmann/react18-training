@@ -1,5 +1,5 @@
 import React from "react";
-import { NewBlogPost } from "./types";
+import { NewBlogPost } from "../types";
 
 type PostEditorProps = {
   onSavePost(post: NewBlogPost): void;
@@ -72,7 +72,7 @@ type MessageProps = {
   type?: "error" | "info";
 };
 
-function Message({ msg, type = "error" }: MessageProps) {
+function PostEditorMessage({ msg, type = "error" }: MessageProps) {
   const style: React.CSSProperties =
     type === "error" ? { color: "red", fontWeight: "bold" } : { color: "green" };
 

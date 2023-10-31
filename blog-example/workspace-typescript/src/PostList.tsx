@@ -1,15 +1,20 @@
 import React from "react";
 import moment from "moment";
+import { BlogPost } from "./types";
 
-function formattedDate(date) {
+function formattedDate(date: string) {
   return moment(date).format("DD.MM.YYYY");
 }
 
-export default function PostList({ posts, onAddPost }) {
+type PostListProps = {
+  posts: BlogPost[];
+  onAddPost(): void;
+};
+
+export default function PostList({ posts, onAddPost }: PostListProps) {
   return (
     <>
-      <button onClick={onAddPost}>Add Postxxxxxxxxxx</button>
-
+      <button onClick={onAddPost}>Add Post</button>
       {posts.map(p => (
         <article key={p.id} className="Container">
           <p className="Date">{formattedDate(p.date)}</p>

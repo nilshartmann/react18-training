@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import CurrentUser from "./CurrentUser";
+import CurrentUser from "../user/registration/CurrentUser";
 
 export default function AppHeader() {
   return (

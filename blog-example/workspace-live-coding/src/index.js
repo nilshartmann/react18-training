@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import PostEditor from "./PostEditor";
+import App from "./PostEditor";
 
 const root = createRoot(document.getElementById("root"));
-root.render(<PostEditor />);
+root.render(<App />);

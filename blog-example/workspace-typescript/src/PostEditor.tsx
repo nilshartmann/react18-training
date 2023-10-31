@@ -1,6 +1,11 @@
 import React from "react";
+import { NewBlogPost } from "./types";
 
-export default function PostEditor(props) {
+type PostEditorProps = {
+  onSavePost(newPost: NewBlogPost): void;
+};
+
+export default function PostEditor(props: PostEditorProps) {
   const [title, setTitle] = React.useState("");
   const [body, setBody] = React.useState("");
 
@@ -43,7 +48,7 @@ export default function PostEditor(props) {
         disabled={saveButtonDisabled}
         onClick={() => {
           props.onSavePost({
-            title,
+            title: title,
             body
           });
         }}
@@ -56,7 +61,7 @@ export default function PostEditor(props) {
 
 // TODO:
 //   - add type for properties, you can simply use 'any' here :-)
-function Message({ msg, type = "error" }) {
+function Message({ msg, type = "error" }: any) {
   const style = type === "error" ? { color: "red", fontWeight: "bold" } : { color: "green" };
 
   return <p style={style}>{msg}</p>;

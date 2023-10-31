@@ -649,6 +649,10 @@ function HelloWorld() {
             <li>
               Der "Clear"-Button soll <b>disabled</b> sein, wenn beide Eingabefelder leer sind
             </li>
+            <li>
+              Wenn Du in der ersten Übung nicht fertig geworden bist, kannst Du diesen PostEditor in
+              deinen Workspace kopieren: <code>steps/1-hello-world</code>
+            </li>
             <li>Mögliche Lösung: <code>steps/2-editor</code></li>
             <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
           </ol>
@@ -1779,6 +1783,11 @@ function App(props) {
                   Wenn Du <code>?slow</code> an die URLs im <code>fetch</code>-Aufruf hängst, wird
                   der Server-Call künstlich verlangsamt:
                   <code>http://localhost:7000/posts?slow</code>
+                </li>
+                <li>
+                  Falls der Aufruf gecacht wird, füge einen zufälligen Wert in die URL ein, der sich
+                  bei jeder Ausführung ändert, z.B:
+                  <code>`http://localhost:7000/posts?slow&xid={Math.random()}`</code>
                 </li>
                 <li>
                   Gib während des laufenden Server-Requests (Daten laden) eine Meldung aus ("Please
