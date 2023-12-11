@@ -1,0 +1,4720 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>React Training</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
+    />
+    <link rel="stylesheet" href="slides/revealjs/reveal.js/dist/reset.css" />
+    <link rel="stylesheet" href="slides/revealjs/reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="slides/revealjs/reveal.js/dist/theme/solarized.css" />
+
+    <!-- Theme used for syntax hislides/ghlighted code -->
+    <link rel="stylesheet" href="slides/revealjs/highlight-js-github-theme.css" />
+    <link rel="stylesheet" href="slides/revealjs/styles.css" />
+  </head>
+
+  <body>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section data-state="title">
+          <h2 class="title" style="font-size: 7rem">
+            <b>React &amp; TypeScript Workshop</b>
+          </h2>
+
+          <h4>
+            <span class="transparent-bg">
+              <a href="https://nilshartmann.net" target="_blank">Nils Hartmann</a>
+              |
+              <a href="https://twitter.com/nilshartmann" target="_blank">@nilshartmann</a>
+            </span>
+          </h4>
+
+          <p style="margin-top: 4rem"></p>
+          <div>
+            <h3><span class="transparent-bg">Slides</span></h3>
+            <p>
+              <span class="transparent-bg">Lokal: 2023-12-15-react-typescript.html</span>
+            </p>
+            <p>
+              <span class="transparent-bg"
+                >Remote:
+                <a
+                  href="https://nilshartmann.github.io/react18-training/2023-12-15-react-typescript.html"
+                  >https://nilshartmann.github.io/react18-training/2023-12-15-react-typescript.html</a
+                ></span
+              >
+            </p>
+          </div>
+        </section>
+        <section>
+          <h2>Nils Hartmann</h2>
+          <p style="margin-top: 2rem">
+            <a href="https://nilshartmann.net" target="_blank">https://nilshartmann.net</a>
+            /
+            <a href="https://twitter.com/nilshartmann" target="_blank">@nilshartmann</a>
+          </p>
+          <p style="margin-top: 2rem">
+            <em>Freiberuflicher Software-Entwickler, Berater und Trainer aus Hamburg</em>
+          </p>
+          <p></p>
+          <p style="margin-top: 5rem">Java | JavaScript, TypeScript | React | GraphQL</p>
+          <div style="display: flex; justify-content: center; margin-top: 2rem">
+            <div style="margin-left: 15px">
+              <a href="https://graphql.schule/video-kurs"
+                ><img
+                  style="max-height: 450px"
+                  src="slides/images/screenshot-graphql-kurs.png"
+                /><br />https://graphql.schule/video-kurs</a
+              >
+              <br />
+            </div>
+            <!--  -->
+            <div style="margin-left: 100px">
+              <a href="https://reactbuch.de"
+                ><img
+                  style="max-height: 450px"
+                  src="slides/images/react-buch-v2.jpg"
+                /><br />https://reactbuch.de</a
+              >
+              <br />
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Und ihr?</h2>
+          <ul>
+            <li>Stellt euch doch bitte kurz vor...</li>
+            <li>
+              Eure Vorkenntnisse in <b>JavaScript</b>, <b>TypeScript</b>, <b>React</b>, anderen
+              Web-Frameworks und/oder Programmiersprachen?
+            </li>
+            <li>Wünsche für diese Schulung? Besondere Themen oder Interessen?</li>
+          </ul>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h2>Grundsätzliches</h2>
+          <p><b>Jederzeit:</b> Fragen und Diskussionen!</p>
+          <p class="fragment">Motto: Es gibt keine dummen Fragen!</p>
+          <p class="fragment">
+            Bemerkbar machen per Audio, Chat oder Zoom Reaktion "Hand erheben"
+            <span class="fragment"
+              ><img width="50%" src="slides/images/zoom-reaktionen.png"
+            /></span>
+          </p>
+
+          <p class="fragment">Bonuspunkte für eingeschaltetes Video 🥰</p>
+
+          <p class="fragment">
+            Ich zeige viel direkt im Editor, aber ihr könnt die Slides als Referenz benutzen
+          </p>
+          <p class="fragment">
+            Wir machen zwischendurch Übungen, in denen ihr selbst programmieren könnt
+          </p>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+### Zeitplan
+
+* Fr., 15 Dezember: [JavaScript Grundlagen](#/t-javascript)
+* Mo./Di., 18./19. Dezember: [React](#/t-react)
+* Danach: 🎄 🎅 🤶
+  * TypeScript machen wir im React-Teil
+  * Alles, was wir mit JavaScript lernen, brauchen wir auch mit/für TypeScript!
+* Jeweils 9 Uhr bis 16.00 Uhr
+  * Kürzere Pausen zwischendurch ☕️ 😴
+          </textarea>
+        </section>
+
+        <section id="t-javascript">
+          <h1>JavaScript</h1>
+        </section>
+
+        <section>
+          <h3>JavaScript: Die Sprache</h3>
+          <p>
+            ⚠️&nbsp;<em
+              >JavaScript wurde in nur
+              <a
+                href="https://thenewstack.io/brendan-eich-on-creating-javascript-in-10-days-and-what-hed-do-differently-today/"
+                >zehn Tagen</a
+              ></em
+            >&nbsp;erschaffen! 👷
+          </p>
+          <pre><code class="javascript">
+// let creates a variable
+let x = "Hallo"; // typeof x === "string"
+</code></pre>
+          <pre class="fragment"><code class="javascript">
+// dynamic typing (vs static typing in C#, java, ...)
+x = 7; // typeof x === "number"
+x = false; // typeof x === "boolean"
+
+x = function() { return "Hallo" } // typeof x === "function"
+
+x.toUpperCase(); // Ouch 😱
+    </code></pre>
+        </section>
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Control flow</h3>
+          <p>Ähnlich wie C#/Java</p>
+          <p>if / else</p>
+          <p>switch / case / default</p>
+          <p>while / do</p>
+          <p>break / continue</p>
+          <p>try / catch</p>
+          <p>Semikolon optional</p>
+          <p>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling"
+              >Referenz</a
+            >
+          </p>
+        </section>
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Variablen: let und const</h3>
+
+          <pre class="fragment"><code class="javascript">
+            // Variable
+            let alter = 42;
+            alter = 43; // OK
+          </code></pre>
+          <pre class="fragment"><code class="javascript">
+
+            // Konstante
+            const name = "Susi";
+            name = "Klaus"; // TypeError: invalid assignment to const 'name'
+          </code></pre>
+
+          <p class="fragment">Das veraltete <code>var</code> bitte <b>nicht mehr verwenden</b>!</p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Operatoren</h3>
+          <pre><code class="javascript">
+// === (triple equal operator) OHNE implizite Typ-Konvertierung
+if (42 === 42) {
+  console.log("of course"); // of course
+}
+if ("3" === 3) {
+  console.log("makes sense"); //
+}
+
+if ("" === false) {
+  console.log("hmm..."); //
+}
+            </code></pre>
+          <pre class="fragment"><code class="javascript">
+// == (double equal operator) mit impliziter Typ-Konvertierung
+// ("coercion")
+if (42 == 42) {
+  console.log("of course"); // of course
+}
+if ("3" == 3) {
+  console.log("makes sense"); // makes sense
+}
+if ("" == false) {
+   console.log("hmm..."); // hmm...
+}
+          </code></pre>
+
+          <p class="fragment"><b>Empfehlung</b>: immer triple-equal-operator verwenden!</p>
+          <p class="fragment">
+            Mehr Spaß mit type coercion:
+            <a href="https://github.com/denysdovhan/wtfjs">WTF JS</a>
+          </p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>JavaScript: Datatypes</h3>
+
+          <pre><code class="javascript">
+            // typeof liefert den Typ einer Variable als String zurück
+            console.log(typeof 123); // "number"
+          </code></pre>
+          <p>boolean, null, undefined, number, string, symbol, bigint</p>
+
+          <pre class="fragment"><code class="javascript">
+              const check = true; // typeof check === "boolean"
+              if (check) {
+                console.log("jupp!");
+              }
+            </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+              const age = 32; // typeof age === "number"
+              if (age < 16) {
+                console.log("No Beer, sorry!")
+              }
+            </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+              const name = "Klaus"; // typeof name === "string"
+              if (name === "Klaus") { 
+                console.log("Hello, Klaus!");
+              }
+            </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+              let value;
+              typeof value === "undefined"
+
+              value = null;
+              typeof value !== "undefined"
+              typeof value === "???"
+
+            </code></pre>
+        </section>
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Template Strings</h3>
+          <pre class="fragment"><code class="javascript">
+
+const name = "Susi";
+
+// Template String (with ``)
+const greet = `Hello, ${name}`; // Hello, Susi
+
+const loudGreet = `Hello, ${name.toUpperCase()}` // Hello, SUSI
+
+// Zeilenumbrüche bleiben erhalten:      
+const letter = `Hello, ${name},
+
+thanks for subscribing to our e-mail newsletter.
+
+Yours, Edgar`;       
+          </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Funktionen</h3>
+          <pre><code class="javascript">
+function greet(msg) {
+  return "Hello, " + msg;
+}
+
+greet("World"); // Hello, World
+greet(null), // Hello, null
+greet(); // Hello, undefined
+
+</code></pre>
+          <pre class="fragment"><code class="javascript">
+// Funktionen sind "1st-class-citizens":
+function greet(msg) { ... }
+
+// ...und können z.B. einer Variablen zugeordnet werden
+const greetSomeone = greet;
+greetSomeone("World"); // Hello, World
+
+    </code></pre>
+          <pre class="fragment"><code class="javascript">
+// Funktionen können als Parameter übergeben werden
+function printer(getMessageFn) {
+  console.log(getMessageFn())
+}
+
+// "inline" Funktion
+printer(function() { return "Hello, World"} );
+
+function helloWorld() { return  "Hello, World" };
+printer(helloWorld);
+
+</code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Funktionen: Parameter</h3>
+
+          <pre class="fragment"><code class="javascript">
+            function add(value, inc = 1) { ... } 
+          </code></pre>
+
+          <p class="fragment">
+            Der Default-Parameter greift immer, wenn für den Parameter
+            <code>undefined</code> übergeben wurde:
+          </p>
+
+          <pre class="fragment"><code class="javascript">
+            add(1); // entspricht: add(1,1)
+          </code></pre>
+          <pre class="fragment"><code class="javascript">
+            add(1,undefined); // entspricht: add(1,1)
+          </code></pre>
+          <pre class="fragment"><code class="javascript">
+            add(1,2); // entspricht: add(1,2);
+          </code></pre>
+          <pre class="fragment"><code class="javascript">
+            add(1, null); // entspricht; add(1, null);
+          </code></pre>
+          <pre class="fragment"><code class="javascript">
+            add(); // entspricht: add(undefined, 1);
+          </code></pre>
+
+          <p class="fragment">
+            Mehrere Default-Parameter: danach dürfen keine nicht-Default-Parameter kommen!
+          </p>
+
+          <pre class="fragment"><code class="javascript">
+            function add(value, inc = 1) { ... } // ok
+            function add(value = 0, inc = 1) { ... }  // ok
+
+            function add(value = 0, inc) { ... } // FEHLER
+          </code></pre>
+        </section>
+        <section>
+          <h3>Rest-Parameter</h3>
+
+          <p class="fragment">
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters"
+              >Rest-Parameter</a
+            >
+            nehmen alle verbleibenen, übergebenen Parameter auf
+          </p>
+
+          <pre class="fragment"><code class="javascript">
+            function greet(phrase, ...names) { 
+              // ...
+            }
+
+            greet("Hello", "World", "Peter", "Susi");
+
+            // phrase ist "Hello",
+            // names ist ein Array mit "World", "Peter", "Susi"
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+            function say(...words) { 
+              // ...
+            } 
+
+            say("One", "Two");
+
+            // words ist ein Array mit allen Parametern ("One", "Two")
+          </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Funktionen</h3>
+          <p>Achtung, return-Anweisung: Ergebnis direkt hinter return schreiben:</p>
+
+          <pre class="fragment"><code class="javascript">
+              function hello() {
+                return "Hello";
+              }
+              const h = hello(); // "Hello"
+            </code></pre>
+          <pre class="fragment"><code class="javascript">
+
+              function goodbye() {
+                return 
+                  "Goodbye";    // oh no 😢!
+              }
+
+              const g = goodbye(); // undefined
+            </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+            // oder:
+              function hello() {
+                return (
+                  "Hello"
+                );
+              }
+            </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h2>Übung: Strings und Funktionen</h2>
+          <p>
+            <em>Mache dich mit den JavaScript-Grundlagen vertraut</em>
+          </p>
+
+          <p class="fragment">
+            Die Beschreibung der Übung findest Du in
+            <b><code>js-intro/01_basic/index.js</code></b
+            >. Darin kannst Du auch deinen Code schreiben.
+          </p>
+          <p class="fragment">
+            Du kannst
+            <b><code>js-intro/01_basic/index.html</code></b> in deinem Browser öffnen. Diese Datei
+            führt die <b><code>index.js</code></b
+            >-Datei dann aus.
+          </p>
+          <p class="fragment">
+            Ausgaben auf der Browser-Konsole, nach dem Ändern von <code>index.js</code>, die Seite
+            im Browser neu laden
+          </p>
+          <p class="fragment">Bei Fragen oder Problemen, kannst Du dich jederzeit melden</p>
+          <p class="fragment">
+            Wenn alle Stricke reißen, findest Du eine mögliche Lösung in:
+            <code>js-intro/01_basic/solution/index.js</code>
+          </p>
+          <p class="fragment">Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</p>
+        </section>
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Pfeilfunktionen (Arrow Functions)</h3>
+          <p>In vielen Fällen "nur" andere Schreibweise als <code>function</code></p>
+          <pre><code class="javascript">
+  const greet = (msg) => {
+    return "Hello, " + msg;
+  }
+</code></pre>
+          <pre class="fragment"><code class="javascript">
+  // Bei genau einem Parameter kann die Klammer weggelassen werden:
+  const greet = msg => { return "Hello, " + msg }
+</code></pre>
+          <pre class="fragment"><code class="javascript">
+  // Bei keinem oder mehr als einem Parameter muss die Klammer gesetzt werden:
+  const greet = (phrase, msg) => { return phrase + msg }
+  const greetWorld = () => { return "Hello, World" };
+
+</code></pre>
+          <pre class="fragment"><code class="javascript">
+  // bei genau einem Ausdruck, können geschweifte Klammern weggelassen werden:
+  //   Ergebnis des Ausdrucks dann der Rückabgewert der Funktion:
+  const greet = msg => "Hello, " + msg;
+</code></pre>
+          <pre class="fragment"><code class="javascript">
+  // Verhalten wie "normale Funktion"
+  greet("World"); // Hello, World
+  greet(null), // Hello, null
+  greet(); // Hello, undefined
+
+  </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+
+        <section>
+          <h3>JavaScript: Arrays</h3>
+
+          <pre><code class="javascript">
+          const empty = [];
+          const dinge = [ "a", 123, { name: "Klaus"}, false];
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+          // Ein bestehendes Array um neue Einträge erweitern
+          const abc = ["a", "b", "c"];
+
+          abc.push("d", "e"); // ["a", "b", "c", "d", "e"];
+
+          abc[4]; // e
+          abc.length // 5
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+
+          // Ein bestehende Array Kopieren und die Kopie erweitern
+          const three = [1, 2, 3];
+          const five = three.concat(4, 5)
+          // three !== five
+
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>JavaScript: Arrays</h3>
+          <pre><code class="javascript">
+            const fruits = ["apple", "orange"];
+          </code></pre>
+          <pre class="fragment"><code class="javascript">
+            // Iterieren
+            for (const f of fruits) {
+              console.log(f);
+            }
+            // "apple"
+            // "orange"
+  
+            fruits.forEach(f => console.log(f));
+            // "apple"
+            // "orange"
+          </code></pre>
+          <pre class="fragment"><code class="javascript">
+          // Transformieren ("map") eines Arrays
+
+          const bigFruits = fruits.map(v => v.toUpperCase());
+          // ["APPLE", "ORANGE"]
+          </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Objekt</h3>
+          <p>Objekte werden als Literal in Form von Key-Value-Paaren geschrieben:</p>
+          <pre><code class="javascript">
+const firstname = "Klaus";
+
+const person = {
+  firstname: firstname,
+  hobby: "Singing",
+  age: 32
+}
+
+console.log(typeof person); // "object"
+          </code></pre>
+          <pre class="fragment"><code class="javascript">
+// Auf Properties zugreifen
+person.firstname // Klaus
+            
+          </code></pre>
+          <pre class="fragment"><code class="javascript">
+// Werte zuweisen
+person.firstname = "Susi"
+person.firstname // Susi
+            
+          </code></pre>
+          <pre class="fragment"><code class="javascript">
+// Neues Property hinzufügen
+person.livesIn = "Hamburg"
+
+// Property entfernen
+delete person.livesIn;
+
+// Zugriff auf nicht vorhandenes Property
+person.livesIn // undefined
+                      </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Objekte #2</h3>
+          <p class="fragment">Object "Shorthand Notation"</p>
+          <pre class="fragment"><code class="javascript">
+            const firstname = "Klaus";
+        
+            const person = {
+              firstname,
+              hobby: "Singing",
+              age: 32
+            }
+        </code></pre>
+
+          <p class="fragment">Erinnerung: Nur Referenzen sind konstant!</p>
+
+          <pre class="fragment"><code class="javascript">
+            // Nur Referenzen sind konstant
+            const person = {
+              name: "Susi"
+            }
+
+            person = "Klaus"; // TypeError: invalid assignment to const 'person'
+            person.name = "Klaus" // OK
+          </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h2>Übung: Arrays, Objekte und Funktionen</h2>
+
+          <p class="fragment">
+            Die Beschreibung der Übung findest Du in
+            <b><code>js-intro/02_objects_and_arrays/index.js</code></b
+            >. Darin kannst Du auch deinen Code schreiben.
+          </p>
+          <p class="fragment">
+            Du kannst
+            <b><code>js-intro/02_objects_and_arrays/index.html</code></b> in deinem Browser öffnen.
+            Diese Datei führt die <b><code>index.js</code></b
+            >-Datei dann aus.
+          </p>
+          <p class="fragment">
+            Ausgaben auf der Browser-Konsole, nach dem Ändern von <code>index.js</code>, die Seite
+            im Browser neu laden
+          </p>
+          <p class="fragment">Bei Fragen oder Problemen, kannst Du dich jederzeit melden</p>
+          <p class="fragment">
+            Wenn alle Stricke reißen, findest Du eine mögliche Lösung in:
+            <code>js-intro/02_objects_and_arrays/solution/index.js</code>
+          </p>
+          <p class="fragment">Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</p>
+        </section>
+
+        <section>
+          <h3>Mehr zu Objekten</h3>
+
+          <pre class="fragment"><code class="javascript">
+// Zugriff via Index Notation
+person["first name"]; // Klaus
+
+const what = "first name";
+person[what]; // Klaus
+person[what] = "Susi";
+
+person["first name"]; // Susi
+          </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Objekte und Funktionen</h3>
+
+          <p>Objekte können Funktionen enthalten</p>
+
+          <pre><code class="javascript">
+const person = {
+  firstname: "Susi",
+  sayHello() { return "Hello, " + this.firstname},
+}
+
+person.sayHello() // Hello, Susi
+</code></pre>
+
+          <!-- <p class="fragment">Warnung vor "this"!</p>
+          <pre class="fragment"><code class="javascript">
+const klaus = { 
+  firstname: "Klaus", 
+  sayHello: person.sayHello
+};
+
+klaus.sayHello() // 🤔
+</code></pre>
+
+          <pre class="fragment"><code class="javascript">
+klaus.sayHello() // Hello, Klaus 😊
+</code></pre>
+
+          <pre class="fragment"><code class="javascript">
+const sayHelloToSusi = person.sayHello;
+sayHelloToSusi(); // 🤔
+</code></pre>
+          <pre class="fragment"><code class="javascript">
+const sayHelloToSusi = person.sayHello;
+sayHelloToSusi(); // Hello, undefined 🤪
+</code></pre> -->
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Objekte und Pfeilfunktionen</h3>
+          <p class="fragment">
+            Pfeilfunktionen eignen sich <b>nicht</b> für Methoden (also für Funktionen an Objekten):
+          </p>
+          <pre class="fragment"><code class="javascript">
+const person = {
+  firstname: "Susi",
+  sayHello: () => { return "Hello, " + this.firstname }
+}
+
+person.sayHello();  Hello, undefined 🤪
+</code></pre>
+          <p class="fragment">(Funktionen an Objekten haben kein "this")</p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Destructuring</h3>
+          <p>
+            Mit dem
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment"
+              >object destructuring</a
+            >
+            Operator kannst Du Werte in einem Objekt an lokale Variablen zuweisen:
+          </p>
+
+          <pre><code class="javascript">
+            // Ein Objekt...
+              const person = {
+                firstname: "Susi",
+                lastname: "Meier",
+                age: 32
+              };
+            </code></pre>
+          <pre class="fragment"><code class="javascript">
+              // Zugriff auf Properties (herkömmlich)
+
+              const firstname = person.firstname; // Susi
+              const age = person.age; // 32
+              const hobby = person.hobby; // undefined
+            </code></pre>
+          <pre class="fragment"><code class="javascript">
+              // Zugriff auf Properties (Destrukturierung)
+
+              const { firstname, age, hobby } = person;
+
+              console.log(firstname); // Susi
+              console.log(age); // 32
+              console.log(hobby); // undefined
+            </code></pre>
+        </section>
+        <section>
+          <h3>Destructuring #2</h3>
+
+          <p class="fragment"><em>Default Werte</em>:</p>
+
+          <pre class="fragment"><code class="javascript">
+              const person = {
+                firstname: "Susi",
+                age: 32
+              };
+
+              const { city = "Bonn" } = person;
+              console.log(city); // Bonn
+            </code></pre>
+        </section>
+        <section>
+          <h3>Destructuring #3</h3>
+          <p>Funktionsparameter, die ein Objekt sind, können destrukturiert werden:</p>
+
+          <pre><code class="javascript">
+              // Herkömmlich
+              function printPerson(person) {
+                console.log(`${person.firstname} is ${person.age} years old`);
+              }
+
+              printPerson({ firstname: "Susi", age: 32 });
+            </code></pre>
+
+          <p class="fragment">Alternative mit Destrukturierung:</p>
+
+          <pre class="fragment"><code class="javascript">
+              function printPerson({firstname, age}) {
+                console.log(`${firstname} is ${age} years old`);
+              }
+
+              printPerson({ firstname: "Susi", age: 32 });
+            </code></pre>
+        </section>
+        <section>
+          <h3>Destructuring #3</h3>
+          <p>Mit Default-Wert</p>
+          <pre><code class="javascript">
+             function printPerson({name, age, city="Bonn"}) {
+                 console.log(`${name}, ${age} years, lives in ${city}`);
+             }
+            </code></pre>
+          <p class="fragment">🤔 Was wird hier ausgegeben? 🤔</p>
+          <pre class="fragment"><code class="javascript">
+             
+              printPerson({name: "susi", age: 32});
+            </code></pre>
+          <pre class="fragment"><code class="javascript">
+  
+              printPerson({name: "susi", age: 32, city: "Freiburg"});
+            </code></pre>
+          <pre class="fragment"><code class="javascript">
+  
+              printPerson({name: "susi", age: 32, city: null});
+            </code></pre>
+          <pre class="fragment"><code class="javascript">
+  
+              printPerson({name: "susi", age: 32, city: undefined});
+            </code></pre>
+          <pre class="fragment"><code class="javascript">
+  
+              printPerson();
+             </code></pre>
+        </section>
+
+        <section>
+          <h3>Object Spread Operator</h3>
+
+          <p>
+            Mit dem
+            <a
+              href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Operators/Spread_syntax"
+              >Spread Operator</a
+            >
+            können alle Felder eines Objektes an eine andere Stelle kopiert werden
+          </p>
+
+          <pre class="fragment"><code class="javascript">
+            const person = { firstname: "Susi", age: 32 }
+          </code></pre>
+          <pre class="fragment"><code class="javascript">
+            // Kopie erzeugen (herkömmlich)
+            const copy = { firstname: person.firstname, age: person.age } 
+
+            // copy: { firstname: "Susi", age: 32}
+          </code></pre>
+          <pre class="fragment"><code class="javascript">
+            // Kopie erzeugen (Spread operator)
+            const copy = { ...person };
+
+            // copy: { firstname: "Susi", age: 32}
+
+            copy.age = 33;
+
+            person.age; // 32
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+            const person = { firstname: "Susi", age: 32 }
+
+            const employee = { ...person, salary: 695000 }
+            // employee: { firstname: "Susi", age: 32, salary: 695000 }
+          </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Destructuring und Spread mit Arrays</h3>
+          <p>Beide Operatoren funktionieren auch mit Arrays:</p>
+
+          <pre class="fragment"><code class="javascript">
+            // Spread-Operator
+
+            const cities = ["Hamburg", "Bonn"];
+            const moreCities = [...cities, "Köln"];
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+            // Destructuring
+            const cities = ["Hamburg", "Bonn", "Köln"];
+            const [hamburg, bonn] = cities;
+
+            console.log(hamburg); // Hamburg
+            console.log(bonn); // Bonn
+          </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Truthy und falsy</h3>
+          <p>
+            <b><a href="https://developer.mozilla.org/de/docs/Glossary/Falsy">falsy</a></b> ist ein
+            Wert, der <b>false</b> wird, wenn er (implizit oder explizit) in ein Boolean konvertiert
+            wird
+          </p>
+          <p>
+            <b><a href="https://developer.mozilla.org/de/docs/Glossary/Truthy">truthy</a></b> ist
+            ein Wert, der <b>true</b> wird, wenn er (implizit oder explizit) in ein Boolean
+            konvertiert wird (das sind alle Werte, die nicht falsy sind)
+          </p>
+
+          <pre><code class="javascript">
+    if (true) { console.log("I'm true") } // I'm true
+
+    if ("hello") { console.log("I'm true") } // I'm true
+    
+    if (null) { console.log("I'm falsy") } // 
+
+    if (undefined) { console.log("I'm falsy") } // 
+  </code></pre>
+
+          <p class="fragment">Was ist mit diesen?</p>
+
+          <pre class="fragment"><code class="javascript">
+    if (0) { console.log("will this be shown?"); } // 🤔
+  </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+    if ("") { console.log("will this be shown?"); } // 🤔
+  </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+    if ([]) { console.log("will this be shown?"); } // 🤔
+  </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+    if ({}) { console.log("will this be shown?"); } // 🤔
+  </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Truthy und falsy #2</h3>
+
+          <p>Insbesondere mit <code>0</code> und Leerstring aufpassen:</p>
+
+          <pre class="fragment"><code class="javascript">
+        function add(a, b) {
+          if (!a || !b) {
+            throw new Error("Invalid Argument!");
+          }
+
+          return a + b;
+        }
+      </code></pre>
+          <pre class="fragment"><code class="javascript">
+        add(2, 1);  // 3 👍
+        add(1, null); // "Invalid Argument" 👍
+      </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+        add(1, 0); // "Invalid Argument" 🤦
+      </code></pre>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+### Truthy und falsy #3
+
+* Mit Default-Werten (Destructuring) und Default-Parametern (Funktionen) aufpassen
+* Defaults werden nur verwendet, wenn der entsprechende Wert `undefined` ist
+* `truthy` bzw. `falsy` spielen hier keine Rolle!
+* ```javascript
+  const person = { firstname: null };
+
+  const { firstname = "Susi" } = person; // firstname: null!
+  ```
+* ```javascript
+  function sayHello(name = "Susi") { return "Hello, " + name }
+
+  sayHello(null); // Hello, null
+  ```
+  </textarea
+          >
+        </section>
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Beispiel: Immutability</h3>
+          <p>
+            In React wird sehr viel mit unveränderlichen ("immutable") Datenstrukturen gearbeitet
+          </p>
+          <p>
+            Dabei werden Objekte und Arrays nicht verändert. Änderungen finden immer nur auf Kopien
+            der Originale statt
+          </p>
+
+          <p><code>Array.map</code> bildet alle Einträge aus einem Array auf ein neues Array ab</p>
+
+          <pre class="fragment"><code class="javascript">
+const persons = [
+  { lastname: "Mueller", firstname: "Klaus", age: 32 }, 
+  { lastname: "Meier", firstname: "Susi", age: 33 }
+]      
+
+const olderPersons = persons.map( p => {
+  return { ...p, age: p.age + 1 }
+})
+          </code></pre>
+          <p class="fragment">
+            Im "echten" Leben: <a href="https://immerjs.github.io/immer/">ImmerJS</a>
+          </p>
+        </section>
+        <section>
+          <h2>Übung: Arbeiten mit Objekten</h2>
+
+          <p class="fragment">
+            Die Beschreibung der Übung findest Du in
+            <b><code>js-intro/03_objects/index.js</code></b
+            >. Darin kannst Du auch deinen Code schreiben.
+          </p>
+          <p class="fragment">
+            Du kannst
+            <b><code>js-intro/03_objects/index.html</code></b> in deinem Browser öffnen. Diese Datei
+            führt die <b><code>index.js</code></b
+            >-Datei dann aus.
+          </p>
+          <p class="fragment">
+            Ausgaben auf der Browser-Konsole, nach dem Ändern von <code>index.js</code>, die Seite
+            im Browser neu laden
+          </p>
+          <p class="fragment">Bei Fragen oder Problemen, kannst Du dich jederzeit melden</p>
+          <p class="fragment">
+            Wenn alle Stricke reißen, findest Du eine mögliche Lösung in:
+            <code>js-intro/03_objects/solution/index.js</code>
+          </p>
+          <p class="fragment">Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</p>
+        </section>
+
+        <!-- =============================================================================
+        <section>
+          <h3>Weitere Operatoren</h3>
+
+          <p>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_OR"
+              >OR</a
+            >
+          </p>
+
+          <pre class="fragment"><code class="javascript">
+              const winter = true;
+              const summer = false;
+              const spring = false;
+              const isWinterOrSummer = winter || summer; // true
+              const isSummerOrSpring = summer || spring; // false 
+
+            </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+            // Mit nicht-boolean-Werten
+            const name = "Peter";
+            const age = 32;
+            const oneOrTheOther = name || age; // Peter
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+            // Mit nicht-boolean-Werten
+            const name = "";
+            const age = 32;
+            const oneOrTheOther = name || age; // ???
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+            // OR...?
+            const name = "";
+            const age = 0;
+            const what = name || age; // ????
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>Weitere Operatoren</h3>
+          <p>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND"
+              >AND</a
+            >
+          </p>
+          <p>Liefert den zweiten Wert zurück (oder ersten Wert, wenn erster Wert falsy)</p>
+
+          <pre class="fragment"><code class="javascript">
+            const winter = true;
+            const summer = false;
+            const winterAndSummer = winter && summer; // false; 
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+            const firstname = "Susi";
+            const lastname = "Meier"
+            const name = firstname && lastname; // Susi
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+            const firstname = "";
+            const lastname = "Meier"
+            const firstnameAndLastNameSpecified = firstname && lastname; // "" 😝
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+            const firstname = "Abc";
+            const lastname = "Meier"
+            const firstnameAndLastNameSpecified = !!(firstname && lastname); // true 😝
+          </code></pre>
+        </section> -->
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Module</h3>
+          <p>Mit Modulen sind Dateiinhalte nicht mehr global sichtbar</p>
+          <p>Module bestimmen explizit, was außerhalb verwendet werden darf</p>
+          <p>Module geben explizit an, was sie aus anderen Modulen verwenden wollen</p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Module</h3>
+          <h4>Default Exporte</h4>
+          <p>
+            <em
+              >Objekte, Funktionen, Klassen etc müssen explizit <b>exportiert</b> und
+              <b>importiert</b> werden</em
+            >
+          </p>
+          <p class="fragment">Eine <code>export</code>-Anweisung macht aus einer Datei ein Modul</p>
+
+          <pre class="fragment"><code class="javascript">
+            // src/domain/Person.js
+            export default function createPerson { ... }
+
+            oder
+
+            function createPerson { ... }
+            export default createPerson
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+              // src/domain/Person.js
+              export default function createPerson() { ... }
+
+              oder
+
+              function createPerson() { ... }
+              export default createPerson;
+            </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+                Nur EIN Default Export erlaubt;
+                export default function createPerson() { ... }
+                export default function makePerson { ... } // KONFLIKT
+              </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Module</h3>
+          <h4>Importieren</h4>
+          <p class="fragment">Beim importieren geben wir Pfade(!) an</p>
+
+          <pre class="fragment"><code class="javascript">
+              // src/domain/Person.js
+              export default function createPerson() { ... }
+
+            </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+                // src/App.js
+                import createPerson from "./domain/Person.js";
+
+                const person = createPerson("Lemmy", "Kilmister");
+              </code></pre>
+
+          <p class="fragment">👉 In der React-Entwicklung könnt ihr die Dateiendung weglassen!</p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Module</h3>
+          <h4>Benannte Exporte</h4>
+          <p class="fragment">
+            Ein Modul kann neben einem Default auch beliebig viele
+            <b>benannte Exporte</b> haben
+          </p>
+
+          <pre class="fragment"><code class="javascript">
+                // src/domain/Person.js
+                export default function createPerson { ...}
+
+                export function updatePerson() { ... }
+                export function removePerson() { ... }
+              </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+                  // src/domain/Person.js
+                  function createPerson { ...}
+                  function updatePerson() { ... }
+                  function removePerson() { ... }
+
+                  export default createPerson;
+
+                  export { updatePerson, removePerson }
+                </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Module</h3>
+          <h4>Benannte Importe</h4>
+          <pre class="fragment"><code class="javascript">
+                    // src/App.js
+                    import { removePerson } from "./Person"
+              </code></pre>
+          <pre class="fragment"><code class="javascript">
+                // Default und benannten Export importieren
+                import createPerson, { removePerson } from "./Person.js"
+              </code></pre>
+        </section>
+        <!-- ============================================================================= -->
+        <!-- <section>
+          <h3>Übung: Module</h3>
+
+          <p>Vorbereitung</p>
+          <ol>
+            <li class="fragment">
+              Öffne das Verzeichnis <code>js-intro/04_modules</code> im Terminal
+            </li>
+            <li class="fragment">Führe <code>npx http-server</code> in dem Verzeichnis aus</li>
+            <li class="fragment">
+              Öffne die Seite <a href="http://localhost:8080">http://localhost:8080</a> im Browser
+            </li>
+            <li class="fragment">Wenn Du die Seite geöffnet hast, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>Übung: Module</h2>
+
+          <p class="fragment">
+            Die Beschreibung der Übung findest Du in
+            <b><code>js-intro/04_modules/index.js</code></b
+            >. Darin kannst Du auch deinen Code schreiben.
+          </p>
+          <p class="fragment">
+            Du kannst
+            <b><code>js-intro/04_modules/index.html</code></b> in deinem Browser öffnen. Diese Datei
+            führt die <b><code>index.js</code></b
+            >-Datei dann aus.
+          </p>
+          <p class="fragment">
+            Ausgaben auf der Browser-Konsole, nach dem Ändern von <code>index.js</code>, die Seite
+            im Browser neu laden
+          </p>
+          <p class="fragment">Bei Fragen oder Problemen, kannst Du dich jederzeit melden</p>
+          <p class="fragment">
+            Wenn alle Stricke reißen, findest Du eine mögliche Lösung in:
+            <code>js-intro/04_modules/solution/</code>
+          </p>
+          <p class="fragment">Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</p>
+        </section> -->
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Module</h3>
+          <h4>Bundling</h4>
+
+          <p>Nicht alle Browser unterstützen Module nativ</p>
+          <p>
+            Es gibt in JS faktisch mehr als ein Modulsystem (zum Beispiel
+            <a href="https://nodejs.org/docs/latest/api/modules.html#modules-commonjs-modules"
+              >CommonJS</a
+            >
+            aus Node.JS)
+          </p>
+
+          <p>
+            Mit einem <b>Bundler</b> werden die Module im Build "aufgelöst" und im einfachsten Fall
+            in <b>eine</b> Datei geschrieben
+          </p>
+          <p class="fragment">
+            Prominente Bundler: <a href="http://webpack.github.io/">Webpack</a> und
+            <a href="https://rollup.js.org">Rollup</a>
+          </p>
+        </section>
+
+        <section>
+          <h2>Webpack und Babel</h2>
+          <img src="slides/images/webpack-und-babel.png" style="height: 600px" />
+          <p class="fragment">
+            Das passiert auch im React Build-Tooling, ihr müsst euch nicht drum kümmern!
+          </p>
+        </section>
+
+        <section id="t-react">
+          <h1>React</h1>
+        </section>
+
+        <section>
+          <h2>Agenda</h2>
+          <ul class="xx-list">
+            <li>
+              <a href="#/t1">Teil I: Einführung</a>
+            </li>
+            <li>
+              <a href="#/t2">Teil II: React-Komponenten (Details)</a>
+            </li>
+            <li>
+              <a href="#/t3"
+                >Teil III: Komponenten-Hierarchien, Datenfluss und Kommunikation zwischen
+                Komponenten</a
+              >
+            </li>
+            <li>
+              <a href="#/t-server">Teil IV: Seiteneffekte und Server-Zugriffe</a>
+            </li>
+
+            <li>
+              <a href="#/t-typescript">Teil V: TypeScript</a>
+            </li>
+            <li>
+              <h4>Fortgeschrittene Themen (im Überblick)</h4>
+              <ul>
+                <li>
+                  <a href="#/t-test">Testen</a>
+                </li>
+                <li>
+                  <a href="#/t-context">Globales Statemanagement und Context API</a>
+                </li>
+
+                <li>
+                  <a href="#/t-router">Client-seitiges Routing</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section id="t1">
+          <h1>Teil 1</h1>
+          <h2>React</h2>
+        </section>
+
+        <section>
+          <h3>Beispiel-Anwendung</h3>
+          <a target="_blank" href="http://localhost:3000">
+            <img src="slides/images/blog-example.png" style="height: 650px" />
+          </a>
+        </section>
+
+        <section>
+          <h3>Dokumentation</h3>
+
+          <ul class="xx-list">
+            <li>
+              Dokumentation
+              <a href="https://react.dev/">https://react.dev/</a>
+            </li>
+          </ul>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+### React im Umbruch?
+
+* Bislang wurden und werden mit React Single-Page-Anwendungen (SPA) gebaut
+* Mit Single-Page-Anwendungen läuft der Anwendungscode ausschließlich im Browser
+  * Man kann die Anwendung im (JavaScript-)Server vorrendern lassen (SSR)
+* Seit März 2023 empfiehlt das React-Team ein "Fullstack Framework" wie Next.js zu verwenden
+* Im Gegensatz zur "klassischen" Single-Page-Anwendung wird dabei ein Teil der Anwendung auf 
+  einem (JavaScript-) Server ausgeführt
+* Man kann aber weiterhin mit React SPAs bauen
+* In dieser Schulung beschäftigen wir uns auch nur mit den SPAs
+* Alles was wir sehen, wäre auch Grundlage für Fullstack-Anwendungen 
+  * Falls ihr also später "Fullstack"-Anwendungen mit React bauen wollt, habt
+  ihr auch dafür schon die Grundlagen gelernt
+  * Fullstack-Anwendungen bauen auf dem auf, was wir in uns in dieser Schulung ansehen
+          </textarea>
+        </section>
+
+        <section>
+          <h2>Unsere erste React-Komponente</h2>
+          <h3>Sehen wir uns die wichtigsten Konzepte einer React-Komponente im Code an</h3>
+
+          <ul>
+            <li>Schritt-für-Schritt (<code>blog-example/workspace</code>)</li>
+          </ul>
+        </section>
+
+        <section id="interaktiv-hellomessage">
+          <h3>Hello World React</h3>
+          <code>PostEditor.js</code>
+          <pre><code>
+  import React from "react";
+  
+  export default function PostEditor() {
+    const [title, setTitle] = React.useState("");
+  
+    return (
+      &lt;div>
+        &lt;label>
+          Title
+          &lt;input onChange={event => setTitle(event.target.value)} value={title} />
+        &lt;/label>
+      &lt;/div>
+    );
+  }
+            </code></pre>
+        </section>
+
+        <section>
+          <h3>Einbinden der Anwendung in die HTML-Seite</h3>
+          <div>
+            <p>
+              <code>index.html</code>
+            </p>
+            <pre><code>
+  &lt;html>
+    &lt;-- ... -->
+    &lt;body>
+      <div id="root"></div>
+    &lt;/body>
+  &lt;/html>
+  </code></pre>
+          </div>
+          <div>
+            <p>
+              <code>index.js</code>
+            </p>
+            <p>Achtung! Leicht geänderte API ab React 18:</p>
+            <pre><code class="javascript">
+  // React 18
+  import React from 'react';
+
+  import { createRoot } from 'react-dom/client';
+  import PostEditor from './PostEditor';
+  
+  const root = createRoot(document.getElementById('root'));
+  root.render(&lt;PostEditor />);
+  </code></pre>
+            <p>Zum Vergleich vor React 18:</p>
+            <pre><code class="javascript">
+    // React 17
+    import React from 'react';
+    import ReactDOM from 'react-dom';
+  
+    import PostEditor from './PostEditor';
+    
+    ReactDOM.render(&lt;PostEditor />, 
+      document.getElementById('root')
+    );
+    </code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h3>Der Trainingsworkspace</h3>
+          <ul class="x-list">
+            <li style="margin-bottom: 40px">
+              <code>blog-example/<b>workspace</b></code
+              >: Verzeichnis für Eure Übungen <br />👉&nbsp;<b>Empfehlung</b>: nur diesen Ordner in
+              IDE/Editor öffnen
+            </li>
+            <li>
+              <code>blog-example/<b>steps</b></code
+              >: Fertiger Source-Code nach jeder Übung und weitere Beispiele
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Übung #1: Hello-World</h2>
+          <h3>
+            <em>Mit Tools, Workspace und React vertraut machen</em>
+          </h3>
+        </section>
+        <section>
+          <h3>Schritt #1: Tool Chain starten</h3>
+          <p>Gemeinsam, Schritt-für-Schritt:</p>
+          <ol class="x-list" style="font-size: 85%">
+            <li>
+              <code>cd blog-example/workspace</code>
+            </li>
+
+            <li>
+              <code>npm start</code>
+            </li>
+
+            <li>
+              Der Browser sollte automatisch
+              <a href="http://localhost:3000" target="_blank">http://localhost:3000</a>
+              öffnen
+            </li>
+
+            <li>Wenn Du "Hello, World" im Browser siehst, ist alles gut!</li>
+            <li>Dann bitte in Teams "Hand heben" 🙋‍♀️</li>
+          </ol>
+        </section>
+        <section>
+          <h3>Schritt #2: Deine erste React-Komponente</h3>
+          <p>
+            <em
+              >Ein kleiner Schritt für die PostEditor-Komponente, ein großer Schritt für dich auf
+              deinem Weg, React zu lernen!</em
+            >
+          </p>
+          <ul>
+            <li>Ersetze den "statischen" Code in <code>PostEditor.js</code></li>
+            <li>Die Komponente soll <b>PostEditor</b> heißen</li>
+            <li>
+              Sie sollte einen Zustand/State (<code>title</code>) und ein Eingabefeld dafür haben
+            </li>
+            <li>
+              Als Hilfe kannst Du den Code aus den
+              <a href="#interaktiv-hellomessage">vorherigen Slides</a> ansehen.
+            </li>
+            <li>
+              Eine mögliche Lösung findest Du auch in <code>blog-example/steps/1-hello-world</code>
+            </li>
+
+            <li>
+              <em>Optional: mache ein paar Experimente mit der Komponente, zum Beispiel:</em>
+              <ul class="no-fragment">
+                <li>
+                  Kannst Du unter dem Eingabefeld den gerade eingegebenen Text ausgeben lassen, so
+                  dass dieser immer dem aktuellen Inhalt des Eingabefeldes entspricht?
+                </li>
+                <!-- <li>
+                  Wenn das Textfeld leer ist, soll ein Hinweis für den Benutzer ausgegeben werden
+                  ("Bitte Titel eingeben")
+                </li> -->
+              </ul>
+            </li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
+          </ul>
+        </section>
+
+        <section id="t2">
+          <h1>Teil II</h1>
+          <h2>React Komponenten</h2>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+### React Komponenten
+
+* JSX im Detail
+* Bedingungen
+* Warum überhaupt dieser Ansatz?
+          </textarea>
+        </section>
+
+        <section>
+          <h3>React: JSX</h3>
+          <ul>
+            <li style="font-size: 80%">
+              Wird wie HTML hingeschrieben, inkl Attribute:
+              <pre><code class="xml"  >
+&lt;div>&lt;input type="text"/>&lt;/div>
+                    </code></pre>
+            </li>
+            <li style="font-size: 80%">
+              Achtung! <code>class</code>-Attribut heißt <code>className</code>:
+              <pre><code class="xml"  >
+&lt;h1 className="title">...&lt;/h1>
+                    </code></pre>
+            </li>
+            <li style="font-size: 80%">
+              Attribute, die keine Strings sind, müssen in {} eingeschlossen werden:
+              <pre><code class="xml"  >
+&lt;Counter label="Count" count={7} showValues={true} />
+                    </code></pre>
+            </li>
+
+            <li style="font-size: 80%">
+              CSS-Eigenschaften werden als Objekt übergeben in Camel-Case-Notation:
+              <pre><code class="xml"  >
+const styles = { marginLeft: '10px', border: '1px solid red' };
+&lt;h1 style={styles}>...&lt;/h1>
+                    </code></pre>
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h3>React: JSX #2</h3>
+          <ul>
+            <li style="font-size: 80%">
+              Fragmente (rendern selber kein Element in den DOM, nur ihre Kind-Elemente):
+              <pre><code class="xml"  >
+function Choice() { 
+  return &lt;&gt;
+    &lt;li>Yes&lt;/li> 
+    &lt;li>No&lt;/li>
+  &lt;/>              
+}  
+                    </code></pre>
+            </li>
+            <li style="font-size: 80%">
+              null oder boolean (false oder true), um nichts zu rendern:
+              <pre><code class="xml"  >
+function ErrorMessage() {
+  const hasError = someCondition(); // returns true or false
+
+  return <div>
+    {hasError && "Error!"}
+    {hasError || "Everything fine"}
+  </div>
+}              
+                    </code></pre>
+            </li>
+
+            <li style="font-size: 80%">
+              Kommentare
+              <pre><code class="xml"  >
+  function MyComponent() {
+    return <div>
+      { /* hier ist javascript, deswegen block-kommentare erlaubt */ }
+    </div>;
+  }              
+                      </code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Zustand einer Komponente und der useState-Hook (Zusammenfassung)</h3>
+          <ul class="fragement">
+            <li>Beispiel: Inhalt eines Eingabefelds, Daten vom Server, Menu offen oder zu</li>
+            <li><b>Werte</b> üblicherweise immutable</li>
+            <li>Arbeiten mit Zustand über <b>useState</b>-Hook</li>
+            <li>
+              useState liefert Array mit zwei Werten zurück: aktuellen Zustand, und setter-Funktion
+              um Zustand zu verändern
+            </li>
+            <li>
+              <pre><code class="javascript"  >
+function HelloWorld() {
+  const [title, setTitle] = React.useState("");
+
+  return &lt;input onChange={e => setTitle(e.target.value) value={title} />;
+}
+                  </code></pre>
+            </li>
+
+            <li>
+              Aufruf des Setters <b>löst erneutes rendern der <i>gesamten</i> Komponente aus</b>
+            </li>
+            <li>
+              Es können mehrere States erzeugt werden, durch Verwendung mehrerer useState-Aufrufe
+            </li>
+            <li><b>Zustand</b> ist eines der <b>zentralen</b> Konzepte von React</li>
+          </ul>
+        </section>
+
+        <!-- <section>
+          <h2>Übung 1b: Styling für den Post-Editor</h2>
+          <em><b>Füge dem Post-Editor etwas CSS hinzu</b></em>
+        </section>
+        <section>
+          <h3>Schritte</h3>
+          <ol class="x-list">
+            <li>
+              Das Root-Element deines Formulars soll die CSS Klasse <code>Container</code> bekommen.
+              Dadurch sollte sich ihr Aussehen (leicht) verändern
+            </li>
+            <li>
+              Wenn <b>kein Text</b> im Eingabe-Feld steht, soll eine Fehlermeldung ausgegeben werden
+              ("Please fill in the title" o.ä.)
+              <br />
+              Der Fehlertext sollte in fettem Rot ausgegeben werden (CSS-Eigenschaften:
+              <code>color: red</code> und <code>font-weight: bold</code>)
+            </li>
+            <li>
+              Wenn <b>mindestens ein Zeichen</b> im Eingabe-Feld steht, soll eine "positive" Message
+              erscheinen ("You have filled the title correctly").
+              <br />
+              Diese positive Nachricht sollte in grün erscheinen (CSS-Eigenschaft:
+              <code>color: green</code>)
+            </li>
+            <li>Mögliche Lösung in <code>steps/1b-editor-css</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+          </ol>
+        </section> -->
+
+        <section>
+          <h3>React Hooks API</h3>
+          <em
+            >Mit der React Hooks API kann sich eine Komponente in Zustand und Lebenszyklus
+            "einhaken"</em
+          >
+          <ul>
+            <li>
+              Hooks sind "normale" Funktionen, müssen aber mit <code>use</code> beginnen (useState,
+              useEffect, ...)
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h3>React Hooks API</h3>
+          <em>Es gibt einige Regeln zu beachten, bei der Verwendung von Hooks 👆</em>
+          <p style="font-size: 75%; margin-top: 0">
+            <a href="https://reactjs.org/docs/hooks-rules.html"
+              >(https://reactjs.org/docs/hooks-rules.html)</a
+            >
+          </p>
+          <div>
+            <p>Einschränkungen:</p>
+            <ul>
+              <li>
+                Hooks können nur in Funktionskomponenten (und anderen Hooks) aufgerufen werden
+              </li>
+              <li>
+                Hooks müssen immer in derselben Reihenfolge und auf Top-Level-Ebene verwendet werden
+                <ul>
+                  <li>Verboten z.B. in Schleifen, if-Abfragen oder in anderen Funktionen</li>
+                </ul>
+              </li>
+              <li>
+                Es gibt ein
+                <a href="https://www.npmjs.com/package/eslint-plugin-react-hooks">ESLint Plug-in</a>
+                zur korrekten Verwendung der Hooks
+              </li>
+              <li>
+                <em
+                  >Der Hooks-Mechanismus basiert intern darauf, dass React sich die Reihenfolge der
+                  <code>useXyz</code>-Aufrufe merkt!</em
+                >
+              </li>
+            </ul>
+          </div>
+        </section>
+        <section>
+          <h3>React Hooks</h3>
+
+          <em>Beispiele für korrekte und unerlaubte Verwendung</em>
+
+          <pre><code class="javascript"  >
+// ERLAUBT:
+function HelloWorld() {
+  const [greeting, setGreeting] = React.useState("");
+  const [name, setName] = React.useState("");
+  // ...
+}
+                                </code></pre>
+
+          <pre><code class="javascript"  >
+// ERLAUBT:
+function HelloWorld() {
+  const [greeting, setGreeting] = React.useState("");
+  const uppercaseGreeting = greeting.toUpperCase(); 
+  const [name, setName] = React.useState("");
+  // ...
+}
+                                                      </code></pre>
+
+          <pre><code class="javascript"  >
+// VERBOTEN:
+function HelloWorld() {
+  const [title, setTitle] = React.useState("");
+
+  function onSaveClick() {
+    const [loading, setIsLoading] = React.useState(true);
+    // ...
+  }
+
+  // ...
+}
+                                                      </code></pre>
+        </section>
+
+        <section>
+          <h2>Übung: Post-Editor für unsere Anwendung</h2>
+          <em><b>Erweitere deine Komponente um neue Features</b></em>
+        </section>
+        <section>
+          <h3>Schritte</h3>
+          <ol class="x-list">
+            <li>
+              Zusätzlich zum "title", sollte es einen weiteren Zustand und eine Textarea geben:
+              <code>body</code>. Ein <code>textarea</code>-Element hat dieselbe API wie ein
+              <code>input</code>-Feld, du kannst also auch hier mit <code>onChange</code> und
+              <code>value</code> arbeiten.
+            </li>
+            <!-- <li>
+              Füge unter beiden Feldern eine Fehler-Meldung hinzu, wenn das jeweilige Feld leer ist
+              (z.B. "Please fill in Xyz")
+            </li> -->
+            <li>
+              Füge einen "Clear"-Button hinzu, der beide Eingabefeld leert. Das Property auf dem
+              Button ist <code>onClick</code>.
+            </li>
+            <li>
+              Der "Clear"-Button soll <b>disabled</b> sein, wenn beide Eingabefelder leer sind
+            </li>
+            <li>Mögliche Lösung: <code>steps/2-editor</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+          </ol>
+        </section>
+
+        <section id="t3">
+          <h1>Teil III</h1>
+          <h2>Komponenten-Hierarchien, Datenfluss und Kommunikation zwischen Komponenten</h2>
+        </section>
+
+        <!-- - - - - - - - - - - - - - - - PROPS HIER ERST - - - - - - - - - - - - - - -  -->
+        <section>
+          <h3>React: Properties</h3>
+          <p>Live: Properties für initialen Werte des Post-Editors</p>
+          <ul>
+            <li>
+              Mit <b>Properties</b> können einer Komponente von <b>außen</b> Werte und Eigenschaften
+              übergeben werden
+
+              <pre><code class="javascript"  >
+function PostEditor() {
+    // type, onChange und value sind Properties!
+
+    return (
+      &lt;input type="text" onChange={() => setTitle("...")} value={title}&lt;/h1>
+    );
+  }
+}
+            </code></pre>
+            </li>
+            <li><b>Properties</b> können innerhalb der Komponente nicht verändert werden</li>
+            <li>
+              Zum Vergleich: <b>Zustand (State)</b> ist eine <b>innere</b> Eigenschaft der
+              Komponente (die verändert werden kann)
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Properties ("Props") einer Komponente</h3>
+          <ul>
+            <li>Komponenten können beliebig eigene Properties definieren</li>
+            <li>
+              Bei der Angabe der Properties bei der Verwendung einer Komponente werden die
+              Properties wie von HTML gewohnt in der Notiation
+              <code>name=value</code> hingeschrieben
+            </li>
+            <li>
+              <pre><code class="javascript"  >
+&lt;PostEditor initialTitle="Hello" initialBody="World" />
+               </code></pre>
+            </li>
+            <li>
+              ...alle angegebenen Properties werden "gesammelt" und in <b>einem</b> Objekt im 1.
+              Methoden-Parameter an Komponente übergeben
+            </li>
+            <li>
+              <pre><code class="javascript"  >
+function PostEditor(props) {
+    // props: { initialTitle: "Hello", initialBody: "World" }
+    const [title, setTitle] = React.useState(props.title);
+    const [body, setBody] = React.useState(props.body);
+
+    return ...;
+  }
+}
+              </code></pre>
+            </li>
+            <li>
+              <pre><code class="javascript"  >
+// Mit Destructuring
+function PostEditor({initialTitle, initialBody}) {
+    const [title, setTitle] = React.useState(title);
+    const [body, setBody] = React.useState(body);
+
+    return ...;
+  }
+}
+                                </code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Properties: Default-Werte</h3>
+          <p>Properties sind grundsätzlich <b>optional</b>.</p>
+
+          <p>
+            Mit dem Object Destructuring-Operator können <b>Default-Werte</b> angegeben werden, für
+            Eigenschaften, die aus einem Objekt gelesen werden, aber dort nicht angegeben (bzw.
+            undefined) sind:
+          </p>
+
+          <pre><code class="javascript">
+function PostEditor({initialTitle = "New Blog Post", initialBody}) { 
+  const [title, setTitle] = React.useState(initialTitle);
+}
+
+// title wird auf "New Blog Post" gesetzt
+&lt;PostEditor initialBody="Lorem Ipsum" />
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>Virtual DOM</h3>
+          <p>"Rendern" hat leider doppelte Bedeutung!</p>
+          <img src="slides/images/vdom.png" style="height: 650px" />
+        </section>
+        <section>
+          <h3>Virtual DOM</h3>
+          <p>Beispiel: <code>blog-example/steps/2b-rendering</code></p>
+        </section>
+        <section>
+          <h2>Übung: Properties für Komponenten</h2>
+          <em>Eine Komponente für Meldungen</em>
+        </section>
+        <section>
+          <h3>Schritte</h3>
+          <ol class="xx-list">
+            <li>
+              Schreibe eine neue Komponente (der einfachheithalber direkt in PostEditor.js), die
+              eine Meldung darstellt: <b>Message</b>
+            </li>
+            <li>
+              Die <b>Message</b>-Komponente soll zwei Properties aufnehmen:
+              <ul>
+                <li><code>msg</code>: ein String mit einer Nachricht</li>
+                <li>
+                  <code>type</code>: kann entweder der String <code>"error"</code> oder der String
+                  <code>"info"</code> sein
+                </li>
+              </ul>
+            </li>
+            <li>
+              Beispielhafte Verwendung:
+
+              <pre><code class="javascript">
+                &lt;Message type="info" msg="Alles prima!" />
+                &lt;Message type="error" msg="Leider fehlerhaft" /> 
+              </code></pre>
+            </li>
+            <li>
+              Die Komponente soll die übergebene Nachricht aus <code>msg</code> anzeigen: Wenn type
+              auf <code>error</code> gestellt ist (oder kein type gesetzt ist), soll die
+              <code>msg</code> als Fehler in roter Schrift ausgegeben werden (CSS-Eigenschaft
+              <code>style={{color: "red"}}</code>)
+            </li>
+            <li>
+              Verwende die Komponente im PostEditor:
+              <ul class="small">
+                <li>
+                  Gib eine Fehler-Meldung unter dem Formular aus (z.B. "Bitte füllen Sie das
+                  Formular aus") wenn <code>title</code> oder <code>body</code> leer sind bzw.
+                </li>
+                <li>
+                  Zeige eine Info-Meldung an, wenn die beiden Felder gefüllt sind ("Sie haben alle
+                  erforderlichen Eingaben getätigt!")
+                </li>
+              </ul>
+            </li>
+
+            <li>Mögliche Lösung: <code>steps/2a-editor-mit-props</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
+          </ol>
+        </section>
+
+        <section data-state="js-exkurs">
+          <h2>React Devtools</h2>
+          <em>React Developer Tools für Chrome und Firefox</em>
+          <p>Untersuchen der React Anwendung zur Laufzeit</p>
+          <ul>
+            <li>
+              <a
+                href="https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en"
+                target="_blank"
+                >Chrome</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://addons.mozilla.org/en-US/firefox/addon/react-devtools/"
+                target="_blank"
+                >Firefox</a
+              >
+            </li>
+          </ul>
+
+          <p><img src="slides/images/screenshot-react-dev-tools.png" /></p>
+        </section>
+        <!-- <section>
+          <h3>Render Zyklus</h3>
+          <img src="slides/images/render-cycle.png" height="550px" />
+        </section> -->
+
+        <section>
+          <h3>Eine Liste für Blog-Posts und ein Editor...</h3>
+          <code>blog-example/steps/3-hierarchy</code>
+        </section>
+
+        <section>
+          <h3>Listen</h3>
+          <p>JSX hat keine eigenen Konstrukte für Listen</p>
+          <p>
+            Üblicherweise verwendet man
+            <code>Array.map()</code> um eine Liste von Objekten in eine Liste von JSX Elementen zu
+            überführen
+          </p>
+          <p>
+            Jedes JSX Element in der Liste benötigt einen <em>List-weit eindeutigen <b>key</b></em>
+          </p>
+
+          <pre><code class="javascript"  >
+const posts = [
+  { id: 0, title: 'Hello World', body: 'Lorem ipsum' },
+  { id: 1, title: 'React in a Nutshell', body: 'Lets get started with React' }
+];
+
+function PostList(props) {
+  return props.posts.map(post => (
+    &lt;article key={post.id}>
+        &lt;h1>{post.title}&lt;/h1>
+        &lt;p>{post.body}&lt;/p>
+    &lt;/article>
+  ))
+}
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Komponenten-Hierarchien</h2>
+        </section>
+
+        <section>
+          <h3>👉 Wir bauen eine <b>Anwendung</b>: mit Blog-List und Post-Editor</h3>
+        </section>
+
+        <section>
+          <h3>Datenfluss in React-Anwendungen</h3>
+          <ol>
+            <li>
+              In React Anwendungen werden Komponenten in Hierarchien zu Anwendungen aggregiert. Eine
+              "Anwendung" ist nichts weiter als eine Sammlung von Komponenten
+            </li>
+            <li>
+              Innerhalb der Hierarchie wird immer nur <b>in eine Richtung</b> kommuniziert:
+              <b>Eltern</b>-Komponenten geben <b>properties</b> an ihre <b>Kinder</b>
+            </li>
+            <li>
+              Mit den Properties können Daten (Blog Post, angemeldeter Benutzer, ...) von "oben"
+              nach "unten" gereicht werden. Das kann über mehr als eine Hierarchie-Ebene passieren.
+              <p>
+                (Eine Komponente kann die Properties oder einen Teil davon ihrerseits weiter nach
+                "unten" reichen)
+              </p>
+            </li>
+            <li>
+              Mit Properties können außerdem <b>callback-Funktionen</b> nach unten gereicht werden.
+            </li>
+            <li>
+              Eine Kind-Komponente kann die übergebene Funktion aufrufen und ein "Event" (mit oder
+              ohne Daten) an ihre Eltern-Komponente schicken. <br />Dieses Verfahren haben wir
+              bereits beim onChange-Property am input-Feld gesehen!
+            </li>
+          </ol>
+        </section>
+
+        <section>
+          <h3>Smart und Dumb-Komponenten #1</h3>
+
+          <p>
+            Zur Erinnerung: in React bauen wir Komponenten. Komponenten bestehen aus Logik, Zustand
+            und UI (HTML-Elemente und Styling)
+          </p>
+          <p>
+            Ein bekanntes Muster ist, die Komponenten in zwei Arten aufzuteilen:
+            <b>Smart (oder Controller)</b>- und <b>Dumb oder (Presentation-)</b>-Komponenten
+          </p>
+          <p>Technisch sind die Komponenten identisch, also "normale" React-Komponenten</p>
+          <p>Nur ihre <b>Aufgabe</b> ist anders definiert...</p>
+        </section>
+
+        <section>
+          <h3>Smart und Dumb-Komponenten #2</h3>
+          <p>Smart-Komponenten enthalten Logik und Zustand</p>
+          <p>Dumb-Komponenten sind nur zur Darstellung der Daten</p>
+          <p>
+            Smart-Komponenten reichen Zustand in die Dumb-Komponenten. Diese zeigen den Zustand an
+          </p>
+          <p>
+            Smart-Komponenten reichen Callback-Funktion als Event-Handler an die Dumb-Komponenten
+          </p>
+          <p>
+            Wenn in Dumb-Komponenten ein Ereignis eintritt (z.B. Button-Click oder Texteingabe),
+            wird eine Callback-Funktion aufgerufen
+          </p>
+          <p>
+            Die Callback-Funktion wird dann in der Smart-Komponente aufgerufen und die Verarbeitung
+            ausgeführt
+          </p>
+          <p>
+            Die Smart-Komponente setzt ihren Zustand neu, und rendert sich und ihre Kinder (die
+            Dumb-Komponenten) neu <br /><b
+              >Der "Gesamt-Zustand" der Anwendung bleibt somit immer konsistent!</b
+            >
+          </p>
+        </section>
+        <section>
+          <img src="slides/images/blogpost-app-hierarchy.png" />
+        </section>
+
+        <section>
+          <h3>Beispiel</h3>
+
+          <p>
+            Unsere Smart-Komponente hält eine Liste von Blog-Posts und steuert, welche Ansicht aktiv
+            ist
+          </p>
+          <p>Die Smart-Komponente gibt die Liste der Blog-Posts an die BlogList zum Anzeigen</p>
+          <p>
+            Die Smart-Komponente gibt jeweils eine Callback-Funktion an die BlogList und die
+            PostEditor
+          </p>
+
+          <pre><code>
+function App() {
+  const [posts, setPosts] = React.useState([]);
+  const [view, setView] = React.useState("list");
+
+  function addPost(newPost) {
+    // Neuen Post hinzufügen
+    setPosts([...posts, newPost]);
+
+    // Wieder Liste anzeigen
+    setView("list");
+  }
+
+  if (view === "list") {
+    return &lt;BlogList posts={posts} onAdd={() => setView("PostEditor")} />
+  }
+
+  return &lt;PostEditor onAdd={addPost} />
+
+}            
+</code></pre>
+        </section>
+
+        <section>
+          <h3>Beispiel #2</h3>
+
+          <p>
+            Die BlogList zeigt die übergebene Liste nur an und informiert die App, wenn auf den
+            "Add"-Button gedrückt wurde
+          </p>
+          <p>Die App kann dann die andere Komponente (PostEditor) anzeigen</p>
+
+          <pre><code>
+  function BlogList(props) {
+
+    return &lt;div>
+      // ... Liste anzeigen ...
+      &lt;button onClick={props.onAdd}>Add Blog Post&lt;/button>
+    &lt;/div>;
+  }            
+  </code></pre>
+        </section>
+
+        <section>
+          <h3>Beispiel #3</h3>
+
+          <p>
+            Die PostEditor erfasst einen neuen BlogPost und übergibt diesen der Callback-Funktion,
+            so dass die App-Komponente ihn in die Liste der BlogPosts (State) einfügen kann
+          </p>
+          <pre><code>
+  function PostEditor(props) {
+    const [title, setTitle] = React.useState("");
+    const [body, setBody] = React.useState("");
+
+    function addPost() {
+      const newPost = {
+        title, body
+      }
+
+      // App-Komponente informieren
+      props.onAdd(newPost);
+    }
+
+    return &lt;div>
+      // ... Formular rendern ...
+      &lt;button onClick={addPost}>Save Post&lt;/button>
+    &lt;/div>;
+  }            
+  </code></pre>
+        </section>
+
+        <section>
+          <h2>Übung: Baue eine komplette "Anwendung"</h2>
+          <p>
+            <em>
+              Integriere deine bestehende <code>PostEditor</code>-Komponente und die neue
+              <code>PostList</code> Komponente über die <code>App</code>-Komponente</em
+            >
+          </p>
+        </section>
+        <section>
+          <h3>Schritte</h3>
+          <ol class="xx-list">
+            <li>
+              kopiere das Material aus <code>blog-example/material/3-hierarchy/src</code> in deinen
+              source Ordner
+              <span style="font-size: 85%"
+                >(Du kannst deinen eigenen <code>PostEditor</code> verwenden oder den aus
+                material/3-hierarchy)</span
+              >
+            </li>
+            <li>
+              Nach dem Kopieren den <code>npm start</code>-Prozess beenden (Win: Ctrl+C bzw. Mac:
+              Cmd+C) und neu starten (wieder mit <code>npm start</code>)
+            </li>
+            <li>
+              Erweitere die <code>App</code> Komponente, so dass sie den
+              <code>PostEditor</code> anzeigt, wenn der User auf den <code>Add</code> Button klickt.
+              <p>- In <code>App.js</code> stehen TODOs mit weiteren Infos</p>
+            </li>
+            <li>
+              Im<code>PostEditor</code> benötigst Du einen Save Button, der die übergebene
+              Callback-Funktion aufruft, die von der <code>App</code> als Property
+              (<code>onSave</code>) übergeben wird. <br />Siehe TODO in
+              <code>blog-example/material/3-hierarchy/src/PostEditor.js</code>
+            </li>
+            <!-- <li style="font-size: 75%;">
+              <b>Optional:</b> Füge einen <b>neuen</b> Button "Cancel" im PostEditor hinzu, der die
+              PostList öffnet, ohne das eingebene Post zu speichern.
+            </li> -->
+            <li>Mögliche Lösung: <code>steps/3-hierarchy</code></li>
+            <li>Wenn Du fertig bist, bitte in Teams "Hand heben" 🙋‍♀️</li>
+          </ol>
+        </section>
+
+        <section id="t-server">
+          <h1>Teil IV</h1>
+          <h2>Seiteneffekte und Server-Zugriffe</h2>
+          <em>Lesen und Schreiben von Daten von einem Backend (REST/HTTP)</em>
+          <p><code>blog-example/steps/4b-remote</code></p>
+        </section>
+
+        <!-- =================================================================================================== -->
+        <!-- ==   Promises und Speichern                                                                                          == -->
+        <!-- =================================================================================================== -->
+        <section>
+          <h2>Server-Zugriffe</h2>
+          <ul class="x-list">
+            <li>React macht keine Angabe, wie Server-Calls (technisch) gemacht werden</li>
+            <li>
+              Häufig in React verwendet: <b>fetch</b> API
+              <ul>
+                <li>Browser-API zum Ausführen von HTTP Requests</li>
+                <li>
+                  Dokumentation:
+                  <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API"
+                    >Fetch API (MDN)</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="exkurs">
+          <h3>Die fetch API</h3>
+          <p>Lesen von Daten (mit HTTP GET)</p>
+          <pre><code class="javascript"  >
+// Beispiel mit JavaScript Promises:
+
+fetch('http://localhost:7000/posts')
+
+  .then(response => response.json())
+
+  .then(posts => console.log("Posts read from API:", posts))
+
+  .catch(ex => console.error('request failed', ex));
+</code></pre>
+        </section>
+
+        <section id="t-server">
+          <h1>Teil IV</h1>
+          <h2>Seiteneffekte und Server-Zugriffe</h2>
+          <em>Lesen und Schreiben von Daten von einem Backend (REST/HTTP)</em>
+          <p><code>blog-example/steps/4b-remote</code></p>
+        </section>
+
+        <!-- =================================================================================================== -->
+        <!-- ==   Promises und Speichern                                                                                          == -->
+        <!-- =================================================================================================== -->
+        <section>
+          <h2>Server-Zugriffe</h2>
+          <ul class="x-list">
+            <li>React macht keine Angabe, wie Server-Calls (technisch) gemacht werden</li>
+            <li>
+              Häufig in React verwendet: <b>fetch</b> API
+              <ul>
+                <li>Browser-API zum Ausführen von HTTP Requests</li>
+                <li>
+                  Dokumentation:
+                  <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API"
+                    >Fetch API (MDN)</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="exkurs">
+          <h3>Die fetch API</h3>
+          <p>Lesen von Daten (mit HTTP GET)</p>
+          <pre><code class="javascript"  >
+// Beispiel mit JavaScript Promises:
+
+fetch('http://localhost:7000/posts')
+
+  .then(response => response.json())
+
+  .then(posts => console.log("Posts read from API:", posts))
+
+  .catch(ex => console.error('request failed', ex));
+</code></pre>
+        </section>
+
+        <section data-state="exkurs" id="t-promises">
+          <h3>Hintergrund: Promises in JavaScript</h3>
+
+          <p class="fragment">
+            Ein Promise liefert einen "Versprechen" auf einen Wert zurück, der evtl. erst in der
+            Zukunft ermittelt werden kann
+          </p>
+          <p class="fragment">
+            Damit können wir asynchrones Verhalten in JavaScript Applikation abbilden
+          </p>
+          <pre class="fragment"><code class="javascript" contenteditable>
+// "getNameAsync" ist eine ausgedachte Funktion, 
+// die ein Promise zurückliefert, 
+// das "irgendwann" den String "Klaus" zurückgibt
+const promise = getNameAsync();
+  </code></pre>
+          <pre
+            class="fragment"
+          ><code class="javascript" contenteditable>promise.then(name => console.log(name));
+// Ausgabe "irgendwann": "Klaus"
+  </code></pre>
+        </section>
+
+        <section data-state="exkurs">
+          <h3>Promises</h3>
+          <p>Promises können verkettet werden</p>
+          <pre><code class="javascript" contenteditable>
+// Annahme: 'getNameAsync' liefert "irgendwann" den String "Klaus" zurück
+const promise = getNameAsync()
+
+// Wird mit dem ersten Wert aufgerufen und gibt neuen Wert zurück
+.then(name => getGreetingAsync(name)) 
+
+// wird mit dem zweiten Wert (aus vorherigem then) aufgerufen
+.then(greeting => console.log(greeting));
+
+// Ausgabe "irgendwann": 
+// "Hello, Klaus"
+
+  </code></pre>
+          <p class="fragment">
+            Die <code>then</code>-Funktion gibt <b>immer</b> ein Promise zurück
+          </p>
+        </section>
+
+        <section data-state="exkurs">
+          <h3>Fehlerbehandlung</h3>
+          <h4>Mit <code>catch()</code> kann man Fehler fangen und darauf reagieren</h4>
+          <pre class="fragment"><code class="javascript" contenteditable>
+  const promise = getNameAsync()
+
+    .then(name => { if (name === null) throw new Error("No name found") })
+
+    .then(greeting => console.log(greeting));
+
+    .catch(error => console.error(`Greeting failed: ${error}`))
+  
+    // Wenn 'getNameAsync' null zurückliefert ist die Ausgabe:
+    //   Greeting failed: No name found
+    </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section data-state="exkurs">
+          <h3>Finally</h3>
+
+          <p class="fragment">
+            Eine <code>finally</code>-Callback-Funktion wird nach dem letzten <code>then</code> bzw.
+            <code>catch</code>-Block ausgeführt.
+          </p>
+
+          <p class="fragment">
+            Die finally-Funktion wird <b>immer</b> ausgeführt (unabhängig davon, ob vorher ein
+            Fehler aufgetreten ist oder nicht
+          </p>
+
+          <pre class="fragment"><code class="javascript" contenteditable>
+              const promise = getNameAsync();
+
+                .then(name => { if (name === null) throw new Error("No name found") })
+
+                .then(greeting => console.log(greeting));
+
+                .catch(error => console.error(`Greeting failed: ${error}`))
+
+                .finally( () => console.log("Goodbye!") );
+              
+                // Output (error): Greeting failed: No name found
+                // Output (log): Goodbye!
+                </code></pre>
+        </section>
+
+        <section data-state="exkurs">
+          <h3>Promise.all</h3>
+
+          <p class="fragment">
+            Mit
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all"
+              >Promise.all</a
+            >
+            kannst Du auf eine Liste von Promises warten
+          </p>
+
+          <p class="fragment">
+            Die Funktion wird nur ausgeführt, wenn alle übergebenen Promises aufgelöst werden
+            konnten
+          </p>
+
+          <pre class="fragment"><code class="javascript" contenteditable>
+              const user = loadUserAsync(); // gibt Promise zurück
+              const newsFeed = loadNewsFeedAsync(); // gibt Promise zurück
+
+              Promise.all(user, newsFeed)
+                .then(result => {
+                  const loadedUser = result[0];
+                  const newsFeed = result[1];
+
+                  return { user: loadedUser, news: newsFeed };
+                });
+                </code></pre>
+
+          <p class="fragment">
+            Verwandt:
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any"
+              >Promise.any</a
+            >
+            und
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled"
+              >Promise.allSettled</a
+            >
+          </p>
+        </section>
+
+        <section data-state="exkurs">
+          <h2>async / await</h2>
+          <p>"Wrapper" um Promises</p>
+          <p>Erlaubt es, asynchronen Code "linear" hinzuschreiben</p>
+        </section>
+        <section data-state="exkurs">
+          <h3>async / await</h3>
+          <p><code>await</code> wartet bis ein Promise aufgelöst wird</p>
+          <pre class="fragment"><code class="javascript" contenteditable data-trim>
+    function greet(name) { return new Promise(...); }
+    
+    // await can only be used in 'async'-functions:
+    async function sayWhat(name) {
+      const greeting = await greet(name);
+    
+      // greeting is a string!
+      console.log(greeting); // => Hello, ...
+    }
+                      </code></pre>
+        </section>
+        <section data-state="exkurs">
+          <h3>async / await</h3>
+          <p><code>async</code> machen eine Funktion zu einer "async function"</p>
+          <p class="fragment">
+            Eine <code>async</code> Funktion gibt &nbsp; <b>immer</b> ein Promise zurück
+          </p>
+          <pre class="fragment"><code class="javascript" contenteditable data-trim>
+  async function greet(name) {
+    return `Hello, ${name}`;
+  }
+  
+  const greeting = greet('Klaus');
+  
+  // greeting is a Promise!
+  console.log(greeting instanceof Promise); // => true
+  console.log(greeting) // => Promise {&lt;resolved>: "Hello, Klaus"}
+                  </code></pre>
+          <p class="fragment"><code>async</code> Funktion als Fat Arrow Funktionen:</p>
+          <pre class="fragment"><code class="javascript" contenteditable data-trim>
+  const greet = async (name) => `Hello, ${name}`;                
+    
+  const greeting = greet('Klaus');
+    
+  // greeting is a promise!
+  console.log(greeting instanceof Promise); // => true
+  console.log(greeting) // => Promise {&lt;resolved>: "Hello, Klaus"}
+                    </code></pre>
+        </section>
+
+        <section data-state="exkurs">
+          <h3>async / await</h3>
+          <p>
+            Anstatt <code>then</code> oder <code>catch</code>-Ketten kannst Du einfach mehrere
+            <code>await</code> Statements verwenden und try/catch für die Fehlerbehandlung:
+          </p>
+          <pre class="fragment"><code class="javascript" contenteditable data-trim>
+  // Return promises
+  async function loadUser(username) { . . . };
+  async function loadProfileData(userId) { . . .};
+  
+  async function loadData() {
+    try {
+      const user = await loadUser('klaus');
+      const profile = await loadProfileData(user.userId);
+    } catch (e) {
+      console.error("Something failed")
+    }
+  }
+                      </code></pre>
+        </section>
+
+        <section data-state="exkurs">
+          <h3>Die fetch API</h3>
+          <p>Schreiben von Daten mit HTTP POST</p>
+          <p>
+            <code>fetch</code> nimmt als 2. Parameter optional ein Konfigurationsobjekt entgegen:
+          </p>
+          <ul>
+            <li>
+              <code>method</code>: HTTP Methode (<code>PUT</code>, <code>POST</code>,
+              <code>DELETE</code>, ...)
+            </li>
+            <li><code>headers</code>: HTTP Header für den Request (z.B. Authorization)</li>
+            <li><code>body</code>: Der Payload (als String!)</li>
+            <li>
+              <p>Der Returnwert ist derselbe wie bei GET</p>
+              <pre><code class="javascript"  >
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+  // ... 
+      </code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="exkurs">
+          <h3>fetch: Zusammenfassung</h3>
+
+          <pre><code class="javascript"  >
+  try {
+    // 1. fetch liefert ein Promise-Objekt zurück, das zu einer "Response" aufgelöst wird
+    //    Das Response-Objekt enthält Metadaten über das Ergebnis (z.B. http Status)
+    const response = await fetch('http://localhost:7000/posts', { 
+      method: "POST", // oder "GET", "PATCH", ...
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(newBlogPost)  
+    });
+
+    if (response.status === 200) {
+
+      // 2. mit den Methoden 'json()' bzw. 'text()' kann der Payload der
+      //    Antwort ausgelesen werden:
+      const answer = await response.json();
+
+      console.log("Answer from server", answer)
+    } else {
+      console.error("Received status code from server:", response.status);
+    }
+  } catch (err) {
+    // 4. In case something goes wrong, log error
+    console.error('request failed', err);
+  }
+  
+  </code></pre>
+          <p>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">Fetch API Doku</a>
+          </p>
+        </section>
+        <section>
+          <h3>Speichern eines neuen Blog-Posts</h3>
+          <p>👉Schritt-für-Schritt</p>
+          <p style="font-size: small"><code>Ausgang: steps/3-hierarchy</code></p>
+        </section>
+
+        <section>
+          <h2>Übung Fetch #1 (Speichern)</h2>
+          <p>
+            <em
+              >Implementiere die nächste Version der <code>App</code>-Komponente, die in der Lage
+              ist, einen neuen Blog Posts mit <code>fetch</code> zu speichern.</em
+            >. In diesem Schritt kommen die angezeigten Posts immer noch aus den Mock-Daten aber wir
+            können schon neue auf dem Server speichern.
+          </p>
+          <div>
+            <p>Das backend ist bereits fertig. Ihr könnt es starten mit:</p>
+            <pre><code>
+                  cd react18-training/blog-example/backend-rest
+                  npm start
+                </code></pre>
+            <p>Der Server läuft auf Port 7000</p>
+            <p>
+              Ihr könnt das Backend mit folgender URL testen (Browser, wget, curl, ...):
+              <a href="http://localhost:7000/posts">http://localhost:7000/posts</a>
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h2>Übung Fetch POST</h2>
+          <h3>Schritte</h3>
+          <ol class="x-list">
+            <li>Füge in <code>App.js</code> den Code zum <b>Speichern</b> der Blog-Posts hinzu.</li>
+            <li>
+              Du kannst deine eigene <code>App.js</code>-Datei verwenden oder
+              <code>material/4-remote/src/App.js</code>
+            </li>
+            <li>
+              Das Speichern soll in der <code>savePost</code>-Funktion erfolgen
+
+              <ul>
+                <li>Du musst als HTTP Methode <code>POST</code> verwenden</li>
+                <li>
+                  Du musst als Header den <code>Content-Type</code> auf
+                  <code>"application/json"</code> setzen
+                </li>
+                <li>Als <code>body</code> musst Du den neuen Blog-Post an den Server schicken</li>
+                <li>
+                  In der Antwort bekommst Du den gespeicherten Post vom Server zurück. Diesen musst
+                  Du in die Liste der bestehenden BlogPosts einfügen
+                </li>
+              </ul>
+            </li>
+
+            <li>Mögliche Lösung in <code>steps/4a-remote</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+          </ol>
+        </section>
+
+        <!-- =================================================================================================== -->
+        <!-- ==   SEITENEFFEKTE                                                                               == -->
+        <!-- =================================================================================================== -->
+        <section data-markdown>
+          <textarea data-template>
+### Wann laden wir die initialen Daten für unsere Anwendung (Blog Posts)?
+
+* Im vorherigen Schritt haben wir _nach einer Benutzerinteraktion_ bzw. _nach einem Event_ mit dem Server interagiert
+* In diesem Schritt wollen wir Daten ohne vorheriges Event laden
+* Dazu verwenden wir auch `fetch`, aber wir müssen einige Besonderheiten von React bei der Arbeiten mit _Seiteneffekten_ beachten!
+---
+
+### Renderzyklus von React-Komponenten
+
+1. Anwendung wird gestartet oder Zustand wird geändert: löst rendern aus
+2. In der _Render-Phase_ werden die Komponenten-Funktionen durchlaufen, die die neue UI zurückliefern
+3. In der anschließenden _Commit-Phase_ aktualisiert React den DOM um die Ändern zu "aktivieren"
+4. (Der Browser aktualisiert die Darstellung. Das findet außerhalb von React statt)
+
+* Die Render-Phase muss _pure_ sein, das bedeutet eine Komponenten-Funktion muss bei gleichen Parametern (Props und State) **immer** dasselbe Ergebnis liefern. Sie muss Seiteneffekt-frei sein.
+  * ```javascript
+    // globale Variable
+    let counter = 0;
+
+    function DoNotDoThis() {
+
+      // Verändert den globalen Zähler außerhalb der Komponente
+      // => Seiteneffekt!
+      return <h1>I have been rendered {counter++} times</h1>
+    }
+    ```
+          </textarea>
+        </section>
+        <section>
+          <h3>Seiteneffekte</h3>
+          <ul>
+            <li>
+              Als <b>Side effect</b> bzw. <b>Seiteneffekt</b> (könnte im deutschen auch mit
+              "Nebenwirkung" übersetzt werden) wird in React Code bezeichnet, der Dinge außerhalb
+              der umschließenden Komponenten-Funktion verändert.
+            </li>
+            <li>
+              Beispiele sind: Manipulation des nativen DOM (z.B. Fenster-Titel setzen), einen Timer
+              starten oder einen Server-Aufruf durchführen
+            </li>
+            <li>Seiteneffekte sind in der <b>Renderphase</b> einer Komponente verboten! 🚨</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>useEffekt-Hook</h3>
+          <p>
+            <em
+              >Mit useEffekt kann eine Funktion registriert werden, die nach dem Rendern der
+              Komponente ausgeführt wird</em
+            >
+          </p>
+          <p>
+            Diese <b>Effekt-Callback</b>-Funktion wird beim <em>commit</em> der Komponente
+            ausgeführt
+          </p>
+
+          <div>
+            <pre><code class="javascript"  >
+            function App(props) {
+              React.useEffect( 
+                () => console.log("I will run on EACH commit")
+              );
+            }
+          </code></pre>
+          </div>
+          <div>
+            2. Parameter (leeres Array) gibt an, dass die Funktion nur einmal ausgeführt werden soll
+            <pre><code class="javascript"  >
+              function App(props) {
+                React.useEffect( 
+                  () => console.log("I will run only on 1st commit"),
+                  []
+                );
+              }
+            </code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h3>useEffect Hook</h3>
+
+          <p>Zwei Parameter:</p>
+          <ol>
+            <li>
+              Callback-Funktion, die aufgerufen wenn entsprechendes Ereignis eintritt (z.B.
+              initiales Rendern abgeschlossen)
+            </li>
+            <li>
+              Ein Array mit Abhängigkeiten:
+              <ul>
+                <li>
+                  Wenn kein Array angegeben wird, wird der Effekt nach jedem Rendern ausgeführt
+                  (achtung! Endlosschleife möglich)
+                </li>
+                <li>
+                  Wenn ein leeres Array angegeben wird, wird der Effekt nur nach dem 1. Rendern
+                  ausgeführt
+                </li>
+                <li>
+                  Wenn Werte angegeben werden, wird der Effekt ausgeführt, wenn sich mind 1 Wert
+                  verändert hat
+                </li>
+                <li>
+                  <b>Wichtig!</b> <em>Alle</em> Werte im Dependency-Array angeben, die darin
+                  verwendet werden (Werte aus Props, State, ...)
+                </li>
+              </ul>
+            </li>
+          </ol>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+### useEffect Hook: Clean-up Funktion
+
+* Um auf das Entfernen der Komponente aus dem DOM zu reagieren (z.B Resourcen
+freigeben), kann die Callback-Funktion als Rückgabe eine "Clean-Up"-Funktion zurückliefern:
+  * ```javascript
+    function HelloEffect() {
+      React.useEffect(
+        () => {
+          console.log("Ich bin gemounted worden"); 
+          return () => console.log("Ich bin entfernt worden") 
+        },
+        [])
+      );
+    }
+  ```
+* Die Clean-Up-Funktion wird immer ausgeführt, wenn die Komponente aus dem DOM entfernt wird
+              und bevor der Effekt erneut ausgeführt wird. 
+* Mit der Clean-up-Funktion kann also immer die letzte Ausführung des Effekt-Callbacks "aufgeräumt" werden
+  * ```javascript
+    function PostEditor() {
+      const [title, setTitle] = useState("");
+
+      React.useEffect(
+        () => {
+          let currentTitle = title;
+          console.log("Title: ", currentTitle); 
+          return () => console.log("Title war beim Commit:", currentTitle) 
+        },
+        [ title ])
+      );
+    }
+    ```
+
+</textarea
+          >
+        </section>
+
+        <section>
+          <h3>Beispiel: Aktualisieren des Browsertitels</h3>
+
+          <div>
+            <p>Der eingegebene Post-Titel soll auch in der Titelzeile des Browsers erscheinen.</p>
+            <pre><code class="javascript"  >
+                function PostEditor() {
+                  const [title, setTitle] = React.useState("");
+                  const [body, setBody] = React.useState("");
+                
+                  React.useEffect(() => {
+                    // Aktuellen Titel merken
+                    const currentTitle = window.document.title;
+                    window.document.title = `New Post ${title}`;
+
+                    // Nach dem Unmount bzw. erneuten Ausführung des Effekts
+                    // Titel wieder auf ursprünglichen Wert zurücksetzen
+                    return () => window.document.title = currentTitle;
+
+
+                  }, [title]);
+
+                  return <div>...</div>
+
+                }
+                
+                </code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h3>Beispiel #2: Laden von Daten ("fetch on render")</h3>
+
+          <div>
+            <p>
+              <code>useEffect</code> und <code>useState</code> werden verwendet, um Daten nach dem
+              initialen Rendern zu laden
+            </p>
+            <pre><code class="javascript"  >
+                function App() {
+                  const [posts, setPosts] = React.useState([]);
+                
+                  React.useEffect(() => {
+                    fetch("http://localhost:7000/posts")
+                      .then(response => response.json())
+                      .then(json => setPosts(json))
+                      .catch(err => console.error("Fehler beim Laden der Daten", err))
+                  }, []);
+
+                  return &lt;PostList posts={posts} />
+                }
+                
+                </code></pre>
+          </div>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Was ist das Problem mit diesem Code?</h3>
+
+          <pre><code class="javascript">
+    function BlogList() {
+      const [posts, setPosts] = React.useState([]);
+    
+      React.useEffect(
+        async () => {
+          const response = await fetch("...");
+          const loadedPosts = response.json();
+          setPosts(loadedPosts);
+        }, []
+      );
+    
+      return ...;
+    }
+    </code></pre>
+          <p>
+            Die Callback-Funktion liefert ein Promise zurück (wird zu "undefined" aufgelöst)! Das
+            ist nicht erlaubt, da React eine Funktion erwartet (oder undefined).
+          </p>
+        </section>
+        <section>
+          <h3>Event-Handler</h3>
+          <p>
+            Zur Erinnerung: In einem Event-Handler müssen Seiteneffekte
+            <b>kein useEffect</b> implementiert werden!
+          </p>
+          <pre><code class="javascript"  >
+function App(props) {
+  // load, as seen
+  React.useEffect( ... );
+
+  function addPost(post) {
+    fetch("http://localhost:7000/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(post)
+    })
+      .then(response => response.json())
+      .then(newPost => setPosts([newPost, ...posts]));
+  }
+
+
+  return
+    ...
+      &lt;AddPost onAdd={newPost => addPost(newPost)} />
+    ...
+}
+                </code></pre>
+        </section>
+
+        <!-- <section>
+          <h2>Übung Fetch #2: fetch mit useEffect</h2>
+          <p>
+            <em
+              >Implementiere die nächste Version der <code>App</code>-Komponente, die in der Lage
+              ist, die Blog Posts mit <code>fetch</code> zu laden.</em
+            >
+          </p>
+          <div>
+            <p>Das backend ist bereits fertig. Ihr könnt es starten mit:</p>
+            <pre><code>
+                  cd react18-training/blog-example/backend-rest
+                  npm start
+                </code></pre>
+            <p>Der Server läuft auf Port 7000</p>
+            <p>
+              Ihr könnt das Backend mit folgender URL testen (Browser, wget, curl, ...):
+              <a href="http://localhost:7000/posts">http://localhost:7000/posts</a>
+            </p>
+          </div>
+        </section> -->
+
+        <!-- ============================================================================= -->
+
+        <section>
+          <h2>Übung Fetch #2: fetch mit useEffect</h2>
+          <h3>Schritte</h3>
+          <ol class="x-list">
+            <li>
+              Füge in <code>App.js</code> den Code zum <b>Laden</b> der Blog-Posts mit
+              <code>useEffect</code> hinzu.
+            </li>
+
+            <li>Die URL ist identisch mit dem POST-Request</li>
+            <li>
+              Du must als HTTP Methode "GET" verwenden, brauchst aber keinen Content-Type setzen und
+              auch keinen Body schicken
+            </li>
+            <li>
+              Du bekommst als Ergebnis vom Server eine Liste mit (Blog-Post-)Objekten, die schon der
+              Struktur entsprechen, die wir im Client erwarten (Properties id, title, body). Du
+              kannst die Liste nach dem Lesen also unverändert in den Zustand setzen.
+            </li>
+            <li>Vorheriger fertiger Stand in <code>steps/4a-remote</code></li>
+            <li>Mögliche Lösung in <code>steps/4b-remote-use_effect</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
+            <li>
+              <b>Optional, wenn noch Zeit ist</b>: Füge einen Loading Indicator hinzu
+              <ul>
+                <li>
+                  Wenn Du <code>?slow</code> an die URLs im <code>fetch</code>-Aufruf hängst, wird
+                  der Server-Call künstlich verlangsamt:
+                  <code>http://localhost:7000/posts?slow</code>
+                </li>
+                <li>
+                  Gib während des laufenden Server-Requests (Daten laden) eine Meldung aus ("Please
+                  wait")
+                </li>
+                <li>Mögliche Lösung in <code>steps/4c-remote-with-loading</code></li>
+                <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
+              </ul>
+            </li>
+          </ol>
+        </section>
+
+        <!-- <section>
+          <h3>Übung: Speichern</h3>
+          <ol class="x-list">
+            <li>Füge in <code>App.js</code> den Code zum <b>Speichern</b> der Blog-Posts hinzu.</li>
+
+            <li>
+              Die URL ist identisch mit dem GET-Request, aber Du musst als HTTP Methode
+              <code>POST</code> verwenden
+            </li>
+            <li>Du musst als Header den Content-Type <code>application/json</code> setzen</li>
+            <li>Als <code>body</code> musst Du den neuen Blog-Post an den Server schicken</li>
+            <li>
+              In der Antwort bekommst Du den gespeicherten Post vom Server zurück. Diesen musst Du
+              in die Liste der BlogPosts einfügen
+            </li>
+            <li>
+              Erinnerung: Beim Speichern der Daten (in einem EventHandler) brauchst Du kein
+              <code>useEffect</code> verwenden.
+            </li>
+            <li>Mögliche Lösung in <code>steps/4-remote</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
+          </ol>
+        </section> -->
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Beispiel: Loading Indicator</h3>
+          <p>Wie geben wir dem Benutzer Feedback, dass die Daten gerade geladen werden?</p>
+        </section>
+
+        <section>
+          <h3>Komplexer Zustand</h3>
+          <p>
+            Wenn eine Komponente mehrere Zustände hält, die nicht unabhängig sind, kannst Du auch
+            ein Objekt als Zustand verwenden:
+          </p>
+
+          <pre><code class="javascript">
+function App() {
+  const [fetchState, setFetchState] = React.useState({
+    loading: false,
+    posts: []
+  });
+
+  ...;
+}              
+            </code></pre>
+          <p>
+            Wenn Du den Zustand änderst, musst Du ein <b>neues Objekt</b> erzeugen! Das bestehende
+            Objekt darf nicht verändert werden
+          </p>
+
+          <pre><code class="javascript">
+    function App() {
+      const [fetchState, setFetchState] = React.useState( /* ... */ );
+
+      // OK:
+      setFetchState({
+        loading: true
+      })
+
+      // FALSCH:
+      fetchState.loading = true;
+      setFetchState(fetchState)
+    }              
+        
+  </code></pre>
+        </section>
+        <section>
+          <h3>Exkurs: Custom Hooks</h3>
+
+          <ul class="x-list">
+            <li>
+              ...müssen mit <code>use</code> beginnen
+              <ul>
+                <li>(ansonsten kann der Linter nicht auf mögliche Fehler prüfen!)</li>
+              </ul>
+            </li>
+            <li>...dürfen nur aus anderen (Custom) Hooks und Komponenten aufgerufen werden</li>
+            <li>
+              ...erwarten "normale" Funktionsparameter (nicht zwingend ein Objekt wie bei
+              Komponenten)
+            </li>
+            <li>...dürfen andere (Custom) Hooks verwenden</li>
+            <li>...beliebiger Rückgabewert möglich (alle Typen erlaubt, auch JSX!)</li>
+          </ul>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Beispiel: Ein Custom Hook zum Laden von Daten</h3>
+
+          <pre><code class="javascript">
+import React from "react";
+
+export default function useApi(url, initialValue) {
+
+  const [fetchState, setFetchState] = React.useState({data: initialValue});
+
+  React.useEffect(
+    () => {
+      async function loadData() {
+        try {
+
+          setFetchState({loading: true, data: initialData})
+          const response = await fetch(url);
+          const json = await response.json();
+          setFetchState({data: json})
+
+        } catch (err) {
+          console.error("LOADING DATA FAILED:", err);
+          setFetchState({error: err.toString()})
+        } 
+      }
+      loadData();
+    },
+    // Make sure, this Hook only runs (after initial) when URL changes
+    [url]
+  );
+
+  return [fetchState.data, fetchState.isLoading];
+}
+</code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Altenativen zum Datafetching mit fetch</h3>
+          <ul class="fragment x-list">
+            <li>Alternative zur fetch API: <a href="https://github.com/axios/axios">Axios</a></li>
+            <li>
+              Bibliotheken zum Arbeiten mit Daten vom Server (inklusive Caching etc.):
+              <a href="https://tanstack.com/query/latest" target="_blank"> TanStack Query</a>
+              oder <a href="https://swr.vercel.app/">SWR</a>
+            </li>
+            <li>
+              Data Fetching für Redux Toolkit:
+              <a href="https://redux-toolkit.js.org/rtk-query/overview" target="_blank"
+                >RTK Query</a
+              >
+            </li>
+          </ul>
+        </section>
+
+        <section id="t-typescript">
+          <h1>Teil V</h1>
+          <h2>React Anwendungen mit TypeScript</h2>
+          <p>Example: code/blog-example/steps/5-typescript</p>
+        </section>
+
+        <!-- ######################################################  -->
+        <section>
+          <h2>TypeScript</h2>
+          <ol>
+            <li><a href="#/t-typescript-grundlagen">Einführung in TypeScript</a></li>
+            <li><a href="#/t-typescript-react">React mit TypeScript</a></li>
+          </ol>
+        </section>
+
+        <section id="t-typescript-grundlagen">
+          <h2>Einführung: Die Sprache TypeScript</h2>
+          <p class="fragment">
+            <em>TypeScript is a superset of JavaScript that compiles to plain JavaScript </em>(
+            <a href="http://www.typescriptlang.org/" target="_blank"
+              >http://www.typescriptlang.org/</a
+            >)
+          </p>
+          <ul>
+            <li class="fragment">Erweitert JavaScript um ein Typen System</li>
+            <li class="fragment">
+              Jeder gültige JavaScript Code ist auch gültiger TypeScript Code
+            </li>
+            <li class="fragment">
+              Mittels des TypeScript Compilers wird aus TS Code JavaScript Code
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>TypeScript Grundlagen</h3>
+          <p>Typ-Angaben werden hinter einen Bezeichner geschrieben</p>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // Variablen können Typ-Informationen bekommen
+  let foo: string;
+  foo = 'yo';
+  // Error: number: This type is incompatible with string
+  foo = 10;
+                 </code></pre>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // Funktionen
+  function sayIt(what: string): string {
+    return `Saying: ${what}`;
+  }
+  
+  sayIt('Klaus'); // ok
+  sayIt(10); // error
+  </code></pre>
+
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // Arrow Funktionen
+  const sayIt = (what: string): string => `Saying: ${what}`;
+  
+  sayIt('Moin');
+  sayIt(123); // Error: Argument of type '123' is not assignable
+              // to parameter of type 'string'.
+  </code></pre>
+        </section>
+
+        <section>
+          <h2>Eingebaute Typen</h2>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // string
+  let city: string = 'Hamburg';
+  
+  // boolean
+  let isDone: boolean = false;
+  
+  // number
+  let theAnswer: number = 42;
+  
+  // array (note the [])
+  let cities: string[] = ['Hamburg', 'Barcelona'];
+  // alternative:
+  let languages: Array&lt;string> = ['JavaScript', 'TypeScript'];
+  
+  // void
+  function log(s: string): void { /* ... */ }
+              </code></pre>
+        </section>
+        <section>
+          <h2>Eingebaute Typen: any und unknown</h2>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // any: kann alle Typen aufnehmen, Typ-Prüfung ist ausgeschaltet
+  let theUnknown: any = 'Who cares';
+  theUnknown = 666; // ok
+  theUnknown = true; // ok
+  let a: number = theUnknown; // ok
+  function loadData(): any { return "" // ok }
+  let b:number = loadData(); // ok
+  
+              </code></pre>
+        </section>
+        <section>
+          <h2>Eingebaute Typen: any und unknown</h2>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // unknown: kann ebefalls alle Typen aufnehmen, erzwingt aber vor der Verwendung Typ-Prüfung
+  function loadData(): unknown { return "" // ok }
+  let b = loadData(); 
+  b.toUpperCase(); // ERROR
+  if (typeof b === "string") {
+    // b ist jetzt string (typeof ist Laufzeitprüfung!)
+    b.toUpperCase(); // OK
+  }
+              </code></pre>
+        </section>
+        <section>
+          <h2>Typen können abgeleitet (inferred) werden</h2>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  let city = 'Hamburg'; // city ist ein String
+  
+  city = 42;
+  // Fehler: [ts] Type '42' is not assignable to type 'string'.
+  </code></pre>
+          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  // Explizite Angabe eines Types (parameter)
+  // und abgeleiteter Typ (Return Type der Funktion)
+  
+  function sayIt(what: string) {
+    return `Saying: ${what}`;
+  }
+  
+  const said: string = sayIt('Hello TypeScript'); // ok
+  const saidItWrong: number = sayIt('Hello TypeScript'); // error!
+  
+  
+  </code></pre>
+        </section>
+
+        <section>
+          <h2>Type Check ausschalten</h2>
+          <p>
+            Mit <code>@ts-ignore</code> (als Kommentar) kann wird die Überprüfung der nächsten Zeile
+            ausgeschaltet:
+          </p>
+          <pre><code class="typescript line-numbers" contenteditable data-trim>
+  let city:string = "Hamburg";
+  
+  city = 20259; // error: [ts] Type '20259' is not assignable to type 'string'.
+  
+  // @ts-ignore
+  city = 20259; // ok                
+  </code></pre>
+          <p class="fragment">
+            Nützlich in corner cases, die nur schwer mit TypeScript abbildbar sind oder bei
+            Migration
+          </p>
+        </section>
+        <section>
+          <h2>null und undefined</h2>
+          <div class="fragment">
+            <p><code>null</code> muss explizit zugelassen werden <em>(strictNullChecks</em>):</p>
+            <pre><code class="typescript line-numbers" contenteditable data-trim>
+  let city:string = null; //Type 'null' is not assignable to type 'string'.
+  
+  let optionalCity:string|null = null; // OK
+              </code></pre>
+          </div>
+          <div class="fragment">
+            <p><code>undefined</code> muss ebenfalls explizit zugelassen werden:</p>
+            <pre><code class="typescript line-numbers" contenteditable data-trim>
+    let city:string = undefined; //Type 'undefined' is not assignable to type 'string'.
+    
+    let optionalCity:string|undefined = undefined; // OK
+    let optionalCity:string|undefined|null = null; // OK
+                </code></pre>
+          </div>
+          <div class="fragment">
+            <p>
+              Optionale Parameter können mit ? gekennzeichnet werden (erlauben dann auch
+              <code>undefined</code>)
+            </p>
+            <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
+  function greet(name: string, greeting?: string) {
+    console.log(`${greeting || 'Hello'}, {name}`);
+  }
+  
+  greet('Susi', 'Moin')// Moin, Susi
+  
+  // 2. Parameter ist optional:
+  greet('Klaus'); // Hello, Klaus
+  
+  greet('Peter', null); // Argument of type 'null' is not assignable
+                        // to parameter of type 'string | undefined'.
+              </code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h2>Eigene Typen</h2>
+          <p>
+            Mit <code>interface</code> und <code>type</code>können eigene Typen (Objekt-Strukturen)
+            definiert werden:
+          </p>
+
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+  // Komplexer Typ
+  interface Person {
+    name: string; // Pflicht
+    livesIn?: string; // Optional
+  }
+
+  // Alternativ (interface und type fast synonym)
+  type Person = { name: string; livesIn?: string; }
+  
+  const susi: Person = { // OK
+    name: 'Klaus',
+    livesIn: 'Hamburg'
+  };
+  const klaus: Person = { // OK (livesIn ist optional)
+    name: 'Klaus'
+  }
+  
+  const helmut: Person = {} // Error: Property 'name' is missing
+  
+  const lukas: Person = {
+    name: 'Lukas',
+    profession: 'Lokführer'
+  } // Error: 'profession' does not exist in type 'Person'.
+                 </code></pre>
+        </section>
+
+        <section>
+          <h2>Eigene Typen II</h2>
+          <p>Eigene Objekt-Typen können sowohl "Attribute" als auch Funktionen enthalten:</p>
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+            // Komplexer Typ
+            type Person {
+              name: string; // Pflicht
+              greet(greeting: string): string;
+            }
+
+            const p:Person = {
+              name: "Klaus",
+              greet(greeting: string) { 
+                return `${greeting}, ${this.name}`
+              }
+            }
+            p.greet("Hello"); // OK
+            p.greet(123); // ERR: Argument of type '123' is not 
+                          // assignable to parameter of type 'string'.
+
+            const wrong:Person = {
+              name: "Susi", // OK
+              greet(greeting: number) { return "hello" } 
+                // ERR: Type '(greeting: number) => string' is not assignable to 
+                //      type '(greeting: string) => string'.
+                //      Types of parameters 'greeting' and 'greeting' are incompatible.
+                //      Type 'string' is not assignable to type 'number'.
+            }
+                           </code></pre>
+        </section>
+        <section>
+          <h2>Union Types</h2>
+          <p>Variablen, Parameter etc. können mehr als einen Typ annehmen:</p>
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+type Person = { name: string };
+type Movie = { title: string };
+
+function printNameOrTitle(obj: Person | Movie) { 
+
+  console.log(obj.title); // ERR: Property 'title' does not 
+                          // exist on type 'Person | Movie'
+ 
+  if ("title" in obj) { // Abfrage ist ein "Type Guard"
+    // obj ist Movie hier, title ist definiert
+    console.log(obj.title);
+  } else {
+    // obj ist Person hier: name ist definiert
+    console.log(obj.name);
+  }
+}
+
+printNameOrTitle({name: "Klaus"}); //OK
+printNameOrTitle({title: "Pulp Fiction"}); //OK
+printNameOrTitle({label: "Save"}); // ERR
+    
+          </code></pre>
+        </section>
+        <section>
+          <h2>Type Guards</h2>
+          <p>Durch einen Type Guard können Typen "eingeengt" werden</p>
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+type Person = { name: string };
+type Movie = { title: string };
+
+// Wenn diese Funktion true zurueckgibt, nimmt Typescript an,
+// dass das übergebene Argument vom Typ Movie ist
+function isMovie(candidate: any): candidate is Movie {
+  return ("title" in candidate);
+}
+
+function printNameOrTitle(obj: Person | Movie) { 
+  if (isMovie(obj)) {
+    // movie
+  }
+}
+    
+          </code></pre>
+        </section>
+        <section>
+          <h2>Type Assertions</h2>
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+type Person = { name: string };
+type Movie = { title: string };
+
+// Wenn diese Funktion zurueckkehrt (kein Error geworfen wird) nimmt Typescript an,
+// dass das übergebene Argument vom Typ Movie  ist
+function assertIsMovie(candidate: any): asserts candidate is  Movie {
+  if ("title" in candidate) {
+    return;
+  }
+  throw new Error("Candidate is not a movie!")
+}
+
+function printTitle(hopefullyAMovie: any) { 
+  assertPersonIsMovie(hopefullyAMovie)
+  // hopefullyAMovie ist jetzt Movie
+  hopefullyAMovie.title; // OK
+}
+    
+          </code></pre>
+        </section>
+        <section>
+          <h2>String Literal Types</h2>
+          <p>Beispiel: String Aufzählungstyp</p>
+          <pre><code data-trim contenteditable class="line-numbers typescript" data-leftpad>
+// Beispiel:             
+type View = "POST_LIST" | "POST_EDITOR";
+
+const s:View = "POST_LIST"; // OK
+const t:View = "POST_LISTE" // FEHLER
+
+function setView(v: VIEW) {
+    if (v === "POST_LIST") { ... } // ok
+    if (v === "POST_LISTE") { ... } // error: immer false
+}
+
+setView("POST_LIST"); //OK
+setView("POST_LISTE"); // ERROR
+          </code></pre>
+        </section>
+
+        <!-- <section>
+          <h2>Übung: Hello, TypeScript!</h2>
+          <h3>
+            <em>Mach dich mit den Grundzügen der Sprache TypeScript vertraut</em>
+          </h3>
+
+          <ol class="x-list">
+            <li>Öffne den TypeScript Playground im Browser (den Link gibts per Chat)</li>
+            <li>Link zu den Slides als Referenz gibt's ebenfalls im Chat</li>
+            <li>
+              Bearbeite die Datei, so dass keine Compile-Fehler mehr vorhanden sind, TODOs siehe
+              dort
+            </li>
+            <li>
+              Lösung in <code>blog-example/material/ts-intro/01_solution_hello_typescript.ts</code>
+            </li>
+          </ol>
+        </section> -->
+        <!-- ########################################################### -->
+
+        <section id="t-typescript-react">
+          <h2>React Anwendungen mit TypeScript</h2>
+          <em
+            >State und Properties einer Komponente können mit TypeScript Typen beschrieben weden</em
+          >
+          <p>
+            Achtung! TypeScript-Dateien, die JSX-Code enthalten, <b>müssen</b> mit
+            <code>.tsx</code> enden!
+          </p>
+
+          <p>
+            👉 Lasst uns ausprobieren, wie das funktioniert! (<code>workspace-typescript</code>)
+          </p>
+        </section>
+        <section>
+          <h2>Typsicherheit in Funktionskomponenten</h2>
+          <pre><code class="line-numbers typescript" data-leftpad>
+type PostListProps = {
+  posts: BlogPost[];
+  onAddPost(): void;
+};
+            </code></pre>
+          <pre><code class="line-numbers typescript">
+function BlogList(props: PostListProps) {
+  props.posts.length // OK
+  
+  props.post // compile ERROR: Property 'post' does not exist on type 'PostListProps'.
+  props.onAddPost("huhu"); // compile ERROR: Expected 0 arguments, but got 1.
+}
+    
+            </code></pre>
+          <pre><code class="line-numbers typescript" data-leftpad>
+// Mit Destructuring
+function BlogList({posts, onAddPost}: GreetingMasterProps) => {
+  // ...
+}
+            </code></pre>
+        </section>
+
+        <section>
+          <h3>Typ-sichere Verwendung von Komponenten</h3>
+
+          <div>
+            <p>Code Completion</p>
+            <img style="height: 200px" src="slides/images/screenshot-ts-code_completion.png" />
+          </div>
+
+          <div>
+            <p>Unbekanntes Property</p>
+            <img style="height: 200px" src="slides/images/screenshot-ts-error-01.png" />
+          </div>
+
+          <div>
+            <p>Fehlerhafte Verwendung eines Properties</p>
+            <img style="height: 200px" src="slides/images/screenshot-ts-error-02.png" />
+          </div>
+        </section>
+
+        <section>
+          <h3>Typ-sicherheit in useState</h3>
+          <p>Der Typ von useState kann grundsätzlich von TypeScript hergeleitet werden</p>
+          <pre><code class="line-numbers typescript" data-leftpad>
+type PostEditorProps = {  onSavePost(post: NewBlogPost): void; };
+function PostEdior(props: PostEditorProps) {
+  const [title, setTitle] = React.useState("");
+
+  // greeting is string, because initial value is a string
+  setGreeting("huhu"); // OK
+  setGreeting(666); // ERROR (wrong Type)
+  setGreeting(null); // ERROR (wrong Type)
+}
+            </code></pre>
+          <div>
+            <p>Du kannst alternativ den Typen auch explizit setzen</p>
+            <p>Zum Beispiel notwendig, wenn der State mehr als einen Typen aufnehmen kann</p>
+            <pre><code class="line-numbers typescript" data-leftpad>
+type VIEW = "LIST" | "ADD";
+
+function App() {
+  const [view, setView] = React.useState&lt;VIEW>("LIST");
+
+  // Mode ist either string "MODE_MASTER" or "MODE_DETAIL"
+  // setMode only accepts the string "MODE_MASTER" and "MODE_DETAIL" 
+
+  setMode("NOT_FOUND"); // compile error
+  setMode(null); // compile error
+}
+                            </code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h2>Übung: Typ-sichere React Komponenten</h2>
+          <h3>
+            <em>Füge die fehlenden Typ-Informationen zu der App-Anwendung hinzu</em>
+          </h3>
+          <div style="font-size: 80%">
+            <div>
+              <p>
+                <b>WORKSPACE:</b>
+              </p>
+              <p>
+                Bitte benutze den Workspace <code><b>blog-example/workspace-typescript</b></code
+                >. <br />Dieser enthält die letzte Version unserer Anwendung, ist aber mit
+                TypeScript konfiguriert.
+              </p>
+            </div>
+            <div>
+              <p>
+                <b>VORBEREITUNG:</b>
+              </p>
+              <ol class="x-list">
+                <li>Stop deinen laufenden "npm run"-Frontend-Prozess (ctrl+c)</li>
+                <li>
+                  Führe <code><b>npm install</b></code> in
+                  <code>blog-example/workspace-typescript</code> aus
+                </li>
+                <li>
+                  Führe <code><b>npm start</b></code> in
+                  <code>blog-example/workspace-typescript</code> aus
+                </li>
+              </ol>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3>Übung: Typ Informationen hinzufügen</h3>
+          <p>
+            Füge die fehlenden Typ-Informationen in <code>PostList.js</code> und
+            <code>PostEditor.js</code> hinzu
+          </p>
+          <p><b>Neuer Workspace</b>: <code>blog-example/workspace-typescript</code></p>
+          <p></p>
+          <ol style="font-size: 80%" class="x-list">
+            <li>
+              In <code>types.ts</code> findest Du fertige "fachliche" Typen für die Blog-Anwendung,
+              die Du im folgenden verwenden kannst
+            </li>
+            <li>
+              Benenne <code><b>PostList.js</b></code> in <code>PostList.tsx</code> um und starte
+              <code>npm start</code> neu
+            </li>
+            <li>Stelle <code>PostList.tsx</code> auf TypeScript um</li>
+            <li>
+              Benenne <code><b>PostEditor.js</b></code> in <code>PostEditor.tsx</code> um und starte
+              <code>npm start</code> neu
+            </li>
+            <li>Stelle <code>PostEditor.tsx</code> auf TypeScript um</li>
+            <li>
+              Für Properties der <code>Message</code>-Komponente kannst Du als Typ einfach
+              <code>any</code> verwenden.
+            </li>
+
+            <li>
+              Und für <code>style</code> in <code>Message</code> ebenfalls einfach
+              <code>React.CSSProperties</code> angeben:
+              <pre><code class="javascript">
+const style: React.CSSProperties = type === "error" ? 
+  { color: "red", fontWeight: "bold" } : { color: "green" };
+              </code></pre>
+            </li>
+            <li>Mögliche Lösung in <code>steps/5-typescript</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋‍♀️</li>
+          </ol>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+
+      <h2>Fortgeschrittene Themen</h2>
+      <h3>(im Überblick)</h3>
+      <ul>
+        <li>
+          <a href="#/t-test">Testen</a>
+        </li>
+        <li>
+          <a href="#/t-context">Globales Statemanagement und Context API</a>
+        </li>
+
+        <li>
+          <a href="#/t-router">Client-seitiges Routing</a>
+        </li>
+      </ul>
+    </li>    
+
+  </textarea
+          >
+        </section>
+
+        <section id="t-test">
+          <h1>Teil VI</h1>
+          <h2>Testen von React Anwendungen</h2>
+        </section>
+
+        <section data-transition="slide none">
+          <h2>Was testen wir?</h2>
+          <ul>
+            <li><b>UI-unabhängige Logik</b> (zum Beispiel Backend Calls, Berechnungen etc.)</li>
+            <li>
+              <b>Rendering</b> (Ist die Liste der Blog Posts korrekt? Sieht das Markup aus, wie wir
+              uns das vorstellen?) und <b>Interaktionen</b> (funktionieren die Event Handler, die
+              Callback-Funktionen, der Programmfluß etc.?)
+            </li>
+            <li>
+              <b>Verhalten im Browser</b> (z.B. korrekte, pixelgenaue Darstellung,
+              Browser-spezifisches JavaScript, Arbeiten mit Browser-Technologie wie Titelzeile,
+              Session Storage, Scrollbars etc)
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Jest</h1>
+          <p>
+            <em
+              >"Delightful JavaScript Testing" (
+              <a href="https://jestjs.io/" target="_blank">https://jestjs.io/</a>)</em
+            >
+          </p>
+          <p>Vollständige Testlösung für React (und andere):</p>
+          <ul>
+            <li>API vergleichbar mit <a href="https://jasmine.github.io/">Jasmine</a></li>
+            <li>Test Runner</li>
+            <li>Specs/Assertions, Mocks</li>
+            <li>Code Coverage</li>
+          </ul>
+        </section>
+        <section>
+          <h4>Jest</h4>
+          <h3>Beispiel: Ein einfacher Testfall</h3>
+          <pre><code class="javascript"  >// sum.js (or sum.ts)
+export const sum = (a,b) => a+b;
+        </code></pre>
+          <pre><code class="javascript"  >// sum.test.js
+import {sum} from '../sum.js';
+
+test('sum of 2 and 2 is 4', () => {
+  expect(sum(2, 2)).toBe(4);
+});
+
+test('sum of 2 and 2 is not 3', () => {
+  expect(sum(2, 2)).not.toBe(3);
+});
+            </code></pre>
+        </section>
+        <section>
+          <h4>Jest</h4>
+          <h2>Testcases</h2>
+          <p>
+            <code>test</code> oder
+            <code>it</code>
+          </p>
+          <pre><code>test('it should work', () => {
+  expect(...).toBe(...);
+});</code></pre>
+          <pre><code>it('it should also work', () => {
+  expect(...).toBe(...);
+});</code></pre>
+        </section>
+
+        <section>
+          <h4>Jest</h4>
+          <h2>"Expectations" und "Matchers"</h2>
+          <div>
+            <p>
+              <code>expect()</code> liefert ein <em>Expectation</em> Objekt zurück, das verschiede
+              <em>Matcher</em> Funktionen bereitstellt:
+            </p>
+            <pre><code>expect(actual).toXyz(expected);
+// for example:
+expect("Hello Jest").toBe("Hello Jest"); // => ok
+        </code></pre>
+          </div>
+          <div>
+            <p>Beispiele für Matchers</p>
+
+            <pre><code>// Compare identity
+expect(actual).toBe(expected);
+// Compare value:
+expect(actual).toEqual(expected);
+// true / false / null:
+expect(actual).toBeTruthy();
+expect(actual).toBeFalsy();
+expect(actual).toBeNull();
+// Length (Array oder String)
+expect(actual).toHaveLength(123);
+        </code></pre>
+          </div>
+          <p>
+            <a href="https://jestjs.io/docs/en/expect">https://jestjs.io/docs/en/expect</a>
+          </p>
+        </section>
+
+        <section>
+          <h4>Jest</h4>
+          <h2>Mock Funktionen</h2>
+          <ul>
+            <li>
+              <code>jest.fn()</code> erzeugt eine Mock-Funktion
+              <pre><code>// Gibt undefined zurück, wenn die Mock-Funktion ausgeführt wird
+const aMockFn = jest.fn();
+
+const x = aMockFn("huhu"); // => undefined
+expect(x).toBeUndefined();
+
+expect(aMockFn).toHaveBeenCalled());
+expect(aMockFn.toHaveBeenCalledWith("huhu"));
+                      </code></pre>
+            </li>
+
+            <li>
+              Implementierung der Mock-Funktion kann als Parameter übergeben:
+              <pre><code>
+        const aMockFn = jest.fn( param => `Hello, ${param}` );
+        
+        console.log(aMockFn('World'));
+        // => Hello, World
+                  </code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Testen von React Komponenten</h3>
+          <h2>Nur rendern</h2>
+        </section>
+
+        <section>
+          <h3>React Test Renderer</h3>
+          <p>
+            <a href="https://www.npmjs.com/package/react-test-renderer"
+              >https://www.npmjs.com/package/react-test-renderer</a
+            >
+          </p>
+          <p>Rendert React Komponenten in JSON Objekte (ohne DOM):</p>
+          <pre><code class="javascript"  >import renderer from 'react-test-renderer';
+
+const component = renderer.create(
+  &lt;PostList posts={somePosts} />
+);
+
+console.log(component.toJSON());
+            </code></pre>
+          <pre><code class="javascript"  >
+        { type: 'div',
+          props: {},
+          children:  [
+            { type: 'button', props: {}, children: [Object] },
+            { type: 'article', props: [Object], children: [Object] },
+            { type: 'article', props: [Object], children: [Object] }
+          ]
+        }
+            </code></pre>
+        </section>
+        <section>
+          <h3>"Snapshot Testing" mit Jest</h3>
+          <p>
+            <code>expect(obj).toMatchSnapshot()</code> vergleicht ein erzeugtes JSON-Objekt mit
+            einem gespeicherten JSON-Objekt aus einer Datei:
+          </p>
+          <ul>
+            <li>
+              Bei der <b>ersten</b> Ausführung: Snapshot-Datei wird angelegt (
+              <a href="slides/images/jest-snapshot-file.png" target="_blank">Beispiel</a>)
+              <ul>
+                <li>Die Snapshot-Datei wird nun in Git eingecheckt</li>
+              </ul>
+            </li>
+            <li>
+              In den <b>folgenden</b> Test Ausführungen: ein neuer Snapshot wird jeweils erzeugt und
+              mit dem <b>gespeicherten</b> Snapshot verglichen
+            </li>
+            <li>
+              Wenn die Snapshots nicht identisch sind:
+              <ul>
+                <li>
+                  Fehler mit Unterschieden (<a
+                    href="slides/images/jest-snapshot-diff.png"
+                    target="_blank"
+                    >Beispiel</a
+                  >)
+                </li>
+                <li>
+                  Im "watch mode" von Jest kann der Snapshot aktualisiert werden
+                  <img src="slides/images/jest-snapshot-update.png" />
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Snapshot Tests mit Jest und React</h3>
+          <pre><code class="javascript"  >import renderer from 'react-test-renderer';
+        
+test('it should render correctly', () => {
+
+  const somePosts = [ . . . ];
+
+  const component = renderer.create(
+    &lt;PostList posts={somePosts} />
+  );
+
+  expect(component.toJSON()).toMatchSnapshot();
+});
+            </code></pre>
+        </section>
+
+        <section>
+          <h3>Testing React Components #2</h3>
+          <h2>Interaktionen</h2>
+        </section>
+
+        <section>
+          <h3>react-testing-library</h3>
+          <p>
+            <em
+              >"Simple and complete React DOM testing utilities that encourage good testing
+              practices."
+            </em>
+          </p>
+
+          <p>
+            <a href="https://github.com/testing-library/react-testing-library" target="_blank"
+              >https://github.com/testing-library/react-testing-library</a
+            >)
+          </p>
+          <p>
+            Philosophie: Tests werden aus User-Perspektive geschrieben. Das bedeutet, um die zu
+            testenden Elemente zu finden, suchst Du nach Eigenschaften, nach denen auch ein User
+            suchen würde (z.B. Labels, Placeholder etc.)
+          </p>
+          <p>👉 <code>workspace-typescript</code></p>
+        </section>
+        <section>
+          <h3>react-testing-library</h3>
+          <p>Example</p>
+          <pre><code class="javascript"  >
+            import { render, screen } from "@testing-library/react";
+            import userEvent from "@testing-library/user-event";
+
+            it("invokes callback on button click", () => {
+              const onAddPostFn = jest.fn();
+            
+              // Render
+              render(&lt;PostList onAddPost={onAddPostFn} posts={mockPosts} />);
+            
+              // search the button
+              const buttonElement = screen.getByRole("button", { name: "Add Post" });
+
+              // "click" the button
+              userEvent.click(buttonElement);
+            
+              // make sure it has been invoked
+              expect(onAddPostFn).toHaveBeenCalled();
+            });
+
+
+            </code></pre>
+        </section>
+
+        <section>
+          <h3>Die render-Funktion</h3>
+          <ul>
+            <li>
+              Die render-Function aus der react-testing-library wird im Test verwendet, um eine
+              React Komponente (ohne Browser) zu rendern
+            </li>
+            <li>Genauso wie in der Anwendungen können Properties angegeben werden</li>
+            <li>
+              <pre><code class="javascript"  >
+import { render } from "@testing-library/react";
+  
+// Render a single component
+render(&lt;PostList onAddPost={onAddPostFn} posts={mockPosts} />);
+            </code></pre>
+            </li>
+            <li>
+              Dran denken, ggf. Contexte ebenfalls zu erzeugen, falls diese benötigt werden (React
+              Router, Redux, MaterialUI etc.)!
+            </li>
+            <li>
+              <pre><code class="javascript"  >
+
+// Context-Provider bei Bedarf mit rendern!
+render(
+  &lt;Provider>
+    &lt;ThemeProvider theme={"light"}>
+      &lt;PostList onAddPost={onAddPostFn} posts={mockPosts} />
+    &lt;/ThemeProvider>
+  &lt;/Provider>
+);
+            </code></pre>
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h3>query Funktionen</h3>
+          <p>
+            Um die gerenderten HTML-Elemente aus deiner Komponente zu überprüfen und mit ihnen zu
+            interagieren, musst Du sie ersteinmal finden 🤓
+          </p>
+          <p>
+            Auf dem globalen <b>screen</b> Objekt der Testing-Lib sind verschiedene Funktionen
+            definiert, mit denen Du nach Elementen suchen kannst
+          </p>
+          <p>
+            Die query-Funktionen haben unterschiedliche <b>Suffixe</b>, die beschreiben,
+            <b>nach welchem Kriterium</b> Du suchst (nach Label, nach aria-role, ...)
+          </p>
+          <p>
+            Die Funktionen haben außerdem jeweils einen <b>Präfix</b> (getBy, queryBy etc) der
+            beschreibt, die Art des Rückgabewerts der jeweilgen Funktion (z.B. ob sie einen Error
+            wirft oder null zurückgibt, wenn das angefragte Element nicht gefunden wurde)
+          </p>
+          <p>
+            Mehr zu den query-Funktionen:
+            <a
+              target="_blank"
+              href="https://testing-library.com/docs/react-testing-library/cheatsheet#queries"
+              >React Testing Library Cheatsheet</a
+            >
+          </p>
+
+          <pre><code class="javascript">
+  // BEISPIELE: 
+
+  // suche nach einem Button (Annahme: es gibt GENAU EINEN, ansonsten schlägt der Test fehl)
+  const buttonElement = screen.getByRole("button", { name: "Add Post" });
+
+  // suche nach einem Button (gibt null oder EINEN Button, wirft ansonst einen Fehler)
+  const buttonElement = screen.queryByRole("button", { name: "Add Post" });
+
+  // suche nach einem Button (gibt alle gefunden zurück oder ein leeres Array)  
+  const buttonElement = screen.queryAllByRole("button", { name: "Add Post" });
+</code></pre>
+        </section>
+
+        <section>
+          <h3>Überprüfen von Elementen</h3>
+          <p>
+            Wenn Du dein gesuchtes Elemente gefunden hast, kannst Du es überprüfen, ob es deinen
+            Erwartungen entspricht (korrekte Attribute gesetzt etc.)
+          </p>
+          <p>
+            Die Bibliothek
+            <a href="https://github.com/testing-library/jest-dom" target="_blank">jest-dom</a> fügt
+            dazu DOM-spezifiche Matcher für Jest hinzu.
+          </p>
+
+          <pre><code class="javascript">
+  import { screen } from "@testing-library/react";
+
+  const buttonElement = screen.queryByRole("button", { name: "Add Post" });
+
+  // stellt sicher, dass das Element im DOM vorhanden ist (getBy-Query würde hier vielleicht mehr Sinn machen)
+  expect(buttonElement).toBeInTheDocument();
+
+  // sicherstellen, dass ein Eingabefeld einen erwarteten Wert hat
+  expect(titleInput).toHaveValue("Moin moin");
+
+  // sicherstellen, dass ein Button disabled ist
+  expect(okButton).toBeDisabled();
+</code></pre>
+          <p>Alle Matcher sind auf der oben verlinkten GitHub Seite dokumentiert</p>
+        </section>
+        <section>
+          <h3>Interaktionen</h3>
+          <p>
+            Du kannst mit den Elementen interagieren, in dem Du ihnen Events sendest, genau wie es
+            ein Browser tun würde
+          </p>
+          <p>
+            Es gibt eine weitere Bibliothek,
+            <a href="https://github.com/testing-library/user-event" target="_blank"> user-event</a>,
+            die dir dabei hilft, die Events zu erzeugen.
+          </p>
+
+          <pre><code class="javascript">
+            import userEvent from "@testing-library/user-event";
+            // Simuliert die Eingabe in ein Textfeld
+            userEvent.type(titleInput, "New Title");
+
+            // Simuliert den Klick auf einen Button
+            userEvent.click(clearButton);
+          </code></pre>
+          <p>Alle Events sind auf der GitHub Seite beschrieben (Link oben)</p>
+
+          <p>
+            Vor dem Versenden eines Events musst Du <b>nicht</b> überprüfen, ob das Element, dem Du
+            das Event senden willst, vorhanden ist. Die Bibliothek gibt eine sehr sprechende Fehler
+            aus, wenn das Element nicht vorhanden ist
+          </p>
+        </section>
+        <section>
+          <h3>Testen von fetch-Aufrufen</h3>
+          <p>Herausforderungen:</p>
+          <ul>
+            <li>Asynchroner Code (nicht beschränkt auf fetch)</li>
+            <li>Server Zugriffe/Server Mocks</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Behandlung von asynchronem code</h3>
+        </section>
+
+        <section>
+          <h3>Testen von asynchronem Code</h3>
+          <p>
+            Beispiel: Die <b>App</b> Komponente lädt Daten, <em>erst dann</em> stellt sie die
+            PostList dar. Das Laden der Posts ist asynchron.
+          </p>
+
+          <pre><code class="javascript">
+            it("should render posts read from backend", () => {
+              render(&lt;App />);
+            
+              // Annahme: es gibt einen Artikel mit dem Title "Learning React"
+              const articleOne = screen.findByRole("heading", { name: "Learning React" });
+
+              expect(articleOne).toBeInTheDocument(); // THIS WON'T WORK!
+            });
+          </code></pre>
+          <p>
+            Wir können einen Test als async-funktion schreiben und darin mit <b>await</b> auf ein
+            Element warten
+          </p>
+          <pre><code class="javascript">
+            // Test-Funktion als async-Funktion (beachte 'async'):
+            it("should render posts read from backend", async () => {
+              render(&lt;App />);
+            
+              // Beachte await hier:
+              const articleOne = await screen.findByRole("heading", { name: "Learning React" });
+
+              expect(articleOne).toBeInTheDocument(); // YIPPIE, WORKS
+            });
+          </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Testen von fetch</h3>
+          <p>Wie gesehen, können wir asynchronen Code testen</p>
+          <p>Wollen wir fetch-Aufrufe in unserem Code haben, den wir testen?</p>
+          <p>
+            Möglicherweise nicht, weil wir bei echten fetch-Aufrufen auch einen echten, laufenden
+            und funktionierenden Server im Test bräuchten
+          </p>
+          <p>Stattdessen wollen wir das "echte" fetch mocken</p>
+        </section>
+
+        <section>
+          <h3>Fetch mocken, Ansatz #1</h3>
+          <p>Wir können <b>komplette Module</b> in Jest mocken</p>
+          <p>Wir könnten unseren fetch-Code in ein eigenes Modul schieben und das dann mocken</p>
+
+          <pre><code class="javascript">
+            // api.ts (fetch vereinfacht!)
+            export function readPosts() {
+              return fetch("http://localhost:7000/posts").then(response => response.json());
+            }
+          </code></pre>
+
+          <pre><code class="javascript">
+            // App.tsx:
+
+            import { readPosts } from "./api";
+            function App() {
+              // ...
+              React.useEffect(() => {
+                // Verwenden von readPosts hier:
+                readPosts()
+                  .then(json => {
+                    setLoading(false);
+                    setPosts(json);
+                  })
+                  .catch(err => console.error("Loading data failed: " + err));
+              }, []);
+            }
+          </code></pre>
+        </section>
+        <section>
+          <h3>Mocken von Modulen in Jest</h3>
+          <p>Es gibt mehrere Varianten. Das hier die einfachste(?)</p>
+
+          <pre><code class="javascript">
+            // App.test.tsx
+
+            const mockPosts = [
+              { id: "1", title: "One Fetch Mock", body: "Lorem ipsum" },
+              { id: "2", title: "Second Post Fetch Mock", body: "Some more content" }
+            ];
+
+            jest.mock("../api", () => ({
+              readPosts: () => Promise.resolve(mockPosts)
+            }));
+
+            it("should render posts read from backend", async () => {
+              render(&lt;App />);
+            
+              // Hier immer noch asnychroner Code (deswegen await), aber:
+              // kein laufender Server mehr benötigt
+              const articleOne = await screen.findByRole("heading", { name: "One" });
+              expect(articleOne).toBeInTheDocument();
+
+              expect(screen.getByText("Second Post")).toBeInTheDocument();
+            });
+          </code></pre>
+          <p>
+            Beispiel:
+            <code
+              >blog-example/steps/6a-testing-with-api-module/src/__tests__/App_module_mock.test.tsx</code
+            >
+          </p>
+        </section>
+        <section>
+          <h3>Ansatz #2: fetch API mocken</h3>
+          <p>Es gibt mehrere Bibliothken mit fetch-Mocks</p>
+          <p>
+            Für mich funktioniert
+            <a href="https://www.npmjs.com/package/jest-fetch-mock" target="_blank"
+              >jest-fetch-mock</a
+            >
+            am Besten
+          </p>
+
+          <pre><code class="javascript">
+            // App.test.tsx
+            it("should render posts read from backend", async () => {
+              // setzen des Ergebnisses, das der nächste fetch-Aufruf zurückliefern soll
+              fetchMock.mockResponse(JSON.stringify(mockPosts));
+
+              render(&lt;App />);
+            
+              // Immer noch asynchroner Code, aber kein "echter" fetch-Aufruf mehr,
+              // zurückgegeben wird das oben angegebene Ergebnis
+              const articleOne = await screen.findByRole("heading", { name: "One Fetch Mock" });
+
+              expect(articleOne).toBeInTheDocument();
+            });
+
+          </code></pre>
+          <p>
+            Beispiel:
+            <code
+              >blog-example/steps/6a-testing-with-api-module/src/__tests__/App_jest_mock.test.tsx</code
+            >
+          </p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Ansatz #3: Mock Service Worker (MSW)</h3>
+
+          <p><a href="https://github.com/mswjs/msw" target="_blank">MSW</a></p>
+          <p>
+            MSW mockt echte Server-Aufrufe mit einem
+            <a href="https://developer.mozilla.org/de/docs/Web/API/Service_Worker_API"
+              >Service Worker</a
+            >
+          </p>
+          <p>
+            fetch-Aufrufe werden "richtig" ausgeführt, aber beantwortet von dem Service Worker Mock
+          </p>
+
+          <pre><code class="javascript">
+            // PostList.test.js
+            import { rest } from 'msw'
+            import { setupServer } from 'msw/node'
+            
+            const server = setupServer(
+              rest.get('/posts', (req, res, ctx) => {
+                return res(ctx.json( mockPosts ))
+              }),
+            )
+
+            test("it should render blog list", async () => {
+              render(&lt;PostList />);
+              // ...
+            })
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Übung: Ein Test für den PostEditor</h2>
+          <p>Schritte:</p>
+          <ol>
+            <li>Arbeite in <code>blog-example/workspace-typescript</code></li>
+            <li>Starte in einem neuen Terminal <code>npm test</code> (der Prozess läuft "ewig")</li>
+            <li>
+              Es sollte einen fehlerhaften Test geben:
+              <b><code>PostEditor.test.tsx</code></b
+              >.
+            </li>
+            <li>Warum? Weil der noch leer ist 😬!</li>
+            <li>
+              Implementiere den fehlenden Test. In der Datei<b><code>PostEditor.test.tsx</code></b>
+              stehen TODOs dafür
+            </li>
+            <li>
+              Hinweis: wenn Du die Datei speicherst, werden die Tests automatisch neu ausgeführt
+              (solange Du
+              <code>npm test</code> noch laufen hast), ansonsten kannst Du "a" auf der Kommandozeile
+              drücken, zum erneuten Ausführen der Tests.
+            </li>
+            <li>Mögliche Lösung in <code>steps/6-test</code></li>
+            <li>Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>Browser Tests</h2>
+          <p>Häufig eingesetzt:</p>
+          <ul>
+            <li>
+              <a href="https://www.selenium.dev/">Selenium - The "classic"</a>
+            </li>
+            <li>
+              <a href="https://devexpress.github.io/testcafe/" target="_blank">TestCafe</a> (mit
+              Support für sehr viele Browser, u.a. auch den Cloud-Service
+              <a href="https://www.browserstack.com/" target="_blank">BrowserStack</a>)
+            </li>
+            <li><a href="https://www.cypress.io/" target="_blank">Cypress</a></li>
+            <li>
+              In TestCafe und Cypress werden die Tests in JavaScript/TypeScript geschrieben,
+              Selenium gibt's für mehrere Sprachen
+            </li>
+          </ul>
+        </section>
+        <section id="t-context">
+          <h2>React Context API</h2>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Hintergrund: Globaler Zustand</h3>
+          <ul>
+            <li>
+              Man kann Zustand in <b>lokalen Zustand</b> und <b>globalen Zustand</b> einteilen
+            </li>
+            <li>
+              <b>Lokaler Zustand</b> ist Zustand, der "mehr oder weniger" einer Komponente zur
+              Verfügung steht
+            </li>
+            <li>
+              <b>Globaler Zustand</b> hingegen ist für die ganze Anwendung oder große Teile davon
+              zuständig
+            </li>
+            <li>Die Übgergänge sind fließend, es gibt keine fixe Definition</li>
+            <li>Beispiele für globalen Zustand: angemeldeter Benutzer, Theme</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>React Context API</h3>
+          <p>Beispiel: <code>blog-example/steps/30-complete-app-with-hooks</code></p>
+        </section>
+
+        <section>
+          <h2>Context...</h2>
+          <p>
+            <em
+              >erlaubt das Durchreichen von Informationen ohne explizites angeben als Properties</em
+            >
+          </p>
+
+          <ul>
+            <li>funktioniert nur innerhalb einer Hierarchie-Ebene</li>
+            <li>es können beliebg viele (fachliche) Context definiert werden</li>
+            <li>besteht aus <code>Provider</code> und <code>Consumer</code></li>
+            <li>
+              <a href="https://reactjs.org/docs/context.html" target="_blank">Doku</a>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Context Factory</h2>
+          <ul>
+            <li>
+              <em>erzeugt ein Objekt, mit <b>zwei Komponenten</b></em>
+            </li>
+            <li>
+              <code>Provider</code>, stellt Objekt mit Key-Value-Paaren zur Verfügung (der
+              Context-"Value")
+            </li>
+            <li>
+              <code>Consumer</code> wird in eigener Komponente verwendet, um auf einen Context
+              zuzugreifen ("versteckt" durch useContext Hook)
+            </li>
+            <li>
+              <pre><code class="line-numbers" data-leftpad>
+import react from "React";
+
+const AuthContext = React.createContext();
+
+// erzeugt:
+// AuthContext.Provider 
+// AuthContext.Consumer (mit Hooks API überflüssig)
+                      </code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Context Provider</h2>
+          <p><em>Eine React-Komponente, die einen Context zur Verfüng stellt</em></p>
+          <ul>
+            <li>wird innerhalb einer eigenen Komponente in <code>render</code> eingebunden</li>
+            <li>Nimmt ein Objekt ("Context") mit beliebigen Werten entgegen</li>
+            <li>
+              <pre><code class="line-numbers" data-leftpad>
+const AuthContext = React.createContext();
+
+function AuthProvider() {
+    const [ currentUser, setCurrentUser ] = React.useState(null);
+    const contextValue = {
+      // the current theme
+      currentUser,
+
+      // function to set new theme
+      login: name => setCurrentUser(name),
+      logout: () => setCurrentUser(null)
+    };
+
+    return &lt;AuthContext.Provider value={contextValue}>
+      {props.children}
+    &lt;/AuthContext.Provider>;
+  }
+}                    
+</code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>useContext-Hook</h2>
+          <p><em>Zugriff auf die Werte aus dem Context</em></p>
+          <p>
+            In allen Komponenten unterhalb der Provider Komponente, kann mit useContext auf den
+            Kontext zugegriffen werden
+          </p>
+
+          <pre><code class="javascript">
+function UserBadge() {
+  const { currentUser } = React.useContext(AuthContext);
+
+  return currentUser  ? &lt;h1>Welcome, {currentUser}&lt;h1> : null;
+}            
+          </code></pre>
+
+          <p>Aufrufen einer Funktion aus dem Context</p>
+          <p>Ändert im Context den Zustand der Provider-Komponente</p>
+          <p>Alle Konsumer werden neu gerendert</p>
+          <pre><code class="javascript">
+function UserBadge() {
+  const { currentUser, logout } = React.useContext(AuthContext);
+
+  return currentUser  ? 
+    &lt;>&lt;h1>Welcome, {currentUser}&lt;h1>&lt;button onClick={logut}>Logout&lt;/button>&lt;/> 
+    : null;
+}                
+          </code></pre>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+            <!-- .slide: id="t-router" -->            
+## Routing in React
+
+* Anforderungen:
+  * URLs auf Komponenten abbilden
+  * (Interne) Links, die die Anwendung neu rendern, ohne zum Server zu gehen
+* React bringt keinen Router mit
+* In der Regel wird der **React Router** verwendet
+
+---
+
+## Der React Router
+
+* Homepage: [https://reactrouter.com/](https://reactrouter.com/)
+* Aktuelle Version v6
+* Achtung: Verhalten und API haben sich in Version 4, 5 und 6 geändert.
+  * Bei Beispielen/Dokumentation/Tutorial etc. die Version beachten!
+
+---
+
+## Der React Router
+
+### Beispiel
+
+```jsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+export default function App() {
+  &lt;Routes>
+    &lt;Route path="/" element={<Page />}>
+      &lt;Route index element={<PostListPage />} />
+      &lt;Route path="/post/:postId" element={<PostPage />} />
+      &lt;Route path="/add" element={<PostEditor onSavePost={savePost} />} />
+      &lt;Route path="*" element={<NotFoundPage />} />
+    &lt;/Route>
+  &lt;/Routes>
+}  
+```
+
+---
+
+### Die Router-Komponente
+
+* Als oberste Komponente muss eine `Router`-Komponente gerendert werden
+  * Nur unterhalb (direkt oder indirekt) darf mit `Routes` und `Route` gearbeitet werden
+* Router fest, welche URLs generiert werden soll:
+* [`HashRouter`](https://reactrouter.com/docs/en/v6/routers/hash-router): Die Route wird durch Hash-Zeichen (`#`) getrennt hinter die URL geschrieben (Beispiel: `http://loalhost:8080#/post/1`)
+  * Änderungen in der URL hinter dem Hash-Zeichen führen im Browser nicht zum Neuladen der Seite vom Server!
+  * Der Server wird also beim Seitenwechsel nie kontaktiert
+* [`BrowserRouter`](https://reactrouter.com/docs/en/v6/routers/browser-router): Die Route wird direkt hinter die URL geschrieben. Sieht dann aus wie eine "normale" Route vom Server (Beispiel: `http://localhost:8080/post/1`)  
+  * Empfohlene Implementierung
+  * Bei der Navigation durch die Anwendung unterbindet der Router Server-Requests
+  * Aber beim initalen Laden muss der Server sicherstellen, dass die URL gefunden wird
+    * Dazu muss der Webserver entsprechend konfiguriert werden ("/..." -> index.html)
+* 👉 Demo im Browser, Netzwerkverkehr untersuchen
+
+---
+
+### Konfiguration der Routen: Welche Komponente soll für welche Route angezeigt werden?
+
+* Mit [Routes und Route](https://reactrouter.com/docs/en/v6/components/route)-Komponenten gibt es eine Art "intelligentes" switch- oder if/else-Statement
+* `Route`-Komponenten müssen mit `Routes` umschlossen werden. Nach jedem Ändern der URL prüft der Router alle `Routes`-Komponenten in allen `Route`-Komponenten der Anwendung
+* ```javascript
+  &lt;Routes>
+    &lt;Route path="/" element={&lt;App />} /> 
+    &lt;Route path="/blog" element={&lt;App />} />
+  &lt;/Routes>
+```
+* `Route` funktioniert wie ein `if`-Statement: `if (path === "/post") renderElement &lt;Post />`
+
+---
+
+### Verschachtelte Routen
+
+* `Route`-Komponenten können geschachtelt werden, um Hierchien abzubilden
+* In den Child-Komponenten werden dann relative Pfade angegeben
+* ```javascript
+  &lt;Routes>
+    &lt;Route path="/" element={&lt;App />}> &lt;!-- Rendert "/" -->
+      &lt;Route path="blog" element={...}> &lt;!-- Rendert "/blog" -->
+        &lt;Route path="new" element={...}/> &lt;!-- Rendert "/blog/new" -->
+        &lt;Route path="post/:id" element={...}/> &lt;!-- Rendert "/blog/post/1" -->
+      &lt;/Route>
+    &lt;/Route>    
+  &lt;/Routes>    
+```
+* Die Oberkomponente muss dann jeweils die Unterkomponenten rendern
+  * Das funktioniert mit der [`<Outlet />`](https://reactrouter.com/docs/en/v6/components/outlet)-Komponente
+  * ```javascript
+    function App() {
+      return &lt;div className="App">
+        &lt;h1>Blog App</h1>
+        &lt;Outlet />
+      &lt;/div>
+  }
+```    
+
+---
+
+### Index Routes
+
+* Bei verschachtelten Routen muss für die Ober-Route eine Index Route gerendert werden
+* Beispiel:
+* ```javascript
+  &lt;Routes>
+    &lt;Route path="/" element={&lt;App />}> 
+      &lt;Route path="blog" element={&lt;Blog />} />
+    &lt;/Route>    
+  &lt;/Routes>    
+```
+* Hier wird `Blog` als `Outlet` in `App` für `/blog` gesetzt. Aber kein Outlet für `/`
+* Dazu muss eine Index-Route definiert werden. Die wird unterhalb der Ober-Route eingesetzt und
+  wird dann gerendert, wenn genau der Pfad der Ober-Route aufgerufen wird
+* Statt `path` wird darin einfach `index` angegeben:  
+  * ```javascript
+    &lt;Routes>
+      &lt;Route path="/" element={&lt;App />}> 
+        &lt;Route index element={&lt;Home /> } /> &lt;!-- Rendert "App" mit Outlet "Home" für "/" -->
+        &lt;Route path="blog" element={&lt;Blog />} /> &lt;!-- Rendert "App" mit Outlet "Blog" für "/blog" -->
+      &lt;/Route>    
+    &lt;/Routes>    
+```
+
+
+---
+
+### Fallback Route
+
+* Mit `path="*"` kann eine Fallback-Route angegeben werden, die aktiv ist, wenn keine andere Route passt
+* Beispiel:
+* ```javascript
+    &lt;Routes>
+      &lt;Route path="/" element={&lt;App />}> 
+        &lt;Route path="blog" element={&lt;Blog />} />
+
+        &lt;Route path="*" element={&lt;NotFound />} /> &lt;!-- Für alle Route, außer / und /blog -->
+      &lt;/Route>    
+    &lt;/Routes>    
+  ```
+
+---
+
+### Dynamische Parameter
+
+* In einer Route können Platzhalter ("Parameter") angegeben werden
+* Auf die entsprechenden Werte kann in einer Komponente mit `useParams` zugegriffen werden
+* ```javascript
+  export default function App() {
+    &lt;Routes>
+      &lt;Route path="/" element={<Page />}>
+        &lt;Route path="/post/:postId" element={<PostPage />} />
+      &lt;/Route>
+    &lt;/Routes>
+  }
+
+  function PostPage() {
+    const { postId } = useParams(); 
+    //  /post/p1  postId: "p1"
+    //  /post/1  postId: "1"
+  }
+  ```  
+
+---
+
+### Links
+
+* Links müssen mit der [`Link`](https://reactrouter.com/docs/en/v6/components/link)-Komponente gerendert werden
+* ```javascript
+  function PostTeaser({post}) {
+    return &lt;div>
+      &lt;h1>{post.title}&lt;/h1>
+      &lt;Link to={`/post/${post.id}`}>Read more&lt;/Link>
+    &lt;/div>  
+  }
+```
+* Die `Link`-Komponente rendert ein `a`-Element, verhindert aber, dass der Browser Serveraufrufe durchführt,
+  wenn darauf geklickt wird
+* Das gilt nur für interne Links, externe Links wie gewohnt mit HTML `a`-Element
+* Alternative: [`NavLink`](https://reactrouter.com/docs/en/v6/components/nav-link) weiß, ob der `to`-Pfad
+  der gerade aktiven Route entspricht und kann sich dann anders darstellen ("Aktiver Link", "Aktiver Tab", ...)
+  * ```javascript
+    function NavBar() {
+      return &lt;div>
+        &lt;NavLink to={`/home}`} className={active => active ? "Tab--active":"Tab--default" }>Home&lt;/Link>
+        &lt;NavLink to={`/about}`} className={active => active ? "Tab--active":"Tab--default" }>About&lt;/Link>
+        &lt;NavLink to={`/profile}`} className={active => active ? "Tab--active":"Tab--default" }>Profile&lt;/Link>
+      &lt;/div>  
+    }
+```
+* Mit `className` und `style` können Callback-Funktionen übergeben werden, die das konkrete Styling/CSS Klasse je nach Zustand
+  (active bzw not-active) zurückliefern. 
+
+---
+
+### Navigation per API
+
+* Die [`Navigate`](https://reactrouter.com/docs/en/v6/components/navigate)-Komponente kann gerendert werden,
+  wenn eine Komponente beim Rendern einen Redirect machen möhcte
+* ```javascript
+  function BlogPost() {
+    const [error, setError] = useState(false);
+    const [post, setPost] = useState(null);
+
+    useEffect( () => fetch(...).catch(e => setError(true)), [] );
+
+    if (error) {
+      return &lt;Navigate to="/error" />
+    }
+
+    return &lt;BlogPost post={post} />
+  }
+  ```  
+* Mit [`useNavigate`](https://reactrouter.com/docs/en/v6/hooks/use-navigate) kann auch per API, z.B. in einem Event Handler, ein Redirect gemacht werden:
+* ```javascript
+  function LogoutButton() {
+    const useNaviate = useNavigate();
+
+    function handleClick() {
+      navigate("/");
+    }
+
+    return &lt;button onClick={handleClick}>Logout&lt;/button>
+  }
+  ```  
+
+---
+
+
+  </textarea
+          >
+        </section>
+
+        <section>
+          <h2>Geschafft! 😊</h2>
+          <h3>Vielen Dank für Eure Teilnahme!</h3>
+          <h3>Viel Spaß und Erfolg mit React!</h3>
+          <p>Wenn ihr noch Fragen habt, könnt ihr mich erreichen:</p>
+          <p>Mail: <a href="mailto:nils@nilshartmann.net">nils@nilshartmann.net</a></p>
+          <p>
+            Web: <a href="https://nilshartmann.net" target="_blank">https://nilshartmann.net</a>
+          </p>
+          <p>
+            Twitter: <a href="https://twitter.com/nilshartmann" target="_blank">@nilshartmann</a>
+          </p>
+        </section>
+      </div>
+    </div>
+
+    <script src="slides/revealjs/reveal.js/dist/reveal.js"></script>
+    <script src="slides/revealjs/reveal.js/plugin/notes/notes.js"></script>
+    <script src="slides/revealjs/reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="slides/revealjs/reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="slides/revealjs/config.js"></script>
+  </body>
+</html>
