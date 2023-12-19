@@ -2278,34 +2278,6 @@ fetch('http://localhost:7000/posts')
 </code></pre>
         </section>
 
-        <section id="t-server">
-          <h1>Teil IV</h1>
-          <h2>Seiteneffekte und Server-Zugriffe</h2>
-          <em>Lesen und Schreiben von Daten von einem Backend (REST/HTTP)</em>
-          <p><code>blog-example/steps/4b-remote</code></p>
-        </section>
-
-        <!-- =================================================================================================== -->
-        <!-- ==   Promises und Speichern                                                                                          == -->
-        <!-- =================================================================================================== -->
-        <section>
-          <h2>Server-Zugriffe</h2>
-          <ul class="x-list">
-            <li>React macht keine Angabe, wie Server-Calls (technisch) gemacht werden</li>
-            <li>
-              Häufig in React verwendet: <b>fetch</b> API
-              <ul>
-                <li>Browser-API zum Ausführen von HTTP Requests</li>
-                <li>
-                  Dokumentation:
-                  <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API"
-                    >Fetch API (MDN)</a
-                  >
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </section>
 
         <section data-state="exkurs">
           <h3>Die fetch API</h3>
@@ -2323,7 +2295,7 @@ fetch('http://localhost:7000/posts')
 </code></pre>
         </section>
 
-        <section data-state="exkurs" id="t-promises">
+        <section data-state="exkurs" >
           <h3>Hintergrund: Promises in JavaScript</h3>
 
           <p class="fragment">
@@ -2634,6 +2606,7 @@ const promise = getNameAsync()
               Das Speichern soll in der <code>savePost</code>-Funktion erfolgen
 
               <ul>
+                <li>Die URL lautet <code>http://localhost:7000/posts</code>
                 <li>Du musst als HTTP Methode <code>POST</code> verwenden</li>
                 <li>
                   Du musst als Header den <code>Content-Type</code> auf
