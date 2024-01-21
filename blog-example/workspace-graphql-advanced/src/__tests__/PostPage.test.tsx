@@ -1,13 +1,12 @@
 import { MockedResponse, MockedProvider } from "@apollo/client/testing";
 import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
-import { GraphQLError } from "graphql";
 import React from "react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { PostPageDocument, PostPageQuery } from "../generated/graphql";
 import PostPage from "../PostPage";
 
 test("PostPage", async () => {
   // todo: Vervollständige das Mock-Objekt, so dass der Test "grün" wird
+  //
   //
   // Bitte denk dran, dass Du eine Variable mit der zu lesenden BlogPost ID ("P1") übergeben musst!
 

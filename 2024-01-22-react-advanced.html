@@ -1888,87 +1888,7 @@ root.render(
 * Eine mögliche Lösung findest Du in der Datei <code>PostListPage<b>_useQuery.txt</b></code> in `steps/30-graphql-with-typescript`
 * Wenn ihr fertig seid, bitte Hand in Zoom heben 🤚
 
----
-### TypeScript Code generieren
-* <!-- .element: class="demo" --> PostListPage Query mit generierten Hooks
-* Das Project [GraphQL Code Generator](https://www.the-guild.dev/graphql/codegen) bietet Code Generatoren für eine Reihe von GraphQL Frameworks, u.a. Apollo/React
-* Generiert werden können damit:
-  * Typen für das Query-Ergebnis (`TData`)
-  * Variablen (`TVariables`)
-  * Typen für verwendete Fragmente
-  * Fertige Hook-Funktionen
 
----
-### Code Generator: Konfiguration
-* Je nach Konfiguration sucht der Generator nach `.graphql`-Dateien mit Queries und/oder `gql`-Funktionen
-* Die Typen werden in eine Datei (z.B. `generated.tsx`) geschrieben
-* Der Generator braucht Zugriff auf das Schema (lokal oder remote)
-* Der Generator kann im watch-Modus betrieben werden, dann wird automatisch neu generiert, wenn neue Queries geschrieben werden
-* ```yml
-  overwrite: true
-  schema:
-    # Remote Schema:
-    - "http://localhost:4000/graphql"
-    # ...oder aus lokaler JS, TS, GraphQL oder JSON-Datei:
-    - "../../backend-graphql/src/schema.js"
-  # In welchen Dateien soll nach GraphQL Queries gesucht werden?
-  documents: "./src/**/{*.graphql,*.tsx}"
-  # Was (und wohin) soll generiert werden:
-  generates:
-    src/generated/graphql.tsx:
-      plugins:
-        - "typescript"
-        - "typescript-operations"
-        - "typescript-react-apollo"
-```
-* Empfehlung: Code Generator auch im CI Build ausführen lassen!
-
----
-### Code Generator
-* _Empfehlung_: Typen und Hooks generieren lassen
-* Die generierten Hooks sind "nur" Wrapper-Funktionen um `useQuery`, `useMutation`, ersparen
-  aber das hinschreiben der Typ-Informationen und des Dokuments mit dem Query
-* ```typescript
-  function PostPage({postId}: {postId: string}) {
-
-    // useQuery von Hand:
-    const { data } = useQuery<IStoryPageQuery, PostPageQueryVariables>(
-            PostPageQuery, { variables: { postId } });
-
-    // generierter Hook:
-    const { data } = usePostPageQuery({ variables: { postId } });
-
-    // data-Objekte in beiden Fällen gleich
-    // ...
-  }
-  ```
----
-### Code Generator: Fragmente
-* * <!-- .element: class="demo" --> Beispiel: PostListPage fragt auch User ab
-* Für verwendete Fragmente wird ein eigener TypeScript-Typ generiert, das kann praktisch
-  sein, wenn man Typen für Teile eines Queries benötigt.
-* Beispiel:
-* ```graphql
-  query { posts { user { id name } } }
-```
-* Generierter Typ (konzeptionell):
-* ```typescript
-  type PostsQuery = { posts: Array<{ user: { id: string, name: string } }> }
-  ```
-* Um nur den Typen für den User zu ermitteln (z.B. um in einer Komponente als Property zu verwenden),
- kann man schreiben:
-* ```javascript
-  type UserType = PostsQuery["posts"][0]["user"]; // 🤯 😱
-  ```
-* Einfacher mit einem Fragment:
-* ```graphql
-  fragment UserFragment on User { id name }
-  query { stories { user { ...UserFragment } } }
-  ```
-* Nun wird ein `UserFragment`-Typ generiert:
-* ```typescript
-  type UserFragment = { id: string, name: string }; // 😊
-  ```
 ---
 ### Übung: Queries mit dem Codegenerator
 
@@ -2243,7 +2163,91 @@ root.render(
         </section>
         <section data-markdown>
           <textarea data-template>
+---
+### TypeScript Code generieren
+* <!-- .element: class="demo" --> PostListPage Query mit generierten Hooks
+* Das Project [GraphQL Code Generator](https://www.the-guild.dev/graphql/codegen) bietet Code Generatoren für eine Reihe von GraphQL Frameworks, u.a. Apollo/React
+* Man kann das stark konfigurieren, aber guter Startpunkt ist das `client` preset
+* Das generiert
+  * `Document`-Objekt, dass an `useQuery` oder `useMutation` übergeben wird
+    * Damit sind die Rückgabewerte der Hooks und auch die Variablen automatisch typsicher
+  * Typen, die ein konkretes Query-Ergebnis (z.B. `PostListPageQuery`) beschreiben
+  * Variablen, die ein Query/Mutation benötigt (`TVariables`)
+  * Typen für verwendete Fragmente
 
+---
+### Code Generator: Konfiguration
+* Je nach Konfiguration sucht der Generator nach `.graphql`-Dateien mit Queries und/oder `gql`-Funktionen
+* Die Typen werden z.B. nach  `__generated__` geschrieben
+* Der Generator braucht Zugriff auf das Schema (lokal oder remote)
+* Der Generator kann im watch-Modus betrieben werden, dann wird automatisch neu generiert, wenn neue Queries geschrieben werden
+* ```typescript
+  const config = {
+    schema: "../../backend-graphql/src/schema.js",
+    // oder remote:
+    // schema: "http://localhost:7000/graphql"
+    documents: ["./src/**/{*.graphql,*.tsx}"],
+    generates: {
+      "./src/__generated__/": {
+        schema: "./client-schema.graphql",
+        // preset und plugins steuern, was generiert wird (siehe Doku)
+        preset: "client",
+        plugins: [],
+        presetConfig: {
+          gqlTagName: "gql"
+        }
+      }
+    },
+    // wenn auf false gesetzt, schlägt der Generator fehl,
+    //  wenn er keine Queries/Mutations findet
+    ignoreNoDocuments: true
+  };
+  ```
+* Empfehlung: Code Generator auch im CI Build ausführen lassen!
+
+---
+### Code Generator
+* Man kann Hooks generieren lassen
+* Das ist mit den neueren Generator-Versionen mit `client`-Preset nicht mehr notwendig, aber "früher" hat man das gemacht
+* 
+* ```typescript
+  function PostPage({postId}: {postId: string}) {
+
+    // generierter Hook:
+    const { data } = usePostPageQuery({ variables: { postId } });
+
+    // data-Objekte in beiden Fällen gleich
+    // ...
+  }
+  ```
+---
+### Code Generator: Fragmente
+* * <!-- .element: class="demo" --> Beispiel: PostListPage fragt auch User ab
+* Für verwendete Fragmente wird ein eigener TypeScript-Typ generiert, das kann praktisch
+  sein, wenn man Typen für Teile eines Queries benötigt.
+* Beispiel:
+* ```graphql
+  query { posts { user { id name } } }
+```
+* Generierter Typ (konzeptionell):
+* ```typescript
+  type PostsQuery = { posts: Array<{ user: { id: string, name: string } }> }
+  ```
+* Um nur den Typen für den User zu ermitteln (z.B. um in einer Komponente als Property zu verwenden),
+  kann man schreiben:
+* ```javascript
+  type UserType = PostsQuery["posts"][0]["user"]; // 🤯 😱
+  ```
+* Einfacher mit einem Fragment:
+* ```graphql
+  fragment UserFragment on User { id name }
+  query { stories { user { ...UserFragment } } }
+  ```
+* Nun wird ein `UserFragment`-Typ generiert:
+* ```typescript
+  type UserFragment = { id: string, name: string }; // 😊
+  ```
+---  
 ### Testen von GraphQL Clients
 
 * Wenn ihr GraphQL Anwendungen testen wollt, müsst ihr möglicherweise den Netzwerkverkehr mocken
@@ -2263,7 +2267,6 @@ root.render(
   ```
 
 ---
-
 ### MockResponse
 
 * Dem `MockedProvider` übergebt ihr eine Liste mit `mocks`
@@ -2333,10 +2336,9 @@ const mock: MockedResponse<PostListPageQuery> = {
 
 * In `PostPage.test.tsx` gibt es zwei Testfälle, die fertig implementiert werden müssen!
 * Du musst dort die Mocks korrekt definieren, ein Anfang findest Du dort bereits
-* Der generierte TypeScript-Typ der Queries ist `PostPageQuery`.
 * Tipp: mit TypeScript oder im Netzwerk-Tab der laufenden Anwendung prüfen, wie die Daten aussehen, die zurückgegeben werden müssen.
 * Du kannst die Tests ausführen mit: `npm test -- PostPage`
-* Eine mögliche Lösung findest Du in `steps/30-graphql-with-typescript/src/__tests__`
+* Eine mögliche Lösung findest Du in `steps/35-graphql-advanced/src/__tests__`
 * Wenn Du fertig bist, bitte Hand heben! 🙋🏻‍♀️
             
 ---
