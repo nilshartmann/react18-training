@@ -1,9 +1,10 @@
 import React from "react";
 import PostList from "./PostList";
-import { usePostListPageQuery } from "./generated/graphql";
+import { useQuery } from "@apollo/client";
+import { PostListPageDocument } from "./__generated__/graphql";
 
 export default function PostListPage() {
-  const { loading, data, error } = usePostListPageQuery();
+  const { loading, data, error } = useQuery(PostListPageDocument);
 
   if (loading) {
     return <h1>Loading, please wait...</h1>;
