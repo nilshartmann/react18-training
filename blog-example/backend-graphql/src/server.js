@@ -17,6 +17,13 @@ function tokenFor(userId) {
 
   return token;
 }
+const slowDownStr = process.argv[2];
+
+const slowDownPost = slowDownStr !== undefined && !isNaN(slowDownStr) ? parseInt(slowDownStr) : 0;
+
+if (slowDownPost > 0) {
+  console.log(`Slow down Query.post for ${slowDownPost}ms`);
+}
 
 function buildTeaser({ body }, maxLength) {
   if (body.length <= maxLength) {
@@ -42,7 +49,14 @@ const resolvers = {
 
       return allPosts.slice(page * pageSize, page * pageSize + pageSize);
     },
-    post: (_, { postId }) => datastore.getPost(postId),
+    post: (_, { postId }) => {
+      if (slowDownPost > 0) {
+        return new Promise(res => {
+          setTimeout(() => res(datastore.getPost(postId)), slowDownPost);
+        });
+      }
+      return datastore.getPost(postId);
+    },
     users: () => datastore.getAllUsers()
   },
   BlogPost: {

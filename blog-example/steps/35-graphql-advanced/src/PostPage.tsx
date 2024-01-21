@@ -1,13 +1,32 @@
-import * as React from "react";
+import React, { Suspense } from "react";
 import Post from "./Post";
 import { useParams, Link } from "react-router-dom";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useSuspenseQuery } from "@apollo/client";
 import { LikePostDocument, PostPageDocument } from "./__generated__/graphql";
 
-export default function PostPage() {
+function usePostPageParam() {
   const { postId } = useParams<{ postId: string }>();
+  if (!postId) {
+    throw new Error("Missing postId in path");
+  }
 
-  const { loading, error, data } = useQuery(PostPageDocument, {
+  return postId;
+}
+
+export default function PostPage() {
+  const postId = usePostPageParam();
+
+  return (
+    <Suspense fallback={<h1>Please wait...</h1>}>
+      <PostDisplay postId={postId} />
+    </Suspense>
+  );
+}
+type PostDisplayProps = {
+  postId: string;
+};
+function PostDisplay({ postId }: PostDisplayProps) {
+  const { data } = useSuspenseQuery(PostPageDocument, {
     variables: {
       postId: postId!
     }
@@ -17,14 +36,7 @@ export default function PostPage() {
     variables: { postId: postId! }
   });
 
-  if (loading) {
-    return <h1>Loading, please wait...</h1>;
-  }
-
-  if (error) {
-    return <h1>GraphQL Failed: {error.toString()}</h1>;
-  }
-  if (data && data.post) {
+  if (data.post) {
     return (
       <>
         <Link className="Button" to="/">
@@ -41,5 +53,5 @@ export default function PostPage() {
     );
   }
 
-  return <h1>Please wait, Post is loading</h1>;
+  return <h1>Post not found.</h1>;
 }

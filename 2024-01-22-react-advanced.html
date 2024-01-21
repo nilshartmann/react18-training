@@ -113,13 +113,13 @@
 ### Agenda
 
 * [Context API, useCallback, useMemo](#/t-context)
+* [Testen](#/t-test)
 * GraphQL Apollo Client [Einführung](#/t-apollo-react) und [Deep Dive](#/t-apollo-react-deep-dive)
 * Redux: 
   * [Grundlagen](#/t-redux)
   * [Redux Toolkit](#/t-rtk)
   * [Redux Toolkit Query](#/t-rtk-query)
 * Neue React Features (Suspense)
-* [Testen](#/t-test)
 
 ---
 ### Agenda #2
@@ -2163,7 +2163,6 @@ root.render(
         </section>
         <section data-markdown>
           <textarea data-template>
----
 ### TypeScript Code generieren
 * <!-- .element: class="demo" --> PostListPage Query mit generierten Hooks
 * Das Project [GraphQL Code Generator](https://www.the-guild.dev/graphql/codegen) bietet Code Generatoren für eine Reihe von GraphQL Frameworks, u.a. Apollo/React
@@ -2247,7 +2246,7 @@ root.render(
 * ```typescript
   type UserFragment = { id: string, name: string }; // 😊
   ```
----  
+---
 ### Testen von GraphQL Clients
 
 * Wenn ihr GraphQL Anwendungen testen wollt, müsst ihr möglicherweise den Netzwerkverkehr mocken
@@ -2833,6 +2832,63 @@ const mock: MockedResponse<PostListPageQuery> = {
 * Weitere Hinweise findest Du in `bookmarks.ts`
 * Lösung: `steps/35-graphql-advanced`
 * Wenn Du fertig bist, bitte die Hand in Zoom heben ✋
+
+---
+### Suspense
+
+* Mit Suspense bietet React neue Möglichkeiten, mit asynchronen Resourcen umzugehen
+* Bislang musste man dafür `useEffect` verwenden (oder `loading`, `error` etc. aus `useQuery`)
+* Dann wurde die Komponente einmal gerendert, dann das Laden gestartet und dann noch einmal, sobald Daten geladen wurden
+  * Das ist bei `useQuery` nicht anders, nur versteckt in der Bibliothek
+* Mit Suspense kann man "Sollbruch-Stellen" einziehen, an denen React das Rendern unterbricht, solange es auf "etwas" wartet
+  * "etwas" kann zum Beispiel ein ausstehender GraphQL sein
+---
+### Suspense
+* Um Suspense nutzen zu können, müssen die Bibliothek dazu vorbereitet sein
+* Dazu gehören zzt.
+  * React Router
+  * React/TanStack Query
+  * TanStack Router
+  * Apollo GraphQL Client
+---
+### Suspense
+* Im Apollo Client kann man den `useSuspenseQuery`-Hook verwenden
+* Der funktioniert genauso, wie `useQuery` arbeitet aber mit dem Suspense-Mechanismus von React zusammen
+* Mit der React `Suspense`-Komponente kann dann festgelegt werden, an welchen Stellen das Rendern einer Komponentenhierarchie unterbrochen wird
+* Das Rendern wird so lange unterbrochen, bis keine ausstehenden Promises mehr da sind
+* Solange wird eine `Fallback`-Komponente angezeigt, die als Property übergeben wird
+* ```typescript
+
+  export default function PostPage() {
+    const postId = "...";
+  
+    return (
+      <React.Suspense fallback={<h1>Please wait...</h1>}>
+        <PostDisplay postId={postId} />
+      </React.Suspense>
+    );
+  }
+  function PostDisplay({ postId }: PostDisplayProps) {
+    const { data } = useSuspenseQuery(PostPageDocument, {
+      variables: {
+        postId: postId!
+      }
+    });
+
+    // data ist hier auf jeden Fall gesetzt
+  }
+  ```
+---
+### Übung: Suspense
+* **Stelle die `PostPage`-Komponente auf `Suspense` um.**
+* Damit es zur (künstlichen) Verzögerungen kommt:
+  * Beende das GraphQL Backend
+  * Starte das Backend mit `npm run start:slow` neu
+    * Alle `post`-GraphQL Queries sind nun künstlich verzögert
+* In der `PostPage` musst Du `useSuspenseQuery` verwenden
+* Du musst eine "Wrapper-Komponente" bauen, in der Du dann `Suspense` verwendest
+  * Was passiert, wenn Du das nicht machst?
+* Lösung in `steps/35-graphql-advanced`
 
 
   </textarea
