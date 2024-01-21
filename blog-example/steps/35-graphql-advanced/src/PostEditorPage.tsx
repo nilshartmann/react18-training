@@ -1,9 +1,9 @@
-import { gql } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAddBlogPostMutation, PostListPageDocument } from "./generated/graphql";
 import PostEditor from "./PostEditor";
 import { NewBlogPost } from "./types";
+import { AddBlogPostDocument } from "./__generated__/graphql";
 
 function SuccessConfirmation() {
   return (
@@ -17,7 +17,7 @@ function SuccessConfirmation() {
 }
 
 export default function PostEditorPage() {
-  const [mutate, { error, data, called, loading }] = useAddBlogPostMutation();
+  const [mutate, { error, data, called, loading }] = useMutation(AddBlogPostDocument);
   const navigate = useNavigate();
   async function savePost(post: NewBlogPost) {
     const { data } = await mutate({

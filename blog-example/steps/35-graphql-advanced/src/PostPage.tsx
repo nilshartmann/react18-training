@@ -1,18 +1,19 @@
 import * as React from "react";
 import Post from "./Post";
 import { useParams, Link } from "react-router-dom";
-import { useLikePostMutation, usePostPageQuery } from "./generated/graphql";
+import { useMutation, useQuery } from "@apollo/client";
+import { LikePostDocument, PostPageDocument } from "./__generated__/graphql";
 
 export default function PostPage() {
   const { postId } = useParams<{ postId: string }>();
 
-  const { loading, error, data } = usePostPageQuery({
+  const { loading, error, data } = useQuery(PostPageDocument, {
     variables: {
       postId: postId!
     }
   });
 
-  const [likePost] = useLikePostMutation({
+  const [likePost] = useMutation(LikePostDocument, {
     variables: { postId: postId! }
   });
 

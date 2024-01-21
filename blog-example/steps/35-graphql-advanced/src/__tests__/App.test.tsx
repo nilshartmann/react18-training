@@ -9,7 +9,7 @@ import {
   PostListPageQuery,
   PostPageDocument,
   PostPageQuery
-} from "../generated/graphql";
+} from "../__generated__/graphql";
 
 test("App Navigation works", async () => {
   const postListMock: MockedResponse<PostListPageQuery> = {

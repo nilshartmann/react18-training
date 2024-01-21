@@ -3,8 +3,8 @@ import { render, screen, waitForElementToBeRemoved } from "@testing-library/reac
 import { GraphQLError } from "graphql";
 import React from "react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { PostPageDocument, PostPageQuery } from "../generated/graphql";
 import PostPage from "../PostPage";
+import { PostPageDocument, PostPageQuery } from "../__generated__/graphql";
 
 test("PostPage", async () => {
   const postPageMock: MockedResponse<PostPageQuery> = {

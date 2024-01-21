@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react";
 import PostListPage from "../PostListPage";
 import React from "react";
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
-import { PostListPageDocument, PostListPageQuery } from "../generated/graphql";
 import { MemoryRouter } from "react-router-dom";
+import { PostListPageDocument, PostListPageQuery } from "../__generated__/graphql";
 test("PostListPage", async () => {
   const mock: MockedResponse<PostListPageQuery> = {
     request: {
