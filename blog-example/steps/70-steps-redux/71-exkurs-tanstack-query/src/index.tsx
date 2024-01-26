@@ -8,7 +8,7 @@ import App from "./App";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 const root = createRoot(document.getElementById("root")!);
 
 // note that in a real application you would probably
@@ -29,5 +29,6 @@ root.render(
         <App />
       </BrowserRouter>
     </Provider>
+    <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>
 );
