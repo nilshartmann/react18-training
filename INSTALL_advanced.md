@@ -1,9 +1,10 @@
-# Vorbereitungen für die React Online Schulung
+# Vorbereitungen React Aufbau Schulung
+
+> Während des Workshops werden wir Übungen machen. Damit du daran teilnehmen kannst, ist es erforderlich, dass Du ein paar Dinge installierst (sofern noch nicht geschehen).
+>
+> **Aus diesem Grunde führe bitte diese Installationsanleitung bereits _vor_ dem Workshop aus.** So hast Du noch die Möglichkeit, Probleme zu beheben. Das gilt insbesondere, wenn es auf deinem Computer (Sicherheits-)Restriktionen gibt und Du keinen vollen Admin-Zugriff hast.
 
 ## Voraussetzungen
-
-Während des Workshops werden wir Übungen machen. Damit du daran teilnehmen kannst, ist es erforderlich, dass Du ein paar Dinge installierst (sofern noch nicht geschehen).
-Aus diesem Grunde führe bitte diese Installationsanleitung bereits _vor_ dem Workshop aus, so dass Du noch die Möglichkeit hast, Probleme zu beheben. Das gilt insbesondere, wenn es auf deinem Computer (Sicherheits-)Restriktionen gibt und Du keinen vollen Admin-Zugriff hast.
 
 **Für dein Laptop/PC**
 
@@ -24,7 +25,7 @@ Auf deinem Laptop/PC muss installiert sein:
 
 **Während des Trainings**
 
-- Da wir vor und während des Trainings ggf. noch Aktualisierungen installieren müssen, bitte sicherstellen, dass auch während des Trainings auf deinem Computer der Internet-Zugang funktioniert.
+- Da wir vor und während des Trainings ggf. noch Aktualisierungen installieren müssen, **bitte sicherstellen, dass auch _während_ der Schulung auf deinem Computer der Internet-Zugang funktioniert**.
   - Bitte überprüfe, dass keine Proxy, VPN- oder Firewall- oder andere Einstellungen den Zugang zu Git und npm verhindern. Das gilt insbesondere, wenn Du keine Admin-Rechte auf dem Computer hast.
   - Bitte stelle sicher, dass das Installieren von npm-Paketen und das Klonen von Git-Repositories **auch während der Schulung** funktioniert
   - Informationen zum Einrichten eines Proxies für npm findest Du bei Bedarf [zum Beispiel hier](http://wil.boayue.com/blog/2013/06/14/using-npm-behind-a-proxy/).
@@ -44,14 +45,17 @@ git clone https://github.com/nilshartmann/react18-training
 2. Die benötigten npm-Pakete installieren:
 
 ```
-cd blog-example/backend-rest
+
+cd react18-training/blog-example/backend-rest
 npm install
 
-cd blog-example/workspace
+cd react18-training/context-example/context-workspace
 npm install
+npm run check
 
-cd blog-example/workspace-typescript
+cd react18-training/advanced/workspace
 npm install
+npm run check
 ```
 
 ## Schritt 2: Testen, ob REST-Backend funktioniert
@@ -70,23 +74,37 @@ Achtung! Das Backend läuft auf **Port 7000**, d.h. dieser Port muss verfügbar 
 - Im Browser (oder per curl, wget oder httpie) aufrufen: http://localhost:7000/posts
 - Dort sollte JSON Code zurückkommen
 
-## Schritt 3: Testen, ob das Frontend funktioniert
+## Schritt 3: Testen, ob das Blog-Example-Frontend funktioniert
 
 1. Frontend (Beispiel-Anwendung) starten
 
-Dazu in das Verzeichnis `blog-example/workspace` wechseln und `npm start` ausführen:
+Dazu in das Verzeichnis `react18-training/advanced/workspace` wechseln und `npm start` ausführen:
 
 ```
-cd blog-example/workspace
+cd react18-training/advanced/workspace
 
 npm start
 ```
 
 Achtung! Das Frontend läuft auf **Port 3000**, d.h. dieser Port muss verfügbar sein.
 
-2. Wenn das Frontend gestartet ist, zum testen einmal die Anwendung im Browser aufrufen: [http://localhost:3000](http://localhost:3000). Dort sollte "Hello, World" erscheinen, dann ist der Workspace einsatzbereit.
+2. Wenn das Frontend gestartet ist, zum testen einmal die Anwendung im Browser aufrufen: [http://localhost:3000](http://localhost:3000). Dort sollte eine Liste von Blog-Posts erscheinen.
 
-![Running frontend](./slides/images/running-workspace.png)
+![Running frontend](./slides/images/screenshot-advanced-workspace.png)
+
+## Schritt 4: Testen, ob das Context-Example-Frontend funktioniert
+
+Achtung! Auch diese Anwendung läuft auf **Port 3000**, d.h. dieser Port muss verfügbar sein. Bitte beende vorher das "Blog Example"-Frontend.
+
+In das Verzeichnis `react18-training/advanced/workspace` wechseln und `npm start` ausführen:
+
+```
+cd react18-training/context-example/context-workspace
+
+npm start
+```
+
+![Running frontend](./slides/images/screenshot-context-example.png)
 
 **Das ist alles 😊**
 

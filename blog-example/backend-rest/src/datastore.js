@@ -35,7 +35,12 @@ function getAllPosts(orderByFn = orderByDateNewestFirst, userId) {
 }
 
 function getPost(postId) {
-  return posts.get(postId);
+  const p = posts.get(postId);
+  // Um Fehler zu simulieren:
+  // if (p) {
+  //   delete p.title;
+  // }
+  return p;
 }
 
 function getAllUsers() {
