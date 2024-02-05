@@ -3053,17 +3053,14 @@ automatisch dispatchen
 * _Verwende RTK Query um die Daten für die Post-Liste und die Einzeldarstellung zu laden_
 
 * In der `PostListPage` und der `PostPage` werden die Posts vom Server geladen
-* Baue in `redux/posts-slice-thunk.ts` zwei Endpunkte für `/posts` und `/posts/{postId}`
+* Baue in `redux/posts-slice-api.ts` zwei Endpunkte für `/posts` und `/posts/{postId}`
 * Dort findest Du weitere TODOs und Hinweise
 * Bitte nur Übung 1 ("Queries") machen (_nicht_ die Mutation-Übung)
 * Ersetze in `PostListPage` und`PostPage` den Code dort durch die `useQuery`-Hooks der beiden Endpunkte
 * Wenn Du dann in der Anwendung navigierst, sollte ein BlogPost in der Einzeldarstellung nur _einmal_ geladen werden.
 * Rufst Du ihn nocheinmal auf (Home -> P1 -> Home -> P1), sollte er beim zweiten Mal aus dem Cache kommen.
-* In dem Workspace sind für die Arbeit mit den Post-Daten zwei Slices konfiguriert (`post-slice-thunk` und `post-slice-api`)
-* Das ist hier nur zu Demo-Zwecken. In einer "richtigen" Anwendung würdest Du für _eine_ "Fachlichkeit" auch nur _einen_ Slice verwenden
 * TODOs siehe `redux/posts-slice-api.ts`
 * Mögliche Lösung: `steps/70-redux/76-rtk-query`
-* Dateien: `posts-slice-api.ts`, `PostListPage.tsx`, `PostPage.tsx`
 * Wenn Du fertig bist, bitte die Hand in Teams heben 🙋
 
 ---
