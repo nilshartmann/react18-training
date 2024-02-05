@@ -1,5 +1,4 @@
 import { useState } from "react";
-import React from "react";
 import Container from "./Container";
 import TwoColumns from "./TwoColumns";
 

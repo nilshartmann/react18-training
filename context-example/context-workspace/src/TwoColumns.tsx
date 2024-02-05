@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import Container from "./Container";
 export default function TwoColumns({ children }: { children?: ReactNode }) {
   return (

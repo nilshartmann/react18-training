@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import Container from "./Container";
 
 // TODO ÜBUNG 1: Stelle das Formular auf die Verwendung eines Kontexts um
@@ -36,7 +36,12 @@ type FormProps = {
 };
 
 function Form({ children }: FormProps) {
-  return <Container title="Form">{/* hier Provider und children rendern! */}</Container>;
+  return (
+    <Container title="Form">
+      {/* hier Provider und children rendern! */}
+      {children}
+    </Container>
+  );
 }
 
 type InputProps = {
