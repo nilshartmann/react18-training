@@ -3,7 +3,7 @@ import { z } from "zod";
 
 const BlogPostSchema = z.object({
   id: z.string(),
-  title: z.string(),
+  title: z.string().max(40),
   body: z.string(),
   date: z.string(),
   likes: z.number().optional()

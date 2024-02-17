@@ -1,7 +1,5 @@
 import Post from "./Post";
 import { useParams, Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { z } from "zod";
 import { useGetBlogPost } from "./get-post";
 
 export default function PostPage() {
