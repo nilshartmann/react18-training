@@ -3,6 +3,7 @@ export type BlogPost = {
   title: string;
   body: string;
   date: string;
+  likes?: number;
 };
 
 export type NewBlogPost = {

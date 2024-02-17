@@ -15,6 +15,7 @@ export default function Post({ post }: PostProps) {
       <p className="Date">{formattedDate(post.date)}</p>
       <h1>{post.title}</h1>
       <p>{post.body}</p>
+      <p>Likes: {post.likes}</p>
     </article>
   );
 }

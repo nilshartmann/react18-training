@@ -232,3 +232,21 @@ article h1 {
     transform: scale(1);
   }
 }
+
+.Page {
+  display: grid;
+  grid-template-columns: 75% 25%;
+}
+
+.Main {
+  margin-right: 1rem;
+}
+
+.Sidebar {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.5rem;
+  background-color: var(--grey-1);
+  margin-left: 1rem;
+  max-height: 100%;
+}
