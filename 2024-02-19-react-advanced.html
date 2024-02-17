@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
 
-    <title>React Training</title>
+    <title>React Aufbauschulung</title>
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -102,17 +102,21 @@
         <!-- ============================================================================= -->
         <section data-markdown>
           <textarea data-template>
+## Agenda
+
+"Modernes Data- und Statemanagement"
 
 ### Agenda
-
-* [Context API, useCallback, useMemo](#/t-context)
-* [Testen](#/t-test)
+* [Context API](#/t-context)
+  * Neuerungen in [React 19](#/t-react19) 
+  * Renderzyklen optimieren mit [useCallback, useMemo](#/t-context-render)
 * [TanStack Query](#/t-tanstack-query)
-* Redux: 
-  * [Grundlagen](#/t-redux)
-  * [Redux Toolkit](#/t-rtk)
-  * [Redux Toolkit Query](#/t-rtk-query)
-* GraphQL Apollo Client [Einführung](#/t-apollo-react) und [Deep Dive](#/t-apollo-react-deep-dive)
+  * "Modernes" React: Data Fetching mit Suspense
+
+
+### Dienstag
+
+* Code Review, mögliche Refaktorings, ...
 
           </textarea>
         </section>
@@ -467,8 +471,21 @@ function UserBadge() {
 * Vorteile? Nachteile? 🤔
 
 ---
-### Renderverhalten von Context
+### Neuerungen in React 19
+<!-- .slide: id="t-react19" --> 
 
+* [React 19](https://react.dev/blog/2024/02/15/react-labs-what-we-have-been-working-on-february-2024) wird im Laufe des Jahres erscheinen
+* Darin wird sich auch die Context API verändern:
+  * Es wird eine `Context`-Komponente geben (vermutlich statt `createContext` bzw. `Context.Provider`)
+  * `useContext` wird durch den `use`-Hook ersetzt
+  * Der `use`-Hook ist flexibler als die bisherigen Hooks
+  * Kann überall verwendet werden (z.B. in `if`)
+  * Das ganze ist abwärtskompatibel! 
+* Die folgenden APIs `useCallback`, `useMemo` und `memo` werden durch den React Compiler ("Forget") ersetzt
+
+---
+### Renderverhalten von Context
+<!-- .slide: id="t-context-render" --> 
 * <!-- .element: class="demo" --> Eine Komponente in den Kontext (`CounterContext`) hinzufügen
 * <!-- .element: class="demo" --> Was passiert und warum? 🤔
 
@@ -552,7 +569,7 @@ function UserBadge() {
     * Eventuell haben wir immerhin eine sauberere Architektur durch Trennung in "lesenden" und "modifizierenden" Context
 ---
 ### Memoisieren von Komponenten  
-* Man kann das Rendern von Komponenten durch "Memoiseren" (eine Art Caching) unterdrücken
+* Man kann das Rendern von Komponenten durch "Memoisieren" (eine Art Caching) unterdrücken
 * Komponenten werden dann nur gerendert, wenn sich ihre Properties verändert haben.
 * Variante 1 mit `React.memo`
 * ```typescript
@@ -723,7 +740,7 @@ function UserBadge() {
         <section data-markdown>
           <textarea data-template>
 <!-- .slide: id="t-tanstack-query" -->            
-## DataFetching mit React
+## Data Fetching in React
 * Mit `useEffect`, `fetch` und `axios` stehen dir "Low-Level-APIs" zur Verfügung, um mit serverseitigen Daten zu arbeiten
 * Diese APIs sind React (`useEffect`) bzw. Browser (`fetch`) Standard APIs
 * Es gibt aber spezialisierte Bibliotheken, die das Arbeiten mit Daten erleichtern können.
@@ -739,11 +756,10 @@ function UserBadge() {
 ### Schritt-für-Schritt: Laden und speichern von Daten mit "TanStack Query"
 
 * 👉 `PostListPage`
-* 👉 `PostEditorPage`
-* 👉 Ausblick: Custom Hooks
-* 👉 Ausblick: zod
-* 👉 `workspace-redux`
-* 👉 Fertig in `steps/70-steps-redux/71-exkurs-tanstack-query`
+* 👉 später: `PostEditorPage`
+* 👉 später: Custom Hooks 
+* 👉 später: zod
+* 👉 Fertig in `advanced/workspace`
 
 
 ---
@@ -772,7 +788,6 @@ function UserBadge() {
   ```
 
 ---
-
 ### Laden von Daten: useQuery
 
 * Queries werden mit dem [useQuery-Hook](https://tanstack.com/query/latest/docs/react/guides/queries) ausgeführt
@@ -790,9 +805,39 @@ function UserBadge() {
     // ...
   }
   ```
+---
+### Query Function
+
+* `useQuery` erwartet eine [Query-Function](https://tanstack.com/query/latest/docs/react/guides/query-functions), die den eigentlichen Request ausführt
+* Die Signatur ist fast beliebig, die Funktion muss aber ein Promise zurückliefern:
+* Wenn die Daten erfolgreich geladen wurden, muss das Promise mit den Daten "aufgelöst" werden
+* Wenn es einen Fehler gab, muss die Funktion einen Fehler werfen
+* ```typescript
+  // async function gibt IMMER ein Promise zurück
+  export async function loadBlogPost(postId) {
+    const response = await fetch("http://localhost:7000/posts" + postId);
+
+    if (!response.ok) {
+      throw new Error("Could not load blog post: " + response.status);
+    }
+
+    return response.json();
+  }
+  ```
 
 ---
 
+### Rückagebwert von `useQuery` (Query Ergebnis)
+
+* `useQuery` liefert ein Objekt zurück:
+  * `isLoading`: Der Query lädt noch (und es sind keine Daten im Cache)
+  * `isSuccess`: Daten sind geladen
+  * `isError`: Es ist ein Fehler aufgetreten
+  * `data` enthält die geladenen Daten
+  * `error`: Fehlerobjekt aus der Query-Funktion 
+* Weitere [siehe Doku](https://tanstack.com/query/latest/docs/react/reference/useQuery)
+  
+---
 ### Query Keys
 
 * Mit den [Query Keys](https://tanstack.com/query/latest/docs/react/guides/query-keys) wird ein Ergebnis im Cache gespeichert
@@ -820,49 +865,29 @@ function UserBadge() {
 * stellt TanStack Query sicher, dass der Query nur einmal ausgeführt wird
 * wenn sich das Ergebnis ändert, werden alle Komponenten, die den Query verwenden,
 automatisch aus dem Cache aktualisiert
----
-
-### Query Function
-
-* `useQuery` erwartet eine [Query-Function](https://tanstack.com/query/latest/docs/react/guides/query-functions), die den eigentlichen Request ausführt
-* Die Signatur ist fast beliebig, die Funktion muss aber ein Promise zurückliefern:
-* Wenn die Daten erfolgreich geladen wurden, muss das Promise mit den Daten "aufgelöst" werden
-* Wenn es einen Fehler gab, muss die Funktion einen Fehler werfen
-* ```typescript
-  // async function gibt IMMER ein Promise zurück
-  export async function loadBlogPost(postId) {
-    const response = await fetch("http://localhost:7000/posts" + postId);
-
-    if (!response.ok) {
-      throw new Error("Could not load blog post: " + response.status);
-    }
-
-    return response.json();
-  }
-  ```
+* 👉 dieses Verhalten sehen wir uns später noch an
 
 ---
+## Übung: Die Blog-Anwendung mit TanStack Query
 
-### Rückagebwert von `useQuery` (Query Ergebnis)
-
-* `useQuery` liefert ein Objekt zurück:
-* `isLoading`: Der Query lädt noch (und es sind keine Daten im Cache)
-* `isSuccess`: Daten sind geladen
-* `isError`: Es ist ein Fehler aufgetreten
-* `data` enthält die geladenen Daten
-* `error`: Fehlerobjekt aus der Query-Funktion 
-* Weitere [siehe Doku](https://tanstack.com/query/latest/docs/react/reference/useQuery)
-
+<!-- .element: class="todo" -->HIER BLOG LIST QUERY
+<!-- .element: class="todo" -->UND BLOG POST QUERY (DEN REFAKTORISIEREN WIR SPÄTER)
+* Backend starten
+* ```
+cd blog-example/backend-rest
+npm start
+```
+* Danach sollte unter [http://localhost:7000/posts](http://localhost:7000/posts) 
+die Liste mit den (JSON-)Posts zurückkommen
+* Schritte:
+<!-- .element: class="todo" -->schritte
 ---
-
 ### TanStack Query: Mutations
 
-* Mutations werden verwendet, um Daten zu schreiben
-* Mutations haben keinen Cache-Key und werden auch nicht automatisch ausgeführt
-* Die Mutation-Funktion entspricht der Query-Function (nur dass sie Daten schreibt und nicht liest)
+* Mutations werden verwendet, um Daten zu *verändern* (speichern, löschen)
+* Der entsprechende Hook heißt `useMutation`
+* Dessen API ist vergleichbar mit `useQuery`
 * Auch der `useMutation`-Hook liefert Informationen über den Zustand der Mutation zurück
-* Außerdem wird eine Funktion (`mutate`) zurückgeliefert, die die Mutation ausführt
-* Übergeben wird der Funktion die zu schreibenden Daten
 * ```typescript
   import { useMutation } from "react-query";
   import { savePost } from "./blog-api";
@@ -884,13 +909,317 @@ automatisch aus dem Cache aktualisiert
       return <h1>Saving, please wait!</h1>;
     }
 
-    return <PostEditor onSavePost={mutation.mutate} />;
+    // ...
   }
+  ```
+---
+### TanStack Query: Mutations  
+* Im Gegensatz zu `useQuery` wird eine Mutation aber nicht automatisch ausgeführt, sondern wird explizit gestartet
+* Dazu liefert `useMutation` die Funktion `mutate` zurück
+* Übergeben wird der Funktion die zu schreibenden Daten
+* ```typescript
+  const mutation = useMutation(/* ... */ );
+
+  function saveBlogPost(newPost: NewBlogPost) {
+    mutation.mutate(newPost);
+  }
+  ```
+---
+### Parameter für die Mutations
+* Üblicherweise benötigt eine Mutation Daten, die erst bei der Ausführung `mutate` feststehen
+* Dazu kann der `mutate`-Funktion genau **ein** Parameter übergeben werden
+* Wie dieser aussieht bestimmt ihr in der Definition der Mutation selbst
+* Dieser Parameter entspricht nämlich dem ersten Parameter der `mutationFn`:
+  * ```typescript
+    const addPostMutation = useMutation({
+      mutationFn(newBlogPost: NewBlogPost) { /* ... */ }
+    })
+    ```
+* Wenn ihr mehr als einen "logischen" Parameter benötigt, müsst ihr ein Objekt verwenden:
+* ```typescript
+  type AddCommentParam = { postId: string, comment: string };
+
+  const addCommentMutation = useMutation({
+    mutationFn(param: AddCommentParam) {
+      const url = `/api/posts/${postId}/comments;
+      fetch(url, { 
+        body: JSON.stringify({comment: param.comment})
+      });
+    }
+  });
   ```
 
 ---
+### Arbeiten mit dem Ergebnis
 
-### Aktualisieren von Daten
+* Wenn eine Mutation ausgeführt wurde, bekommt ihr `data` bzw. `error` zurück
+* Damit könnt ihr - wie bei `useQuery` - nach der Ausführung einer Mutation die UI aktualisieren, um zum Beispiel Fehlermeldungen anzuzeigen
+* ```typescript
+  function PostEditor() {
+    const savePostMutation = useMutation(/*...*/);
+
+    return <form>
+      { /* ... */}
+
+      {saveMutation.isError && <p>Fehler beim Speichern des Posts: {String(saveMutation.error)}</p>}
+      {saveMutation.isSuccess && <p>Der Blogpost wurde erfolgreich gespeichert!</p>}
+    </form>
+  }
+  ```
+---
+### Auf das Ergebnis warten
+* Um direkt nach Beendingung einer Mutation weitere Aktionen auszuführen, kann man `on`-Callback-Funktionen bzw. `mutateAsync` verwenden
+* `onSuccess` und `onFailure` könnt ihr bei `useMutation` angeben. Das ist sinnvoll für Aktionen, die immer ausgeführt werden sollen
+  * Sehen wir später noch im Zusammenhang mit Caching.
+* Mit `mutateAsync` könnt ihr _in einer Komponente_ auf das Ergebnis der Mutation warten. Das ist sinnvoll, wenn man Komponenten-spezfische Aktionen ausführen möchte.
+* `mutateAsync` liefert ein Promise mit den Daten der Mutation zurück.
+* Schlägt die Mutation fehl, wird das Promise nicht verworfen (rejected)
+* Beispiel:
+* ```typescript
+  function PostEditor() {
+    const navigate = useNavigate(); // vom React Router
+
+    const savePostMutation = useMutation({ /* ... */ });
+
+    async function savePost(newPost: NewPost) {
+      const result = await savePostMutation.mutate(newPost);
+      // result ist hier das Ergebnis der (erfolgreichen) Mutation
+
+      navigate("/"); // nach erfolgreicher Mutation zurück auf die Landingpage
+    }
+
+    // ...
+
+  }
+  ```
+
+
+---
+### Zurücksetzen einer Mutation
+
+* Wenn eine Mutation ausgeführt wurde, ist `status`, `data`, `error` usw. gesetzt
+* Mit `reset` kann man diese Informationen zurücksetzen
+* Das kann zum Beispiel nach einem Fehler sinnvoll sein, um die Fehlermeldung wieder verschwinden zu lassen
+  * Zum Beispiel nach einer Benutzer-Interaktion
+* Dann ist die Mutation "wie neu"
+* ```typescript
+  function PostEditor() {
+    const addPostMutation = useMutation(/* ... */);
+
+    return <form>
+      { /* ... */ }
+
+      <input onChange={e => {
+        addPostMutaton.reset();
+        // ...
+      }} />
+
+      { /* ... */ }
+    </form>
+  }
+  ```
+
+
+
+---
+## Übung: Neue Blogposts auf den Server schreiben
+
+* Die `PostEditor`-Komponente verwendet noch `fetch` um den neuen BlogPost zu speichern
+* Stelle die Komponente auf TanStack Query bzw. den `useMutation`-Hook um
+* Wenn die Mutation erfolgreich war und der Blogpost gespeichert wurde, soll die Landing-Page (`/`) gerendert werden
+  * Das entspricht dem bisherigen Verhalten, der Code mit `useNavigate()/navigate` ist bereits in der Komponente
+  * Der neue Post wird dort erst nach einem manuellen Refresh der Seite angezeigt. Das optimieren wir später.
+* Optional: Wenn es einen Fehler gibt, soll eine Fehlermeldung ausgegeben werden
+  * Du kannst Fehler beim Speichern provozieren, in dem Du einen Titel eingibst, der kürzer als fünf Zeichen lang ist
+* Optional: Wenn es einen Fehler gab und der Benutzer danach etwas in eines der Textfelder eingibt, soll die Fehlermeldung wieder verschwinden
+* Mögliche Lösung `steps/20_useMutation`
+---
+## Custom Hooks
+* Custom Hooks sind "normale" JavaScript/TypeScript-Funktionen, die aber andere (React-) Hooks (z.B. `useState`) verwenden können
+* Custom Hooks können für Code verwendet werden, der wiederverwendet werden soll
+* Der Name einer Hook-Funktion muss mit `use` anfangen
+* Die Signatur einer Hook-Funktion (Rückgabe-Wert und Parameter) kannst du frei wählen. 
+  * Allerdings dürfen Hook-Funktionen nicht asynchron sind
+---
+### Custom Hooks mit TanStack Query
+* Wenn Du einen Query in mehreren Komponenten verwenden willst, kannst Du dessen Code in Custom Hooks auslagern
+* Selbst wenn du einen Query nur in einer Komponente verwendest, kann es sinnvoll sein, diesen auszulagern:
+  * Man kann ihn insoliert testen
+  * Der "technische" Code der Komponente wird verringert, was evtl. zu besserer lesbarkeit führt
+
+* ```typescript
+  function useBlogListQuery() {
+    return useQuery({ /* ... */ });
+  }
+
+  function PostListPage() {
+    const result = useBlogListQuery();
+  }
+
+  function App() {
+    const result = useBlogListQuery();
+  }
+  ```
+---
+## Übung: Ein Custom Hook zum Laden eines einzelnen Blog-Post
+* In der `PostPage` soll der gewählte Post mit einem Query geladen werden.
+* Außerdem soll (neu!) in der Sidebar der Post mit der Id `P10` geladen und angezeigt werden
+* Kannst du einen eigenen Hook bauen, der den BlogPost mit einer angegebene Id lädt?
+  * Den `fetch`-Code für die `queryFn` kannst Du aus `PostPage` übernehmen
+* Stelle dann `PostPage` um, so dass diese Komponente deinen Hook verwendet
+* Verwende dann deinen Hook um in `Sidebar` das Blog-Post mit Id `P10` zu laden und daraus `title` und `likes` anzuzeigen
+* Lösung: `steps/30_custom_hook` 
+  
+---
+## Validieren von Daten
+
+---
+### Validieren von Daten
+* <!-- .element: class="demo" --> Außerhalb des Projektes, in einer TypeScript-Datei:
+* <!-- .element: class="demo" --> fetch-Ergebnis ist any in TypeScript
+* <!-- .element: class="demo" --> zod
+---
+### Validieren von Daten
+<!-- .slide: class="left" -->
+- Das Ergebnis eines `fetch`-Calls ist aus TypeScript-Sicht ein Promise von `any`
+- Wir können das Ergebnis also verwenden, ohne weitere Typ-Angaben zu verwenden:
+* ```typescript
+  async function loadPost(postId: string) {
+    const response = await fetch("...");
+    const data = await response.json();
+    //      ^-- data ist 'any'
+    return data;
+  }
+  ```
+- Mit `data` bzw. dem Rückgabewert von loadPost können wir alles machen - unabhängig davon, ob das richtig ist oder nicht:
+* ```typescript
+  const data = await loadPost("P10");
+  const title = data.title; // wahrscheinlich ok, weil title in blog post vorhanden ist
+  const blogPost = data[2]; // wahrscheinlich nicht ok, weil data kein Array ist
+  const title = data.toUpperCase(); // wahrscheinlich nicht ok, weil data kein string ist
+  ```
+* Wir haben hier keinen Support von TypeScript!  
+---
+### Validieren
+<!-- .slide: class="left" -->
+* Wir können einen Typecast verwenden, um TypeScript den Rückgabe-Typen mitzuteilen:
+* ```typescript
+  async function loadPost(postId: string): Promise<BlogPost> {
+    const response = await fetch("...");
+    const data = await response.json();
+    //      ^-- data ist 'any'
+    return data as BlogPost;
+    //          ^--  Typecast
+  }
+  ```
+* Ist das gut? Welche Probleme könnte es nun geben? 🤔
+---
+### Typecast vs. Validierung
+<!-- .slide: class="left" -->
+- Mit einem Typecast sagen wir TypeScript welchen Typ eine Variablen haben soll
+* Das kann richtig oder falsch sein:
+* ```typescript
+  const s:string = "Hallo";
+  let y:any = s;
+  let x:number = y as number; 🙀
+  ```
+- In unserem Beispiel sind wir uns sicher, dass `data` ein `BlogPost`-Objekt ist.
+* Oder? 🤔
+---
+### Validierung
+<!-- .slide: class="left" -->
+* Die Daten, die von einem Server (oder auch aus Benutzereingaben) kommen, können von TypeScript nicht überprüft werden
+* TypeScript ist zu Laufzeit "weg"
+* Wenn der Server also Daten schickt die - entgegen unserer Erwartung - nicht zu dem passen, was wir als TypeScript-Typ definiert haben, merken wir das nicht
+  * (abgesehen davon, dass die Anwendung irgendwann in Fehler läuft)
+* Besser wäre bei solchen Daten eine echte Laufzeit-Validierung
+* Dabei werden die gelesen Daten nach dem Empfang überprüft:
+* ```typescript
+  async function loadPost(postId: string): Promise<BlogPost> {
+    const response = await fetch("...");
+    const data = await response.json();
+    if (typeof data !== "object") {
+      // Fehler!
+    }
+    if (!"title" in data) { /* Fehler! */ }
+    if (!"body" in data) { /* Fehler! */ }
+    // ...
+    // ok: data ziemlich sicher BlogPost
+    return data as BlogPost;
+  }
+  ```
+* Ist das schön?
+---
+### Probleme mit manueller Validierung
+
+* Validierung kann viel Code in Anspruch nehmen
+* Außerdem redundant: 
+  * wir müssen den Code zur Validierung schreiben (Laufzeit)
+  * wir müssten den TypeScript-Code schreiben (Buildzeit)
+---
+### Validierungsbibliothek: zod
+<!-- .slide: class="left" -->
+- Mit [zod](https://zod.dev) gibt es eine Validierungsbibliothek, die beides verbindet
+- Mit (JavaScript)-Code, der auch zur Laufzeit ausgeführt wird, wird ein **Schema** beschrieben
+- Dieses Schema kann zur Laufzeit verwendet werden, um ein beliebiges Objekt zu validieren
+- Außerdem kann aus dem Schema ein TypeScript-Type für die Build-Zeit abgeleitet werden
+* ```typescript
+  import { z } from "zod";
+
+  const UserSchema = z.object({
+    username: z.string(),
+    email: z.email(),
+    nickname: z.string().nullish()
+  });
+  ```
+---
+### Zod
+* Mit dem `z`-Objekt lassen sich Typen (einfache und komplexe) beschreiben
+* Dabei kann man nicht nur Typen angeben (`string`, `number`, `email`, ....) sondern auch Wertebeschränkungen
+  * Mindestlänge, Maximallänge, erlaubte Zeichen etc.
+* Das `Schema`-Objekt kann dann zur validierung verwendet werden.
+* Wenn das Objekt nicht dem Schema entspricht, wird ein Fehler geworfen
+* Wenn alles in Ordnung ist, kommt das validierte Objekt zurück
+* ```typescript
+  const potentialUser = await loadUser("U1");
+
+  const user = UserSchema.parse(potentialUser);
+  ```
+* Dadurch ist auch TypeScript der Typ bekannt!
+* ```typescript
+  type User = { username: string; email: string; nickname?: string | null };
+  const user: User = UserSchema.parse(potentialUser);
+                     // ^--- ok
+  
+  ```
+---
+### Zod: Ableiten des TypeScript-Typen  
+* Den TypeScript-Typen müssen wir gar nicht selber schreiben, dass kan zod für uns machen:
+* ```typescript
+  export const UserSchema = z.object({ /* ... */ });
+  export type User = z.infer<typeof UserSchema>
+  ```
+---
+### Übung: zod
+
+* Erweitere deinen Custom-Hook zum Laden eines BlogPosts um die Validierung mit zod!
+* Definiere das Schema des BlogPost-Objektes (als Vorlage soll der fertige `BlogPost`-Type in `types.ts` dienen)
+* Das `title`-Feld soll eine Maximallänge von 40 Zeichen haben.
+* Das `likes`-Feld muss optional sein!
+* Nach dem Laden der Daten mit TanStack Query soll das geladenen Objekt dann validiert werden
+* Lösung: `steps/32_zod`
+
+
+
+---
+### Caching
+
+* Alle gelesenen Daten werden in einem globalen Cache gehalten
+* 👉 Dev Tools!
+* Es gibt verschiedene Strategien, wie die Daten im Cache aktualisiert werden
+
+---
+### (Automatisches) Aktualisieren von Daten
 
 * Alle Query-Ergebnisse von `useQuery` werden automatisch gecached
 * Alle Komponenten werden aktualisiert, wenn sich der Cache aktualisiert
@@ -936,7 +1265,7 @@ im Cache zu aktualisieren
 * ```typescript
   function PostPage() {
     // ...
-    const result = useQuery({queryKey: ["blogPost", postId], queryFn: () => loadBlogPost(postId!)}, {
+    const result = useQuery({queryKey: ["blogPost", postId], queryFn: () => loadBlogPost(postId)}, {
       refetchOnMount: false,
       refetchOnWindowFocus: false
     });  
@@ -967,10 +1296,170 @@ manuell neu auszuführen
   }
   ```
 ---
-## Routing mit Data Fetching
+## Übung: Arbeiten mit dem Cache
+* In der `Sidebar` und/oder `Post`-Komponente soll ein Blog-Post "geliked" werden können
+* Kopiere dazu die Datei `material/use-like-mutataion.ts` in dein `src`-Verzeichnis
+* Darin ist eine Mutation die für ein angegebenen Blog Post einen "Like" vergibt
+* Füge in der `Sidebar` einen "Like"-Button hinzu, der die Mutation verwendet
+* Stelle sicher, dass die neue "Like"-Anzahl sowohl in der `BlogPost`- als auch in der `Sidebar`-Komponente korrekt dargestellt wird
+  * mit einem reload-Button, mit `invalidateQueries` mit `onSuccess` oder wie auch immer
+* Lösung: `steps/34_caching_mutation`
+
 
 ---
 ## Suspense
+
+* Suspense ist ein relativ neuer Mechanismus in React, um das Arbeiten mit asynchronem Code (insb. Data Fetching) zu vereinfachen
+* Suspense unterbricht das Rendern, wenn eine Komponente wegen noch fehlender Daten nicht gerendert werden kann
+  * Daten können "normale" Daten sein, die z.B. mit TanStack Query geladen werden
+  * ...oder Source-Code, der mit Lazy Loading erst bei Bedarf nachgeladen wird
+---
+### Suspense für Lazy-Loading
+* Suspense für Lazy-Loading/Code Splitting gibt es schon länger als stabiles Feature in React
+* Bei Lazy Loading wird der Code für eine Komponente erst geladen, wenn er benötigt wird
+* ```typescript
+  import { lazy } from 'react';
+
+  
+  const PostEditor = lazy(() => import('./PostEditor'));
+  ```
+* Der Source-Code für `PostEditor` wird vom Browser erst geladen, wenn die Komponente benötigt bzw. verwendet wird
+* Während der Source-Code geladen wird, muss React einen Platzhalter anzeigen
+* Dazu kann um eine Komponente die `Suspense`-Komponente von React gelegt werden
+* ```typescript
+  const PostEditor = lazy(() => import('./PostEditor'));
+  
+  function PostEditorPage() {
+    // ...
+  
+    return  <React.Suspense> fallback={"Please wait"}>
+      <PostEditor />
+    </React.Suspense>;
+  }
+  ```
+* Hier würde React zunächst die `fallback`-Komponente (`Please wait`) rendern und darstellen, bis der Source-Code für `PostEditor` geladen wurde
+* Danach rendert React die Komponente (`PostEditorPage`) erneut und kann nun den `PostEditor` darstellen.
+
+---
+### Suspense für Daten ("Suspense for Data Fetching")
+* Um Suspense mit fetch o.ä. zu verwenden, muss die eingesetzte Bibliothek Suspense unterstützen
+  * Das können wir in unserem eigenen Code nicht machen
+  * TanStack Query, React Router und der Apollo GraphQL Client unterstützen Suspense in ihren neusten Versionen
+---
+### Suspense mit TanStack Query 
+
+* Die Verwendung mit TanStack Query ist denkbar einfach: ihr verwendet den `useSuspenseQuery`-Hook statt des `useQuery`-Hooks
+* Die Parameter sind dieselben
+* Aber: der Query liefert erst ein Ergebnis, wenn die Daten geladen worden sind (oder im Cache vorhanden sind)
+  * Für die Dauer der Ladezeit muss `Suspense` verwendet werden, um eine Platzhalter-Komponente zu rendern
+  * Für den Fall eines Fehlers muss eine [Error-Boundary-Komponente](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) gesetzt werden
+    * Das ist eine Art try-catch-Mechanismus, mit dem eine React-Anwendung auf Fehler _während des Renderns_ reagieren kann
+
+* ```typescript
+  function Post({postId}) {
+    // hier wird das Rendern von React unterbrochen, bis die Daten da sind:
+    const data = useSuspenseQuery({queryFn: fetch(/*...*/), queryKey: ["post", postId] });
+    // wenn die Anwendung hierher kommt, sind die Daten in jedem Fall vorhanden
+    return ...;
+  }
+
+  function PostPage() {
+    return (
+      <ErrorBoundary fallback={<h1>Loading failed!</h1>}>      
+        <Suspense fallback={<h1>Post P10 loading...</h1>}>
+          <Post postId="P10" />
+        </Suspense>
+      </ErrorBoundary>
+    )
+  }
+  ```
+---
+### Error Boundary
+- Eine Error Boundary-Komponente kann man grundsätzlich selbst bauen
+- Fehler, die beim Rendern unterhalb einer Error-Boundary-Komponente auftreten, werden als eine Art Propertie in die nächsthöhere Error-Boundary-Komponente gegeben
+  - ähnlich wie try/catch
+- Die Komponente kann dann eine Fehlermeldung o.ä. rendern  
+- Ihr könnt damit sehr feingranular steuern, wo Fehler angezeigt werden sollen (wenn _eine_ Abfrage nicht funktioniert, können die anderen weiterlaufen - oder nicht)
+- Es gibt eine fertige, generische Error-Boundary-Komponente: [react-error-boundary](https://www.npmjs.com/package/react-error-boundary)
+- Auch TanStack Query hat eine Error-Boundary-Komponente, [QueryErrorResetBoundary](https://tanstack.com/query/latest/docs/framework/react/reference/QueryErrorResetBoundary)
+  - Mit dieser gibt es die Möglichkeit, einen fehlerhaften Query wiederholen zu lassen (auch durch User-Interaktion, z.B. Button click)
+
+---
+### Priorisierung
+* Mit Suspense könnt ihr einzelne Teile der UI priorisieren
+* Ihr könnt z.B. steuern, welche Teile schon dargestellt werden sollen, auch wenn noch andere Daten fehlen
+* ...oder das auf _alle_ Daten gewartet werden soll
+* Was jeweils "richtig" ist, hängt von den fachlichen Anforderungen ab
+---
+### Priorisierung
+* In der `PostPage` werden Daten aus zwei Requests benötigt: der Blog-Post und Informationen über dessen Autoren
+* Beide Requests können zeitgleich (oder nacheinander) gestartet werden
+* Durch das Festlegen der Suspense-Komponente könnt ihr ausdrücken, welche Teile wichtig sind (sofort rendern, sobald Daten da sind), oder "unwichtig"
+* Was passiert hier:
+* ```typescript
+  function PostPage() {
+    const {data: user} = useSuspenseQuery(/* User */);
+    const {data: post} = useSuspenseQuery(/* Post */);
+
+    // ...
+  }
+  ```
+* React rendert Komponente bis zum ersten `useSuspenseQuery`
+* Wenn die Daten da sind, wird die Komponente nochmal gerendert
+* Diesmal bis zum zweiten `useSuspenseQuery`
+* Die Daten werden also *nacheinander* nicht *parallel* geladen. 😢
+---
+### Priorisierung mit TanStack Query
+* Um die Daten parallel zu laden, könnt ihr TanStack Query anweisen, Daten in den Cache zu laden, *ohne* darauf zu warten
+* Dazu verwendet ihr `QueryClient.ensureData`, das die selben Parameter wie `useSuspenseQuery` bzw. `useQuery` entgegennimmt
+* TanStack Query startet dann den Request im Hintergrund (und legt die Daten in den Cache, sobald sie vorliegen)
+* Um also *nicht* auf die User-Daten zu warten könnt ihr folgendes tun:
+* ```typescript
+  function PostPage({postId}) {
+    const queryClient = useQueryClient();
+    queryClient.ensureData({queryFn: /* ... */, queryKey: ["post", postId, "user"]}); 
+    const {data: post} = useSuspenseQuery(/* Post */);
+
+    return ...;
+  }
+  ```
+* Hier werden beide Requests gestartet und React wartet dann auf das Ergebnis des Post-Queries
+* In einer weiteren Komponente könntet ihr dann auf die User-Daten warten, die im besten Fall dann sogar schon im Cache sind:
+* ```typescript
+  function User({postId}) {
+    // Query-Key muss mit dem Query-Key von oben übereinstimmen!
+    const data = useSuspenseQuery({queryFn: /* ... */, queryKey: ["post", postId, "user"]}); 
+
+    // User-Daten rendern
+
+    return ...;
+  }
+  ```
+
+---
+## Routing mit Data Fetching
+
+* Der React Router ist ebenfalls in der Lage, das Laden von Daten für eine Route zu koordinieren
+* Das geht mit oder ohne Suspense
+* Dazu gebt ihr bei der Routen-Definition einer `loader`-Funktion an
+* Dieser Funktion werden die Routen-Parameter übergeben.
+* Sie liefert ein Promise mit den zu ladenen Daten zurück
+* ```typescript
+  <Route path="/post/:postId" 
+    loader={ async (params) => { /* fetch ... */ } }
+    component={PostPage} 
+  } />
+  ```
+* Auf die gelesenen Daten könnt ihr dann in der Komponente mit `useLoaderData` zugreifen:
+* ```typescript
+  function PostPage() {
+    const post = useLoaderData(); // Rückgabewert der loader-Funktion
+  }
+  ```
+* Um Caching etc. zu verwenden könnt ihr in der `loader`-Funktion auch  den `QueryClient` von TanStack Query verwenden, um die Daten zu verwenden
+* Ist das eine gute Idee? 🤔
+
+
 <!-- 
 
 ## Übung: Die Blog-Anwendung mit TanStack Query

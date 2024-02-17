@@ -1,14 +1,45 @@
 import React from "react";
-import { NewBlogPost } from "./types";
+import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { BlogPost, NewBlogPost } from "./types";
 
-type PostEditorProps = {
-  onSavePost(post: NewBlogPost): void;
-  onClose(): void;
-};
+async function savePost(post: NewBlogPost): Promise<BlogPost> {
+  const response = await fetch("http://localhost:7000/posts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(post)
+  });
 
-export default function PostEditor(props: PostEditorProps) {
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error);
+  }
+
+  return data;
+}
+
+export default function PostEditor() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const [title, setTitle] = React.useState("");
   const [body, setBody] = React.useState("");
+
+  const saveMutation = useMutation({
+    mutationKey: ["new-post"],
+    mutationFn: savePost,
+    onSuccess: () => queryClient.removeQueries({ queryKey: ["posts"] })
+  });
+
+  async function handleSave() {
+    const newPost = { title, body };
+    await saveMutation.mutateAsync(newPost);
+
+    navigate("/");
+  }
 
   const clearDisabled = !title && !body;
   const saveButtonDisabled = !title || !body;
@@ -19,7 +50,13 @@ export default function PostEditor(props: PostEditorProps) {
 
       <label>
         Title
-        <input value={title} onChange={e => setTitle(e.currentTarget.value)} />
+        <input
+          value={title}
+          onChange={e => {
+            saveMutation.reset();
+            setTitle(e.currentTarget.value);
+          }}
+        />
       </label>
       {title ? (
         <Message type="info" msg="Title correctly filled"></Message>
@@ -29,7 +66,13 @@ export default function PostEditor(props: PostEditorProps) {
 
       <label>
         Body
-        <textarea value={body} onChange={e => setBody(e.currentTarget.value)} />
+        <textarea
+          value={body}
+          onChange={e => {
+            saveMutation.reset();
+            setBody(e.currentTarget.value);
+          }}
+        />
       </label>
       {body ? (
         <Message type="info" msg="Body correctly filled"></Message>
@@ -46,18 +89,11 @@ export default function PostEditor(props: PostEditorProps) {
       >
         Clear
       </button>
-      <button
-        disabled={saveButtonDisabled}
-        onClick={() => {
-          props.onSavePost({
-            title,
-            body
-          });
-        }}
-      >
+      <button disabled={saveButtonDisabled} onClick={() => handleSave()}>
         Save Post
       </button>
-      <button onClick={props.onClose}>Close</button>
+      <button onClick={() => navigate("/")}>Close</button>
+      {saveMutation.isError && <p>Fehler beim Speichern des Posts: {String(saveMutation.error)}</p>}
     </div>
   );
 }

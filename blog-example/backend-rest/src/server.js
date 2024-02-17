@@ -237,6 +237,10 @@ app.post("/posts", (req, res) => {
     return res.status(400).json({ error: "post.title must be defined and not empty" });
   }
 
+  if (post.title.length < 5) {
+    return res.status(400).json({ error: "post.title must have at least five chars" });
+  }
+
   if (!post.body) {
     return res.status(400).json({ error: "post.body must be defined and not empty" });
   }

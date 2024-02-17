@@ -1,14 +1,30 @@
 import React from "react";
-import { NewBlogPost } from "./types";
+import { BlogPost, NewBlogPost } from "./types";
+import { useNavigate } from "react-router-dom";
 
-type PostEditorProps = {
-  onSavePost(post: NewBlogPost): void;
-  onClose(): void;
-};
+export default function PostEditor() {
+  const navigate = useNavigate();
 
-export default function PostEditor(props: PostEditorProps) {
   const [title, setTitle] = React.useState("");
   const [body, setBody] = React.useState("");
+
+  async function savePost(post: NewBlogPost) {
+    const response = await fetch("http://localhost:7000/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(post)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error);
+    }
+
+    navigate("/");
+  }
 
   const clearDisabled = !title && !body;
   const saveButtonDisabled = !title || !body;
@@ -49,7 +65,7 @@ export default function PostEditor(props: PostEditorProps) {
       <button
         disabled={saveButtonDisabled}
         onClick={() => {
-          props.onSavePost({
+          savePost({
             title,
             body
           });
@@ -57,7 +73,7 @@ export default function PostEditor(props: PostEditorProps) {
       >
         Save Post
       </button>
-      <button onClick={props.onClose}>Close</button>
+      <button onClick={() => navigate("/")}>Close</button>
     </div>
   );
 }

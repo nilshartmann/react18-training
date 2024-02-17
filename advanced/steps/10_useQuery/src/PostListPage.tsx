@@ -2,7 +2,7 @@ import PostList from "./PostList";
 import { BlogPost } from "./types";
 import { useQuery } from "@tanstack/react-query";
 function fetchPosts(): Promise<BlogPost[]> {
-  return fetch("http://localhost:7000/posts?short&slow").then(response => {
+  return fetch("http://localhost:7000/posts?short").then(response => {
     if (response.ok) {
       return response.json();
     }

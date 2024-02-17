@@ -41,6 +41,6 @@ type UserDetailsProps = {
   postId: string;
 };
 function UserDetails({ postId }: UserDetailsProps) {
-  const { data: user } = useGetUser(postId);
-  return <p>Written by: {user.username}</p>;
+  const { data } = useGetUser(postId);
+  return <p>Written by: {data.username}</p>;
 }
