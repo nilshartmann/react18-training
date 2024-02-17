@@ -13,7 +13,7 @@ export function useLikeMutation(postId: string) {
       });
     },
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["posts", "P10"] });
+      queryClient.invalidateQueries({ queryKey: ["posts", postId] });
     }
   });
 }
