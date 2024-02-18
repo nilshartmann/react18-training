@@ -103,20 +103,18 @@
         <section data-markdown>
           <textarea data-template>
 ## Agenda
+<!-- .slide: class="no-fragment xleft" -->
+**_"Modernes Data- und Statemanagement"_**
 
-"Modernes Data- und Statemanagement"
+* **Montag**
+  * [Context API](#/t-context)
+    * Neuerungen in [React 19](#/t-react19) 
+    * Renderzyklen optimieren mit [useCallback, useMemo](#/t-context-render)
+  * [TanStack Query](#/t-tanstack-query)
+    * "Modernes" React: Data Fetching mit Suspense
 
-### Agenda
-* [Context API](#/t-context)
-  * Neuerungen in [React 19](#/t-react19) 
-  * Renderzyklen optimieren mit [useCallback, useMemo](#/t-context-render)
-* [TanStack Query](#/t-tanstack-query)
-  * "Modernes" React: Data Fetching mit Suspense
-
-
-### Dienstag
-
-* Code Review, mögliche Refaktorings, ...
+* **Dienstag**
+  * Code Review, mögliche Refaktorings, ...
 
           </textarea>
         </section>
@@ -127,13 +125,13 @@
         <!-- ====                                                                      ==== -->
         <!-- ============================================================================== -->
         <section id="t-context">
-          <h2>React Context API</h2>
-          <p>Kein Statemanagement, aber häufig zusammen erwähnt</p>
-          <p>"Dependency Injection"</p>
-          <p>Überblick: 👉 Anwendungshierachie mit State und Props (Miro)</p>
+          <h3>Hintergrund: Daten und State</h3>
+          <ul>
+            <li>Serverseitige <b>Daten</b> und clientseitiger <b>State</b></li>
+            <li>Arten von State: <b>lokal</b> und <b>global</b></li>
+            <li>Überblick: 👉 Daten und State</li>
+          </ul>
         </section>
-
-        <!-- ============================================================================= -->
         <section>
           <h3>Hintergrund: Globaler Zustand</h3>
           <ul>
@@ -152,6 +150,14 @@
             <li>Beispiele für globalen Zustand: angemeldeter Benutzer, Theme</li>
           </ul>
         </section>
+        <section>
+          <h2>React Context API</h2>
+          <p>Kein Statemanagement, aber häufig zusammen erwähnt</p>
+          <p>"Dependency Injection"</p>
+          <p>Überblick: 👉 Anwendungshierachie mit State und Props (Miro)</p>
+        </section>
+
+        <!-- ============================================================================= -->
 
         <section>
           <h2>Im Detail: Context API</h2>
@@ -481,7 +487,7 @@ function UserBadge() {
   * Der `use`-Hook ist flexibler als die bisherigen Hooks
   * Kann überall verwendet werden (z.B. in `if`)
   * Das ganze ist abwärtskompatibel! 
-* Die folgenden APIs `useCallback`, `useMemo` und `memo` werden durch den React Compiler ("Forget") ersetzt
+* Die APIs `useCallback`, `useMemo` und `memo` werden durch den **React Compiler** (ehem. Codename: "Forget") ersetzt
 
 ---
 ### Renderverhalten von Context
@@ -740,7 +746,9 @@ function UserBadge() {
         <section data-markdown>
           <textarea data-template>
 <!-- .slide: id="t-tanstack-query" -->            
-## Data Fetching in React
+# Mordernes Data Fetching in React
+---
+## Modernes Data Fetching in React
 * Mit `useEffect`, `fetch` und `axios` stehen dir "Low-Level-APIs" zur Verfügung, um mit serverseitigen Daten zu arbeiten
 * Diese APIs sind React (`useEffect`) bzw. Browser (`fetch`) Standard APIs
 * Es gibt aber spezialisierte Bibliotheken, die das Arbeiten mit Daten erleichtern können.
@@ -753,13 +761,13 @@ function UserBadge() {
     * Strategien zur Aktualisierung von Daten (auch automatisch im Hintergrund)
 ---
 ## TanStack Query
-### Schritt-für-Schritt: Laden und speichern von Daten mit "TanStack Query"
+### Schritt-für-Schritt: Laden von Daten mit "TanStack Query"
 
 * 👉 `PostListPage`
 * 👉 später: `PostEditorPage`
 * 👉 später: Custom Hooks 
 * 👉 später: zod
-* 👉 Fertig in `advanced/workspace`
+* 👉 Arbeiten in `advanced/workspace`
 
 
 ---
@@ -790,8 +798,8 @@ function UserBadge() {
 ---
 ### Laden von Daten: useQuery
 
-* Queries werden mit dem [useQuery-Hook](https://tanstack.com/query/latest/docs/react/guides/queries) ausgeführt
-* Der Hook erwartet ein Konfigurationsobjekt
+* [Queries](https://tanstack.com/query/latest/docs/react/guides/queries) werden mit dem `useQuery`-Hook ausgeführt
+* [Der `useQuery`-Hook](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) erwartet ein Konfigurationsobjekt
   * `queryKey`: Array mit Query Keys (zur Interaktion mit dem Cache)
   * `queryFn`: Funktion zum Laden der Daten
   * Weitere Konfigurationen (optional)
@@ -868,24 +876,41 @@ automatisch aus dem Cache aktualisiert
 * 👉 dieses Verhalten sehen wir uns später noch an
 
 ---
-## Übung: Die Blog-Anwendung mit TanStack Query
+## Übung: Daten lesen mit TanStack Query
 
-<!-- .element: class="todo" -->HIER BLOG LIST QUERY
-<!-- .element: class="todo" -->UND BLOG POST QUERY (DEN REFAKTORISIEREN WIR SPÄTER)
-* Backend starten
-* ```
-cd blog-example/backend-rest
-npm start
-```
-* Danach sollte unter [http://localhost:7000/posts](http://localhost:7000/posts) 
+* **Vorbereitung**
+* Workspace in der IDE öffnen: `react18-training/advanced/workspace`
+* Schritt 1: Backend starten
+  * ```bash
+  cd react18-training/blog-example/backend-rest
+  npm start
+  ```
+  * Danach sollte unter [http://localhost:7000/posts](http://localhost:7000/posts) 
 die Liste mit den (JSON-)Posts zurückkommen
-* Schritte:
-<!-- .element: class="todo" -->schritte
+* Schritt 2: Frontend (Vite) starten
+  * ```bash
+  cd react18-training/advanced/workspace
+  npm start
+  ```
+  * Die Anwendung sollte auf [http://localhost:3000](http://localhost:3000) laufen
+  * Die Anwendung benutzt noch `useEffect` und `fetch`... das wollen wir ändern!
+---
+### Übung: Daten lesen mit TanStack Query
+
+* In der Komponente `PostListPage` wird `fetch` bzw. `useEffect` zum Laden der Daten verwendet
+* Stelle diese Komponente auf `useQuery` um.
+* Zeige eine Warte-Meldung an, während die Daten geladen werden
+  * Du kannst den Request künstlich langsam machen, in dem Du an die Url `?slow` hängst
+* TanStack Doku: 
+  * [Queries](https://tanstack.com/query/v5/docs/framework/react/guides/queries)
+  * [useQuery](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery)
+* Mögliche Lösung: `steps/10_useQuery`
+
 ---
 ### TanStack Query: Mutations
 
-* Mutations werden verwendet, um Daten zu *verändern* (speichern, löschen)
-* Der entsprechende Hook heißt `useMutation`
+* [Mutations](https://tanstack.com/query/latest/docs/framework/react/guides/mutations) werden verwendet, um Daten zu *verändern* (speichern, löschen)
+* Der entsprechende Hook heißt [`useMutation`](https://tanstack.com/query/latest/docs/framework/react/reference/useMutation)
 * Dessen API ist vergleichbar mit `useQuery`
 * Auch der `useMutation`-Hook liefert Informationen über den Zustand der Mutation zurück
 * ```typescript
@@ -968,7 +993,7 @@ die Liste mit den (JSON-)Posts zurückkommen
   ```
 ---
 ### Auf das Ergebnis warten
-* Um direkt nach Beendingung einer Mutation weitere Aktionen auszuführen, kann man `on`-Callback-Funktionen bzw. `mutateAsync` verwenden
+* Um direkt nach Beendingung einer Mutation weitere Aktionen auszuführen, kann man `on`-Callback-Funktionen bzw. [`mutateAsync`](https://tanstack.com/query/latest/docs/framework/react/guides/mutations#promises) verwenden
 * `onSuccess` und `onFailure` könnt ihr bei `useMutation` angeben. Das ist sinnvoll für Aktionen, die immer ausgeführt werden sollen
   * Sehen wir später noch im Zusammenhang mit Caching.
 * Mit `mutateAsync` könnt ihr _in einer Komponente_ auf das Ergebnis der Mutation warten. Das ist sinnvoll, wenn man Komponenten-spezfische Aktionen ausführen möchte.
@@ -1175,9 +1200,10 @@ die Liste mit den (JSON-)Posts zurückkommen
 ---
 ### Zod
 * Mit dem `z`-Objekt lassen sich Typen (einfache und komplexe) beschreiben
-* Dabei kann man nicht nur Typen angeben (`string`, `number`, `email`, ....) sondern auch Wertebeschränkungen
-  * Mindestlänge, Maximallänge, erlaubte Zeichen etc.
-* Das `Schema`-Objekt kann dann zur validierung verwendet werden.
+* Objekte werden mit [`z.object`](https://zod.dev/?id=objects) beschrieben
+* Dabei kann man nicht nur Typen angeben ([`string`, `number`](https://zod.dev/?id=primitives), `email`, ....) sondern auch Wertebeschränkungen
+  * [Mindestlänge, Maximallänge](https://zod.dev/?id=minmaxlength), erlaubte Zeichen etc.
+* Mit der [`parse`-Methode](https://zod.dev/?id=parse) am `Schema`-Objekt kann dann ein beliebiges Objekt validiert werden.
 * Wenn das Objekt nicht dem Schema entspricht, wird ein Fehler geworfen
 * Wenn alles in Ordnung ist, kommt das validierte Objekt zurück
 * ```typescript
@@ -1207,6 +1233,9 @@ die Liste mit den (JSON-)Posts zurückkommen
 * Das `title`-Feld soll eine Maximallänge von 40 Zeichen haben.
 * Das `likes`-Feld muss optional sein!
 * Nach dem Laden der Daten mit TanStack Query soll das geladenen Objekt dann validiert werden
+  * Wenn Du den Post "Something to remember when learning new tech" (ID: "P5") öffnest, sollte eine Fehlermeldung erscheinen, weil dessen Titel länger als 40 Zeichen ist
+  * Das dauert eine Zeit, weil TanStack Query bei einem Fehler automatisch mehrere weitere versuche unternimmt, die Daten zu laden
+  * Erst danach wird dann die Fehlermeldung gerendert
 * Lösung: `steps/32_zod`
 
 
@@ -1298,7 +1327,7 @@ manuell neu auszuführen
 ---
 ## Übung: Arbeiten mit dem Cache
 * In der `Sidebar` und/oder `Post`-Komponente soll ein Blog-Post "geliked" werden können
-* Kopiere dazu die Datei `material/use-like-mutataion.ts` in dein `src`-Verzeichnis
+* Kopiere dazu die Datei `material/use-like-mutation.ts` in dein `src`-Verzeichnis
 * Darin ist eine Mutation die für ein angegebenen Blog Post einen "Like" vergibt
 * Füge in der `Sidebar` einen "Like"-Button hinzu, der die Mutation verwendet
 * Stelle sicher, dass die neue "Like"-Anzahl sowohl in der `BlogPost`- als auch in der `Sidebar`-Komponente korrekt dargestellt wird
@@ -1435,9 +1464,24 @@ manuell neu auszuführen
     return ...;
   }
   ```
-
 ---
-## Routing mit Data Fetching
+## Übung: Suspense
+
+* Die `PostPage` soll den BlogPost *und* User-Daten anzeigen
+* Die Queries für das Laden der User-Daten sind bereits fertig 
+  * kopiere bitte die Dateien `material/use-user-query.ts` und `material/UserDetails.tsx` in dein `src`-Verzeichnis
+* Integriere die `UserDetails`-Komponente in die `PostPage`-Komponente  
+  * Lege darum herum eine `Suspense`-Komponente. 
+* Stelle nun `get-post.ts` auf `useSuspenseQuery` um
+* Kannst Du die `PostPage`-Komponente so bauen, dass...
+  - ...beide Komponenten (Post und UserDetails) erst gerendert werden, wenn für *beide* Komponenten die Daten geladen wurden
+  - ...die Komponenten jeweils sofort gerendert werden, wenn ihre jeweiligen Daten vorhanden sind
+* Hinweise:
+  * Du kannst Du Lade-Zeiten mit `?slow=TIMEOUT_IN_MS` in den URLs verzögern
+  * Am besten funktioniert Suspense, wenn Du erst die Blogliste aufrufst, und dort dann einen BlogPost anklickst
+* Lösung: `steps/45_suspense_02`
+---
+## Ausblick: Routing mit Data Fetching
 
 * Der React Router ist ebenfalls in der Lage, das Laden von Daten für eine Route zu koordinieren
 * Das geht mit oder ohne Suspense
