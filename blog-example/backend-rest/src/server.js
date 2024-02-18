@@ -35,7 +35,7 @@ app.use((_, res, next) => {
 
 app.use((req, _res, next) => {
   if (req.query.slow !== undefined || slowEnabled) {
-    const timeout = 1200;
+    const timeout = parseInt(req.query.slow) || 1200;
     console.log(`Slow down ${timeout}ms`);
     setTimeout(next, timeout);
   } else {
