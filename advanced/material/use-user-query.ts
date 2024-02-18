@@ -12,7 +12,7 @@ export function usePreloadUser(postId: string) {
   return queryClient.ensureQueryData({
     queryKey: ["posts", postId, "user"],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:7000/posts/${postId}/user?slow=2000`);
+      const response = await fetch(`http://localhost:7000/posts/${postId}/user?slow=2400`);
       if (!response.ok) {
         throw new Error("Response was not ok!");
       }
